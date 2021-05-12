@@ -1319,4 +1319,16 @@
 		<put-attribute name="body"
 			value="/pages-back/jobsite/jobsite_add.jsp" />
 	</definition>
+	
+	
+	<definition name="user_salary" extends="baseLayout">
+		<put-attribute name="title" value="User Salary" />
+		<put-attribute name="body"
+			value="/pages-back/salary/user_salary.jsp" />
+	</definition>
+	<definition name="user_salary_crud" extends="baseLayout">
+		<put-attribute name="title" value="User Salary CRUD" />
+		<put-attribute name="body"
+			value="/pages-back/salary/user_salary_crud.jsp" />
+	</definition>
 </tiles-definitions>

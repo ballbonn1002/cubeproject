@@ -3402,5 +3402,35 @@
 			<result name="error">/index.jsp</result>
 		</action>
 <!-- End Feed CRUD -->
+
+		<action name="user-salary"
+			class="com.cubesofttech.action.UserAction" method="jobsite_list">
+			<result name="success" type="tiles">user_salary</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<action name="user-salary-crud"
+			class="com.cubesofttech.action.SalaryAction" method="usersalary_list">
+			<result name="success" type="tiles">user_salary_crud</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<action name="user-salary-add"
+			class="com.cubesofttech.action.SalaryAction" method="usersalary_save">
+			<result name="success" type="tiles">user_salary_crud</result>
+			<result name="error">/index.jsp</result>
+		</action>
+	
+		<action name="user-salary-delete"
+			class="com.cubesofttech.action.SalaryAction" method="usersalary_delete">
+			<result name="success" type="tiles">user_salary_crud</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<action name="user-salary-edit"
+			class="com.cubesofttech.action.SalaryAction" method="usersalary_edit">
+			<result name="success" type="tiles">user_salary_crud</result>
+			<result name="error">/index.jsp</result>
+		</action>
 	</package>
 </struts>
