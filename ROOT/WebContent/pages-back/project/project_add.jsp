@@ -1,0 +1,257 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<script src="../assets/global/plugins/jquery.min.js"
+	type="text/javascript"></script>
+<script
+	src="../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js"
+	type="text/javascript"></script>
+<script src="../assets/global/plugins/bootstrap/js/bootstrap.min.js"
+	type="text/javascript"></script>
+<script src="../assets/global/plugins/js.cookie.min.js"
+	type="text/javascript"></script>
+<script
+	src="../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js"
+	type="text/javascript"></script>
+<script
+	src="../assets/global/plugins/jquery-repeater/jquery.repeater.js"
+	type="text/javascript" defer></script>
+<script src="../assets/pages/scripts/form-repeater.min.js"
+	type="text/javascript" defer></script>
+
+
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<span class="caption-subject font-red sbold uppercase"> <i
+				class="icon-wrench"></i>&nbsp;ADD PROJECT
+			</span>
+		</div>
+		<div class="actions">
+			<a class="btn  btn-icon-only btn-default fullscreen"
+				href="javascript:;" data-original-title="" title=""> </a>
+		</div>
+	</div>
+
+	<div class="portlet-body">
+
+		<!-- Form Action -->
+		<form name="formProject" id="formProject" method="POST"
+			class="horizontal-form">
+
+			<div class="form-body">
+				<div class="row">
+
+					<div class="col-md-7">
+						<div class="form-group">
+							<label class="control-label">Project name</label> <input
+								type="text" name="project_name" class="form-control"
+								placeholder="Enter Project name" value="${project.project_name}">
+						</div>
+					</div>
+					<div class="col-md-5">
+						<div class="form-group">
+							<label class="control-label">User create</label> <select
+								class="form-control select2me" name="userCreate">
+								<optgroup label="Enable">
+
+									<c:forEach var="user" items="${cubeUser}">
+										<c:if test="${user.enable == 1 }">
+											<c:if test="${logonUser == nulll }">
+												<option value="${user.id}" id="${user.id}"
+													<c:if test="${fn:containsIgnoreCase(user.id,onlineUser.id)}"><c:out value="selected=selected"/>
+													</c:if>>${user.department_id}
+													- ${user.name}</option>
+											</c:if>
+											<c:if test="${logonUser != nulll }">
+												<option value="${user.id}" id="${user.id}"
+													<c:if test="${fn:containsIgnoreCase(user.id,logonUser)}"><c:out value="selected=selected"/>
+													</c:if>>${user.department_id}
+													- ${user.name}</option>
+											</c:if>
+										</c:if>
+									</c:forEach>
+								</optgroup>
+								<optgroup label="Disable">
+									<c:forEach var="user" items="${cubeUser}">
+										<c:if test="${user.enable == 0 }">
+											<c:if test="${logonUser == nulll }">
+												<option value="${user.id}" id="${user.id}"
+													<c:if test="${fn:containsIgnoreCase(user.id,onlineUser.id)}"><c:out value="selected=selected"/>
+													</c:if>>${user.department_id}
+													- ${user.name}</option>
+											</c:if>
+											<c:if test="${logonUser != nulll }">
+												<option value="${user.id}" id="${user.id}"
+													<c:if test="${fn:containsIgnoreCase(user.id,logonUser)}"><c:out value="selected=selected"/>
+													</c:if>>${user.department_id}
+													- ${user.name}</option>
+											</c:if>
+										</c:if>
+									</c:forEach>
+								</optgroup>
+							</select>
+
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">Description</label> <input type="text"
+						name="description" class="form-control"
+						placeholder="Enter Description" value="${project.description}">
+				</div>
+			</div>
+		</form>
+		<div class="portlet-title">
+			<div class="caption">
+				<label class="caption-subject sbold">Function List</label>
+			</div>
+
+		</div>
+
+		<form class="repeater">
+			<div class="form-group mt-repeater">
+				<div data-repeater-list="projectFunctionList">
+					<div data-repeater-item class="mt-repeater-item">
+						<div class="row mt-repeater-row">
+							<div class="col-md-5 col-sm-5">
+								<label class="control-label function-name">Function name</label>
+								<input type="text" name="function_name" class="form-control"
+									placeholder="Enter Function" value="">
+							</div>
+							<div class="col-md-3 col-sm-3">
+								<label class="control-label">Status</label> <select
+									name="status" class="form-control"
+									data-placeholder="Choose status" tabindex="1">
+									<option value="ACTIVE">ACTIVE</option>
+									<option value="INACTIVE">INACTIVE</option>
+								</select>
+							</div>
+							<div class="col-md-1">
+								<a href="javascript:;" data-repeater-delete
+									class="btn mt-repeater-delete red-intense"> <i
+									class="fa fa-close"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<a href="javascript:;" data-repeater-create
+					class="btn green-meadow mt-repeater-add"> <i class="fa fa-plus"></i>
+					Add More
+				</a>
+
+			</div>
+
+
+		</form>
+	</div>
+	<!-- End of portlet-body -->
+	<div class="form-actions">
+		<div class="row ">
+			<div class="col-md-12 text-center">
+				<button class="btn blue-soft" style="width: 90px" onclick="add()">
+					<i class="fa fa-save"></i> Save
+				</button>
+				<button type="reset" class="btn red-intense" style="width: 90px" onclick="cancel()">
+					<i class="fa fa-close"></i> Cancel
+				</button>
+			</div>
+		</div>
+	</div>
+
+</div>
+<!-- end of body class portlet -->
+<script>
+	//https://github.com/DubFriend/jquery.repeater << Tutorials !!
+	//get Array Data from $('.repeater').repeaterVal(); 
+	$(document)
+			.ready(
+					function() {
+						$('.repeater')
+								.repeater(
+										{
+											initEmpty : true,
+											defaultValues: {
+								                'status': 'ACTIVE'
+								            },
+											show : function() {
+												$(this).slideDown();
+											},
+											hide : function(deleteElement) {
+												data = $('.repeater')
+														.repeaterVal();
+												console.log(data);
+												if (confirm('Are you sure you want to delete this elementSSS?')) {
+													$(this).slideUp(
+															deleteElement);
+												}
+											}
+										})
+					});
+	
+	
+	
+	function add() {
+		var formData = new FormData($("#formProject")[0]);
+		var func = new FormData($(".repeater")[0]);
+		var funcs = [];
+		
+		for (var value of func.values()) {
+			funcs.push(value)
+		}
+		console.log(funcs);
+		formData.append("projectFunctionList", funcs)
+		
+		$.ajax({
+			url : "addProject.action",
+			type : "POST",
+			contentType : false,
+			processData : false,
+			data: formData,
+			success : function(formData) {
+				location.href = 'projectList';
+			}
+		});
+	}
+	
+
+	function showToastSuccess(text) {
+		toastr.success(text, "Success");
+		toastr.options = {
+			"closeButton" : true,
+			"debug" : false,
+			"positionClass" : "toast-top-right",
+			"onclick" : null,
+			"showDuration" : "1000",
+			"hideDuration" : "1000",
+			"timeOut" : "5000",
+			"extendedTimeOut" : "1000",
+			"showEasing" : "swing",
+			"hideEasing" : "linear",
+			"showMethod" : "fadeIn",
+			"hideMethod" : "fadeOut"
+		}
+	}
+
+	function showToastWarining() {
+		toastr.warning(
+				"Existed this category <br> Please check category name again",
+				"Warning");
+		toastr.options = {
+			"closeButton" : true,
+			"debug" : false,
+			"positionClass" : "toast-top-right",
+			"onclick" : null,
+			"showDuration" : "1000",
+			"hideDuration" : "1000",
+			"timeOut" : "5000",
+			"extendedTimeOut" : "1000",
+			"showEasing" : "swing",
+			"hideEasing" : "linear",
+			"showMethod" : "fadeIn",
+			"hideMethod" : "fadeOut"
+		}
+	}
+</script>

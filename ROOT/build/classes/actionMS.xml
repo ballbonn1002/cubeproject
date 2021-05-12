@@ -1,0 +1,133 @@
+
+
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.multipart.maxSize" value="30000000" />
+
+
+	<package name="MicroService" namespace="/"
+		extends="default, json-default">
+
+		<result-types>
+			<result-type name="tiles"
+				class="org.apache.struts2.views.tiles.TilesResult" />
+		</result-types>
+		<!-- Article -->
+		<action name="ms-article-list"
+			class="com.cubesofttech.ms.ArticleMS" method="getAllArticle">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+
+		<!-- End of Article -->
+
+		<!-- User -->
+		<action name="ms-user-list"
+			class="com.cubesofttech.ms.UserMS" method="getAllUser">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<action name="ms-user-login"
+			class="com.cubesofttech.ms.UserMS" method="getUserByLogin">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<!-- End of User -->
+		
+		<!-- WorkHours -->
+		
+		<action name="ms-checkIn"
+			class="com.cubesofttech.ms.WorkHoursMS" method="checkInAndOut">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<action name="ms-lateCheckIn"
+			class="com.cubesofttech.ms.WorkHoursMS" method="lateCheckInAndOut">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<action name="ms-workhours-by-id"
+			class="com.cubesofttech.ms.WorkHoursMS" method="getWorkHoursById">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<action name="ms-workhours-checkIn-today"
+			class="com.cubesofttech.ms.WorkHoursMS" method="checkInTodayOrNot">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<action name="ms-workhours-checkOut-today"
+			class="com.cubesofttech.ms.WorkHoursMS" method="checkOutTodayOrNot">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<action name="ms-workhours-last-checkIn"
+			class="com.cubesofttech.ms.WorkHoursMS" method="getLastCheckIn">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<action name="ms-workhours-list"
+			class="com.cubesofttech.ms.WorkHoursMS" method="getAllWorkHours">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<!-- End of WorkHours -->
+		
+		<!-- Holiday -->
+		<action name="ms-holiday-list"
+			class="com.cubesofttech.ms.HolidayMS" method="getAllHoliday">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<!-- End of Holiday -->
+		
+		<!-- Ticket -->
+		<action name="ms-ticket-list"
+			class="com.cubesofttech.ms.TicketMS" method="getAllTicket">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<action name="ms-add-ticket"
+			class="com.cubesofttech.ms.TicketMS" method="addTicket">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<!-- End of Ticket -->
+		<!-- File Upload -->
+		<action name="ms-add-fileUpload"
+			class="com.cubesofttech.ms.TicketMS" method="addAttachment">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<!-- End of File Upload -->
+		
+		<action name="jobsite_json"
+			class="com.cubesofttech.tx.jobsiteTX" method="jobsite_json">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="jobsite_json_byid"
+			class="com.cubesofttech.tx.jobsiteTX" method="jobsite_jsonbyid">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<action name="leave_json"
+			class="com.cubesofttech.tx.LeaveTX" method="leave_json">
+			<result name="success">/pages-back/common/json.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+	</package>
+
+</struts>
