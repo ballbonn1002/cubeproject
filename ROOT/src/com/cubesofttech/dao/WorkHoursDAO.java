@@ -245,5 +245,4 @@ public interface WorkHoursDAO {
 	 // Count CheckList Until today
 	 
 	 public List<Map<String, Object>> Count_checkList(String user,String start_mouth, String today) throws Exception;
-	 public List<Map<String, Object>> Count_checkListall(String user) throws Exception;
 }

@@ -2620,22 +2620,7 @@ public List<Map<String, Object>> Count_checkList(String user,String start_mouth,
 	return count_checklist;
 }
 
-@Override
-public List<Map<String, Object>> Count_checkListall(String user) throws Exception {
-	Session session = this.sessionFactory.getCurrentSession();
-	List<Map<String, Object>> count_checklist_all = null;
-	try {
-		String sql = "SELECT COUNT(*) AS allcount_workday FROM work_hours WHERE user_create = :user";
-		
-		SQLQuery query = session.createSQLQuery(sql);
-		query.setParameter("user", user);
-		query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
-		count_checklist_all = query.list();
-	}catch (Exception e) {
-		e.printStackTrace();
-	}
-	return count_checklist_all;
-}
+
 
 	
 }

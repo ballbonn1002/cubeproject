@@ -731,17 +731,6 @@ if(timeline.size() == 0 ) {
 			
 			float Absent = month_to_present - (Ssday+Holidays+checkList+Leave_me);
 			
-			//------------------ check new user---------------------------------------
-			
-			List<Map<String, Object>> allcount_checklist = workhoursDAO.Count_checkListall(Check_user);
-			BigInteger allcounts = ((BigInteger) allcount_checklist.get(0).get("allcount_workday"));
-			int allcheckList = allcounts.intValue();
-			String end = today;
-			if(allcheckList == 1) {
-				cals.set(Calendar.DAY_OF_MONTH, cals.getActualMaximum(Calendar.DAY_OF_MONTH));
-				end = format1.format(cals.getTime());
-				float beforefirstcheckin = Absent;
-			}
 			
 
 //			System.out.println("userLeave  " + Leavesum);
@@ -853,13 +842,9 @@ if(timeline.size() == 0 ) {
 
 			request.setAttribute("Leavesum", Leavesum);
 
-			if(today.compareTo(end) > 0) {
-				request.setAttribute("usersumday", 12);
-			} else {
-				request.setAttribute("usersumday", Absent);
-			}
 			
-
+			request.setAttribute("usersumday", Absent);
+			
 			request.setAttribute("userWork", userWork.size());
 			request.setAttribute("Tday", sumday);
 //			request.setAttribute("userlate", userlate.size());
