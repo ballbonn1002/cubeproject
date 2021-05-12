@@ -256,8 +256,12 @@
 				class="fa fa-users"></i> <span class="title">Role management</span></a></li>
 	</perm:permission>
 	
+<!-- 	<li class="nav-item"><a href="user-salary" class="nav-link"> <i
+				class="fa fa-money"></i> <span class="title">User Salary</span></a></li> -->
+	<perm:permission object="role.view">
 	<li class="nav-item"><a href="user-salary" class="nav-link"> <i
-				class="fa fa-money"></i> <span class="title">User Salary</span></a></li>
+				class="fa fa-user"></i> <span class="title">User salary</span></a></li>
+	</perm:permission>
 				
 	<perm:permission object="article.view">
 		<li class="heading">
