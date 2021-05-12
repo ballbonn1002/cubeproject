@@ -55,7 +55,7 @@
 			<input type="hidden" class="form-control" id="user" name="user"
 				value="${onlineUser.id}">
 			<div class="row">
-				<div class="col-md-2 text-right">Name :</div>
+				<div class="col-md-2 text-right">Name : </div>
 				<div class="col-md-6">
 					<input type="text" class="form-control" id="name" name="name">
 				</div>
