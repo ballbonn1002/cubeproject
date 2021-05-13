@@ -207,7 +207,7 @@
 						<th class="text-center " width="250px"
 							style="background-color: #3B3F51; color: white;">Salary</th>
 						<th class="text-center " width="250px"
-							style="background-color: #3B3F51; color: white;"></th>
+							style="background-color: #3B3F51; color: white;">Edit/Delete</th>
 					</tr>
 				</thead>
 				<tbody>
