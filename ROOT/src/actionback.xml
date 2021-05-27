@@ -3402,8 +3402,21 @@
 		</action>
 <!-- End Feed CRUD -->
 
+		<action name="sendmailleave"
+			class="com.cubesofttech.service.LeaveService" method="sendmail">
+			<result name="success">/index.jsp</result>
+			<result name="error">/index.jsp</result>
+			<result name="input">/index.jsp</result>
+		</action>
+
+<!-- End salary CRUD -->
 		<action name="user-salary"
-			>
+			class="com.cubesofttech.action.SalaryAction" method="salary_list">
+			<result name="success" type="tiles">user_salary</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="user-salary-search"
+			class="com.cubesofttech.action.SalaryAction" method="salary_search">
 			<result name="success" type="tiles">user_salary</result>
 			<result name="error">/index.jsp</result>
 		</action>
@@ -3431,5 +3444,8 @@
 			<result name="success" type="tiles">user_salary_crud</result>
 			<result name="error">/index.jsp</result>
 		</action>
+		
+		
+		<!-- End salary CRUD -->
 	</package>
 </struts>

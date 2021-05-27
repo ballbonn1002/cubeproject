@@ -46,6 +46,7 @@
 		<div class="caption">
 			<i class="fa fa-paperclip font-red"></i>
 			<span id="title" class="caption-subject font-red sbold uppercase">Leave application form ( ${action} )</span>
+			<input type="hidden" name="actionpage" id="actionpage" value="${action}">
 		</div>
 		<div class="actions">
 			<a class="btn  btn-icon-only btn-default fullscreen"
@@ -168,7 +169,7 @@
 			<div class="form-actions">
 				<div class="row">
 					<div class="col-xs-12" style="text-align: center;">
-						<button type="submit" class="btn btn-sm blue-soft"><i class="fa fa-send-o"></i> Submit</button>
+						<button type="submit" class="btn btn-sm blue-soft" onclick="send()"><i class="fa fa-send-o"></i> Submit</button>
 						<button type="reset" class="btn btn-sm red-intense"><i class="fa fa-close"></i> Cancel</button>
 					</div>
 				</div>
@@ -418,4 +419,47 @@ function checkamount() {
 		alert("Amount of day going to change to 1 day \n'Please Check Amount of Day Again'");
 	}
 }
+</script>
+<script>
+console.log("ee");
+	function send() {	
+		var name = document.getElementById('user').value;
+		var typeleave =  $("input[name='leaveType']:checked").val(); 
+		var from = document.getElementById('date_from').value;
+		var to = document.getElementById('date_to').value;
+		var des = document.getElementById('description').value;
+		var amount = document.getElementById('amount').value;
+		var amount_sub = document.getElementById('amount_sub').value;
+		var actionpage = document.getElementById('actionpage').value;
+		console.log(name);
+		console.log(typeleave);
+		console.log(from);
+		console.log(to);
+		console.log(des);
+		console.log(amount);
+		console.log(amount_sub);
+		console.log(actionpage);
+		
+ 		$
+					.ajax({
+						url : "sendmailleave",
+						method : "POST",
+						type : "JSON",
+						data : {
+							"name" : name,
+							"typeleave" : typeleave,
+							"from" : from,
+							"to" : to,
+							"des" : des,
+							"amount" : amount,
+							"amount_sub" : amount_sub,
+							"actionpage" : actionpage,
+						},
+						success : function(data) {
+							
+						}
+
+					}) 
+		}
+	
 </script>

@@ -428,7 +428,7 @@ tr{
 																				
 																			
 									</td>
-										<td width="35%" style="word-break:break-all;text-align: left">${TimeInlist.OT_description}</td>
+										<td width="35%" style="word-break:break-all;text-align: left">${TimeInlist.description}</td>
 									
 									</tr>
 									<c:set var="oparators" value="${true}" />

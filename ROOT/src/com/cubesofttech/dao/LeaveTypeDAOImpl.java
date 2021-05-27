@@ -230,5 +230,20 @@ public List<LeaveType> findAll() throws Exception {
 		}
 		return result;
 	}
-	
+	@Override
+	public List<Map<String, Object>> idtoname(String keyword) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> leaveType = null;
+		try {
+			String sql = " SELECT * FROM leave_type WHERE leave_type_id = :keyword ";
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("keyword",keyword);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			leaveType = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return leaveType;		
+		
+	}
 }

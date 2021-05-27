@@ -222,5 +222,100 @@ public class PalmDAOImpl  implements PalmDAO {
 		}
 		return leavenotsatsun;
 	}
+	@Override
+	public List<Map<String, Object>> leavehalfday (String month1, String year) throws Exception{
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> leavenotsatsun = null;
+	
+		try {
+			String sql = "SELECT user_id,SUM(CAST(no_day as CHAR) LIKE '%.125')*0.125 AS hour1,SUM(CAST(no_day as CHAR) LIKE '%.250')*0.250 AS hour2,SUM(CAST(no_day as CHAR) LIKE '%.375')*0.375 AS hour3,SUM(CAST(no_day as CHAR) LIKE '%.500')*0.500 AS hour4,SUM(CAST(no_day as CHAR) LIKE '%.625')*0.625 AS hour5,SUM(CAST(no_day as CHAR) LIKE '%.750')*0.750 AS hour6,SUM(CAST(no_day as CHAR) LIKE '%.875')*0.875 AS hour7 FROM leaves WHERE MONTH(start_date)=:month AND YEAR(start_date)=:year GROUP BY user_create";	
+			SQLQuery query = session.createSQLQuery(sql);
+//			query.setParameter("userid", userid);
+			query.setParameter("month", month1);
+			query.setParameter("year", year);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			leavenotsatsun = query.list();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return leavenotsatsun;
+	}
+	@Override
+	public List<Map<String, Object>> leavehalfdayuser (String month1, String year) throws Exception{
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> leavenotsatsun = null;
+	
+		try {
+			String sql = "SELECT user_id,SUM(CAST(no_day as CHAR) LIKE '%.125')*0.125 AS hour1,SUM(CAST(no_day as CHAR) LIKE '%.250')*0.250 AS hour2,SUM(CAST(no_day as CHAR) LIKE '%.375')*0.375 AS hour3,SUM(CAST(no_day as CHAR) LIKE '%.500')*0.500 AS hour4,SUM(CAST(no_day as CHAR) LIKE '%.625')*0.625 AS hour5,SUM(CAST(no_day as CHAR) LIKE '%.750')*0.750 AS hour6,SUM(CAST(no_day as CHAR) LIKE '%.875')*0.875 AS hour7 FROM leaves WHERE user_id = 'thanet.s' AND MONTH(start_date)=:month AND YEAR(start_date)=:year GROUP BY user_create";	
+			SQLQuery query = session.createSQLQuery(sql);
+//			query.setParameter("userid", userid);
+			query.setParameter("month", month1);
+			query.setParameter("year", year);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			leavenotsatsun = query.list();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return leavenotsatsun;
+	}
+	@Override
+	public List<Map<String, Object>> date1sttonow (String todaydatenow, String todaydatefirst) throws Exception{
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> date1sttonow = null;
+	
+		try {
+			String sql = "SELECT DATEDIFF('" + todaydatenow + "', '" + todaydatefirst + "') AS DateDiff";	
+			SQLQuery query = session.createSQLQuery(sql);
+
+//			query.setParameter("now", todaydatenow);
+//			query.setParameter("first", todaydatefirst);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			date1sttonow = query.list();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return date1sttonow;
+	}
+	@Override
+	public List<Map<String, Object>> plamuserleave (String userid, String dateStartSearch, String dateEndSearch) throws Exception{
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> date1sttonow = null;
+	
+		try {
+			String sql = "SELECT * FROM leaves WHERE user_id = :userid AND start_date >= :dateStartSearch and end_date <= :dateEndSearch GROUP BY leave_id DESC";
+
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("userid", userid);
+			query.setParameter("dateStartSearch", dateStartSearch);
+			query.setParameter("dateEndSearch", dateEndSearch);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			date1sttonow = query.list();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return date1sttonow;
+	}
+	@Override
+	public List<Map<String, Object>> serchnamejob (String userid) throws Exception{
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> date1sttonow = null;
+	
+		try {
+			String sql = "SELECT user.name,user.id,user.id_sitejob, job_site.name_site FROM user LEFT JOIN job_site ON user.id_sitejob = job_site.id_sitejob WHERE user.id =:userid";
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("userid", userid);
+
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			date1sttonow = query.list();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return date1sttonow;
+	}
 }
 
