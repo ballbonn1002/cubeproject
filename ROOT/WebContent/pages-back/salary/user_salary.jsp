@@ -46,7 +46,6 @@
 	var="dateNow" />
 <fmt:formatDate pattern="HH:mm" value="${dateTimeNow}" var="timeNow" />
 
-<button id="testvar" type="button" class="btn btn-warning" >Warning</button>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 
@@ -311,7 +310,6 @@
 
 
 		<!-- -----------------------------------------End add-------------------------------------------- -->
-
 
 	</div>
 </div>
