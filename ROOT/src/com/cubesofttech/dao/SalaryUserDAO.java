@@ -16,5 +16,7 @@ public interface SalaryUserDAO {
 	public List<Map<String, Object>> findAll2() throws Exception;
 	public List<Map<String, Object>> findAll3() throws Exception;
 	public List<Map<String, Object>> findAllbyid(Integer id) throws Exception;
+	
+	public List<Map<String, Object>> findUser() throws Exception;
 
 }

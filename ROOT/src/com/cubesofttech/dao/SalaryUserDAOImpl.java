@@ -125,6 +125,23 @@ public class SalaryUserDAOImpl implements SalaryUserDAO{
 		return faqJoin;
 
 	}
+	@Override
+	public List<Map<String, Object>> findUser() throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> users = null;
+		try {
+			String sql = "SELECT USER FROM salary_user";
+			
+			SQLQuery query = session.createSQLQuery(sql);
+			
+			
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			users = query.list();
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		return users;
+	}
 	
 	
 }

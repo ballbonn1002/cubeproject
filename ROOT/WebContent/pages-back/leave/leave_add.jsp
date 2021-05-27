@@ -27,7 +27,7 @@
 				href="javascript:;" data-original-title="" title=""> </a>
 		</div>
 	</div>
-	<button type="button" onclick="Sendemail()" class="btn btn-warning">Warning</button>
+	
 	<div class="portlet-body">
 		<form action="leave_perform_add" method="POST">
 			<div class="portlet-body">

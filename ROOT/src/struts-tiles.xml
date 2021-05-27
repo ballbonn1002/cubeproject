@@ -68,11 +68,6 @@
 			value="/pages-back/user/user_edit_profile.jsp" />
 	</definition>
 	
-	<definition name="user_salary" extends="baseLayout">
-		<put-attribute name="title" value="User Salary" />
-		<put-attribute name="body"
-			value="/pages-back/user/user_salary.jsp" />
-	</definition>
 
 	<!-- ARTICLE -->
 	<definition name="article.feed" extends="baseLayout">

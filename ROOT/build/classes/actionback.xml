@@ -93,17 +93,8 @@
 		<action name="" class="com.cubesofttech.action.LoginAction"
 			method="forgetPassword">
 		</action>
-		
-		<!-- test mail -->
 
-		<action name="Send"
-			class="com.cubesofttech.mail.EmailService" method="sendMail">
-			<result name="success" type="tiles">dashboard</result><!-- name from tiles -->
-			<result name="error">/index.jsp</result>
-		</action>
-
- 		<!-- end -->
-
+	
 		<action name="Dashboard"
 			class="com.cubesofttech.action.NewsAction" method="user_dashboard">
 			<result name="success" type="tiles">dashboard</result><!-- name from tiles -->
@@ -301,6 +292,14 @@
 		
 		<action name="user-salary" 
 		class="com.cubesofttech.action.UserAction" method="list">
+			<result name="success" type="tiles">user_salary
+			</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<!-- Test ttttttttttttttttttttttttttttttttttttttttttt -->
+		<action name="user-salary" 
+		class="com.cubesofttech.action.TestSalaryAction" method="Sumsalary">
 			<result name="success" type="tiles">user_salary
 			</result>
 			<result name="error">/index.jsp</result>
@@ -3404,7 +3403,7 @@
 <!-- End Feed CRUD -->
 
 		<action name="user-salary"
-			class="com.cubesofttech.action.UserAction" method="jobsite_list">
+			>
 			<result name="success" type="tiles">user_salary</result>
 			<result name="error">/index.jsp</result>
 		</action>
