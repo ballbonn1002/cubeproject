@@ -35,5 +35,5 @@ public interface LeaveTypeDAO {
 
 	public String getForDisplayJSON();
 	
-	
+	public List<Map<String, Object>> idtoname(String keyword) throws Exception;
 }

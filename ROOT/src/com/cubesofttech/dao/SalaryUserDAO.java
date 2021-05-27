@@ -17,4 +17,13 @@ public interface SalaryUserDAO {
 	public List<Map<String, Object>> findAll3() throws Exception;
 	public List<Map<String, Object>> findAllbyid(Integer id) throws Exception;
 
+	public List<Map<String, Object>> salarylist(String month, String year) throws Exception;
+	
+	public List<Map<String, Object>> notsatsun(String month, String year) throws Exception;
+	public List<Map<String, Object>> workdays(String month, String year) throws Exception;
+	public List<Map<String, Object>> latedayall(String month1,String year)throws Exception;
+	public List<Map<String, Object>> leavenotsatsun(String month1, String year)throws Exception;
+	public List<Map<String, Object>> leavehalfday(String month1, String year)throws Exception;
+	public List<Map<String, Object>> multipleDay(String month1, String year) throws Exception;
+	public List<Map<String, Object>> serchnamejob(String userid)throws Exception;
 }

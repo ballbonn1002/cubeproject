@@ -65,14 +65,14 @@
 	</div>
 	<div class="portlet-body" style="text-align: center;">
 
-		<form class="form-inline margin-bottom-40" action="searchPalm"
+		<form class="form-inline margin-bottom-40" action="user-salary-search"
 			method="POST">
 			<!-- --------------------------------------------------------------Start search------------------------------------------------------ -->
 			<input type="hidden" id="tempuser" name="tempuser"
 				class="form-control" />
 
 
-			<perm:permission object="timesheet.edit">
+			
 
 				<div class="form-group form-md-line-input ">
 					<label class="control-label" for="form_control_1">Month : </label>
@@ -167,7 +167,7 @@
 					href="PalmReportExcelExport?year=${yearSearch}&month1=${monthSearch}&user=${uselogin}"
 					title="Print" style="color: white;"><i class="fa fa-print"></i>&nbsp;Excel</a>
 
-			</perm:permission>
+			
 			<script>
 				function ddd() {
 					var x = $('select[name=name]').val();
@@ -187,7 +187,7 @@
 		<!-- -----------------------------------------start add-------------------------------------------- -->
 
 		<div class="portlet-body" style="text-align: center;">
-			<table class="table table-striped table-condensed table-hover"
+			<%-- <table class="table table-striped table-condensed table-hover"
 				id="table_id">
 				<thead>
 					<tr
@@ -206,75 +206,97 @@
 							style="background-color: #3B3F51; color: white;">Late</th>
 						<th class="text-center " width="250px"
 							style="background-color: #3B3F51; color: white;">Salary</th>
+							<th class="text-center " width="250px"
+							style="background-color: #3B3F51; color: white;">Sum Salary</th>
+						<th class="text-center " width="250px"
+							style="background-color: #3B3F51; color: white;">Edit/Delete</th>
+					</tr>
+				</thead>
+				<tbody>					
+					<c:forEach var="listsalary" items="${uslist}" varStatus="Count">
+					<tr>
+						<td class="text-center">${listsalary.user}</td>
+						<td class="text-center"><input type="text" class="form-control text-center" value="18"></td>
+						<td class="text-center"><input type="text" class="form-control text-center" value="2"></td>
+						<td class="text-center"><input type="text" class="form-control text-center" value="1"></td>
+						<td class="text-center"><input type="text" class="form-control text-center" value="1"></td>
+						<td class="text-center">${listsalary.salary}</td>
+						<td class="text-center">${listsalary.sumsalary}</td>
+						<td class="text-center">
+							<button type="button"
+								class="btn circle btn-outline blue float-right" id=""
+								onclick="editTimesheet(${listsalary.id_salary_user})">
+								<i class="fa fa-save"></i>
+							</button>
+							<button type="button"
+								class="btn circle btn-outline red-intense float-left" id=""
+								onclick="delTimesheet(${listsalary.id_salary_user})">
+								<i class="fa fa-trash"></i>
+							</button>
+						</td>
+					</tr>	
+					</c:forEach>
+				</tbody>
+			</table> --%>
+		<table class="table table-striped table-condensed table-hover"  id="table_id">
+				<thead>
+					<tr style="background-color: rgb(59, 63, 81); color: white; height: 41px">
+						
+						<th class="text-center" width="200px">Name</th>
+						<th class="text-center " width="200px"
+							style="background-color: #3B3F51; color: white;">Present</th>
+						<!-- <th class="text-center " width="200px"
+							style="background-color: #3B3F51; color: white;">Function</th> -->
+						<th class="text-center " width="550px"
+							style="background-color: #3B3F51; color: white;">Leave</th>
+						<th class="text-center " width="250px"
+							style="background-color: #3B3F51; color: white;">Absent</th>
+						<th class="text-center " width="250px"
+							style="background-color: #3B3F51; color: white;">Late</th>
+						<th class="text-center " width="250px"
+							style="background-color: #3B3F51; color: white;">Salary</th>
+						<th class="text-center " width="250px"
+							style="background-color: #3B3F51; color: white;">Sum Salary</th>
 						<th class="text-center " width="250px"
 							style="background-color: #3B3F51; color: white;">Edit/Delete</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td class="text-center">kunanon.r</td>
-						<td class="text-center">20 Days</td>
-						<td class="text-center">4 Days</td>
-						<td class="text-center">0 Days</td>
-						<td class="text-center">0 Days</td>
-						<td class="text-center">20000</td>
-						<td class="text-center">
-							<button type="button"
-								class="btn circle btn-outline blue float-right" id=""
-								onclick="editTimesheet(${lts.id})">
-								<i class="fa fa-pencil-square-o"></i>
-							</button>
-							<button type="button"
-								class="btn circle btn-outline red-intense float-left" id=""
-								onclick="delTimesheet(${lts.id})">
-								<i class="fa fa-trash"></i>
-							</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="text-center">thanet.s</td>
-						<td class="text-center">22 Days</td>
-						<td class="text-center">2 Days</td>
-						<td class="text-center">0 Days</td>
-						<td class="text-center">0 Days</td>
-						<td class="text-center">18000</td>
-						<td class="text-center">
-							<button type="button"
-								class="btn circle btn-outline blue float-right" id=""
-								onclick="editTimesheet(${lts.id})">
-								<i class="fa fa-pencil-square-o"></i>
-							</button>
-							<button type="button"
-								class="btn circle btn-outline red-intense float-left" id=""
-								onclick="delTimesheet(${lts.id})">
-								<i class="fa fa-trash"></i>
-							</button>
-						</td>
-					</tr>
 					<c:forEach var="lts" items="${spalm}" varStatus="Count">
-						<tr>
-
-							<td class="text-center">${lts.user_create}</td>
-
-							<td class="text-center">${lts.time_check_in - (lts.hour1 + lts.hour2 + lts.hour3 + lts.hour4 + lts.hour5 + lts.hour6 + lts.hour7)}
-
+						<tr>						
+							<td class="text-center">${lts.user_create}</td>						
+							<td class="text-center"><input type="text" class="form-control text-center" value="${lts.time_check_in - (lts.hour1 + lts.hour2 + lts.hour3 + lts.hour4 + lts.hour5 + lts.hour6 + lts.hour7)}">
 							</td>
-							<td class="text-center"><fmt:formatNumber type="number"
-									pattern="#.###" value="${lts.no_day}" /></td>
-							<c:choose>
+							<td class="text-center"><input type="text" class="form-control text-center" value="<fmt:formatNumber type="number" pattern="#.###" value="${lts.no_day}" />">		 
+							</td>
+					<c:choose>
 								<c:when test="${lts.miss>=0}">
-									<td class="text-center"><fmt:formatNumber type="number"
-											pattern="#.##" value="${lts.miss}" /> Days</td>
+									<td class="text-center"> 
+										<input type="text" class="form-control text-center" value="<fmt:formatNumber type="number" pattern="#.##" value="${lts.miss}" />">
+							</td>
 								</c:when>
 								<c:otherwise>
-									<td class="text-center">0 Days</td>
-								</c:otherwise>
-							</c:choose>
-
-
-							<td class="text-center"><fmt:formatNumber type="number"
-									pattern="#.##" value="${lts.lateday}" /> Days</td>
-							<td class="text-center">${lts.name_site}</td>
+								<td class="text-center"> 
+								<input type="text" class="form-control text-center" value="0">
+        							</td>
+							</c:otherwise>
+							</c:choose>		
+							<td class="text-center"> <input type="text" class="form-control text-center" value="<fmt:formatNumber type="number" pattern="#.##" value="${lts.lateday}" />">
+							</td>
+							<td class="text-center">${lts.salary}</td>
+							<td class="text-center">${lts.sumsalary}</td>
+							<td class="text-center">
+							<button type="button"
+								class="btn circle btn-outline blue float-right" id=""
+								onclick="editTimesheet(${listsalary.id_salary_user})">
+								<i class="fa fa-save"></i>
+							</button>
+							<button type="button"
+								class="btn circle btn-outline red-intense float-left" id=""
+								onclick="delTimesheet(${listsalary.id_salary_user})">
+								<i class="fa fa-trash"></i>
+							</button>
+						</td>
 						</tr>
 
 					</c:forEach>
