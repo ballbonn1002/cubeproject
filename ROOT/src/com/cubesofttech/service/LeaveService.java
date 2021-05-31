@@ -29,6 +29,7 @@ public class LeaveService {
 	HttpServletResponse response = ServletActionContext.getResponse();
 
 	public void sendmail() throws Exception{
+		
 		String name = request.getParameter("name");
 		String typeleave = request.getParameter("typeleave");
 		String form = request.getParameter("from");
