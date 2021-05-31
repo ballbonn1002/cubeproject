@@ -52,17 +52,13 @@ public class LeaveService {
 		System.out.println(amount);
 		System.out.println(amount_sub);
 		
-		String[] namemail = {"hr@cubesofttech.com", "sales@cubesofttech.com"};
-		for(int i=1;i<3;i++) {
-			SimpleMailMessage message = new SimpleMailMessage();
-			message.setFrom("test@cubesofttech.com");
-			message.setTo(namemail[i]);
-			message.setSubject("name : " + name);
-			message.setText("ʶҹ� : "+actionpage+"\n���� : "+ name +"\n����������� : " + leavetypename + "\n�ѹ��� : " + form + " �֧�ѹ��� : " +to+"\n�ӹǹ : " +amsum+" �ѹ");
-			mailSender.send(message);
-			System.out.println("success");
-		}
-		
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("no-reply@cubesofttech.com");
+		message.setTo("hr@cubesofttech.com");
+		message.setSubject("Leave : " + name +" : " + leavetypename + " : " + form + " ~ " +to+" [" +amsum+" day(s)]");
+		message.setText("========== Leave ==========" + "\nLeave Action : "+actionpage+"\nผู้ยื่นใบลา : "+ name +"\nประเภทการลา : " + leavetypename + "\nตั้งแต่วันที่ : " + form + " ถึงวันที่ : " +to+"\nจำนวนวันลา : " +amsum+" วัน" + "\n=====================" );
+		mailSender.send(message);
+		System.out.println("success");
 	}
 
 	
