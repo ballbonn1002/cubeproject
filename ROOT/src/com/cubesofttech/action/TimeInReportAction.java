@@ -1007,14 +1007,23 @@ public class TimeInReportAction extends ActionSupport {
 					Workend = "";
 				}
 
-				if (map.get("OT_time_start") != null) {
-					OTin.add(parsers.format(map.get("OT_time_start")));
-					OTout.add(parsers.format(map.get("OT_time_end")));
-					if (map.get("OT_description") != null) {
-						OTmark.add("(OT) " + map.get("OT_description").toString());
-					} else {
-						OTmark.add("(OT)");
-					}
+//				if (map.get("OT_time_start") != null) {
+//					OTin.add(parsers.format(map.get("OT_time_start")));
+//					OTout.add(parsers.format(map.get("OT_time_end")));
+//					if (map.get("OT_description") != null) {
+//						OTmark.add("(OT) " + map.get("OT_description").toString());
+//					} else {
+//						OTmark.add("(OT)");
+//					}
+					
+					if (map.get("description") != null) {
+						OTin.add(parsers.format(map.get("time_check_in")));
+						OTout.add(parsers.format(map.get("time_check_out")));
+						if (map.get("description") != null) {
+							OTmark.add("" + map.get("description").toString());
+						} else {
+							OTmark.add("");
+						}
 
 				} else if (map.get("OT_time_start") == null) {
 					OTin.add("");

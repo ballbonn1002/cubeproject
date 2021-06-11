@@ -735,4 +735,57 @@ public class TimesheetDAOImpl implements TimesheetDAO {
 		return userWork;
 	}
 	
+	@Override
+	public List<Map<String, Object>> wherename(String name) {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> userWork = null;
+		try {
+			String sql = "SELECT id FROM user WHERE name =:name";
+
+					
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("name", name);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			userWork = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return userWork;
+	}
+	@Override
+	public List<Map<String, Object>> whereproject(String name) {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> userWork = null;
+		try {
+			String sql = "SELECT project_id FROM project WHERE project_name =:name";
+
+					
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("name", name);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			userWork = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return userWork;
+	}
+	@Override
+	public List<Map<String, Object>> wherefile() {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> userWork = null;
+		try {
+			String sql = "SELECT * FROM file WHERE type= '.xlsx'";
+
+					
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			userWork = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return userWork;
+	}
 }

@@ -71,7 +71,67 @@
 <fmt:formatDate pattern="dd-MM-yyyy" value="${dateTimeNow}"
 	var="dateNow" />
 <fmt:formatDate pattern="HH:mm" value="${dateTimeNow}" var="timeNow" />
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="fa fa-upload font-red"></i> <span
+				class="caption-subject font-red sbold uppercase">Import File</span>
+		</div>
+		<div class="actions">
+			<a class="btn btn-circle btn-icon-only btn-default fullscreen"
+				href="javascript:;" data-original-title="" title=""> </a>
+		</div>
+	</div>
+	
+	<div class="row">
+	<div class="col-md-2 float-right">Filename : </div>
+	<div class="col-md-6">
+					
+					<select class="form-control select2me" name="filepath" id=filepath>
+						
+					<c:forEach items="${wherefile}" var="file">
+       					 <option value="${file.path}">${file.name}</option>
+    				</c:forEach>
+					</select>
+				</div>
+	<div class="col-md-4"><a onclick="importexcel()" class="btn red">import</a></div>
+	</div>
+	
+	
+</div>
+<script>
+	function importexcel() {
+		console.log("test");
+		var namesite = "aum";
+		var file = document.getElementById('filepath').value;
 
+		console.log(file);
+			$
+					.ajax({
+						url : "import-excel-timesheet",
+						method : "POST",
+						type : "JSON",
+						data : {
+							"file" : file,
+
+							
+						},
+						success : function(data) {
+							swal(
+									{
+										title : "Pass",
+										text : "Import Succcess",
+										type : "success"
+									},
+									function() {
+										window.location.reload();
+									});
+						}
+
+					})
+		
+	}
+</script>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 
