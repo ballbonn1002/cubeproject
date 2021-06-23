@@ -42,5 +42,12 @@ public interface TimesheetDAO {
 	public List<Map<String, Object>> approveall(String name,String year,String month);
 	public List<Map<String, Object>> findcurrent(String logonUser,String monthnow,String yearnow);
 	public List<Map<String, Object>> getdate(String monthnow,String yearnow);
+	
+	
+	public List<Map<String, Object>> wherename(String name);
+	public List<Map<String, Object>> whereproject(String name);
+	public List<Map<String, Object>> wherefile();
+	public List<Map<String, Object>> whereworkhour(String year,String month,String day);
+	public List<Map<String, Object>> wherefunction(String name);
 }
    

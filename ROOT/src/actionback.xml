@@ -3432,5 +3432,10 @@
 		
 		
 		<!-- End salary CRUD -->
+		<action name="import-excel-timesheet"
+			class="com.cubesofttech.service.TimesheetService" method="importexceltimesheet">
+			<result name="success" type="tiles">user_salary_crud</result>
+			<result name="error">/index.jsp</result>
+		</action>
 	</package>
 </struts>

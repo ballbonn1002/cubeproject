@@ -735,4 +735,96 @@ public class TimesheetDAOImpl implements TimesheetDAO {
 		return userWork;
 	}
 	
+	@Override
+	public List<Map<String, Object>> wherename(String name) {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> userWork = null;
+		try {
+			String sql = "SELECT id FROM user WHERE name =:name";
+
+					
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("name", name);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			userWork = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return userWork;
+	}
+	@Override
+	public List<Map<String, Object>> whereproject(String name) {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> userWork = null;
+		try {
+			String sql = "SELECT project_id FROM project WHERE project_name =:name";
+
+					
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("name", name);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			userWork = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return userWork;
+	}
+	@Override
+	public List<Map<String, Object>> wherefile() {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> userWork = null;
+		try {
+			String sql = "SELECT * FROM file WHERE type= '.xlsx'";
+
+					
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			userWork = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return userWork;
+	}
+	
+	@Override
+	public List<Map<String, Object>> whereworkhour(String year,String month,String day) {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> userWork = null;
+		try {
+			String sql = "SELECT * FROM work_hours WHERE YEAR(work_hours_time_work) =:year AND MONTH(work_hours_time_work)=:month AND DAY(work_hours_time_work)=:day";
+				
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("year", year);
+			query.setParameter("month", month);
+			query.setParameter("day", day);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			userWork = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return userWork;
+	}
+	
+	@Override
+	public List<Map<String, Object>> wherefunction(String name) {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> userWork = null;
+		try {
+			String sql = "SELECT function_id FROM project_function WHERE function_name =:name";
+
+					
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("name", name);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			userWork = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return userWork;
+	}
 }

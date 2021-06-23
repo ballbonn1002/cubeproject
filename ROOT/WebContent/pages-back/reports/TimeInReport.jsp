@@ -216,7 +216,7 @@ tr{
 						<th height="41" colspan="4"><center>ช่วงที่1</center></th>
 						<th height="41" colspan="4"><center>ช่วงที่2</center></th>
 						<th height="41" colspan="2"><center>รวมเวลา</center></th>
-						<th height="41"><center>Remark</center></th>
+						<th height="41"><center>Details</center></th>
 					</tr>
 					<tr style="background-color:#f2f2f2; color:black">
 					<td>วันที่</td>

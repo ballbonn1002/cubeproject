@@ -953,6 +953,10 @@ public class TimesheetAction extends ActionSupport {
 			request.setAttribute("logonUser", userid);
 			request.setAttribute("monthSearch", month);
 			request.setAttribute("yearSearch", year);
+			
+			List<Map<String, Object>> wherefile = timesheetDAO.wherefile();
+			request.setAttribute("wherefile", wherefile);
+
 			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
@@ -1216,6 +1220,9 @@ public class TimesheetAction extends ActionSupport {
 			request.setAttribute("dateTimeNow", dateTimeNow);
 			List<Map<String, Object>> userSeq = userDAO.sequense();
 			request.setAttribute("userseq", userSeq);
+			
+			List<Map<String, Object>> wherefile = timesheetDAO.wherefile();
+			request.setAttribute("wherefile", wherefile);
 
 			return SUCCESS;
 		} catch (Exception e) {
