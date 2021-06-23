@@ -484,6 +484,7 @@
 													
 													</li>
 												</c:forEach>
+
 												<c:forEach var="timeline" items="${timelinefirst}">
 													<li class="selected" data-date="${timeline.fulldate }">
 

@@ -62,7 +62,7 @@
 				href="javascript:;" data-original-title="" title=""> </a>
 		</div>
 	</div>
-	<div class="portlet-body" style="text-align: center;">
+	<%--<div class="portlet-body" style="text-align: center;">
 
 		<form class="form-inline margin-bottom-40" action="user-salary-search"
 			method="POST">
@@ -181,11 +181,11 @@
 				}
 			</script>
 
-		</form>
+		</form> 
 		<!-- -----------------------------------------end search-------------------------------------------- -->
 		<!-- -----------------------------------------start add-------------------------------------------- -->
 
-		<div class="portlet-body" style="text-align: center;">
+		<div class="portlet-body" style="text-align: center;"> --%>
 			<%-- <table class="table table-striped table-condensed table-hover"
 				id="table_id">
 				<thead>
@@ -241,51 +241,42 @@
 				<thead>
 					<tr style="background-color: rgb(59, 63, 81); color: white; height: 41px">
 						
-						<th class="text-center" width="200px">Name</th>
+						<th class="text-center" width="200px">User</th>
 						<th class="text-center " width="200px"
 							style="background-color: #3B3F51; color: white;">Present</th>
 						<!-- <th class="text-center " width="200px"
 							style="background-color: #3B3F51; color: white;">Function</th> -->
+						<th class="text-center " width="250px"
+							style="background-color: #3B3F51; color: white;">Late</th>
 						<th class="text-center " width="550px"
 							style="background-color: #3B3F51; color: white;">Leave</th>
 						<th class="text-center " width="250px"
 							style="background-color: #3B3F51; color: white;">Absent</th>
 						<th class="text-center " width="250px"
-							style="background-color: #3B3F51; color: white;">Late</th>
-						<th class="text-center " width="250px"
 							style="background-color: #3B3F51; color: white;">Salary</th>
 						<th class="text-center " width="250px"
 							style="background-color: #3B3F51; color: white;">Sum Salary</th>
 						<th class="text-center " width="250px"
-							style="background-color: #3B3F51; color: white;">Edit/Delete</th>
+							style="background-color: #3B3F51; color: white;">Save</th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="lts" items="${spalm}" varStatus="Count">
+					<c:forEach var="lts" items="${users}" varStatus="Count">
 						<tr>						
-							<td class="text-center">${lts.user_create}</td>						
-							<td class="text-center"><input type="text" class="form-control text-center" value="${lts.time_check_in - (lts.hour1 + lts.hour2 + lts.hour3 + lts.hour4 + lts.hour5 + lts.hour6 + lts.hour7)}">
+							<td class="text-center">${lts.USER}</td>						
+							<td class="text-center"><input type="text" class="form-control text-center" value="${lts.present}">
 							</td>
-							<td class="text-center"><input type="text" class="form-control text-center" value="<fmt:formatNumber type="number" pattern="#.###" value="${lts.no_day}" />">		 
+							<td class="text-center"><input type="text" class="form-control text-center" value="<fmt:formatNumber type="number"  pattern="#.##" value="${lts.late}" />">		 
 							</td>
-					<c:choose>
-								<c:when test="${lts.miss>=0}">
-									<td class="text-center"> 
-										<input type="text" class="form-control text-center" value="<fmt:formatNumber type="number" pattern="#.##" value="${lts.miss}" />">
+							<td class="text-center"> 
+							<input type="text" class="form-control text-center" value="<fmt:formatNumber type="number" pattern="#.##" value="${lts.leaves}" />">
 							</td>
-								</c:when>
-								<c:otherwise>
-								<td class="text-center"> 
-								<input type="text" class="form-control text-center" value="0">
-        							</td>
-							</c:otherwise>
-							</c:choose>		
-							<td class="text-center"> <input type="text" class="form-control text-center" value="<fmt:formatNumber type="number" pattern="#.##" value="${lts.lateday}" />">
+							<td class="text-center"> <input type="text" class="form-control text-center" value="<fmt:formatNumber type="number"  pattern="#.##" value="${lts.absent}" />">
 							</td>
 							<td class="text-center">${lts.salary}</td>
-							<td class="text-center">${lts.sumsalary}</td>
+							<td class="text-center"> <input type="text" class="form-control text-center" value="${lts.sumsalary}" /></td>
 							<td class="text-center">
-							<button type="button"
+							 <%--<button type="button"
 								class="btn circle btn-outline blue float-right" id=""
 								onclick="editTimesheet(${listsalary.id_salary_user})">
 								<i class="fa fa-save"></i>
@@ -294,7 +285,19 @@
 								class="btn circle btn-outline red-intense float-left" id=""
 								onclick="delTimesheet(${listsalary.id_salary_user})">
 								<i class="fa fa-trash"></i>
-							</button>
+							</button>--%>
+							<div class="md-checkbox-list test">
+								<div>
+									<div class="md-checkbox" style="margin-left: 38%;">
+										<input type="checkbox" id="${user.id}" class="md-check"
+											onclick="update('${user.id}','<c:if test="${user.enable == 0}">1</c:if><c:if test="${user.enable == 1}">0</c:if>')"
+											<c:if test="${user.enable == 1}">checked</c:if>> <label
+											for="${user.id}"> <span></span> <span class="check"></span>
+											<span class="box"></span>
+										</label>
+									</div>
+								</div>
+							</div>
 						</td>
 						</tr>
 
@@ -313,14 +316,6 @@
 
 	</div>
 </div>
-
-<script>
-	$("button").click(function(){
-		  $.ajax({url: "user-salary", success: function(){
-			  alert("success"); 
-		  }});
-		});
-</script>
 
 <!-- ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss -->
 

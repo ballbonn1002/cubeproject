@@ -290,21 +290,6 @@
 			<result name="error">/index.jsp</result>
 		</action>
 		
-		<action name="user-salary" 
-		class="com.cubesofttech.action.UserAction" method="list">
-			<result name="success" type="tiles">user_salary
-			</result>
-			<result name="error">/index.jsp</result>
-		</action>
-		
-		<!-- Test ttttttttttttttttttttttttttttttttttttttttttt -->
-		<action name="user-salary" 
-		class="com.cubesofttech.action.TestSalaryAction" method="Sumsalary">
-			<result name="success" type="tiles">user_salary
-			</result>
-			<result name="error">/index.jsp</result>
-		</action>
-		
 
 		<action name="admin-perform-edit"
 			class="com.cubesofttech.action.UserAction" method="performEdit">
@@ -3411,7 +3396,7 @@
 
 <!-- End salary CRUD -->
 		<action name="user-salary"
-			class="com.cubesofttech.action.SalaryAction" method="salary_list">
+			class="com.cubesofttech.action.SalaryAction" method="getsumsalary">
 			<result name="success" type="tiles">user_salary</result>
 			<result name="error">/index.jsp</result>
 		</action>

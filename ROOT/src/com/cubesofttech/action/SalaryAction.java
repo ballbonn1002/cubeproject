@@ -7,9 +7,12 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,6 +45,7 @@ import com.cubesofttech.dao.WorkHoursDAO;
 import com.cubesofttech.model.FAQ;
 import com.cubesofttech.model.FaqImage;
 import com.cubesofttech.model.FileUpload;
+import com.cubesofttech.model.HistorySalary;
 import com.cubesofttech.model.Jobsite;
 import com.cubesofttech.model.Project;
 import com.cubesofttech.model.Salary_user;
@@ -83,6 +87,8 @@ public class SalaryAction extends ActionSupport {
 
 	@Autowired
 	public PalmDAO palmDAO;
+	
+	
 
 	List<Map<String, Object>> faqJoin; // faqJoin include faq and faq_category and faq_status columns
 	List<FAQCategory> faqCategoryList;
@@ -207,6 +213,8 @@ public class SalaryAction extends ActionSupport {
 			Integer idValue = Integer.valueOf(Id);
 			Salary_user salary_user = salaryuserDAO.findById(idValue);
 			
+			Integer oldsalary = salary_user.getSalary();
+			
 			String name = request.getParameter("name");
 			String from = request.getParameter("from");
 			String to = request.getParameter("to");
@@ -227,6 +235,14 @@ public class SalaryAction extends ActionSupport {
 			salary_user.setUser_update(name);			
 			salary_user.setTime_update(DateUtil.getCurrentTime());
 			salaryuserDAO.update(salary_user);
+			
+			//String oldsalary = request.getParameter("oldsalary");
+			//int old_salary = Integer.parseInt(oldsalary);
+			/*if(oldsalary != salary1) {
+				historysalary_save(name,oldsalary,startDate);
+			}*/
+			
+			
 			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -360,7 +376,7 @@ public class SalaryAction extends ActionSupport {
 			List<Map<String, Object>> spalm = salaryuserDAO.notsatsun(monthsearch, yearsearch);
 			request.setAttribute("spalm", spalm);
 
-			List<Map<String, Object>> late = salaryuserDAO.latedayall(monthsearch, yearsearch);
+			List<Map<String, Object>> late = salaryuserDAO.latedayall("06", "2021");
 			request.setAttribute("late", late);
 
 			List<Map<String, Object>> leave = salaryuserDAO.leavenotsatsun(monthsearch, yearsearch);
@@ -604,4 +620,367 @@ public class SalaryAction extends ActionSupport {
 			return ERROR;
 		}
 	}
+	
+	public String historysalary_save(String name,int salary,Timestamp end_salary) {
+		try {
+			
+			HistorySalary historysalary = new HistorySalary();
+			
+			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+			String strDate = format1.format(end_salary);
+			//String monthnow = strDate.substring(5, 7);
+			String dayofmonth = strDate.substring(8, 10);
+			int day = Integer.parseInt(dayofmonth);  
+			
+			Calendar cals = Calendar.getInstance();	
+			cals.set(Calendar.DAY_OF_MONTH, 1);
+			//cals.set ( Calendar.MONTH, 10 );
+			
+			
+			String start_mouth = format1.format(cals.getTime());
+			String end_oldsalary =  format1.format(end_salary);
+			//String today = format1.format(Calendar.getInstance().getTime());
+			
+			int present = getpresent(name,start_mouth,end_oldsalary);
+			int holiday = getHoliday(start_mouth,end_oldsalary);
+			int leaves = getleaves(name);
+			int absent  = getabsent(name);
+			int late = getlate(name, start_mouth, end_oldsalary);
+			User ur = (User) request.getSession().getAttribute(ONLINEUSER);
+			String logonUser = ur.getId();
+			
+			if(day == 1) {
+				present = 0;
+				holiday = 0;
+				leaves = 0;
+				absent = 0;
+				late = 0;
+			}
+			
+			historysalary.setHistory_id(1);
+			historysalary.setUser(name);
+			historysalary.setPresent(present+holiday);
+			historysalary.setLeave(leaves);
+			historysalary.setAbsent(absent);
+			historysalary.setLate(late);
+			historysalary.setSalary(salary);
+			historysalary.setTime_create(end_salary);
+			historysalary.setUser_create(logonUser);
+			
+
+			salaryuserDAO.save_history(historysalary);
+			
+
+			return SUCCESS;
+		} catch (Exception e) {
+			log.error(e);
+			return ERROR;
+		}
+
+	}
+	
+	public int getpresent(String users_list, String start_mouth,String today) throws Exception {
+		//-------------------------CheckList Until today--------------------------------
+		List<Map<String, Object>> count_checklist = workhoursDAO.Count_checkList(users_list,start_mouth, today);
+		BigInteger counts = ((BigInteger) count_checklist.get(0).get("count_workday"));
+		int checkList = counts.intValue();
+		return checkList;
+	}
+	
+	public int getleaves(String users_list) throws Exception {
+		// ------------------------- sum userID Leave ---------------------------
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+		Date now = new Date();
+		String strDate = format1.format(now);
+		String monthnow = strDate.substring(5, 7);
+		String yearnow = strDate.substring(0, 4);
+		BigDecimal Leavesum = new BigDecimal(0);
+		//System.out.println(logonUser);
+		List<Map<String, Object>> sul = newsDAO.searchUserLeave(users_list, monthnow, yearnow);
+
+		for (int k = 0; k < sul.size(); k++) {
+
+			BigDecimal sulonday = (BigDecimal) sul.get(k).get("no_day");
+			//System.out.println(sulonday);
+			Leavesum = sulonday.add(Leavesum);
+			
+		}
+		int Leave_me = Leavesum.intValue();
+		return Leave_me;
+	}
+	
+	public int getabsent(String users_list) throws Exception {
+		//------------------Sut,Sun Until today------------------------
+				List<Date> endweek = new ArrayList<>();
+				Calendar cals = Calendar.getInstance();
+				cals.set(Calendar.DAY_OF_MONTH, 1);
+				int Ssday = 0;
+				SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+				String formatted1 = format1.format(Calendar.getInstance().getTime());
+				int result = -1;
+				while(result != 0) {
+					int dayOfWeek = cals.get(Calendar.DAY_OF_WEEK);
+					if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY)
+						endweek.add(cals.getTime());
+					String formatted2 = format1.format(cals.getTime());
+					result = formatted1.compareTo(formatted2);
+					cals.add(Calendar.DAY_OF_MONTH, 1);
+				}
+				for (Date date : endweek) {
+					Ssday += 1;
+				}
+		
+		//-----------------------Holiday Until today-----------------------
+				cals.set(Calendar.DAY_OF_MONTH, 1);
+				//SimpleDateFormat format_date = new SimpleDateFormat("yyyy-MM-dd");
+				String start_mouth = format1.format(cals.getTime());
+				String today = format1.format(Calendar.getInstance().getTime());
+				List<Map<String, Object>> count = holidayDAO.count_hoilday(start_mouth, today);
+				int Holidays = 0;
+				for(int i = 0; i< count.size(); i++) {
+					Date start_h = ((Date) count.get(i).get("start_date"));
+					Date end_h = ((Date) count.get(i).get("end_date"));
+					long diff = end_h.getTime() - start_h.getTime();
+					float result_h = (diff / (1000 * 60 * 60 * 24));
+					Holidays += (result_h+1);
+				}
+		
+		//------------------ count today-------------------------------------------
+				Date date_start =  format1.parse(start_mouth);
+				Date date_today =  format1.parse(today);
+				long diff = date_today.getTime() - date_start.getTime();
+				int month_to_present = (int) ((diff / (1000*60*60*24)))+1;
+		
+				int present = getpresent(users_list,start_mouth, today);
+				int leaves = getleaves(users_list);
+				
+				int Absent = month_to_present - (Ssday+Holidays+present+leaves);
+		
+		return Absent;
+	}
+	
+	public int getlate(String user,String start_mouth, String today) throws Exception {
+		int lates = 0;
+		List<Map<String, Object>> late = salaryuserDAO.find_late(user,start_mouth, today);
+		if(late.size() != 0) {
+			//BigInteger late_counts = ((BigInteger) late.get(0).get("wt"));
+			//lates = late_counts.intValue();
+			lates = late.size();
+		}
+		
+		return lates;
+	}
+	
+	public int getworkday() {
+		int lastDayOfMonth = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
+		//------------------Sut,Sun ------------------------
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+		Date dateend = new Date();
+		Calendar c = Calendar.getInstance();
+		c.setTime(dateend);
+        c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+        String formatlastDayOfMonth = format1.format(c.getTime());
+		
+		List<Date> endweek = new ArrayList<>();
+		Calendar cals = Calendar.getInstance();
+		cals.set(Calendar.DAY_OF_MONTH, 1);
+		int Ssday = 0;
+	
+		int result = -1;
+		while(result != 0) {
+			int dayOfWeek = cals.get(Calendar.DAY_OF_WEEK);
+			if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY)
+				endweek.add(cals.getTime());
+			String formatted2 = format1.format(cals.getTime());
+			result = formatlastDayOfMonth.compareTo(formatted2);
+			cals.add(Calendar.DAY_OF_MONTH, 1);
+		}
+		for (Date date : endweek) {
+			Ssday += 1;
+		}
+		
+		return (lastDayOfMonth-Ssday);
+	}
+	
+	public int getHoliday(String start_mouth,String today) throws Exception {
+		
+		List<Map<String, Object>> count = holidayDAO.count_hoilday(start_mouth, today);
+		int Holidays = 0;
+		for(int i = 0; i< count.size(); i++) {
+			Date start_h = ((Date) count.get(i).get("start_date"));
+			Date end_h = ((Date) count.get(i).get("end_date"));
+			long diff = end_h.getTime() - start_h.getTime();
+			float result_h = (diff / (1000 * 60 * 60 * 24));
+			Holidays += (result_h+1);
+		}
+		return Holidays;
+	}
+	
+	public String getsumsalary() throws Exception{
+		try {
+			Calendar cals = Calendar.getInstance();	
+			cals.set(Calendar.DAY_OF_MONTH, 1);
+			SimpleDateFormat formatdate = new SimpleDateFormat("yyyy-MM-dd");
+			String start_mouth = formatdate.format(cals.getTime());
+			String today = formatdate.format(Calendar.getInstance().getTime());
+			
+			double workday = 30;
+			
+			NumberFormat nf= NumberFormat.getInstance();
+	        nf.setMaximumFractionDigits(2);
+			
+			List<Map<String, Object>> users = salaryuserDAO.findAll4();
+			
+			for(int i = 0; i< users.size(); i++) {
+				String users_list = ((String) users.get(i).get("USER"));
+				int present = getpresent(users_list,start_mouth, today);
+				int leaves = getleaves(users_list);
+				int Absent =  getabsent(users_list);
+				int late = getlate(users_list, start_mouth, today);
+				
+				List<Map<String, Object>> late_data = salaryuserDAO.find_late(users_list,start_mouth, today);
+				
+				//int[] hour = new int[late_data.size()];
+				//int[] minute = new int[late_data.size()];
+				//double[] hourlymoney = new double[late_data.size()];
+				//double[] minutemoney = new double[late_data.size()];
+				
+				double hourlymoney = 0;
+				double minutemoney = 0;
+				
+				Integer salary = ((Integer) users.get(i).get("salary"));
+				
+				double dailymoney = salary/workday;
+				
+			if(late_data.size() != 0) {
+					
+				String start_time = ((String) late_data.get(i).get("work_time_start"));
+				String start_hh = start_time.substring(0, 2);
+				String start_mm = start_time.substring(3, 5);
+				int start_hour = Integer.parseInt(start_hh);
+				int start_minute = Integer.parseInt(start_mm);
+				
+				for(int j = 0; j< late_data.size(); j++) {
+				String late_time = ((String) late_data.get(j).get("worktime"));
+				String hh = late_time.substring(0, 2);
+				String mm = late_time.substring(3, 5);
+				int hour = Integer.parseInt(hh);
+				int minute = Integer.parseInt(mm);
+				
+				hourlymoney += (dailymoney/8)*(hour-start_hour);
+				
+				minutemoney += (dailymoney/480)*Math.abs((minute-start_minute));
+				}
+			}
+				
+				double deductionamount = (dailymoney*Absent) + hourlymoney + minutemoney;
+				
+				double sum_salary = salary - deductionamount;
+				
+				users.get(i).put("sumsalary", nf.format(sum_salary));
+				users.get(i).put("present", present);
+				users.get(i).put("late", late);
+				users.get(i).put("leaves", leaves);
+				users.get(i).put("absent", Absent);
+				 
+			}
+			
+			request.setAttribute("users", users);
+			
+			
+		return SUCCESS;
+		}catch (Exception e) {
+			log.error(e);
+			return ERROR;
+		}
+		
+	}
+	
+	
+/*	public String calculatesalary() throws Exception {
+		
+		getsumsalary();
+		try {
+		Calendar cals = Calendar.getInstance();	
+		cals.set(Calendar.DAY_OF_MONTH, 1);
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+		String start_mouth = format1.format(cals.getTime());
+		String today = format1.format(Calendar.getInstance().getTime());
+		
+		
+		int workday = getworkday();
+		List<Map<String, Object>> users = salaryuserDAO.findAll4();
+		
+		for(int i = 0; i< users.size(); i++) {
+			//------------------start old salary------------------------------
+			double sum_oldsalary1 = 0;
+			int oldpresent = 0;
+			String users_list = ((String) users.get(i).get("USER"));
+			List<Map<String, Object>> allsalary = salaryuserDAO.find_historybyname(users_list,start_mouth, today);
+			if(allsalary.size() != 0) {
+				for(int j = 0; j< allsalary.size(); j++) {
+					Integer before_salary = ((Integer) allsalary.get(j).get("salary"));
+					Integer present = ((Integer) allsalary.get(j).get("present_holiday"));
+					//Integer leaves = ((Integer) allsalary.get(j).get("leaves"));
+					//Integer absent = ((Integer) allsalary.get(j).get("absent"));
+					//Integer late = ((Integer) allsalary.get(j).get("late"));
+					//System.out.println(oldsalary+" "+present+" "+leaves+" "+absent+" "+late);
+					
+					double salarybyday = (double)before_salary/(double)workday;
+					double salary1 = salarybyday*(present-oldpresent);
+					sum_oldsalary1 = sum_oldsalary1 + salary1;
+					oldpresent = present;
+					
+					//System.out.println(salary);
+				}
+				users.get(i).put("oldsalary", sum_oldsalary1);
+				users.get(i).put("oldpresent", oldpresent);
+			}
+			else {
+				users.get(i).put("oldsalary", (double)0);
+				users.get(i).put("oldpresent", 0);
+			}
+			//----------------------------end old salary ----------------------------------
+			
+			//----------------------------start calculate salary---------------------------
+					int present = getpresent(users_list,start_mouth, today);
+					int leaves = getleaves(users_list);
+					int Absent =  getabsent(users_list);
+					int late = getlate(users_list, start_mouth, today);
+					//int holiday = getHoliday(start_mouth,today);
+					//System.out.println(late);
+					double old_salary = ((double) users.get(i).get("oldsalary"));
+					Integer old_present = ((Integer) users.get(i).get("oldpresent"));
+					
+					Integer new_salary = ((Integer) users.get(i).get("salary"));
+					
+					
+					//int salary2 = ((new_salary/workday)*((present+holiday)-old_present));
+					
+					//int sum_salary = salary2 + old_salary;
+					
+					int[] p = {22,22,22,0,21,21,20,22};
+					
+					double testsalary = ((new_salary/(double)workday)*( p[i]-old_present));
+					double sumtest_salary = testsalary + old_salary;
+					
+					
+					
+					users.get(i).put("sumsalary", sumtest_salary);
+					users.get(i).put("present", present);
+					users.get(i).put("late", late);
+					users.get(i).put("leaves", leaves);
+					users.get(i).put("absent", Absent);
+					
+			
+		}
+		
+			request.setAttribute("users", users);
+			
+			return SUCCESS;
+		} catch (Exception e) {
+			log.error(e);
+			return ERROR;
+		}
+	}*/
 }

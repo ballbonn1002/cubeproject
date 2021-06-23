@@ -45,7 +45,7 @@
 <fmt:formatDate pattern="dd-MM-yyyy" value="${dateTimeNow}"
 	var="dateNow" />
 <fmt:formatDate pattern="HH:mm" value="${dateTimeNow}" var="timeNow" />
-
+<%--<button type="button" class="btn btn-warning" onclick="test()">Warning</button>--%>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 
@@ -66,7 +66,7 @@
 
 
 
-	<div class="portlet-body" style="text-align: center;">
+	<%--<div class="portlet-body" style="text-align: center;">
 
 		<form class="form-inline margin-bottom-40" action="searchPalm"
 			method="POST">
@@ -185,7 +185,7 @@
 				}
 			</script>
 
-		</form>
+		</form>--%>
 		<!-- -----------------------------------------end search-------------------------------------------- -->
 		<!-- -----------------------------------------start add-------------------------------------------- -->
 
@@ -210,7 +210,7 @@
 						<th class="text-center " width="250px"
 							style="background-color: #3B3F51; color: white;">User Update</th>
 						<th class="text-center " width="250px"
-							style="background-color: #3B3F51; color: white;"></th>
+							style="background-color: #3B3F51; color: white;">Edit/Delete</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -412,6 +412,17 @@
 </div>
 
 <script>
+	$(document).ready(function() {
+		$('#table_id').DataTable({
+			"aLengthMenu" : [ [ 25, 50, 75, -1 ], [ 25, 50, 75, "All" ] ],
+			"iDisplayLength" : 50,
+			
+
+		});
+	});
+</script>
+
+<script>
 function getcommentold(id,user,salary,description,start_date,end_date) {
 $('#idedit').val(id);	
 $('#useredit').val(user);
@@ -430,6 +441,7 @@ $('#date_toedit').val(end_datesum);
 	}
 
 </script>
+
 <script>
 function edit() {
 	var idedit = document.getElementById('idedit').value;
@@ -437,7 +449,7 @@ function edit() {
 	var salaryedit = document.getElementById('salaryedit').value;
 	var desedit = document.getElementById('desedit').value;
  	var from = document.getElementById('date_fromedit').value;
-	var to = document.getElementById('date_toedit').value; 
+	var to = document.getElementById('date_toedit').value;
 	
 	console.log(from);
 	console.log(to);
@@ -470,7 +482,6 @@ function edit() {
 						"to" : tosum,
 						"salary" : salaryedit,
 						"des" : desedit,
-					
 					},
 					success : function(data) {
 						swal(
@@ -487,6 +498,7 @@ function edit() {
 				})
 	}
 }
+
 </script>
 <script>
 	function save() {

@@ -704,7 +704,7 @@ if(timeline.size() == 0 ) {
 				Date date_start =  format1.parse(start_mouth);
 				Date date_today =  format1.parse(today);
 				long diff = date_today.getTime() - date_start.getTime();
-				float month_to_present = (diff / (1000*60*60*24));
+				float month_to_present = (diff / (1000*60*60*24))+1;
 		
 				
 		try {
@@ -728,9 +728,13 @@ if(timeline.size() == 0 ) {
 			 
 			//--------------------- sum Absent ------------------------------------------
 			float Leave_me = Leavesum.floatValue();
-			
+			//System.out.println(month_to_present);
+			//System.out.println(Ssday);
+			//System.out.println(Holidays);
+			//System.out.println(checkList);
+			//System.out.println(Leave_me);
 			float Absent = month_to_present - (Ssday+Holidays+checkList+Leave_me);
-			
+			//System.out.println(Absent);
 			
 
 //			System.out.println("userLeave  " + Leavesum);

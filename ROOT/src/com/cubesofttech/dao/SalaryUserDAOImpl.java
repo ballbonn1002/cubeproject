@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.cubesofttech.model.FAQ;
+import com.cubesofttech.model.HistorySalary;
 import com.cubesofttech.model.Jobsite;
 import com.cubesofttech.model.Salary_user;
 import com.cubesofttech.model.Timesheet;
@@ -293,5 +294,67 @@ public class SalaryUserDAOImpl implements SalaryUserDAO{
 			e.printStackTrace();
 		}
 		return date1sttonow;
+	}
+	
+	@Override
+	public void save_history(HistorySalary historysalary) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.save(historysalary);
+		session.flush();
+	}
+	
+	@Override
+	public List<Map<String, Object>> find_historybyname(String user,String start_mouth,String today) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> user_oldsalary = null;
+		try {
+			String sql = "SELECT * FROM history_saraly WHERE user = :user AND DATE(time_create) BETWEEN :start_mouth AND :today";
+			
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("user", user);
+			query.setParameter("start_mouth", start_mouth);
+			query.setParameter("today", today);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			user_oldsalary = query.list();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return user_oldsalary;
+	}
+	@Override
+	public List<Map<String, Object>> findAll4() throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+
+		List<Map<String, Object>> faqJoin = null;
+		try {
+			String sql = "SELECT USER,salary FROM salary_user";
+
+			// System.out.println("SQL: " + sql);
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			faqJoin = query.list();
+		} catch (Exception e) {
+			// Log.debug("Method findAll in [FaqDAOImpl] Error!");
+			e.printStackTrace();
+		}
+		return faqJoin;
+	}
+	@Override
+	public List<Map<String, Object>> find_late(String user,String start_mouth, String today) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> user_late = null;
+		try {
+			String sql = "SELECT work_hours.user_create,TIME_format(work_hours.work_hours_time_work,\"%H:%i\") as worktime,user.work_time_start FROM work_hours,user WHERE work_hours.work_hours_type=1  AND work_hours.user_create=:user AND user.id = :user and (TIME_format(work_hours.work_hours_time_work,\"%H:%i\") > TIME_format(user.work_time_start,\"%H:%i\")) AND DATE(work_hours.time_create) BETWEEN :start_mouth AND :today";
+			
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("user", user);
+			query.setParameter("start_mouth", start_mouth);
+			query.setParameter("today", today);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			user_late = query.list();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return user_late;
 	}
 }
