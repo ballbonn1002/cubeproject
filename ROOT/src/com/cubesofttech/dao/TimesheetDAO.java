@@ -47,5 +47,7 @@ public interface TimesheetDAO {
 	public List<Map<String, Object>> wherename(String name);
 	public List<Map<String, Object>> whereproject(String name);
 	public List<Map<String, Object>> wherefile();
+	public List<Map<String, Object>> whereworkhour(String year,String month,String day);
+	public List<Map<String, Object>> wherefunction(String name);
 }
    

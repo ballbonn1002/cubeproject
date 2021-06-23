@@ -892,55 +892,49 @@ public class TimeInReportAction extends ActionSupport {
 
 			// NAME PLOT SECTION
 			row = sheet.getRow(2);
-			cell = row.createCell(12);
-			cell.setCellValue(userinfo.getName());
-			cell.setCellStyle(UsernameStyle);
-			cell = row.createCell(13);
-			cell.setCellStyle(UsernameStyle);
-			cell = row.createCell(14);
-			cell.setCellStyle(UsernameStyle);
-			cell = row.createCell(15);
-			cell.setCellStyle(UsernameStyle);
 			cell = row.createCell(16);
+			cell.setCellValue(userinfo.getName());
 			cell.setCellStyle(UsernameStyle);
 			cell = row.createCell(17);
 			cell.setCellStyle(UsernameStyle);
+			cell = row.createCell(18);
+			cell.setCellStyle(UsernameStyle);
+			cell = row.createCell(19);
+			cell.setCellStyle(UsernameStyle);
+
 
 			// MONTH PLOT SECTION
 			row = sheet.getRow(3);
-			cell = row.createCell(12);
+			cell = row.createCell(16);
 			cell.setCellValue(month + "/" + year);
 			cell.setCellStyle(UsernameStyle);
 			cell.setCellStyle(UsernameStyle);
-			cell = row.createCell(13);
-			cell.setCellStyle(UsernameStyle);
-			cell = row.createCell(14);
-			cell.setCellStyle(UsernameStyle);
-			cell = row.createCell(15);
-			cell.setCellStyle(UsernameStyle);
-			cell = row.createCell(16);
-			cell.setCellStyle(UsernameStyle);
 			cell = row.createCell(17);
+			cell.setCellStyle(UsernameStyle);
+			cell = row.createCell(18);
+			cell.setCellStyle(UsernameStyle);
+			cell = row.createCell(19);
 			cell.setCellStyle(UsernameStyle);
 
+
 			// RECIEVER PLOT SECTION
-			row = sheet.getRow(49);
-			cell = row.createCell(15);
-			cell.setCellValue("Phatcharee Sittisanwattanachai");
-			cell.setCellStyle(Recieverstyle);
-			cell = row.createCell(16);
-			cell.setCellStyle(Recieverstyle);
-			cell = row.createCell(17);
-			cell.setCellStyle(Recieverstyle);
-			cell = row.createCell(18);
-			cell.setCellStyle(Recieverstyle);
-			SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/YYYY");
-			Date today = new Date();
-			// DATE PLOT SECTION
-			row = sheet.getRow(50);
-			cell = row.createCell(16);
-			cell.setCellValue(fmt.format(today));
-			cell.setCellStyle(DATErstyle);
+//			row = sheet.getRow(49);
+//			cell = row.createCell(15);
+//			cell.setCellValue("Phatcharee Sittisanwattanachai");
+//			cell.setCellStyle(Recieverstyle);
+//			cell = row.createCell(16);
+//			cell.setCellStyle(Recieverstyle);
+//			cell = row.createCell(17);
+//			cell.setCellStyle(Recieverstyle);
+//			cell = row.createCell(18);
+//			cell.setCellStyle(Recieverstyle);
+//			SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/YYYY");
+//			Date today = new Date();
+//			// DATE PLOT SECTION
+//			row = sheet.getRow(50);
+//			cell = row.createCell(16);
+//			cell.setCellValue(fmt.format(today));
+//			cell.setCellStyle(DATErstyle);
 
 			int rowd = 6 + dayinmonth; // start row in excel
 			int leavedayStack = 0; // Stack for leaveday loop
@@ -1053,15 +1047,17 @@ public class TimeInReportAction extends ActionSupport {
 			TimeinlistLoopCount = 0;
 
 			// Team plot section
-			row = sheet.getRow(3);
-			cell = row.createCell(7);
+			row = sheet.getRow(4);
+			cell = row.createCell(2);
 			if (team != null) {
 				cell.setCellValue(team);
 			} else {
 				cell.setCellValue("");
 			}
 			cell.setCellStyle(UsernameStyle);
-			cell = row.createCell(8);
+			cell = row.createCell(3);
+			cell.setCellStyle(UsernameStyle);
+			cell = row.createCell(4);
 			cell.setCellStyle(UsernameStyle);
 
 			for (Map<String, Object> map : Holidaylist) {
@@ -2235,31 +2231,31 @@ public class TimeInReportAction extends ActionSupport {
 			cell.setCellValue(TimeCal.get("work_day_hour").toString());
 			cell.setCellStyle(style);
 			// leave day and hour count plot section
-			row = sheet.getRow(43);
+			row = sheet.getRow(42);
 			cell = row.getCell(6);
 			cell.setCellValue(TimeCal.get("leave_day_count").toString());
 			cell.setCellStyle(style);
-			row = sheet.getRow(43);
+			row = sheet.getRow(42);
 			cell = row.getCell(8);
 			cell.setCellValue(TimeCal.get("leave_hour").toString());
 			cell.setCellStyle(style);
 
 			// absent
-			row = sheet.getRow(42);
-			cell = row.getCell(6);
-			// cell.setCellValue(TimeCal.get("absent_day_count").toString());
-			cell.setCellValue(daycount - (holidaycount + weekendcount + workdaycount
-					+ Integer.parseInt(TimeCal.get("leave_day_count").toString())));
-			System.out.println(daycount);
-			System.out.println(holidaycount);
-			System.out.println(weekendcount);
-			System.out.println(workdaycount);
-			System.out.println(Integer.parseInt(TimeCal.get("leave_day_count").toString()));
-			cell.setCellStyle(style);
-			row = sheet.getRow(42);
-			cell = row.getCell(8);
-			cell.setCellValue(TimeCal.get("absent_hour").toString());
-			cell.setCellStyle(style);
+//			row = sheet.getRow(42);
+//			cell = row.getCell(6);
+//			// cell.setCellValue(TimeCal.get("absent_day_count").toString());
+//			cell.setCellValue(daycount - (holidaycount + weekendcount + workdaycount
+//					+ Integer.parseInt(TimeCal.get("leave_day_count").toString())));
+//			System.out.println(daycount);
+//			System.out.println(holidaycount);
+//			System.out.println(weekendcount);
+//			System.out.println(workdaycount);
+//			System.out.println(Integer.parseInt(TimeCal.get("leave_day_count").toString()));
+//			cell.setCellStyle(style);
+//			row = sheet.getRow(42);
+//			cell = row.getCell(8);
+//			cell.setCellValue(TimeCal.get("absent_hour").toString());
+//			cell.setCellStyle(style);
 
 			// late and early leave plot section
 			row = sheet.getRow(41);
@@ -2271,42 +2267,42 @@ public class TimeInReportAction extends ActionSupport {
 			cell.setCellValue(TimeCal.get("late_early_hour").toString());
 			cell.setCellStyle(style);
 
-			row = sheet.getRow(44);
+			row = sheet.getRow(43);
 			cell = row.getCell(6);
 			cell.setCellValue(TimeCal.get("ot_day_count").toString());
 			cell.setCellStyle(style);
 
-			row = sheet.getRow(44);
+			row = sheet.getRow(43);
 			cell = row.getCell(8);
 			cell.setCellValue(TimeCal.get("ot_hour").toString());
 			cell.setCellStyle(style);
 
-			row = sheet.getRow(45);
+			row = sheet.getRow(44);
 			cell = row.getCell(6);
 			cell.setCellValue(TimeCal.get("ot_x1_day_count").toString());
 			cell.setCellStyle(style);
 
-			row = sheet.getRow(45);
+			row = sheet.getRow(44);
 			cell = row.getCell(8);
 			cell.setCellValue(TimeCal.get("ot_x1_hour").toString());
 			cell.setCellStyle(style);
 
-			row = sheet.getRow(46);
+			row = sheet.getRow(45);
 			cell = row.getCell(6);
 			cell.setCellValue(TimeCal.get("ot_x15_day_count").toString());
 			cell.setCellStyle(style);
 
-			row = sheet.getRow(46);
+			row = sheet.getRow(45);
 			cell = row.getCell(8);
 			cell.setCellValue(TimeCal.get("ot_x15_hour").toString());
 			cell.setCellStyle(style);
 
-			row = sheet.getRow(47);
+			row = sheet.getRow(46);
 			cell = row.getCell(6);
 			cell.setCellValue(TimeCal.get("ot_x3_day_count").toString());
 			cell.setCellStyle(style);
 
-			row = sheet.getRow(47);
+			row = sheet.getRow(46);
 			cell = row.getCell(8);
 			cell.setCellValue(TimeCal.get("ot_x3_hour").toString());
 			cell.setCellStyle(style);
