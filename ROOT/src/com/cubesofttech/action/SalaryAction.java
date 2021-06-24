@@ -179,7 +179,6 @@ public class SalaryAction extends ActionSupport {
 			salary_user.setSalary(salary1);
 			salary_user.setDescription(des);
 			salary_user.setUser_create(name);
-
 			salary_user.setTime_create(DateUtil.getCurrentTime());
 
 			salaryuserDAO.save(salary_user);
@@ -832,7 +831,7 @@ public class SalaryAction extends ActionSupport {
 			List<Map<String, Object>> users = salaryuserDAO.findAll4();
 			
 			for(int i = 0; i< users.size(); i++) {
-				String users_list = ((String) users.get(i).get("USER"));
+				String users_list = ((String) users.get(i).get("user"));
 				int present = getpresent(users_list,start_mouth, today);
 				int leaves = getleaves(users_list);
 				int Absent =  getabsent(users_list);
@@ -896,6 +895,47 @@ public class SalaryAction extends ActionSupport {
 		
 	}
 	
+	public String salary_save() {
+		try {
+			String name = request.getParameter("name");
+			String from = request.getParameter("from");
+			String to = request.getParameter("to");
+			String salary = request.getParameter("salary");
+			String des = request.getParameter("des");
+			
+			
+			int salary1 = Integer.parseInt(salary);
+
+//			Timestamp startDate = DateUtil.dateFormatEdit(from);
+//			Timestamp endDate = DateUtil.dateFormatEdit(to);		
+		
+			Timestamp startDate = Timestamp.valueOf(from);
+
+			Timestamp endDate = Timestamp.valueOf(to);
+			
+			Salary_user salary_user = new Salary_user();
+			
+			int a = 111;
+			
+			salary_user.setId_salary_user(a);
+			salary_user.setStart_date(startDate);
+			salary_user.setEnd_date(endDate);
+			salary_user.setUser(name);
+			salary_user.setSalary(salary1);
+			salary_user.setDescription(des);
+			salary_user.setUser_create(name);
+			salary_user.setTime_create(DateUtil.getCurrentTime());
+
+			salaryuserDAO.save(salary_user);
+			
+
+			return SUCCESS;
+		} catch (Exception e) {
+			log.error(e);
+			return ERROR;
+		}
+
+	}
 	
 /*	public String calculatesalary() throws Exception {
 		

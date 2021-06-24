@@ -54,10 +54,9 @@
 				class="caption-subject font-red sbold "> User Salary </span>
 		</div>
 		<div class="actions">
-			<a class="btn green-meadow float-right" href="user-salary-crud"> <i
-				class="fa fa-pencil-square-o"></i>User Salary
-			</a> 
-			&emsp;&emsp; <a
+			<a class="btn green-meadow float-right" href="user-salary-crud">
+				<i class="fa fa-pencil-square-o"></i>User Salary
+			</a> &emsp;&emsp; <a
 				class="btn btn-circle btn-icon-only btn-default fullscreen"
 				href="javascript:;" data-original-title="" title=""> </a>
 		</div>
@@ -186,7 +185,7 @@
 		<!-- -----------------------------------------start add-------------------------------------------- -->
 
 		<div class="portlet-body" style="text-align: center;"> --%>
-			<%-- <table class="table table-striped table-condensed table-hover"
+	<%-- <table class="table table-striped table-condensed table-hover"
 				id="table_id">
 				<thead>
 					<tr
@@ -237,84 +236,98 @@
 					</c:forEach>
 				</tbody>
 			</table> --%>
-		<table class="table table-striped table-condensed table-hover"  id="table_id">
-				<thead>
-					<tr style="background-color: rgb(59, 63, 81); color: white; height: 41px">
-						
-						<th class="text-center" width="200px">User</th>
-						<th class="text-center " width="200px"
-							style="background-color: #3B3F51; color: white;">Present</th>
-						<!-- <th class="text-center " width="200px"
+	<table class="table table-striped table-condensed table-hover"
+		id="table_id">
+		<thead>
+			<tr
+				style="background-color: rgb(59, 63, 81); color: white; height: 41px">
+
+				<th class="text-center" width="250px">User</th>
+				<th class="text-center" width="650px">Name</th>
+				<th class="text-center " width="200px"
+					style="background-color: #3B3F51; color: white;">Present</th>
+				<!-- <th class="text-center " width="200px"
 							style="background-color: #3B3F51; color: white;">Function</th> -->
-						<th class="text-center " width="250px"
-							style="background-color: #3B3F51; color: white;">Late</th>
-						<th class="text-center " width="550px"
-							style="background-color: #3B3F51; color: white;">Leave</th>
-						<th class="text-center " width="250px"
-							style="background-color: #3B3F51; color: white;">Absent</th>
-						<th class="text-center " width="250px"
-							style="background-color: #3B3F51; color: white;">Salary</th>
-						<th class="text-center " width="250px"
-							style="background-color: #3B3F51; color: white;">Sum Salary</th>
-						<th class="text-center " width="250px"
-							style="background-color: #3B3F51; color: white;">Save</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="lts" items="${users}" varStatus="Count">
-						<tr>						
-							<td class="text-center">${lts.USER}</td>						
-							<td class="text-center"><input type="text" class="form-control text-center" value="${lts.present}">
-							</td>
-							<td class="text-center"><input type="text" class="form-control text-center" value="<fmt:formatNumber type="number"  pattern="#.##" value="${lts.late}" />">		 
-							</td>
-							<td class="text-center"> 
-							<input type="text" class="form-control text-center" value="<fmt:formatNumber type="number" pattern="#.##" value="${lts.leaves}" />">
-							</td>
-							<td class="text-center"> <input type="text" class="form-control text-center" value="<fmt:formatNumber type="number"  pattern="#.##" value="${lts.absent}" />">
-							</td>
-							<td class="text-center">${lts.salary}</td>
-							<td class="text-center"> <input type="text" class="form-control text-center" value="${lts.sumsalary}" /></td>
-							<td class="text-center">
-							 <%--<button type="button"
-								class="btn circle btn-outline blue float-right" id=""
-								onclick="editTimesheet(${listsalary.id_salary_user})">
+				<th class="text-center " width="250px"
+					style="background-color: #3B3F51; color: white;">Late</th>
+				<th class="text-center " width="250px"
+					style="background-color: #3B3F51; color: white;">Leave</th>
+				<th class="text-center " width="250px"
+					style="background-color: #3B3F51; color: white;">Absent</th>
+				<th class="text-center " width="250px"
+					style="background-color: #3B3F51; color: white;">Salary</th>
+				<th class="text-center " width="250px"
+					style="background-color: #3B3F51; color: white;">Sum Salary</th>
+				<th class="text-center " width="250px"
+					style="background-color: #3B3F51; color: white;">Save</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="lts" items="${users}" varStatus="Count">
+				<tr>
+					<td class="text-center">
+					<input class="form-control text-center" type="text" id="user" value="${lts.user}" disabled="disabled" />
+					</td>
+					<td class="text-center">
+					<input class="form-control text-center" type="text" id="name" value="${lts.name}" disabled="disabled" />
+					</td>
+					<td class="text-center"><input type="text"
+						class="form-control text-center" id="present" value="${lts.present}"></td>
+					<td class="text-center"><input type="text"
+						class="form-control text-center" id="late"
+						value="<fmt:formatNumber type="number"   pattern="#.##" value="${lts.late}" />">
+					</td>
+					<td class="text-center"><input type="text"
+						class="form-control text-center" id="leaves"
+						value="<fmt:formatNumber type="number"  pattern="#.##" value="${lts.leaves}" />">
+					</td>
+					<td class="text-center"><input type="text"
+						class="form-control text-center" id="absent"
+						value="<fmt:formatNumber type="number"  pattern="#.##" value="${lts.absent}" />">
+					</td>
+					<td class="text-center" id="salary">${lts.salary}</td>
+					<td class="text-center"><input type="text" 
+						class="form-control text-center" id = "sumsalary"
+						value="${lts.sumsalary}" /></td>
+					<td class="text-center">
+						<button type="button"
+								class="btn circle btn-outline blue float-right" id="${lts.user}"
+								onclick="salary_save()">
 								<i class="fa fa-save"></i>
 							</button>
-							<button type="button"
+						<%--<button type="button"
 								class="btn circle btn-outline red-intense float-left" id=""
 								onclick="delTimesheet(${listsalary.id_salary_user})">
 								<i class="fa fa-trash"></i>
 							</button>--%>
-							<div class="md-checkbox-list test">
-								<div>
-									<div class="md-checkbox" style="margin-left: 38%;">
-										<input type="checkbox" id="${user.id}" class="md-check"
-											onclick="update('${user.id}','<c:if test="${user.enable == 0}">1</c:if><c:if test="${user.enable == 1}">0</c:if>')"
-											<c:if test="${user.enable == 1}">checked</c:if>> <label
-											for="${user.id}"> <span></span> <span class="check"></span>
-											<span class="box"></span>
-										</label>
-									</div>
+						<%--<div class="md-checkbox-list test">
+							<div>
+								<div class="md-checkbox" style="margin-left: 38%;">
+									<input type="checkbox" id="${lts.user}" class="md-check"
+									onclick="salary_save(${lts.user})">
+									<label for="${lts.user}"><span
+										class="check"></span> <span class="box"></span>
+									</label>
 								</div>
 							</div>
-						</td>
-						</tr>
+						</div>--%>
+					</td>
+				</tr>
 
-					</c:forEach>
-				</tbody>
-			</table>
-		</div>
+			</c:forEach>
+		</tbody>
+	</table>
+</div>
 
-		<!--
+<!--
 		<input type="hidden" id="userap" name="userap"
 			value="${onlineUser.id}" class="form-control" />
 			-->
 
 
-		<!-- -----------------------------------------End add-------------------------------------------- -->
+<!-- -----------------------------------------End add-------------------------------------------- -->
 
-	</div>
+</div>
 </div>
 
 <!-- ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss -->
@@ -324,7 +337,6 @@
 		$('#table_id').DataTable({
 			"aLengthMenu" : [ [ 25, 50, 75, -1 ], [ 25, 50, 75, "All" ] ],
 			"iDisplayLength" : 50,
-			
 
 		});
 	});
@@ -364,7 +376,7 @@
 
 
 
-<script>	
+<script>
 	$(document).ready(function() {
 		var value = "${flag}";
 		if (value == "1") {
@@ -381,10 +393,28 @@
 	});
 </script>
 
+
 <script>
-$(document).ready(function() { 
-    $("#name").select2({ width: 'resolve' });           
-});
+	function salary_save() {
+		var user = document.getElementById('user').value;
+		var name =document.getElementById('name').value;
+		var present = document.getElementById('present').value;
+		var late = document.getElementById('late').value;
+		var leaves = document.getElementById('leaves').value;
+		var absent = document.getElementById('absent').value;
+		var salary = document.getElementById('salary').value;
+		var sumsalary = document.getElementById('sumsalary').value;
+		
+		console.log(user);
+		console.log(name);
+		console.log(present);
+		console.log(late);
+		console.log(leaves);
+		console.log(absent);
+		console.log(salary);
+		console.log(sumsalary);
+
+	}
 </script>
 
 

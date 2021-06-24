@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.cubesofttech.model.HistorySalary;
 import com.cubesofttech.model.Jobsite;
+import com.cubesofttech.model.Salary;
 import com.cubesofttech.model.Salary_user;
 import com.cubesofttech.model.Timesheet;
 
@@ -37,4 +38,6 @@ public interface SalaryUserDAO {
 	public List<Map<String, Object>> findAll4() throws Exception;
 	
 	public List<Map<String, Object>> find_late(String user,String start_mouth, String today) throws Exception;
+	
+	public void save_salary(Salary salary) throws Exception;
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.cubesofttech.model.FAQ;
 import com.cubesofttech.model.HistorySalary;
 import com.cubesofttech.model.Jobsite;
+import com.cubesofttech.model.Salary;
 import com.cubesofttech.model.Salary_user;
 import com.cubesofttech.model.Timesheet;
 @Repository
@@ -327,7 +328,7 @@ public class SalaryUserDAOImpl implements SalaryUserDAO{
 
 		List<Map<String, Object>> faqJoin = null;
 		try {
-			String sql = "SELECT USER,salary FROM salary_user";
+			String sql = "SELECT salary_user.user,salary_user.salary,user.name FROM salary_user,user WHERE salary_user.user =  (user.id  collate utf8_general_ci) ORDER BY id_salary_user ASC";
 
 			// System.out.println("SQL: " + sql);
 			SQLQuery query = session.createSQLQuery(sql);
@@ -356,5 +357,13 @@ public class SalaryUserDAOImpl implements SalaryUserDAO{
 			e.printStackTrace();
 		}
 		return user_late;
+	}
+	
+	@Override
+	public void save_salary(Salary salary) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.save(salary);
+		session.flush();
+		
 	}
 }
