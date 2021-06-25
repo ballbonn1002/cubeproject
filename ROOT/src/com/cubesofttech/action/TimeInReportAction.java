@@ -869,7 +869,7 @@ public class TimeInReportAction extends ActionSupport {
 			// USERNAME PLOT SECTION
 			row = sheet.getRow(2);
 			cell = row.createCell(2);
-			cell.setCellValue(userinfo.getUsername());
+			cell.setCellValue(userinfo.getId());
 			cell.setCellStyle(UsernameStyle);
 			cell = row.createCell(3);
 			cell.setCellStyle(UsernameStyle);
