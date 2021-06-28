@@ -40,4 +40,6 @@ public interface SalaryUserDAO {
 	public List<Map<String, Object>> find_late(String user,String start_mouth, String today) throws Exception;
 	
 	public void save_salary(Salary salary) throws Exception;
+	
+	public List<Map<String, Object>> finduser_salary(String user,String month, String year) throws Exception;
 }

@@ -3400,6 +3400,14 @@
 			<result name="success" type="tiles">user_salary</result>
 			<result name="error">/index.jsp</result>
 		</action>
+		
+		<action name="salary-save"
+			class="com.cubesofttech.action.SalaryAction" method="salary_save">
+			<result name="success" type="tiles">user_salary</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		
 		<action name="user-salary-search"
 			class="com.cubesofttech.action.SalaryAction" method="salary_search">
 			<result name="success" type="tiles">user_salary</result>

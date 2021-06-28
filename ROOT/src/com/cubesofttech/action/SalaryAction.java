@@ -48,6 +48,7 @@ import com.cubesofttech.model.FileUpload;
 import com.cubesofttech.model.HistorySalary;
 import com.cubesofttech.model.Jobsite;
 import com.cubesofttech.model.Project;
+import com.cubesofttech.model.Salary;
 import com.cubesofttech.model.Salary_user;
 import com.cubesofttech.model.Timesheet;
 import com.cubesofttech.model.FAQCategory;
@@ -824,9 +825,8 @@ public class SalaryAction extends ActionSupport {
 			String today = formatdate.format(Calendar.getInstance().getTime());
 			
 			double workday = 30;
-			
-			NumberFormat nf= NumberFormat.getInstance();
-	        nf.setMaximumFractionDigits(2);
+	        
+	        DecimalFormat df = new DecimalFormat("#.##");
 			
 			List<Map<String, Object>> users = salaryuserDAO.findAll4();
 			
@@ -839,10 +839,6 @@ public class SalaryAction extends ActionSupport {
 				
 				List<Map<String, Object>> late_data = salaryuserDAO.find_late(users_list,start_mouth, today);
 				
-				//int[] hour = new int[late_data.size()];
-				//int[] minute = new int[late_data.size()];
-				//double[] hourlymoney = new double[late_data.size()];
-				//double[] minutemoney = new double[late_data.size()];
 				
 				double hourlymoney = 0;
 				double minutemoney = 0;
@@ -876,11 +872,26 @@ public class SalaryAction extends ActionSupport {
 				
 				double sum_salary = salary - deductionamount;
 				
-				users.get(i).put("sumsalary", nf.format(sum_salary));
-				users.get(i).put("present", present);
-				users.get(i).put("late", late);
-				users.get(i).put("leaves", leaves);
-				users.get(i).put("absent", Absent);
+				List<Map<String, Object>> salary_status = salaryuserDAO.finduser_salary(users_list,start_mouth, today);
+				
+				if(salary_status.size() == 0) {
+					users.get(i).put("sumsalary", df.format(sum_salary));
+					users.get(i).put("present", present);
+					users.get(i).put("late", late);
+					users.get(i).put("leaves", leaves);
+					users.get(i).put("absent", Absent);
+					users.get(i).put("status", "");
+				}
+				else {
+					users.get(i).put("sumsalary", df.format(sum_salary));
+					users.get(i).put("present", present);
+					users.get(i).put("late", late);
+					users.get(i).put("leaves", leaves);
+					users.get(i).put("absent", Absent);
+					users.get(i).put("status", "success");
+				}
+				
+				
 				 
 			}
 			
@@ -897,36 +908,41 @@ public class SalaryAction extends ActionSupport {
 	
 	public String salary_save() {
 		try {
+			String user = request.getParameter("user");
 			String name = request.getParameter("name");
-			String from = request.getParameter("from");
-			String to = request.getParameter("to");
-			String salary = request.getParameter("salary");
-			String des = request.getParameter("des");
+			String present = request.getParameter("present");
+			String leave = request.getParameter("leaves");
+			String late = request.getParameter("late");
+			String absent = request.getParameter("absent");
+			String salarys = request.getParameter("salary");
+			String sumsalarys = request.getParameter("sumsalary");
 			
 			
-			int salary1 = Integer.parseInt(salary);
+			int presents = Integer.parseInt(present);
+			int leaves = Integer.parseInt(leave);
+			int lates = Integer.parseInt(late);
+			int absents = Integer.parseInt(absent);
+			int salary = Integer.parseInt(salarys);
+			BigDecimal sumsalary = new BigDecimal(sumsalarys);
+			
+			User ur = (User) request.getSession().getAttribute(ONLINEUSER);
+			String logonUser = ur.getId();
+			
+			Salary salary_model = new Salary();
+			
+			salary_model.setSalary_id(1);
+			salary_model.setUser(user);
+			salary_model.setName(name);
+			salary_model.setPresent(presents);
+			salary_model.setLeave(leaves);
+			salary_model.setLate(lates);
+			salary_model.setAbsent(absents);
+			salary_model.setSalary(salary);
+			salary_model.setSumsalary(sumsalary);
+			salary_model.setUser_create(logonUser);
+			salary_model.setTime_create(DateUtil.getCurrentTime());
 
-//			Timestamp startDate = DateUtil.dateFormatEdit(from);
-//			Timestamp endDate = DateUtil.dateFormatEdit(to);		
-		
-			Timestamp startDate = Timestamp.valueOf(from);
-
-			Timestamp endDate = Timestamp.valueOf(to);
-			
-			Salary_user salary_user = new Salary_user();
-			
-			int a = 111;
-			
-			salary_user.setId_salary_user(a);
-			salary_user.setStart_date(startDate);
-			salary_user.setEnd_date(endDate);
-			salary_user.setUser(name);
-			salary_user.setSalary(salary1);
-			salary_user.setDescription(des);
-			salary_user.setUser_create(name);
-			salary_user.setTime_create(DateUtil.getCurrentTime());
-
-			salaryuserDAO.save(salary_user);
+			salaryuserDAO.save_salary(salary_model);
 			
 
 			return SUCCESS;
@@ -939,7 +955,6 @@ public class SalaryAction extends ActionSupport {
 	
 /*	public String calculatesalary() throws Exception {
 		
-		getsumsalary();
 		try {
 		Calendar cals = Calendar.getInstance();	
 		cals.set(Calendar.DAY_OF_MONTH, 1);

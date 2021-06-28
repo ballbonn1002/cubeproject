@@ -236,77 +236,60 @@
 					</c:forEach>
 				</tbody>
 			</table> --%>
-	<table class="table table-striped table-condensed table-hover"
+	<table class="table table-striped table-hover table-bordered dataTable no-footer"
 		id="table_id">
 		<thead>
 			<tr
 				style="background-color: rgb(59, 63, 81); color: white; height: 41px">
 
-				<th class="text-center" width="250px">User</th>
-				<th class="text-center" width="650px">Name</th>
-				<th class="text-center " width="200px"
-					style="background-color: #3B3F51; color: white;">Present</th>
+				<th class="text-center" width="10%">User</th>
+				<th class="text-center" width="20%">Name</th>
+				<th class="text-center" width="5%">Present</th>
 				<!-- <th class="text-center " width="200px"
 							style="background-color: #3B3F51; color: white;">Function</th> -->
-				<th class="text-center " width="250px"
-					style="background-color: #3B3F51; color: white;">Late</th>
-				<th class="text-center " width="250px"
-					style="background-color: #3B3F51; color: white;">Leave</th>
-				<th class="text-center " width="250px"
-					style="background-color: #3B3F51; color: white;">Absent</th>
-				<th class="text-center " width="250px"
-					style="background-color: #3B3F51; color: white;">Salary</th>
-				<th class="text-center " width="250px"
-					style="background-color: #3B3F51; color: white;">Sum Salary</th>
-				<th class="text-center " width="250px"
-					style="background-color: #3B3F51; color: white;">Save</th>
+				<th class="text-center" width="5%">Late</th>
+				<th class="text-center" width="5%">Leave</th>
+				<th class="text-center" width="5%">Absent</th>
+				<th class="text-center" width="10%">Salary</th>
+				<th class="text-center" width="10%">Sum Salary</th>
+				<th class="text-center" width="10%">Status</th>
+				<th class="text-center" width="10%">Save</th>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="lts" items="${users}" varStatus="Count">
+			<c:forEach var="lts" items="${users}">
 				<tr>
-					<td class="text-center">
-					<input class="form-control text-center" type="text" id="user" value="${lts.user}" disabled="disabled" />
-					</td>
-					<td class="text-center">
-					<input class="form-control text-center" type="text" id="name" value="${lts.name}" disabled="disabled" />
-					</td>
-					<td class="text-center"><input type="text"
-						class="form-control text-center" id="present" value="${lts.present}"></td>
-					<td class="text-center"><input type="text"
-						class="form-control text-center" id="late"
-						value="<fmt:formatNumber type="number"   pattern="#.##" value="${lts.late}" />">
-					</td>
-					<td class="text-center"><input type="text"
-						class="form-control text-center" id="leaves"
-						value="<fmt:formatNumber type="number"  pattern="#.##" value="${lts.leaves}" />">
-					</td>
-					<td class="text-center"><input type="text"
-						class="form-control text-center" id="absent"
-						value="<fmt:formatNumber type="number"  pattern="#.##" value="${lts.absent}" />">
-					</td>
-					<td class="text-center" id="salary">${lts.salary}</td>
-					<td class="text-center"><input type="text" 
-						class="form-control text-center" id = "sumsalary"
-						value="${lts.sumsalary}" /></td>
+					<td class="text-center">${lts.user}</td>
+					<td class="text-center">${lts.name}</td>
+					<td class="text-center">${lts.present}</td>
+					<td class="text-center">${lts.late}</td>
+					<td class="text-center">${lts.leaves}</td>
+					<td class="text-center">${lts.absent}</td>
+					<td class="text-center">${lts.salary}</td>
+					<td class="text-center">${lts.sumsalary}</td>
+					<td class="text-center font-red-thunderbird font-lg sbold">${lts.status}</td>
 					<td class="text-center">
 						<button type="button"
-								class="btn circle btn-outline blue float-right" id="${lts.user}"
-								onclick="salary_save()">
+								class="btn circle btn-outline blue float-right" id=""
+								onclick="getcommentold('${lts.user}','${lts.name}','${lts.present}','${lts.late}','${lts.leaves}','${lts.absent}','${lts.salary}','${lts.sumsalary}')"
+								data-toggle="modal" data-target="#lesson-plan-modal">
 								<i class="fa fa-save"></i>
-							</button>
+						</button>
 						<%--<button type="button"
 								class="btn circle btn-outline red-intense float-left" id=""
 								onclick="delTimesheet(${listsalary.id_salary_user})">
 								<i class="fa fa-trash"></i>
-							</button>--%>
-						<%--<div class="md-checkbox-list test">
+							</button>
+						<div class="md-checkbox-list test">
 							<div>
 								<div class="md-checkbox" style="margin-left: 38%;">
 									<input type="checkbox" id="${lts.user}" class="md-check"
-									onclick="salary_save(${lts.user})">
-									<label for="${lts.user}"><span
-										class="check"></span> <span class="box"></span>
+									onclick="getcommentold('${lts.user}','${lts.name}','${lts.present}','${lts.late}','${lts.leaves}','${lts.absent}','${lts.salary}','${lts.sumsalary}')"
+									data-toggle="modal" data-target="#lesson-plan-modal">
+									<label for="${lts.user}">
+										<span></span> 
+									 	<span class="check"></span> 
+									 	<span class="box"></span>
 									</label>
 								</div>
 							</div>
@@ -317,6 +300,75 @@
 			</c:forEach>
 		</tbody>
 	</table>
+</div>
+
+<div class="modal fade" id="lesson-plan-modal" role="dialog">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Chack Salary</h4>
+				<button type="button" class="close modal-close" data-dismiss="modal">
+					<i class="fa fa-times-circle" aria-hidden="true"></i>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form class="lesson-update-section" action="" method="post">
+					<div class="row mt-repeater-row">
+						<div class="col-md-6">
+							<label class="control-label">User</label>
+							<input type="text" class="form-control" id="user" name="user" readonly>
+						</div>
+						<div class="col-md-6">
+							<label class="control-label">Name</label>
+							<input type="text" class="form-control" id="name" name="name" readonly>
+						</div>
+				    </div>
+				    <br>
+				   <div class="row mt-repeater-row">
+						<div class="col-md-3">
+							<label class="control-label">Present</label>
+							<input type="text" class="form-control" id="present" name="present">
+						</div>
+						<div class="col-md-3">
+							<label class="control-label">Late</label>
+							<input type="text" class="form-control" id="late" name="late">
+						</div>
+						<div class="col-md-3">
+							<label class="control-label">Leave</label>
+							<input type="text" class="form-control" id="leave" name="leave">
+						</div>
+						<div class="col-md-3">
+							<label class="control-label">Absent</label>
+							<input type="text" class="form-control" id="absent" name="absent">
+						</div>
+				    </div>
+				    <br>
+				 <div class="row mt-repeater-row">
+						<div class="col-md-12">
+							<label class="control-label">Salary</label>
+							<input type="text" class="form-control" id="salary" name="salary" readonly>
+						</div>
+				</div>
+				<br>
+				 <div class="row mt-repeater-row">
+						<div class="col-md-12">
+							<label class="control-label">Sum salary</label>
+							<input type="text" class="form-control" id="sumsalary" name="sumsalary">
+						</div>
+				</div>
+
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" onclick="salary_save()" data-dismiss="modal"class="btn blue-soft">
+					<i class="fa fa-save"></i> Save
+				</button>
+				<button type="submit" data-dismiss="modal" class="btn red-intense">
+					<i class="fa fa-close"></i> Cancel
+				</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!--
@@ -393,14 +445,27 @@
 	});
 </script>
 
+<script>
+	function getcommentold(user,name,present,late,leaves,absent,salary,sumsalary) {	
+			$('#user').val(user);
+			$('#name').val(name);
+			$('#present').val(present);
+			$('#late').val(late);
+			$('#leave').val(leaves);
+			$('#absent').val(absent);
+			$('#salary').val(salary);
+			$('#sumsalary').val(sumsalary);
+		}
+
+</script>
 
 <script>
 	function salary_save() {
 		var user = document.getElementById('user').value;
-		var name =document.getElementById('name').value;
+		var name = document.getElementById('name').value;
 		var present = document.getElementById('present').value;
 		var late = document.getElementById('late').value;
-		var leaves = document.getElementById('leaves').value;
+		var leaves = document.getElementById('leave').value;
 		var absent = document.getElementById('absent').value;
 		var salary = document.getElementById('salary').value;
 		var sumsalary = document.getElementById('sumsalary').value;
@@ -413,6 +478,35 @@
 		console.log(absent);
 		console.log(salary);
 		console.log(sumsalary);
+		
+		
+		$.ajax({
+			url : "salary-save",
+			method : "POST",
+			type : "JSON",
+			data : {
+				"user" : user,
+				"name" : name,
+				"present" : present,
+				"late" : late,
+				"leaves" : leaves,
+				"absent" : absent,
+				"salary" : salary,
+				"sumsalary" : sumsalary
+			},
+			success : function(data) {
+				swal(
+						{
+							title : "Pass",
+							text : "Saved Succcess",
+							type : "success"
+						},
+						function() {
+							window.location.href = "user-salary";
+						});
+			}
+
+		})
 
 	}
 </script>

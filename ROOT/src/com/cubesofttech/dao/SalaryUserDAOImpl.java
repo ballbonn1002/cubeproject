@@ -366,4 +366,23 @@ public class SalaryUserDAOImpl implements SalaryUserDAO{
 		session.flush();
 		
 	}
+	@Override
+	public List<Map<String, Object>> finduser_salary(String user, String start_mouth, String today) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> salary_success = null;
+		try {
+			String sql = "SELECT * FROM `salary` WHERE user = :user AND DATE(time_create) BETWEEN :start_mouth AND :today";
+			
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("user", user);
+			query.setParameter("start_mouth", start_mouth);
+			query.setParameter("today", today);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			salary_success = query.list();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return salary_success;
+		
+	}
 }

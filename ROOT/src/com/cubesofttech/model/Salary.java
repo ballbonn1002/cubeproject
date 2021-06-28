@@ -1,6 +1,7 @@
 package com.cubesofttech.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -26,12 +27,14 @@ public class Salary implements Serializable{
 	private Integer present;
 	@Column(name = "leaves")
 	private Integer leave;
-	@Column(name = "absent")
-	private Integer absent;
 	@Column(name = "late")
 	private Integer late;
+	@Column(name = "absent")
+	private Integer absent;
 	@Column(name = "salary")
 	private Integer salary;
+	@Column(name = "sumsalary")
+	private BigDecimal sumsalary;
 	@Column(name = "user_create")
 	private String user_create;
 	@Column(name = "time_create")
@@ -77,18 +80,18 @@ public class Salary implements Serializable{
 		return leave;
 	}
 	
-	public void setAbsent(Integer absent) {
-		this.absent = absent;
-	}
-	public Integer getAbsent() {
-		return absent;
-	}
-	
 	public void setLate(Integer late) {
 		this.late = late;
 	}
 	public Integer getLate() {
 		return late;
+	}
+	
+	public void setAbsent(Integer absent) {
+		this.absent = absent;
+	}
+	public Integer getAbsent() {
+		return absent;
 	}
 	
 	public void setSalary(Integer salary) {
@@ -97,6 +100,14 @@ public class Salary implements Serializable{
 	
 	public Integer getsalary() {
 		return salary;
+	}
+	
+	public void setSumsalary(BigDecimal sumsalary) {
+		this.sumsalary = sumsalary;
+	}
+	
+	public BigDecimal getSumsalary() {
+		return sumsalary;
 	}
 	
 	public void setUser_create(String user_create) {
