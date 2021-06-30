@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -172,6 +173,8 @@ public class SalaryAction extends ActionSupport {
 			Salary_user salary_user = new Salary_user();
 			
 			int a = 111;
+			User ur = (User) request.getSession().getAttribute(ONLINEUSER);
+			String logonUser = ur.getId();
 			
 			salary_user.setId_salary_user(a);
 			salary_user.setStart_date(startDate);
@@ -179,7 +182,7 @@ public class SalaryAction extends ActionSupport {
 			salary_user.setUser(name);
 			salary_user.setSalary(salary1);
 			salary_user.setDescription(des);
-			salary_user.setUser_create(name);
+			salary_user.setUser_create(logonUser);
 			salary_user.setTime_create(DateUtil.getCurrentTime());
 
 			salaryuserDAO.save(salary_user);
@@ -227,12 +230,15 @@ public class SalaryAction extends ActionSupport {
 			
 			int salary1 = Integer.parseInt(salary);
 			
+			User ur = (User) request.getSession().getAttribute(ONLINEUSER);
+			String logonUser = ur.getId();
+			
 			salary_user.setUser(name);
 			salary_user.setStart_date(startDate);
 			salary_user.setEnd_date(endDate);
 			salary_user.setSalary(salary1);
 			salary_user.setDescription(des);		
-			salary_user.setUser_update(name);			
+			salary_user.setUser_update(logonUser);			
 			salary_user.setTime_update(DateUtil.getCurrentTime());
 			salaryuserDAO.update(salary_user);
 			
@@ -281,7 +287,7 @@ public class SalaryAction extends ActionSupport {
 		}
 
 	}
-	public String salary_search() {
+	/*public String salary_search() {
 		try {
 			//get search
 			String monthsearch = request.getParameter("monthSearch");
@@ -619,9 +625,9 @@ public class SalaryAction extends ActionSupport {
 			log.error(e);
 			return ERROR;
 		}
-	}
+	}*/
 	
-	public String historysalary_save(String name,int salary,Timestamp end_salary) {
+	/*public String historysalary_save(String name,int salary,Timestamp end_salary) {
 		try {
 			
 			HistorySalary historysalary = new HistorySalary();
@@ -677,7 +683,7 @@ public class SalaryAction extends ActionSupport {
 			return ERROR;
 		}
 
-	}
+	}*/
 	
 	public int getpresent(String users_list, String start_mouth,String today) throws Exception {
 		//-------------------------CheckList Until today--------------------------------
@@ -714,8 +720,11 @@ public class SalaryAction extends ActionSupport {
 				List<Date> endweek = new ArrayList<>();
 				Calendar cals = Calendar.getInstance();
 				cals.set(Calendar.DAY_OF_MONTH, 1);
-				int Ssday = 0;
 				SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+				String start_mouth = format1.format(cals.getTime());
+				String today = format1.format(Calendar.getInstance().getTime());
+				int Ssday = 0;
+				
 				String formatted1 = format1.format(Calendar.getInstance().getTime());
 				int result = -1;
 				while(result != 0) {
@@ -731,10 +740,6 @@ public class SalaryAction extends ActionSupport {
 				}
 		
 		//-----------------------Holiday Until today-----------------------
-				cals.set(Calendar.DAY_OF_MONTH, 1);
-				//SimpleDateFormat format_date = new SimpleDateFormat("yyyy-MM-dd");
-				String start_mouth = format1.format(cals.getTime());
-				String today = format1.format(Calendar.getInstance().getTime());
 				List<Map<String, Object>> count = holidayDAO.count_hoilday(start_mouth, today);
 				int Holidays = 0;
 				for(int i = 0; i< count.size(); i++) {

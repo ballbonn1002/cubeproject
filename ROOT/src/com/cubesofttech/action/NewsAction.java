@@ -659,8 +659,11 @@ if(timeline.size() == 0 ) {
 				List<Date> endweek = new ArrayList<>();
 				Calendar cals = Calendar.getInstance();
 				cals.set(Calendar.DAY_OF_MONTH, 1);
-				float Ssday = 0;
 				SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+				String start_mouth = format1.format(cals.getTime());
+				String today = format1.format(Calendar.getInstance().getTime());
+				float Ssday = 0;
+				
 				//System.out.println(cals.getTime());
 				String formatted1 = format1.format(Calendar.getInstance().getTime());
 				//System.out.println(format1.format(Calendar.getInstance().getTime()));
@@ -678,10 +681,7 @@ if(timeline.size() == 0 ) {
 					Ssday += 1;
 				}
 		//-----------------------Holiday Until today-----------------------
-				cals.set(Calendar.DAY_OF_MONTH, 1);
 				//SimpleDateFormat format_date = new SimpleDateFormat("yyyy-MM-dd");
-				String start_mouth = format1.format(cals.getTime());
-				String today = format1.format(Calendar.getInstance().getTime());
 				List<Map<String, Object>> count = holidayDAO.count_hoilday(start_mouth, today);
 				float Holidays = 0;
 				for(int i = 0; i< count.size(); i++) {
