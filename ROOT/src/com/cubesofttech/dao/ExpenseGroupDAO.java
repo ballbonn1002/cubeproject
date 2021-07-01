@@ -23,7 +23,7 @@ public interface ExpenseGroupDAO {
 
 	Integer getMaxId() throws Exception;
 
-	public List<Map<String, Object>> searchtable(String Expenseuserid) throws Exception;
+	public List<Map<String, Object>> searchtable(String Expenseuserid,String month, String year) throws Exception;
 	public List<Map<String, Object>> searchtable2(String Expenseuserid,java.sql.Timestamp Datestart, java.sql.Timestamp Dateend) throws Exception;
 	public List<Map<String, Object>> searchAll(java.sql.Timestamp Datestart, java.sql.Timestamp Dateend) throws Exception;
 	public List<Map<String, Object>> listId() throws Exception;

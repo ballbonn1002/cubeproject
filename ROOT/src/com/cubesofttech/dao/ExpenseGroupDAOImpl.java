@@ -112,15 +112,15 @@ public class ExpenseGroupDAOImpl implements ExpenseGroupDAO {
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Map<String, Object>> searchtable(String Expenseuserid) throws Exception {
+	public List<Map<String, Object>> searchtable(String Expenseuserid,String month, String year) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Map<String, Object>> search = null;
 		try {
-
+		
 			String user_value = "";
 
 			if (Expenseuserid != "" && !Expenseuserid.equals("All")) {
-				user_value = "WHERE user_id = :Expenseuserid ";
+				user_value = "WHERE user_id = :Expenseuserid AND MONTH(time_create)=:month AND YEAR(time_create)=:year";
 			} else if (Expenseuserid.equals("All")) {
 				user_value = "";
 			}
@@ -136,7 +136,8 @@ public class ExpenseGroupDAOImpl implements ExpenseGroupDAO {
 			if (Expenseuserid != "" && !Expenseuserid.equals("All")) {
 				query.setParameter("Expenseuserid", Expenseuserid);
 			}
-
+			query.setParameter("month", month);
+			query.setParameter("year", year);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
 			search = query.list();
 		} catch (Exception e) {

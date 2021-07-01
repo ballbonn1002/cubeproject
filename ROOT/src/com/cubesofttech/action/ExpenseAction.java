@@ -112,7 +112,18 @@ public class ExpenseAction extends ActionSupport {
 			String userId = request.getParameter(USERID);
 			String from = STARTTIME;
 			String to = ENDTIME;
-			List<Map<String, Object>> expSearchList = expenseDAO.expSearch(userId, from, to, "All");
+			LocalDate firstDay = LocalDate.now().withDayOfMonth(1);
+			LocalDate Daynow = LocalDate.now();
+		
+			
+			String firstDay1 = firstDay.toString() + " 00:01:01";
+			String Daynow1 = Daynow.toString() + " 23:59:59";
+			System.out.println(firstDay1);
+			System.out.println(Daynow1);
+			
+			System.out.println(from);
+			System.out.println(to);
+			List<Map<String, Object>> expSearchList = expenseDAO.expSearch(userId, firstDay1, Daynow1, "All");
 			request.setAttribute(EXPSEARCHLIST, expSearchList);
  			request.setAttribute(USERID, userId);
 			List<Map<String, Object>> expensetableList = expenseDAO.findExpense();

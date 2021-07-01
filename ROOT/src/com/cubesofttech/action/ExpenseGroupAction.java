@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -85,12 +86,20 @@ public class ExpenseGroupAction extends ActionSupport {
 			date1 = tstamp;
 			DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			String datenow = dateFormat.format(date1);
+
+			LocalDate today = LocalDate.now();
+			int month = today.getMonthValue();
+			int year = today.getYear();
+			System.out.println(month);
+			System.out.println(year);
 			
+			String month1 = String.valueOf(month);
+			String year1 = String.valueOf(year);
 			request.setAttribute("logonUser", ur.getId());
 			request.setAttribute("nameofuser", request.getParameter("name"));
 			request.setAttribute(USERSEQ, userDAO.sequense());
 			request.setAttribute("groupList", expensegroupDAO.listId());
-			request.setAttribute("onlyone",  expensegroupDAO.searchtable(ur.getId()));
+			request.setAttribute("onlyone",  expensegroupDAO.searchtable(ur.getId(), month1, year1));
 			request.setAttribute(USERLIST, userDAO.findAll());
 			request.setAttribute("datenow", datenow);
 			return SUCCESS;
