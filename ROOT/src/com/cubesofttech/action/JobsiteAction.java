@@ -145,6 +145,7 @@ public class JobsiteAction extends ActionSupport {
 			Integer idValue = Integer.valueOf(Id);
 			Jobsite jobsite = jobsiteDAO.findById(idValue);
 			
+			System.out.println();
 			String namesite = request.getParameter("name");
 			String user_update = request.getParameter("user");
 			jobsite.setName_site(namesite);
