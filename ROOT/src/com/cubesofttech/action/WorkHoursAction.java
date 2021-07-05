@@ -1456,8 +1456,8 @@ public class WorkHoursAction extends ActionSupport {
 			int checkoutnotcheckout = ((outhours * 60) + outmins);
 			for (Map<String, Object> maps : check_in) {
 				for (Map.Entry<String, Object> entry : maps.entrySet()) {
-//					BigInteger x = (BigInteger) entry.getValue();
-					//datecheck_in = Integer.valueOf(x.toString());
+					BigInteger x = (BigInteger) entry.getValue();
+					datecheck_in = Integer.valueOf(x.toString());
 				}
 			}
 			if (datecheck_in != datecheck_out && checkoutnotcheckout >= checkinnotcheckout) {
