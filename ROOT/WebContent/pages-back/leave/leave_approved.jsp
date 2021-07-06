@@ -276,7 +276,7 @@
 													<c:when test="${LeavenumT1 != null}" >
 															
 														<span id="leaveType1" data-counter="counterup"
-															data-value="" >	<fmt:formatNumber pattern="#.#" value="${LeavenumT1}">	</fmt:formatNumber> </span>
+															data-value="" >	<fmt:formatNumber pattern="#.###" value="${LeavenumT1}">	</fmt:formatNumber> </span>
 															
 														<span>/ ${ThisYear}</span>
 														<div class="desc">${type_1}</div>

@@ -902,7 +902,6 @@ public class TimeInReportAction extends ActionSupport {
 			cell = row.createCell(19);
 			cell.setCellStyle(UsernameStyle);
 
-
 			// MONTH PLOT SECTION
 			row = sheet.getRow(3);
 			cell = row.createCell(16);
@@ -915,7 +914,6 @@ public class TimeInReportAction extends ActionSupport {
 			cell.setCellStyle(UsernameStyle);
 			cell = row.createCell(19);
 			cell.setCellStyle(UsernameStyle);
-
 
 			// RECIEVER PLOT SECTION
 //			row = sheet.getRow(49);
@@ -951,6 +949,7 @@ public class TimeInReportAction extends ActionSupport {
 			int OTcount = 0;
 			String Workstart = "";
 			String Workend = "";
+			String Workdes = "";
 			String Workstart_split_arr[];
 			String Workend_split_arr[];
 			int workstart_min = 0;
@@ -993,36 +992,31 @@ public class TimeInReportAction extends ActionSupport {
 				dayinlist.add(parser.format(map.get("time_check_in")));
 				Timein.add(parsers.format(map.get("time_check_in")));
 				Timeout.add(parsers.format(map.get("time_check_out")));
+				OTmark.add(map.get("description").toString());
 				if (map.get("work_time_start") != null || !map.get("work_time_start").toString().equals("")) {
 					Workstart = map.get("work_time_start").toString();
 					Workend = map.get("work_time_end").toString();
+				
 				} else {
 					Workstart = "";
 					Workend = "";
+				
 				}
 
-//				if (map.get("OT_time_start") != null) {
-//					OTin.add(parsers.format(map.get("OT_time_start")));
-//					OTout.add(parsers.format(map.get("OT_time_end")));
+				if (map.get("OT_time_start") != null) {
+					OTin.add(parsers.format(map.get("OT_time_start")));
+					OTout.add(parsers.format(map.get("OT_time_end")));
 //					if (map.get("OT_description") != null) {
 //						OTmark.add("(OT) " + map.get("OT_description").toString());
 //					} else {
 //						OTmark.add("(OT)");
 //					}
-					
-					if (map.get("description") != null) {
-						OTin.add(parsers.format(map.get("time_check_in")));
-						OTout.add(parsers.format(map.get("time_check_out")));
-						if (map.get("description") != null) {
-							OTmark.add("" + map.get("description").toString());
-						} else {
-							OTmark.add("");
-						}
+				 
 
 				} else if (map.get("OT_time_start") == null) {
 					OTin.add("");
 					OTout.add("");
-					OTmark.add("");
+//					OTmark.add("");
 				}
 				if (TimeinlistLoopCount == 0) {
 					if (map.get("team") != null) {
@@ -1032,7 +1026,7 @@ public class TimeInReportAction extends ActionSupport {
 					}
 
 				}
-				TimeinlistLoopCount += 1;
+				//TimeinlistLoopCount += 1;
 
 			}
 
