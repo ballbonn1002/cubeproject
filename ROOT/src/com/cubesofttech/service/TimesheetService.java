@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.ServletContext;
@@ -33,6 +34,8 @@ import com.cubesofttech.model.ProjectFunction;
 import com.cubesofttech.model.Timesheet;
 import com.cubesofttech.model.User;
 import com.cubesofttech.util.DateUtil;
+import com.ibm.icu.text.SimpleDateFormat;
+import com.ibm.icu.util.Calendar;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
@@ -41,6 +44,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TimesheetService {
 	public static final String SAMPLE_XLSX_FILE_PATH = "./sample-xlsx-file.xlsx";
@@ -132,7 +136,7 @@ public class TimesheetService {
 			// 2. Or you can use a for-each loop to iterate over the rows and columns
 			// System.out.println("\n\nIterating over Rows and Columns using for-each
 			// loop\n");
-			int i = 0;
+			int i = 0, y = 0;
 			String a = null;
 			String b = null;
 			String c = null;
@@ -180,322 +184,788 @@ public class TimesheetService {
 			String[] project = c.split("!");
 			String[] user = a.split("!");
 			String[] function = d.split("!");
+
+			Calendar c2 = Calendar.getInstance(); // this takes current date
+			c2.set(Calendar.DAY_OF_MONTH, 1);
+			Date date3 = c2.getTime();
+			SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+
+			String date4 = format1.format(date3);
+			System.out.println("testtt " + date[2]);
+			String date1 = date[2];
+			String incDate;
+			String datenow = null;
+
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Calendar c1 = Calendar.getInstance();
+
+			c1.setTime(sdf.parse(date1));
+
+			int maxDay = c1.getActualMaximum(Calendar.DAY_OF_MONTH);
+			for (int co = 0; co < maxDay; co++) {
+
+				incDate = sdf.format(c1.getTime());
+				datenow = datenow + "!" + incDate;
+				c1.add(Calendar.DATE, 1);
+			}
+			String[] datenowna = datenow.split("!");
+			System.out.println(datenow);
+
+			String tchidb;
+			String tchodb;
+			String detaildb;
+			String teamdb;
+			String projectdb;
+			String functiondb;
+			String userdb;
+			String timecheckin, timecheckout;
+			String ind, inm, iny, outd, outm, outy;
+			String searchyear, searchmonth, searchday;
+			int k = 0;
+
+			List<String> pj = new ArrayList<>();
+			List<String> fpj = new ArrayList<>();
+
 			String datedb = "aa", datedb2;
-			String detailsum = null,tchisum,tchosum,teamsum,projectsum,functionsum,usersum;
-			for (i = 0; i < date.length; i++) {
-				if (i > 1) {
+			String detailsum = null, tchisum, tchosum, teamsum = null, projectsum = null, functionsum = null,
+					usersum = null, datesum2 = null;
+			String pjsum = null, fpjsum = null;
 
-					String tchidb;
-					String tchodb;
-					String detaildb;
-					String teamdb;
-					String projectdb;
-					String functiondb;
-					String userdb;
-					String timecheckin, timecheckout;
-					String ind, inm, iny, outd, outm, outy;
-					String searchyear, searchmonth, searchday;
+//			List<String> cityList = new ArrayList<>();
+//			 cityList.add("Delhi");
+//			 cityList.add("Mumbai");
+//			 cityList.add("Bangalore");
+//			 cityList.add("Chennai");
+//			 cityList.add("Kolkata");
+//			 cityList.add("Mumbai");
+//
+//			 cityList = cityList.stream().distinct().collect(Collectors.toList());
+//			 System.out.println("cityList"+cityList);
+			for (i = 0; i < datenowna.length; i++) {
+				for (y = 0; y < date.length; y++) {
+					if (y > 1) {
 
-					datedb2 = datedb;
-					datedb = (date[i]);
+						datedb2 = datedb;
+						datedb = (date[y]);
 
-//					tchidb = (tchi[i]);			
-//					tchodb = (tcho[i]);				
-					detaildb = (detail[i]);
-					teamdb = (team[i]);
-					projectdb = (project[i]);
-					functiondb = (function[i]);
-					userdb = (user[i]);
+//							tchidb = (tchi[i]);			
+//							tchodb = (tcho[i]);				
+						detaildb = (detail[y]);
+						teamdb = (team[y]);
+						projectdb = (project[y]);
+						functiondb = (function[y]);
+						userdb = (user[y]);
 
-					ind = datedb.substring(0);
-
-					searchyear = datedb.substring(6, 10);
-					searchmonth = datedb.substring(3, 5);
-					searchday = datedb.substring(0, 2);
-					String datesum = searchyear + "-" + searchmonth + "-" + searchday;
-
-					System.out.println("datedb2 : " + datedb2);
-					System.out.println("datedb : " + datedb);
-
-					if (datedb.equals(datedb2)) {
-						projectsum = projectdb;
-						functionsum = functiondb;
-						teamsum = teamdb;
-						usersum = userdb;
-						if (detailsum == null) {
-							detailsum = detaildb;
-							System.out.println("detailsum : " + detailsum);
-							System.out.println("projectsum : " + projectsum);
-							System.out.println("functionsum : " + functionsum);
-							System.out.println("teamsum : " + teamsum);
-							System.out.println("usersum" + usersum);
-						} else {
-							detailsum = detailsum + " " + detaildb;
-							System.out.println("detailsum : " + detailsum);
-							
-							
-							Timesheet timesheet = new Timesheet();
-					        Integer l = timesheetDAO.getMaxId() + 1;
-					        timesheet.setId(l);
-					        
-							timesheet.setDescription(detailsum);
-							
-							
-							List<Map<String, Object>> whereproject = timesheetDAO.whereproject(projectdb);
-							if (whereproject.isEmpty()) {
-								System.out.println("Nullproject");
-
-								Project project1 = new Project();
-								project1.setProject_name(projectdb);
-								project1.setDescription("");
-								
-								List<Map<String, Object>> wherename1 = timesheetDAO.wherename(userdb);
-								for (int z = 0; z < wherename1.size(); z++) {
-									String name = ((String) wherename1.get(z).get("id"));
-									project1.setUser_create(name);
-								}
-											
-								project1.setTime_create(DateUtil.getCurrentTime());
-								projectDAO.save(project1);
-
-								ProjectFunction projectFunction = new ProjectFunction();
-								projectFunction.setFunction_name(functiondb);
-								projectFunction.setStatus("ACTIVE");
-								
-								List<Map<String, Object>> whereproject1 = timesheetDAO.whereproject(projectdb);
-								for (int z = 0; z < whereproject1.size(); z++) {
-									BigInteger nameproject = ((BigInteger) whereproject1.get(z).get("project_id"));
-									int nameproject2 = nameproject.intValue();
-									projectFunction.setProject_id(nameproject2);
-								}
-								
-								List<Map<String, Object>> wherename2 = timesheetDAO.wherename(userdb);
-								for (int z = 0; z < wherename2.size(); z++) {
-									String name = ((String) wherename2.get(z).get("id"));
-									projectFunction.setUser_create(name);
-								}
-								
-								projectFunction.setTime_create(DateUtil.getCurrentTime());
-								projectFunctionDAO.save(projectFunction);
+						if (datenowna[i].equals(date[y])) {
+							if (detailsum == null) {
+								datesum2 = datedb;
+								detailsum = detaildb;
+								teamsum = teamdb;
+								projectsum = projectdb;
+								functionsum = functiondb;
+								usersum = userdb;
+								pj.add(projectdb);
+								fpj.add(functiondb);
 
 							} else {
-								List<Map<String, Object>> whereproject3= timesheetDAO.whereproject(projectdb);
+								datesum2 = datedb;
+								detailsum = detailsum + " " + detaildb;
+								projectsum = projectsum + "!" + projectdb;
+								functionsum = functionsum + "!" + functiondb;
+								teamsum = teamdb;
+								usersum = userdb;
+								pj.add(projectdb);
+								fpj.add(functiondb);
+								String[] projectsum1 = projectsum.split("!");
+								String[] functionsum1 = functionsum.split("!");
+//								System.out.println("pro1 : "+projectsum1);
+//								System.out.println("pro2 : "+pj);
+//									for(int h=0;h<projectsum1.length;h++) {
+//										for(int w=0;w<pj.size();w++) {
+//											if(pj.get(w).equals(projectsum1[h])) {
+//												System.out.println("repeat");
+//											}else {
+//												System.out.println("no repeat");
+//												pj.add(projectdb);
+//											}
+//										}
+//									}
+							}
+
+						} else {
+							if (detailsum == null) {
+
+							} else {
+
+								System.out.println("pj1 : " + pj);
+								pj = pj.stream().distinct().collect(Collectors.toList());
+								System.out.println("pj2 : " + pj);
+								for (int o = 0; o < pj.size(); o++) {
+									if (o == 0) {
+										pjsum = pj.get(o);
+									} else {
+										pjsum = pjsum + " and " + pj.get(o);
+									}
+								}
+								System.out.println("pjsum : " + pjsum);
+
+								System.out.println("fpj1 : " + fpj);
+								fpj = fpj.stream().distinct().collect(Collectors.toList());
+								System.out.println("fpj2 : " + fpj);
+								for (int o = 0; o < fpj.size(); o++) {
+									if (o == 0) {
+										fpjsum = fpj.get(o);
+									} else {
+										fpjsum = fpjsum + " and " + fpj.get(o);
+									}
+								}
+								System.out.println("fpjsum : " + fpjsum);
+
+								ind = datesum2.substring(0);
+
+								searchyear = datesum2.substring(6, 10);
+								searchmonth = datesum2.substring(3, 5);
+								searchday = datesum2.substring(0, 2);
+								String datesum = searchyear + "-" + searchmonth + "-" + searchday;
+
+								System.out.println(datesum2);
+								System.out.println(detailsum);
+//									System.out.println("project = "+projectsum1);
+//									System.out.println("function = "+functionsum1);
+
+								List<Map<String, Object>> whereproject = timesheetDAO.whereproject(pjsum);
+								if (whereproject.isEmpty()) {
+									System.out.println("Nullproject");
+
+									Project project1 = new Project();
+									project1.setProject_name(pjsum);
+									project1.setDescription(" ");
+
+									List<Map<String, Object>> wherename1 = timesheetDAO.wherename(userdb);
+									for (int z = 0; z < wherename1.size(); z++) {
+										String name = ((String) wherename1.get(z).get("id"));
+										project1.setUser_create(name);
+									}
+
+									project1.setTime_create(DateUtil.getCurrentTime());
+									projectDAO.save(project1);
+
+									////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+									ProjectFunction projectFunction = new ProjectFunction();
+									projectFunction.setFunction_name(fpjsum);
+									projectFunction.setStatus("ACTIVE");
+
+									List<Map<String, Object>> whereproject1 = timesheetDAO.whereproject(pjsum);
+									for (int z = 0; z < whereproject1.size(); z++) {
+										BigInteger nameproject = ((BigInteger) whereproject1.get(z).get("project_id"));
+										int nameproject2 = nameproject.intValue();
+										projectFunction.setProject_id(nameproject2);
+									}
+
+									List<Map<String, Object>> wherename2 = timesheetDAO.wherename(userdb);
+									for (int z = 0; z < wherename2.size(); z++) {
+										String name = ((String) wherename2.get(z).get("id"));
+										projectFunction.setUser_create(name);
+									}
+
+									projectFunction.setTime_create(DateUtil.getCurrentTime());
+									projectFunctionDAO.save(projectFunction);
+
+								} else {
+									List<Map<String, Object>> wherefunction = timesheetDAO.wherefunction(fpjsum);
+									if (wherefunction.isEmpty()) {
+										ProjectFunction projectFunction = new ProjectFunction();
+										projectFunction.setFunction_name(fpjsum);
+										projectFunction.setStatus("ACTIVE");
+
+										List<Map<String, Object>> whereproject1 = timesheetDAO.whereproject(pjsum);
+										for (int z = 0; z < whereproject1.size(); z++) {
+											BigInteger nameproject = ((BigInteger) whereproject1.get(z)
+													.get("project_id"));
+											int nameproject2 = nameproject.intValue();
+											projectFunction.setProject_id(nameproject2);
+										}
+
+										List<Map<String, Object>> wherename2 = timesheetDAO.wherename(userdb);
+										for (int z = 0; z < wherename2.size(); z++) {
+											String name = ((String) wherename2.get(z).get("id"));
+											projectFunction.setUser_create(name);
+										}
+
+										projectFunction.setTime_create(DateUtil.getCurrentTime());
+										projectFunctionDAO.save(projectFunction);
+									}
+
+									List<Map<String, Object>> whereproject3 = timesheetDAO.whereproject(pjsum);
+									for (int z = 0; z < whereproject.size(); z++) {
+										BigInteger nameproject = ((BigInteger) whereproject3.get(z).get("project_id"));
+										int nameproject2 = nameproject.intValue();
+
+										System.out.println(nameproject);
+									}
+
+									List<Map<String, Object>> wherefunction1 = timesheetDAO.wherefunction(fpjsum);
+									for (int z = 0; z < wherefunction1.size(); z++) {
+										BigInteger namefunction = ((BigInteger) wherefunction1.get(z).get("function_id"));
+										int namefunction2 = namefunction.intValue();
+
+										System.out.println(namefunction);
+									}
+								}
+								/////////////////////////////////////////
+
+								detailsum = null;
+								pj.clear();
+								fpj.clear();
+							}
+
+						}
+					}
+				}
+				System.out.println("------------------------------------");
+			}
+
+			for (i = 0; i < datenowna.length; i++) {
+				for (y = 0; y < date.length; y++) {
+					if (y > 1) {
+
+						datedb2 = datedb;
+						datedb = (date[y]);
+
+//							tchidb = (tchi[i]);			
+//							tchodb = (tcho[i]);				
+						detaildb = (detail[y]);
+						teamdb = (team[y]);
+						projectdb = (project[y]);
+						functiondb = (function[y]);
+						userdb = (user[y]);
+
+						if (datenowna[i].equals(date[y])) {
+							if (detailsum == null) {
+								datesum2 = datedb;
+								detailsum = detaildb;
+								teamsum = teamdb;
+								projectsum = projectdb;
+								functionsum = functiondb;
+								usersum = userdb;
+								pj.add(projectdb);
+								fpj.add(functiondb);
+
+							} else {
+								datesum2 = datedb;
+								detailsum = detailsum + " " + detaildb;
+								projectsum = projectsum + "!" + projectdb;
+								functionsum = functionsum + "!" + functiondb;
+								teamsum = teamdb;
+								usersum = userdb;
+								pj.add(projectdb);
+								fpj.add(functiondb);
+								String[] projectsum1 = projectsum.split("!");
+								String[] functionsum1 = functionsum.split("!");
+//								System.out.println("pro1 : "+projectsum1);
+//								System.out.println("pro2 : "+pj);
+//									for(int h=0;h<projectsum1.length;h++) {
+//										for(int w=0;w<pj.size();w++) {
+//											if(pj.get(w).equals(projectsum1[h])) {
+//												System.out.println("repeat");
+//											}else {
+//												System.out.println("no repeat");
+//												pj.add(projectdb);
+//											}
+//										}
+//									}
+							}
+
+						} else {
+							if (detailsum == null) {
+
+							} else {
+
+								System.out.println("pj1 : " + pj);
+								pj = pj.stream().distinct().collect(Collectors.toList());
+								System.out.println("pj2 : " + pj);
+								for (int o = 0; o < pj.size(); o++) {
+									if (o == 0) {
+										pjsum = pj.get(o);
+									} else {
+										pjsum = pjsum + " and " + pj.get(o);
+									}
+								}
+								System.out.println("pjsum : " + pjsum);
+
+								System.out.println("fpj1 : " + fpj);
+								fpj = fpj.stream().distinct().collect(Collectors.toList());
+								System.out.println("fpj2 : " + fpj);
+								for (int o = 0; o < fpj.size(); o++) {
+									if (o == 0) {
+										fpjsum = fpj.get(o);
+									} else {
+										fpjsum = fpjsum + " and " + fpj.get(o);
+									}
+								}
+								System.out.println("fpjsum : " + fpjsum);
+
+								ind = datesum2.substring(0);
+
+								searchyear = datesum2.substring(6, 10);
+								searchmonth = datesum2.substring(3, 5);
+								searchday = datesum2.substring(0, 2);
+								String datesum = searchyear + "-" + searchmonth + "-" + searchday;
+
+								System.out.println(datesum2);
+								System.out.println(detailsum);
+//									System.out.println("project = "+projectsum1);
+//									System.out.println("function = "+functionsum1);
+								Timesheet timesheet = new Timesheet();
+								Integer l = timesheetDAO.getMaxId() + 1;
+								timesheet.setId(l);
+
+								timesheet.setDescription(detailsum);
+
+								List<Map<String, Object>> whereproject = timesheetDAO.whereproject(pjsum);
+								if (whereproject.isEmpty()) {
+									System.out.println("Nullproject");
+
+									Project project1 = new Project();
+									project1.setProject_name(pjsum);
+									project1.setDescription(" ");
+
+									List<Map<String, Object>> wherename1 = timesheetDAO.wherename(userdb);
+									for (int z = 0; z < wherename1.size(); z++) {
+										String name = ((String) wherename1.get(z).get("id"));
+										project1.setUser_create(name);
+									}
+
+									project1.setTime_create(DateUtil.getCurrentTime());
+									projectDAO.save(project1);
+
+									////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+									ProjectFunction projectFunction = new ProjectFunction();
+									projectFunction.setFunction_name(fpjsum);
+									projectFunction.setStatus("ACTIVE");
+
+									List<Map<String, Object>> whereproject1 = timesheetDAO.whereproject(pjsum);
+									for (int z = 0; z < whereproject1.size(); z++) {
+										BigInteger nameproject = ((BigInteger) whereproject1.get(z).get("project_id"));
+										int nameproject2 = nameproject.intValue();
+										projectFunction.setProject_id(nameproject2);
+									}
+
+									List<Map<String, Object>> wherename2 = timesheetDAO.wherename(userdb);
+									for (int z = 0; z < wherename2.size(); z++) {
+										String name = ((String) wherename2.get(z).get("id"));
+										projectFunction.setUser_create(name);
+									}
+
+									projectFunction.setTime_create(DateUtil.getCurrentTime());
+									projectFunctionDAO.save(projectFunction);
+
+								} else {
+									List<Map<String, Object>> whereproject3 = timesheetDAO.whereproject(pjsum);
+									for (int z = 0; z < whereproject.size(); z++) {
+										BigInteger nameproject = ((BigInteger) whereproject3.get(z).get("project_id"));
+										int nameproject2 = nameproject.intValue();
+										timesheet.setProject_id(nameproject2);
+										System.out.println(nameproject);
+									}
+
+									List<Map<String, Object>> wherefunction = timesheetDAO.wherefunction(fpjsum);
+									for (int z = 0; z < wherefunction.size(); z++) {
+										BigInteger namefunction = ((BigInteger) wherefunction.get(z)
+												.get("function_id"));
+										int namefunction2 = namefunction.intValue();
+										timesheet.setFunction_id(namefunction2);
+										System.out.println(namefunction);
+									}
+								}
+								/////////////////////////////////////////
+								List<Map<String, Object>> whereproject3 = timesheetDAO.whereproject(pjsum);
 								for (int z = 0; z < whereproject.size(); z++) {
 									BigInteger nameproject = ((BigInteger) whereproject3.get(z).get("project_id"));
-									 int nameproject2 = nameproject.intValue();
+									int nameproject2 = nameproject.intValue();
 									timesheet.setProject_id(nameproject2);
 									System.out.println(nameproject);
 								}
-								
-								List<Map<String, Object>> wherefunction= timesheetDAO.wherefunction(functiondb);
+
+								List<Map<String, Object>> wherefunction = timesheetDAO.wherefunction(fpjsum);
 								for (int z = 0; z < wherefunction.size(); z++) {
 									BigInteger namefunction = ((BigInteger) wherefunction.get(z).get("function_id"));
-									 int namefunction2 = namefunction.intValue();
+									int namefunction2 = namefunction.intValue();
 									timesheet.setFunction_id(namefunction2);
 									System.out.println(namefunction);
 								}
-							}
-							
-							
-							
 
-							timesheet.setStatus("W");
-							
-							List<Map<String, Object>> whereworkhour = timesheetDAO.whereworkhour(searchyear, searchmonth,
-									searchday);
-							// System.out.println(whereworkhour);
-							if (whereworkhour.isEmpty()) {
-								String sdate = searchyear + "-" + searchmonth + "-" + searchday + " 08:30:00";
-								String edate = searchyear + "-" + searchmonth + "-" + searchday + " 17:30:00";
-								Timestamp startDate = Timestamp.valueOf(sdate);
-								Timestamp endDate = Timestamp.valueOf(edate);
-								timesheet.setTimeCheckIn(startDate);
-								timesheet.setTimeCheckOut(endDate);
-								// System.out.println(startDate);
-								// System.out.println(endDate);
-							} else {
-								for (int wwh = 0; wwh < whereworkhour.size(); wwh++) {
+								timesheet.setStatus("W");
 
-									char work_hours_type = ((char) whereworkhour.get(wwh).get("work_hours_type"));
-									if (work_hours_type == '1') {
-										Timestamp startDate = ((Timestamp) whereworkhour.get(wwh).get("work_hours_time_work"));
-										timesheet.setTimeCheckIn(startDate);
-										// System.out.println(startDate);
-									} else if (work_hours_type == '2') {
-										Timestamp endDate = ((Timestamp) whereworkhour.get(wwh).get("work_hours_time_work"));
-										timesheet.setTimeCheckOut(endDate);
-										// System.out.println(endDate);
-									}
-
-								}
-							}
-							timesheet.setTimeCreate(DateUtil.getCurrentTime());
-							timesheet.setTeam(teamdb);
-							List<Map<String, Object>> wherename = timesheetDAO.wherename(userdb);
-							for (int z = 0; z < wherename.size(); z++) {
-								String name = ((String) wherename.get(z).get("id"));
-								timesheet.setUserCreate(name);
-								
-								System.out.println(name);
-							}
-							
-							timesheetDAO.save(timesheet); 
-						}
-						
-						
-					} else {
-						detailsum = null;
-						projectsum = null;
-						functionsum = null;
-						teamsum = null;
-						usersum = null;
-						System.out.println("detail : " + detaildb);
-						
-						
-						Timesheet timesheet = new Timesheet();
-				        Integer l = timesheetDAO.getMaxId() + 1;
-				        timesheet.setId(l);
-				        
-						timesheet.setDescription(detaildb);
-						
-						
-						List<Map<String, Object>> whereproject = timesheetDAO.whereproject(projectdb);
-						if (whereproject.isEmpty()) {
-							System.out.println("Nullproject");
-
-							Project project1 = new Project();
-							project1.setProject_name(projectdb);
-							project1.setDescription("");
-							
-							List<Map<String, Object>> wherename1 = timesheetDAO.wherename(userdb);
-							for (int z = 0; z < wherename1.size(); z++) {
-								String name = ((String) wherename1.get(z).get("id"));
-								project1.setUser_create(name);
-							}
-										
-							project1.setTime_create(DateUtil.getCurrentTime());
-							projectDAO.save(project1);
-
-							ProjectFunction projectFunction = new ProjectFunction();
-							projectFunction.setFunction_name(functiondb);
-							projectFunction.setStatus("ACTIVE");
-							
-							List<Map<String, Object>> whereproject1 = timesheetDAO.whereproject(projectdb);
-							for (int z = 0; z < whereproject1.size(); z++) {
-								BigInteger nameproject = ((BigInteger) whereproject1.get(z).get("project_id"));
-								int nameproject2 = nameproject.intValue();
-								projectFunction.setProject_id(nameproject2);
-							}
-							
-							List<Map<String, Object>> wherename2 = timesheetDAO.wherename(userdb);
-							for (int z = 0; z < wherename2.size(); z++) {
-								String name = ((String) wherename2.get(z).get("id"));
-								projectFunction.setUser_create(name);
-							}
-							
-							projectFunction.setTime_create(DateUtil.getCurrentTime());
-							projectFunctionDAO.save(projectFunction);
-
-						} else {
-							List<Map<String, Object>> whereproject3= timesheetDAO.whereproject(projectdb);
-							for (int z = 0; z < whereproject.size(); z++) {
-								BigInteger nameproject = ((BigInteger) whereproject3.get(z).get("project_id"));
-								 int nameproject2 = nameproject.intValue();
-								timesheet.setProject_id(nameproject2);
-								System.out.println(nameproject);
-							}
-							List<Map<String, Object>> wherefunction= timesheetDAO.wherefunction(functiondb);
-							for (int z = 0; z < wherefunction.size(); z++) {
-								BigInteger namefunction = ((BigInteger) wherefunction.get(z).get("function_id"));
-								 int namefunction2 = namefunction.intValue();
-								timesheet.setFunction_id(namefunction2);
-								System.out.println(namefunction);
-							}
-						}
-						
-						
-						
-
-						timesheet.setStatus("W");
-						
-						List<Map<String, Object>> whereworkhour = timesheetDAO.whereworkhour(searchyear, searchmonth,
-								searchday);
-						
-						// System.out.println(whereworkhour);
-						if (whereworkhour.isEmpty()) {
-							String sdate = searchyear + "-" + searchmonth + "-" + searchday + " 08:30:00";
-							String edate = searchyear + "-" + searchmonth + "-" + searchday + " 17:30:00";
-							Timestamp startDate = Timestamp.valueOf(sdate);
-							Timestamp endDate = Timestamp.valueOf(edate);
-							timesheet.setTimeCheckIn(startDate);
-							timesheet.setTimeCheckOut(endDate);
-							// System.out.println(startDate);
-							// System.out.println(endDate);
-						} else if (whereworkhour.size()==1){
-							char work_hours_type = ((char) whereworkhour.get(0).get("work_hours_type"));
-							 //System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-							if (work_hours_type == '1') {
-								Timestamp startDate = ((Timestamp) whereworkhour.get(0).get("work_hours_time_work"));
-								String edate = searchyear + "-" + searchmonth + "-" + searchday + " 17:30:00";
-								Timestamp endDate = Timestamp.valueOf(edate);
-								timesheet.setTimeCheckIn(startDate);
-								timesheet.setTimeCheckOut(endDate);
-								// System.out.println(startDate);
-							} else if (work_hours_type == '2') {
-								Timestamp endDate = ((Timestamp) whereworkhour.get(0).get("work_hours_time_work"));
-								String sdate = searchyear + "-" + searchmonth + "-" + searchday + " 08:30:00";
-								Timestamp startDate = Timestamp.valueOf(sdate);
-								timesheet.setTimeCheckIn(startDate);
-								timesheet.setTimeCheckOut(endDate);
-								// System.out.println(endDate);
-							}
-						}else {
-							for (int wwh = 0; wwh < whereworkhour.size(); wwh++) {
-
-								char work_hours_type = ((char) whereworkhour.get(wwh).get("work_hours_type"));
-								if (work_hours_type == '1') {
-									Timestamp startDate = ((Timestamp) whereworkhour.get(wwh).get("work_hours_time_work"));
+								List<Map<String, Object>> whereworkhour = timesheetDAO.whereworkhour(searchyear,
+										searchmonth, searchday);
+								// System.out.println(whereworkhour);
+								if (whereworkhour.isEmpty()) {
+									String sdate = searchyear + "-" + searchmonth + "-" + searchday + " 08:30:00";
+									String edate = searchyear + "-" + searchmonth + "-" + searchday + " 17:30:00";
+									Timestamp startDate = Timestamp.valueOf(sdate);
+									Timestamp endDate = Timestamp.valueOf(edate);
 									timesheet.setTimeCheckIn(startDate);
-									// System.out.println(startDate);
-								} else if (work_hours_type == '2') {
-									Timestamp endDate = ((Timestamp) whereworkhour.get(wwh).get("work_hours_time_work"));
 									timesheet.setTimeCheckOut(endDate);
+									// System.out.println(startDate);
 									// System.out.println(endDate);
+								} else {
+									for (int wwh = 0; wwh < whereworkhour.size(); wwh++) {
+
+										char work_hours_type = ((char) whereworkhour.get(wwh).get("work_hours_type"));
+										if (work_hours_type == '1') {
+											Timestamp startDate = ((Timestamp) whereworkhour.get(wwh)
+													.get("work_hours_time_work"));
+											timesheet.setTimeCheckIn(startDate);
+											// System.out.println(startDate);
+										} else if (work_hours_type == '2') {
+											Timestamp endDate = ((Timestamp) whereworkhour.get(wwh)
+													.get("work_hours_time_work"));
+											timesheet.setTimeCheckOut(endDate);
+											// System.out.println(endDate);
+										}
+
+									}
+								}
+								timesheet.setTimeCreate(DateUtil.getCurrentTime());
+								timesheet.setTeam(teamsum);
+								List<Map<String, Object>> wherename = timesheetDAO.wherename(usersum);
+								for (int z = 0; z < wherename.size(); z++) {
+									String name = ((String) wherename.get(z).get("id"));
+									timesheet.setUserCreate(name);
+
+									System.out.println(name);
 								}
 
+								timesheetDAO.save(timesheet);
+								detailsum = null;
+								pj.clear();
+								fpj.clear();
 							}
+
 						}
-						timesheet.setTimeCreate(DateUtil.getCurrentTime());
-						timesheet.setTeam(teamdb);
-						List<Map<String, Object>> wherename = timesheetDAO.wherename(userdb);
-						for (int z = 0; z < wherename.size(); z++) {
-							String name = ((String) wherename.get(z).get("id"));
-							timesheet.setUserCreate(name);
-							
-							System.out.println(name);
-						}
-						
-						timesheetDAO.save(timesheet); 
 					}
-
-//				timecheckin = datedb +" "+ tchidb+":00";
-//				timecheckout = datedb +" "+ tchodb+":00";
-
-//				System.out.println(datedb);
-//				System.out.println(timecheckin);
-//				System.out.println(timecheckout);
-//				System.out.println(detaildb);
-//				System.out.println(teamdb);
-//				System.out.println(projectdb);
-//				System.out.println(userdb);
-
-					System.out.println("------------------------------------");
-
-				
-
 				}
-
+				System.out.println("------------------------------------");
 			}
+
+//			for (i = 0; i < date.length; i++) {
+//				if (i > 1) {
+//
+//					String tchidb;
+//					String tchodb;
+//					String detaildb;
+//					String teamdb;
+//					String projectdb;
+//					String functiondb;
+//					String userdb;
+//					String timecheckin, timecheckout;
+//					String ind, inm, iny, outd, outm, outy;
+//					String searchyear, searchmonth, searchday;
+//
+//					datedb2 = datedb;
+//					datedb = (date[i]);
+//
+////					tchidb = (tchi[i]);			
+////					tchodb = (tcho[i]);				
+//					detaildb = (detail[i]);
+//					teamdb = (team[i]);
+//					projectdb = (project[i]);
+//					functiondb = (function[i]);
+//					userdb = (user[i]);
+//
+//					ind = datedb.substring(0);
+//
+//					searchyear = datedb.substring(6, 10);
+//					searchmonth = datedb.substring(3, 5);
+//					searchday = datedb.substring(0, 2);
+//					String datesum = searchyear + "-" + searchmonth + "-" + searchday;
+//
+//					System.out.println("datedb2 : " + datedb2);
+//					System.out.println("datedb : " + datedb);
+//
+//					if (datedb.equals(datedb2)) {
+//						projectsum = projectdb;
+//						functionsum = functiondb;
+//						teamsum = teamdb;
+//						usersum = userdb;
+//						System.out.println("date«éÓ¡Ñ¹âÇéÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂ");
+//						if (detailsum == null) {
+//							detailsum = detaildb;
+//							System.out.println("detailsum : " + detailsum);
+//							System.out.println("projectsum : " + projectsum);
+//							System.out.println("functionsum : " + functionsum);
+//							System.out.println("teamsum : " + teamsum);
+//							System.out.println("usersum" + usersum);
+//						} else {
+//							detailsum = detailsum + " " + detaildb;
+//							System.out.println("detailsum : " + detailsum);
+//							
+//							
+//							Timesheet timesheet = new Timesheet();
+//					        Integer l = timesheetDAO.getMaxId() + 1;
+//					        timesheet.setId(l);
+//					        
+//							timesheet.setDescription(detailsum);
+//							
+//							
+//							List<Map<String, Object>> whereproject = timesheetDAO.whereproject(projectdb);
+//							if (whereproject.isEmpty()) {
+//								System.out.println("Nullproject");
+//
+//								Project project1 = new Project();
+//								project1.setProject_name(projectdb);
+//								project1.setDescription("");
+//								
+//								List<Map<String, Object>> wherename1 = timesheetDAO.wherename(userdb);
+//								for (int z = 0; z < wherename1.size(); z++) {
+//									String name = ((String) wherename1.get(z).get("id"));
+//									project1.setUser_create(name);
+//								}
+//											
+//								project1.setTime_create(DateUtil.getCurrentTime());
+//								projectDAO.save(project1);
+//
+//								ProjectFunction projectFunction = new ProjectFunction();
+//								projectFunction.setFunction_name(functiondb);
+//								projectFunction.setStatus("ACTIVE");
+//								
+//								List<Map<String, Object>> whereproject1 = timesheetDAO.whereproject(projectdb);
+//								for (int z = 0; z < whereproject1.size(); z++) {
+//									BigInteger nameproject = ((BigInteger) whereproject1.get(z).get("project_id"));
+//									int nameproject2 = nameproject.intValue();
+//									projectFunction.setProject_id(nameproject2);
+//								}
+//								
+//								List<Map<String, Object>> wherename2 = timesheetDAO.wherename(userdb);
+//								for (int z = 0; z < wherename2.size(); z++) {
+//									String name = ((String) wherename2.get(z).get("id"));
+//									projectFunction.setUser_create(name);
+//								}
+//								
+//								projectFunction.setTime_create(DateUtil.getCurrentTime());
+//								projectFunctionDAO.save(projectFunction);
+//
+//							} else {
+//								List<Map<String, Object>> whereproject3= timesheetDAO.whereproject(projectdb);
+//								for (int z = 0; z < whereproject.size(); z++) {
+//									BigInteger nameproject = ((BigInteger) whereproject3.get(z).get("project_id"));
+//									 int nameproject2 = nameproject.intValue();
+//									timesheet.setProject_id(nameproject2);
+//									System.out.println(nameproject);
+//								}
+//								
+//								List<Map<String, Object>> wherefunction= timesheetDAO.wherefunction(functiondb);
+//								for (int z = 0; z < wherefunction.size(); z++) {
+//									BigInteger namefunction = ((BigInteger) wherefunction.get(z).get("function_id"));
+//									 int namefunction2 = namefunction.intValue();
+//									timesheet.setFunction_id(namefunction2);
+//									System.out.println(namefunction);
+//								}
+//							}
+//							
+//							
+//							
+//
+//							timesheet.setStatus("W");
+//							
+//							List<Map<String, Object>> whereworkhour = timesheetDAO.whereworkhour(searchyear, searchmonth,
+//									searchday);
+//							// System.out.println(whereworkhour);
+//							if (whereworkhour.isEmpty()) {
+//								String sdate = searchyear + "-" + searchmonth + "-" + searchday + " 08:30:00";
+//								String edate = searchyear + "-" + searchmonth + "-" + searchday + " 17:30:00";
+//								Timestamp startDate = Timestamp.valueOf(sdate);
+//								Timestamp endDate = Timestamp.valueOf(edate);
+//								timesheet.setTimeCheckIn(startDate);
+//								timesheet.setTimeCheckOut(endDate);
+//								// System.out.println(startDate);
+//								// System.out.println(endDate);
+//							} else {
+//								for (int wwh = 0; wwh < whereworkhour.size(); wwh++) {
+//
+//									char work_hours_type = ((char) whereworkhour.get(wwh).get("work_hours_type"));
+//									if (work_hours_type == '1') {
+//										Timestamp startDate = ((Timestamp) whereworkhour.get(wwh).get("work_hours_time_work"));
+//										timesheet.setTimeCheckIn(startDate);
+//										// System.out.println(startDate);
+//									} else if (work_hours_type == '2') {
+//										Timestamp endDate = ((Timestamp) whereworkhour.get(wwh).get("work_hours_time_work"));
+//										timesheet.setTimeCheckOut(endDate);
+//										// System.out.println(endDate);
+//									}
+//
+//								}
+//							}
+//							timesheet.setTimeCreate(DateUtil.getCurrentTime());
+//							timesheet.setTeam(teamdb);
+//							List<Map<String, Object>> wherename = timesheetDAO.wherename(userdb);
+//							for (int z = 0; z < wherename.size(); z++) {
+//								String name = ((String) wherename.get(z).get("id"));
+//								timesheet.setUserCreate(name);
+//								
+//								System.out.println(name);
+//							}
+//							
+//							//timesheetDAO.save(timesheet); 
+//						}
+//						
+//						
+//					} else {
+//						detailsum = null;
+//						projectsum = null;
+//						functionsum = null;
+//						teamsum = null;
+//						usersum = null;
+//						System.out.println("detail : " + detaildb);
+//						
+//						
+//						Timesheet timesheet = new Timesheet();
+//				        Integer l = timesheetDAO.getMaxId() + 1;
+//				        timesheet.setId(l);
+//				        
+//						timesheet.setDescription(detaildb);
+//						
+//						
+//						List<Map<String, Object>> whereproject = timesheetDAO.whereproject(projectdb);
+//						if (whereproject.isEmpty()) {
+//							System.out.println("Nullproject");
+//
+//							Project project1 = new Project();
+//							project1.setProject_name(projectdb);
+//							project1.setDescription("");
+//							
+//							List<Map<String, Object>> wherename1 = timesheetDAO.wherename(userdb);
+//							for (int z = 0; z < wherename1.size(); z++) {
+//								String name = ((String) wherename1.get(z).get("id"));
+//								project1.setUser_create(name);
+//							}
+//										
+//							project1.setTime_create(DateUtil.getCurrentTime());
+//							projectDAO.save(project1);
+//
+//							ProjectFunction projectFunction = new ProjectFunction();
+//							projectFunction.setFunction_name(functiondb);
+//							projectFunction.setStatus("ACTIVE");
+//							
+//							List<Map<String, Object>> whereproject1 = timesheetDAO.whereproject(projectdb);
+//							for (int z = 0; z < whereproject1.size(); z++) {
+//								BigInteger nameproject = ((BigInteger) whereproject1.get(z).get("project_id"));
+//								int nameproject2 = nameproject.intValue();
+//								projectFunction.setProject_id(nameproject2);
+//							}
+//							
+//							List<Map<String, Object>> wherename2 = timesheetDAO.wherename(userdb);
+//							for (int z = 0; z < wherename2.size(); z++) {
+//								String name = ((String) wherename2.get(z).get("id"));
+//								projectFunction.setUser_create(name);
+//							}
+//							
+//							projectFunction.setTime_create(DateUtil.getCurrentTime());
+//							projectFunctionDAO.save(projectFunction);
+//
+//						} else {
+//							List<Map<String, Object>> whereproject3= timesheetDAO.whereproject(projectdb);
+//							for (int z = 0; z < whereproject.size(); z++) {
+//								BigInteger nameproject = ((BigInteger) whereproject3.get(z).get("project_id"));
+//								 int nameproject2 = nameproject.intValue();
+//								timesheet.setProject_id(nameproject2);
+//								System.out.println(nameproject);
+//							}
+//							List<Map<String, Object>> wherefunction= timesheetDAO.wherefunction(functiondb);
+//							for (int z = 0; z < wherefunction.size(); z++) {
+//								BigInteger namefunction = ((BigInteger) wherefunction.get(z).get("function_id"));
+//								 int namefunction2 = namefunction.intValue();
+//								timesheet.setFunction_id(namefunction2);
+//								System.out.println(namefunction);
+//							}
+//						}
+//						
+//						
+//						
+//
+//						timesheet.setStatus("W");
+//						
+//						List<Map<String, Object>> whereworkhour = timesheetDAO.whereworkhour(searchyear, searchmonth,
+//								searchday);
+//						
+//						// System.out.println(whereworkhour);
+//						if (whereworkhour.isEmpty()) {
+//							String sdate = searchyear + "-" + searchmonth + "-" + searchday + " 08:30:00";
+//							String edate = searchyear + "-" + searchmonth + "-" + searchday + " 17:30:00";
+//							Timestamp startDate = Timestamp.valueOf(sdate);
+//							Timestamp endDate = Timestamp.valueOf(edate);
+//							timesheet.setTimeCheckIn(startDate);
+//							timesheet.setTimeCheckOut(endDate);
+//							// System.out.println(startDate);
+//							// System.out.println(endDate);
+//						} else if (whereworkhour.size()==1){
+//							char work_hours_type = ((char) whereworkhour.get(0).get("work_hours_type"));
+//							 //System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+//							if (work_hours_type == '1') {
+//								Timestamp startDate = ((Timestamp) whereworkhour.get(0).get("work_hours_time_work"));
+//								String edate = searchyear + "-" + searchmonth + "-" + searchday + " 17:30:00";
+//								Timestamp endDate = Timestamp.valueOf(edate);
+//								timesheet.setTimeCheckIn(startDate);
+//								timesheet.setTimeCheckOut(endDate);
+//								// System.out.println(startDate);
+//							} else if (work_hours_type == '2') {
+//								Timestamp endDate = ((Timestamp) whereworkhour.get(0).get("work_hours_time_work"));
+//								String sdate = searchyear + "-" + searchmonth + "-" + searchday + " 08:30:00";
+//								Timestamp startDate = Timestamp.valueOf(sdate);
+//								timesheet.setTimeCheckIn(startDate);
+//								timesheet.setTimeCheckOut(endDate);
+//								// System.out.println(endDate);
+//							}
+//						}else {
+//							for (int wwh = 0; wwh < whereworkhour.size(); wwh++) {
+//
+//								char work_hours_type = ((char) whereworkhour.get(wwh).get("work_hours_type"));
+//								if (work_hours_type == '1') {
+//									Timestamp startDate = ((Timestamp) whereworkhour.get(wwh).get("work_hours_time_work"));
+//									timesheet.setTimeCheckIn(startDate);
+//									// System.out.println(startDate);
+//								} else if (work_hours_type == '2') {
+//									Timestamp endDate = ((Timestamp) whereworkhour.get(wwh).get("work_hours_time_work"));
+//									timesheet.setTimeCheckOut(endDate);
+//									// System.out.println(endDate);
+//								}
+//
+//							}
+//						}
+//						timesheet.setTimeCreate(DateUtil.getCurrentTime());
+//						timesheet.setTeam(teamdb);
+//						List<Map<String, Object>> wherename = timesheetDAO.wherename(userdb);
+//						for (int z = 0; z < wherename.size(); z++) {
+//							String name = ((String) wherename.get(z).get("id"));
+//							timesheet.setUserCreate(name);
+//							
+//							System.out.println(name);
+//						}
+//						
+//						//timesheetDAO.save(timesheet); 
+//					}
+//
+////				timecheckin = datedb +" "+ tchidb+":00";
+////				timecheckout = datedb +" "+ tchodb+":00";
+//
+////				System.out.println(datedb);
+////				System.out.println(timecheckin);
+////				System.out.println(timecheckout);
+////				System.out.println(detaildb);
+////				System.out.println(teamdb);
+////				System.out.println(projectdb);
+////				System.out.println(userdb);
+//
+//					System.out.println("------------------------------------");
+//
+//				
+//
+//				}
+//
+//			}
 			// 3. Or you can use Java 8 forEach loop with lambda
 //	        System.out.println("\n\nIterating over Rows and Columns using Java 8 forEach with lambda\n");
 //	      
