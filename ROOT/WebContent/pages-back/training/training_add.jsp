@@ -61,7 +61,7 @@
 
 				<!-- Name -->
 				 <div class="form-group form-md-line-input">
-					<label class="col-md-3 control-label" for="form_control_1">Applicant test
+					<label class="col-md-3 control-label" for="form_control_1">Applicant test test02
 						:</label>
 					<div class="col-md-4 ">
 						<select class="bs-select form-control select2me  " name="name"
