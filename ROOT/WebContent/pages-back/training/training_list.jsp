@@ -82,7 +82,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-layers font-red"></i> 
-			<span class="caption-subject font-red sbold uppercase">My Training</span>
+			<span id="ss" class="caption-subject font-red sbold uppercase">My Training</span>
 		</div>
 		<div class="actions">
             <button type="button" class="btn btn-sm green-meadow" id="addLeave"
@@ -198,6 +198,14 @@
 				</table>
 			</div>
 			</div>
+			<script>
+			var x = "${onlineUser.roleId}";
+			if(x =="admin"){
+				document.getElementById("ss").innerHTML="Traning List for ${onlineUser.roleId}";
+				document.getElementById("train").innerHTML="Traning Manager";
+				
+			}
+			</script>
 <script>
 	function add() {
 		document.location = "Training_Add";

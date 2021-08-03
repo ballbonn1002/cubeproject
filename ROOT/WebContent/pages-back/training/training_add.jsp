@@ -64,7 +64,7 @@
 					
 						<select class="form-control" id="user" >
 						<c:forEach var="user" items="${userlist}">
-						<option value="${user.id}" selected>${user.name}</option>
+						<option value="${user.id}" selected>${user.name} - ${user.roleId} </option>
 						</c:forEach>
 					</select>
 					</div>
@@ -169,7 +169,17 @@
 	</form>
 	<!-- END FORM-->
 </div>
-
+<script>
+		  var x = "${onlineUser.roleId}";
+			if(x != "admin"){
+				document.getElementById("user").setAttribute("disabled",false);
+			} 
+			else{
+				document.getElementById("user").setAttribute("enabled",false);
+				document.getElementById("title").innerHTML="Add Training for Admin ";
+				document.getElementById("train").innerHTML="Traning Manager";
+			}
+</script>
 
 <script src="../assets/global/plugins/jquery.min.js"
 	type="text/javascript"></script>

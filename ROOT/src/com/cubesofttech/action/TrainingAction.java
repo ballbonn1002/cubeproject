@@ -209,7 +209,9 @@ public class TrainingAction extends ActionSupport {
 			Training Traininglist = trainingDAO.findById(x);
 			
 			request.setAttribute("Traininglist", Traininglist);
-
+			
+			List<User> userlist = userDAO.findAll();
+			request.setAttribute("userlist", userlist);
 			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e);

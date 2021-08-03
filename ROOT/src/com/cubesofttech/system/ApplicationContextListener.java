@@ -10,7 +10,7 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.log4j.Logger;
 
-import com.cubesofttech.mail.Mail;
+//import com.cubesofttech.mail.Mail;
 
 /**
  *
@@ -26,7 +26,7 @@ public class ApplicationContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent evt) {
         try {
 
-            Mail.initialize();
+//            Mail.initialize();
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -46,7 +46,7 @@ public class ApplicationContextListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent evt) {
         try {
             //IDGenerator.finalizeMap();
-            Mail.close();
+//            Mail.close();
 
         } catch (Exception ex) {
             ex.printStackTrace();

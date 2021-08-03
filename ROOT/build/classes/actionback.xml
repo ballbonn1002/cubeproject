@@ -3444,5 +3444,43 @@
 			<result name="success" type="tiles">user_salary_crud</result>
 			<result name="error">/index.jsp</result>
 		</action>
+		
+		<!-- Start training -->
+
+		<action name="Training_list"
+			class="com.cubesofttech.action.TrainingAction" method="training_list">
+			<result name="success" type="tiles">training_list</result>
+			<result name="error">/index.jsp</result>
+		</action>
+
+		<action name="Training_Add"
+			class="com.cubesofttech.action.TrainingAction" method="training_add">
+			<result name="success" type="tiles">training_add</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="Training_Save"
+			class="com.cubesofttech.action.TrainingAction" method="training_save">
+			<result name="success" type="tiles">training_list</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="Training_Edit"
+			class="com.cubesofttech.action.TrainingAction" method="training_view">
+			<result name="success" type="tiles">training_edit</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="Training_EditSave"
+			class="com.cubesofttech.action.TrainingAction" method="training_edit">
+			
+			<result name="success" type="tiles">training_list</result>
+			<result name="error">/index.jsp</result>
+		</action>
+
+		<action name="Training_Del"
+			class="com.cubesofttech.action.TrainingAction"
+			method="training_delete">
+			<result name="success" type="tiles">training_list</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<!-- End training -->
 	</package>
 </struts>

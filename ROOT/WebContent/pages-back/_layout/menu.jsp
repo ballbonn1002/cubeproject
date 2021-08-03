@@ -234,11 +234,7 @@
 
 				<li class="nav-item"><a href="Training_list" class="nav-link">
 						<!-- link to "My Training" page --> <i class="fa fa-edit"></i> <!-- add icon -->
-						<span class="title">My Training</span>
-				</a></li>
-
-				<li class="nav-item"><a href="Training_Add" class="nav-link">
-						<i class="fa fa-edit"></i> <span class="title">Training Add</span>
+						<span id="train" class="title">My Training</span>
 				</a></li>
 
 				<li class="nav-item"><a href="openFeedCRUD" class="nav-link">
