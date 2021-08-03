@@ -227,19 +227,27 @@
 				<li class="nav-item"><a href="Duplicate_Workhour"
 					class="nav-link"> <i class="fa fa-clock-o"></i> <span
 						class="title">Duplicate WorkHour</span></a></li>
-						
-				<li class="nav-item"><a
-		href="job_site_list" class="nav-link"> <i
-			class="fa fa-edit"></i> <span class="title">Job Site</span></a></li>
-			
-				<li class="nav-item">
-			<a href="openFeedCRUD" class="nav-link"> <i class="fa fa-rss"></i> 
-			<span class="title">Feed Manage</span>
-			</a></li>
-			
+
+				<li class="nav-item"><a href="job_site_list" class="nav-link">
+						<i class="fa fa-edit"></i> <span class="title">Job Site</span>
+				</a></li>
+
+				<li class="nav-item"><a href="Training_list" class="nav-link">
+						<!-- link to "My Training" page --> <i class="fa fa-edit"></i> <!-- add icon -->
+						<span class="title">My Training</span>
+				</a></li>
+
+				<li class="nav-item"><a href="Training_Add" class="nav-link">
+						<i class="fa fa-edit"></i> <span class="title">Training Add</span>
+				</a></li>
+
+				<li class="nav-item"><a href="openFeedCRUD" class="nav-link">
+						<i class="fa fa-rss"></i> <span class="title">Feed Manage</span>
+				</a></li>
+
 			</ul></li>
-			
-	
+
+
 	</perm:permission>
 
 	<perm:permission object="user.view">
@@ -255,14 +263,15 @@
 		<li class="nav-item"><a href="role-list" class="nav-link"> <i
 				class="fa fa-users"></i> <span class="title">Role management</span></a></li>
 	</perm:permission>
-	
-<!-- 	<li class="nav-item"><a href="user-salary" class="nav-link"> <i
+
+	<!-- 	<li class="nav-item"><a href="user-salary" class="nav-link"> <i
 				class="fa fa-money"></i> <span class="title">User Salary</span></a></li> -->
 	<perm:permission object="role.view">
-	<li class="nav-item"><a href="user-salary" class="nav-link"> <i
-				class="fa fa-user"></i> <span class="title">User salary</span></a></li>
+		<li class="nav-item"><a href="user-salary" class="nav-link">
+				<i class="fa fa-user"></i> <span class="title">User salary</span>
+		</a></li>
 	</perm:permission>
-				
+
 	<perm:permission object="article.view">
 		<li class="heading">
 			<h3 class="uppercase">Article</h3>
