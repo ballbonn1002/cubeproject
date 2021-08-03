@@ -15,6 +15,7 @@ import com.cubesofttech.dao.TrainingDAO;
 import com.cubesofttech.model.Jobsite;
 import com.cubesofttech.model.Training;
 import com.cubesofttech.model.TravelList;
+import com.cubesofttech.model.User;
 import com.cubesofttech.util.DateUtil;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -36,7 +37,8 @@ public class TrainingAction extends ActionSupport {
 		try {
 			List<Map<String, Object>> Traininglist = trainingDAO.findAll();
 			request.setAttribute("Traininglist", Traininglist);
-
+			List<User> userlist = userDAO.findAll();
+			request.setAttribute("userlist", userlist);
 			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e);

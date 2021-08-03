@@ -44,10 +44,8 @@
 <div class="portlet light">
 	<div class="portlet-title">
 		<div class="caption">
-			<i class="fa fa-paperclip font-red"></i> <span id="title"
-				class="caption-subject font-red sbold uppercase">Add My
-				Training</span> <input type="hidden" name="actionpage" id="actionpage"
-				value="${action}">
+			<i class="fa fa-paperclip font-red"></i> <span id="title" class="caption-subject font-red sbold uppercase">Add My Training</span> 
+				<input type="hidden" name="actionpage" id="actionpage" value="${action}">
 		</div>
 		<div class="actions">
 			<a class="btn  btn-icon-only btn-default fullscreen"
@@ -60,43 +58,15 @@
 			<div class="form-body">
 
 				<!-- Name -->
-				 <div class="form-group form-md-line-input">
-					<label class="col-md-3 control-label" for="form_control_1">Applicant test test02
-						:</label>
+				 <div class="form-group form-md-input">
+					<label class="col-md-3 control-label">Applicant :</label>
 					<div class="col-md-4 ">
-						<select class="bs-select form-control select2me  " name="name"
-							id="userId1" onchange="s(this);">
-							<optgroup label="Enable">
-								<c:forEach var="user" items="${userseq}">
-
-									<c:if test="${user.enable == 1 }">
-										<c:if test="${userSelect == nulll }">
-											<option value="${user.id}"
-												<c:if test="${user.id eq onlineUser.id}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
-										</c:if>
-										<c:if test="${userSelect != nulll }">
-											<option value="${userSelect}"
-												<c:if test="${user.id eq userSelect}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
-										</c:if>
-									</c:if>
-								</c:forEach>
-							</optgroup>
-							<optgroup label="Disable">
-								<c:forEach var="user" items="${userseq}">
-
-									<c:if test="${user.enable == 0 }">
-										<c:if test="${userSelect == nulll }">
-											<option value="${user.id}"
-												<c:if test="${user.id eq onlineUser.id}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
-										</c:if>
-										<c:if test="${userSelect != nulll }">
-											<option value="${userSelect}"
-												<c:if test="${user.id eq userSelect}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
-										</c:if>
-									</c:if>
-								</c:forEach>
-							</optgroup>
-						</select>
+					
+						<select class="form-control" id="user" >
+						<c:forEach var="user" items="${userlist}">
+						<option value="${user.id}" selected>${user.name}</option>
+						</c:forEach>
+					</select>
 					</div>
 				</div> 
 
