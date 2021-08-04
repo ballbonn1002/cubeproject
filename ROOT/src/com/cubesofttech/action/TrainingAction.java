@@ -223,6 +223,19 @@ public class TrainingAction extends ActionSupport {
 	
 	public String training_list() {
 		try {	
+			String x = request.getParameter("Id");
+			List<Map<String, Object>> Traininglist = trainingDAO.findAllById(x);
+			request.setAttribute("Traininglist", Traininglist);
+			System.out.println(Traininglist);
+			return SUCCESS;
+		} catch (Exception e) {
+			log.error(e);
+			return ERROR;
+		}
+
+	}
+	public String training_Alllist() {
+		try {
 			List<Map<String, Object>> Traininglist = trainingDAO.findAll();
 			request.setAttribute("Traininglist", Traininglist);
 			System.out.println(Traininglist);

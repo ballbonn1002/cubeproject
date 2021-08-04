@@ -201,14 +201,7 @@
 				</table>
 			</div>
 			</div>
-			<script>
-			var x = "${onlineUser.roleId}";
-			if(x =="admin"){
-				document.getElementById("ss").innerHTML="Traning List for ${onlineUser.roleId}";
-				document.getElementById("train").innerHTML="Traning Manager";
-				
-			}
-			</script>
+			
 <script>
 	function add() {
 		document.location = "Training_Add";

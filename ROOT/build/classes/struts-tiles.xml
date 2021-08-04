@@ -1329,16 +1329,24 @@
 	
 	
 	<!-- Training -->
+	<definition name="training_list_admin" extends="baseLayout">
+		<put-attribute name="title" value="Training_list_admin" />
+		<put-attribute name="body"
+			value="/pages-back/training/training_list_admin.jsp" />
+	</definition>
+	
 	<definition name="training_list" extends="baseLayout">
-		<put-attribute name="title" value="Training_List" />
+		<put-attribute name="title" value="Training_list" />
 		<put-attribute name="body"
 			value="/pages-back/training/training_list.jsp" />
 	</definition>
+	
 	<definition name="training_add" extends="baseLayout">
 		<put-attribute name="title" value="Training_Add" />
 		<put-attribute name="body"
 			value="/pages-back/training/training_add.jsp" />
 	</definition>
+	
 	<definition name="training_edit" extends="baseLayout">
 		<put-attribute name="title" value="Training_Edit" />
 		<put-attribute name="body"

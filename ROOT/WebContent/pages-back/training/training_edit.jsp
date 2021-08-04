@@ -48,8 +48,7 @@
 		<div class="portlet-title">
 			<div class="caption">
 				<i class="fa fa-paperclip font-red"></i> <span id="title"
-					class="caption-subject font-red sbold uppercase">Edit My
-					Training</span> <input type="hidden" name="actionpage" id="actionpage"
+					class="caption-subject font-red sbold uppercase">Edit My Training</span> <input type="hidden" name="actionpage" id="actionpage"
 					value="${action}">
 			</div>
 			<div class="actions">
@@ -62,57 +61,12 @@
 			<form method="post" class="form-horizontal">
 
 				<div class="form-body">
-
 					<!-- Name -->
-					<%-- <div class="form-group form-md-line-input">
-					<label class="col-md-3 control-label" for="form_control_1">Applicant
-						:</label>
-					<div class="col-md-4 ">
-						<select class="bs-select form-control select2me  " name="name"
-							id="userId1" onchange="s(this);">
-							<optgroup label="Enable">
-								<c:forEach var="user" items="${userseq}">
-
-									<c:if test="${user.enable == 1 }">
-										<c:if test="${userSelect == nulll }">
-											<option value="${user.id}"
-												<c:if test="${user.id eq onlineUser.id}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
-										</c:if>
-										<c:if test="${userSelect != nulll }">
-											<option value="${userSelect}"
-												<c:if test="${user.id eq userSelect}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
-										</c:if>
-									</c:if>
-								</c:forEach>
-							</optgroup>
-							<optgroup label="Disable">
-								<c:forEach var="user" items="${userseq}">
-
-									<c:if test="${user.enable == 0 }">
-										<c:if test="${userSelect == nulll }">
-											<option value="${user.id}"
-												<c:if test="${user.id eq onlineUser.id}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
-										</c:if>
-										<c:if test="${userSelect != nulll }">
-											<option value="${userSelect}"
-												<c:if test="${user.id eq userSelect}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
-										</c:if>
-									</c:if>
-								</c:forEach>
-							</optgroup>
-						</select>
-					</div>
-				</div> --%>
-
 					<div class="form-group" >
 						<label class="col-md-3 control-label">Name : </label>
 						<div class="col-md-6">
-						<select class="form-control" id="user" >
-						<c:forEach var="user" items="${userlist}">
-						<option value="${user.id}" selected>${user.name} - ${user.roleId} </option>
-						</c:forEach>
-					</select>
-					
+						<input id="name" type="text" class="form-control"
+								value="${Traininglist.user_id}" disabled>
 						</div>
 					</div>
 					<!-- End Name -->
@@ -216,17 +170,7 @@
 		<!-- END FORM-->
 	</div>
 	
-<script>
-		  var x = "${onlineUser.roleId}";
-			if(x != "admin"){
-				document.getElementById("user").setAttribute("disabled",false);
-			} 
-			else{
-				document.getElementById("user").setAttribute("enabled",false);
-				document.getElementById("title").innerHTML="Edit Training for Admin ";
-				document.getElementById("train").innerHTML="Traning Manager";
-			}
-</script>
+
 <script src="../assets/global/plugins/jquery.min.js"
 	type="text/javascript"></script>
 <script>

@@ -27,7 +27,24 @@ public class TrainingDAOImpl implements TrainingDAO {
 
 		return train;
 	}
+@Override
+	public List<Map<String, Object>> findAllById(String userid) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
 
+		List<Map<String, Object>> userlist = null;
+		try {
+			String sql = "SELECT * FROM training WHERE user_id= '"+userid+"'";
+
+			 System.out.println("SQL: " + sql);
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			userlist = query.list();
+		} catch (Exception e) {
+			// Log.debug("Method findAll in [FaqDAOImpl] Error!");
+			e.printStackTrace();
+		}
+		return userlist;
+	}
 	@Override
 	public List<Map<String, Object>> findAll() throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();

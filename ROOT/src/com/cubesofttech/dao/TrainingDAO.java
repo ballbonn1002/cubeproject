@@ -38,4 +38,7 @@ public interface TrainingDAO {
 	public void delete(Training train) throws Exception;
 
 	public List<Training> searchBycolumn(String column, String keyword) throws Exception;
+	
+	public List<Map<String, Object>> findAllById(String userid) throws Exception ;
+
 }

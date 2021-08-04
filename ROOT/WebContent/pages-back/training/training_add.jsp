@@ -180,12 +180,7 @@
 	</form>
 	<!-- END FORM-->
 </div>
-<script>
-		  var x = "${onlineUser.roleId}";
-			if(x == "admin"){
-				document.getElementById("title").innerHTML="Add Training for Admin ";
-			} 
-</script>
+
 
 <script src="../assets/global/plugins/jquery.min.js"
 	type="text/javascript"></script>
