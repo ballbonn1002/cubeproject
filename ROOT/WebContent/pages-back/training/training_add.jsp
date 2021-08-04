@@ -1,6 +1,8 @@
 <%@page import="org.apache.velocity.runtime.directive.Foreach"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+<%@ taglib uri="/WEB-INF/tlds/permission.tld" prefix="perm"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -58,24 +60,33 @@
 			<div class="form-body">
 
 				<!-- Name -->
+				
 				 <div class="form-group form-md-input">
 					<label class="col-md-3 control-label">Applicant :</label>
 					<div class="col-md-4 ">
+					<perm:permission object="training.view">
 					
-						<select class="form-control" id="user" >
+						<select class="form-control" id="name" disabled >
+						<option value="${onlineUser.id}" selected>${onlineUser.name} - ${onlineUser.roleId} </option>
+						
+					</select>
+					</perm:permission>
+					<perm:permission object="trainingAdmin.view">
+						<select class="form-control" id="name" >
 						<c:forEach var="user" items="${userlist}">
 						<option value="${user.id}" selected>${user.name} - ${user.roleId} </option>
 						</c:forEach>
 					</select>
+					</perm:permission>
 					</div>
 				</div> 
 
-				<div class="form-group">
+				<!-- <div class="form-group">
 					<label class="col-md-3 control-label">Name :</label>
 					<div class="col-md-6">
 						<input id="user" type="text" class="form-control" placeholder=" ">
 					</div>
-				</div>
+				</div> -->
 				<!-- End Name -->
 				<!-- Lecturer: -->
 				<div class="form-group">
@@ -171,14 +182,9 @@
 </div>
 <script>
 		  var x = "${onlineUser.roleId}";
-			if(x != "admin"){
-				document.getElementById("user").setAttribute("disabled",false);
-			} 
-			else{
-				document.getElementById("user").setAttribute("enabled",false);
+			if(x == "admin"){
 				document.getElementById("title").innerHTML="Add Training for Admin ";
-				document.getElementById("train").innerHTML="Traning Manager";
-			}
+			} 
 </script>
 
 <script src="../assets/global/plugins/jquery.min.js"
@@ -395,7 +401,7 @@ function checkamount() {
 <script>
 
 	function save() {	
-		var name = document.getElementById('user').value;
+		var name = document.getElementById('name').value;
 		var lecturer = document.getElementById('lecturer').value;
 		var t_tile = document.getElementById('t_title').value;
 		var t_hour = document.getElementById('t_Hour').value;
@@ -403,6 +409,7 @@ function checkamount() {
 		var end_date = document.getElementById('date_to').value;
 		var location = document.getElementById('location').value;
 		var description = document.getElementById('description').value;
+		var usercreate = "${onlineUser.id}";
 		
 		console.log(name);
 		console.log(lecturer);
@@ -428,7 +435,7 @@ function checkamount() {
 							"location" : location,
 							"detail" : description,
 							"user_update" : name,
-							"user_create":	name,
+							"user_create":	usercreate,
 							
 							
 						},

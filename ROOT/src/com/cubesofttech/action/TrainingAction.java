@@ -105,13 +105,14 @@ public class TrainingAction extends ActionSupport {
 //			train.setEnd_date(DateUtil.getCurrentTime());
 			
 
-			String user_update = request.getParameter("user_update");
+			String user_update = request.getParameter("user_create");
 			train.setUser_update(user_update);
 			System.out.println("user_update " + user_update);
 			train.setTime_create(DateUtil.getCurrentTime());
 
 			String user_create = request.getParameter("user_create");
-			train.setUser_update(user_create);
+			System.out.println(user_create);
+			train.setUser_create(user_create);
 			System.out.println("user_create " + user_create);
 			train.setTime_update(DateUtil.getCurrentTime());
 

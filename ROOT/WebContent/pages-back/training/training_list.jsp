@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib uri="/WEB-INF/tlds/permission.tld" prefix="perm"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -184,17 +185,19 @@
 										href="Training_Edit?trainingid=${train.trainingid}"
 										title="edit training">
 										<i class="fa fa-edit"></i>
-									</a>															<!-- icon edit -->
+									</a>					<!-- icon edit -->
 									<a class="btn circle btn-outline btn-sm sbold red"
 										<%-- href="TrainDelete?id=${train.id}" --%>
 										onclick="del(${train.trainingid});"
 										title="delete training" >
 										<i class="fa fa-trash"></i>
-									</a>															<!-- icon delete -->
+									</a>	
+																							<!-- icon delete -->
 								</td>
 							</tr>
 						</c:forEach>
 						</form>
+					
 				</table>
 			</div>
 			</div>
