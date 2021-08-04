@@ -1335,10 +1335,10 @@
 			value="/pages-back/training/training_list_admin.jsp" />
 	</definition>
 	
-	<definition name="training_list_user" extends="baseLayout">
-		<put-attribute name="title" value="Training_list_user" />
+	<definition name="training_list" extends="baseLayout">
+		<put-attribute name="title" value="Training_list" />
 		<put-attribute name="body"
-			value="/pages-back/training/training_list_user.jsp" />
+			value="/pages-back/training/training_list.jsp" />
 	</definition>
 	
 	<definition name="training_add" extends="baseLayout">
