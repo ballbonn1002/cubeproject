@@ -21,6 +21,7 @@
 
 package com.cubesofttech.dao;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -38,4 +39,12 @@ public interface TrainingDAO {
 	public void delete(Training train) throws Exception;
 
 	public List<Training> searchBycolumn(String column, String keyword) throws Exception;
+	
+//	public Training searchbydate(String start, String end) throws Exception;
+
+//	public List<Map<String, Object>> searchbydate (String userLogin, String start, String end) throws Exception;
+
+	public List<Training> searchdate(String userLogin, Timestamp start, Timestamp end) throws Exception;; 
+
+
 }

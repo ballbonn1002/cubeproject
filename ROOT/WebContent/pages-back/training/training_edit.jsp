@@ -107,12 +107,8 @@
 					<div class="form-group" >
 						<label class="col-md-3 control-label">Name : </label>
 						<div class="col-md-6">
-						<select class="form-control" id="user" >
-						<c:forEach var="user" items="${userlist}">
-						<option value="${user.id}" selected>${user.name} - ${user.roleId} </option>
-						</c:forEach>
-					</select>
-					
+							<input id="user" type="text" class="form-control" placeholder=" "
+								value="${Traininglist.user_id}">
 						</div>
 					</div>
 					<!-- End Name -->
@@ -216,16 +212,13 @@
 		<!-- END FORM-->
 	</div>
 	
+
 <script>
-		  var x = "${onlineUser.roleId}";
-			if(x != "admin"){
-				document.getElementById("user").setAttribute("disabled",false);
-			} 
-			else{
-				document.getElementById("user").setAttribute("enabled",false);
-				document.getElementById("title").innerHTML="Edit Training for Admin ";
-				document.getElementById("train").innerHTML="Traning Manager";
-			}
+var x = ${Traininglist};
+for( var i = 1 ;i<x.lenght ;i++){
+	alert(x.user_id);
+}
+
 </script>
 <script src="../assets/global/plugins/jquery.min.js"
 	type="text/javascript"></script>

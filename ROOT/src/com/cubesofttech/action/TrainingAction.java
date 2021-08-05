@@ -2,19 +2,27 @@ package com.cubesofttech.action;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import com.cubesofttech.dao.UserDAO;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.cubesofttech.dao.UserDAO;
 import com.cubesofttech.dao.TrainingDAO;
-import com.cubesofttech.model.Jobsite;
+import com.cubesofttech.model.LeaveType;
+import com.cubesofttech.model.Leaves;
 import com.cubesofttech.model.Training;
-import com.cubesofttech.model.TravelList;
 import com.cubesofttech.model.User;
 import com.cubesofttech.util.DateUtil;
 import com.opensymphony.xwork2.ActionSupport;
@@ -37,8 +45,7 @@ public class TrainingAction extends ActionSupport {
 		try {
 			List<Map<String, Object>> Traininglist = trainingDAO.findAll();
 			request.setAttribute("Traininglist", Traininglist);
-			List<User> userlist = userDAO.findAll();
-			request.setAttribute("userlist", userlist);
+
 			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
@@ -105,14 +112,13 @@ public class TrainingAction extends ActionSupport {
 //			train.setEnd_date(DateUtil.getCurrentTime());
 			
 
-			String user_update = request.getParameter("user_create");
+			String user_update = request.getParameter("user_update");
 			train.setUser_update(user_update);
 			System.out.println("user_update " + user_update);
 			train.setTime_create(DateUtil.getCurrentTime());
 
 			String user_create = request.getParameter("user_create");
-			System.out.println(user_create);
-			train.setUser_create(user_create);
+			train.setUser_update(user_create);
 			System.out.println("user_create " + user_create);
 			train.setTime_update(DateUtil.getCurrentTime());
 
@@ -210,9 +216,7 @@ public class TrainingAction extends ActionSupport {
 			Training Traininglist = trainingDAO.findById(x);
 			
 			request.setAttribute("Traininglist", Traininglist);
-			
-			List<User> userlist = userDAO.findAll();
-			request.setAttribute("userlist", userlist);
+
 			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
@@ -223,7 +227,7 @@ public class TrainingAction extends ActionSupport {
 	
 	public String training_list() {
 		try {	
-			List<Map<String, Object>> Traininglist = trainingDAO.findAll();
+			List<Training> Traininglist = trainingDAO.searchdate(userLogin, start, end);
 			request.setAttribute("Traininglist", Traininglist);
 			System.out.println(Traininglist);
 			return SUCCESS;
@@ -232,6 +236,58 @@ public class TrainingAction extends ActionSupport {
 			return ERROR;
 		}
 
+	}
+	
+	public String searchdate() {
+		try {
+			User ur = new User();
+			String userLogin = null;
+			ur = (User) request.getSession().getAttribute("onlineUser");
+			userLogin = ur.getId();
+			
+			String listbyuser = request.getParameter("Id");
+
+			DateTimeFormatter date1 = DateTimeFormatter.ofPattern("01-01-yyyy");
+			LocalDate localDate = LocalDate.now();
+			String s = "00:00:00.0";
+			System.out.println("1");
+			
+			String start = request.getParameter("startdate");
+			String end = request.getParameter("enddate");
+			Timestamp start_date;
+			Timestamp end_date;
+			
+			System.out.println(start);
+			System.out.println(end);
+			
+			if (start == null && end == null) {
+				start_date = DateUtil.dateToTimestamp(date1.format(localDate), s);
+				end_date = DateUtil.changetoEndYear(date1.format(localDate));
+			} else {
+				start_date = DateUtil.dateFormatEdit(start);
+				end_date = DateUtil.dateFormatEdit(end);
+			}
+			
+			Date enddate = new Date(end_date.getTime());
+			request.setAttribute("enddate", enddate);
+			
+			if (userLogin != listbyuser) {
+				listbyuser = userLogin;
+			}
+			
+			
+			request.setAttribute("userLogin", userLogin);
+
+
+			
+			return SUCCESS;
+			
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR;
+		}
 	}
 
 }
