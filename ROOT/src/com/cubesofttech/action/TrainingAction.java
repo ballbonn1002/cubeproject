@@ -35,6 +35,8 @@ public class TrainingAction extends ActionSupport {
 
 	public String training_add() {
 		try {
+			List<Map<String, Object>> userseq = userDAO.sequense();
+			request.setAttribute("userseq", userseq);
 			List<Map<String, Object>> Traininglist = trainingDAO.findAll();
 			request.setAttribute("Traininglist", Traininglist);
 			List<User> userlist = userDAO.findAll();
