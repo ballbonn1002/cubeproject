@@ -103,7 +103,7 @@
 				title=""> </a>
 		</div>
 
-		<form action="searchdate" method="POST">
+		<form action="Searchdate" method="POST">
 			<div class="portlet-body">
 				<div class="row">
 					<div class="col-md-2"></div>
