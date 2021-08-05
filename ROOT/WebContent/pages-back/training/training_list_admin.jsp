@@ -103,8 +103,8 @@
 			</a> <a href="javascript:;" class="remove" data-original-title=""
 				title=""> </a>
 		</div>
-
-		<form action="searchfromto" method="POST">
+</div>
+		<form>
 			<div class="portlet-body">
 				<div class="row">
 					<div class="col-md-2"></div>
@@ -164,7 +164,6 @@
 						</tr>
 					</thead>
 					
-						<form action="mytraining_list" method="POST">
 						<c:forEach var="train" items="${Traininglist}" varStatus="status">
 							<tr>
 								<td style="vertical-align: middle;">${train.trainingid}</td>						<!-- training history ID -->
@@ -196,12 +195,13 @@
 								</td>
 							</tr>
 						</c:forEach>
-						</form>
 					
 				</table>
 			</div>
 			</div>
+			</form>
 			
+	</div>
 <script>
 	function add() {
 		document.location = "Training_Add";

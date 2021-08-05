@@ -3495,11 +3495,7 @@
 			<result name="error">/index.jsp</result>
 		</action>
 		
-		<action name="Searchdate"
-			class="com.cubesofttech.action.TrainingAction" method="searchdate">
-			<result name="success" type="tiles">training_list</result>
-			<result name="error">/index.jsp</result>
-		</action>
+		
 		
 	</package>
 </struts>
