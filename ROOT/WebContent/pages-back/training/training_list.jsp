@@ -102,7 +102,7 @@
 				title=""> </a>
 		</div>
 
-		<form action="searchfromto" method="POST">
+		<form>
 			<div class="portlet-body">
 				<div class="row">
 					<div class="col-md-2"></div>
@@ -137,7 +137,8 @@
 							</div>
 						</div>
 						<div class="col-md-4 col-xs-12" style="text-align: center">
-							<button id="search" type="submit" class="btn btn-sm blue-steel">
+							<button id="search" type="submit" class="btn btn-sm blue-steel"
+							href="Searchdate?trainingid=${onlineUser.id}">
 								<i class="fa fa-search"></i> Search
 							</button>
 						</div>

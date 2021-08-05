@@ -228,14 +228,9 @@ public class TrainingAction extends ActionSupport {
 	
 	public String searchdate() {
 		try {
-			User ur = new User();
-			String userLogin = null;
-			ur = (User) request.getSession().getAttribute("onlineUser");
-			userLogin = ur.getId();
-			
-			String listbyuser = request.getParameter("Id");
-
-			DateTimeFormatter date1 = DateTimeFormatter.ofPattern("01-01-yyyy");
+			String user = request.getParameter("trainingid");
+			System.out.println(user);
+			DateTimeFormatter date1 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 			LocalDate localDate = LocalDate.now();
 			String s = "00:00:00.0";
 			System.out.println("1");
@@ -256,17 +251,8 @@ public class TrainingAction extends ActionSupport {
 				end_date = DateUtil.dateFormatEdit(end);
 			}
 			
-			Date enddate = new Date(end_date.getTime());
-			request.setAttribute("enddate", enddate);
-			
-			if (userLogin != listbyuser) {
-				listbyuser = userLogin;
-			}
-			
-			
-			request.setAttribute("userLogin", userLogin);
-
-
+			List<Map<String, Object>> Traininglist = trainingDAO.findAllById(user);
+			request.setAttribute("Traininglist", Traininglist);
 			
 			return SUCCESS;
 			
