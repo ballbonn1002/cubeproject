@@ -65,7 +65,7 @@
 					<div class="form-group" >
 						<label class="col-md-3 control-label">Name : </label>
 						<div class="col-md-6">
-						<input id="name" type="text" class="form-control"
+						<input id="user" type="text" class="form-control"
 								value="${Traininglist.user_id}" disabled>
 						</div>
 					</div>
@@ -156,7 +156,7 @@
 		<div class="form-actions">
 			<div class="row">
 				<div class="col-xs-12" style="text-align: center;">
-					<button class="btn btn-sm blue-soft" onclick="save()">
+					<button class="btn btn-sm blue-soft" onclick="save(${Traininglist.trainingid})">
 						<i class="fa fa-send-o"></i> Submit
 					</button>
 					<button type="reset" class="btn btn-sm red-intense">
@@ -173,219 +173,13 @@
 
 <script src="../assets/global/plugins/jquery.min.js"
 	type="text/javascript"></script>
+
+
 <script>
-function check_char(elm){
-	
-	if(elm.value.match(/['"]/) && elm.value.length>0){
-		swal(
-				{
-					title : "ERROR",
-					text : "ห้ามใส่อักขระพิเศษ",
-					type : "error"
-				},
-				function() {
-					
-				});
-	
-	}
-}
-</script>
-<script>
-	var toISODate = (date) => {
-		return date.substring(6,10)+"-"+date.substring(3,5)+"-"+date.substring(0,2);
-	}
-	var toTimestamp = (date) => {
-		return Date.parse(toISODate(date));
-	}
-	var toDisplayDate = (date) => {
-		return date.toLocaleDateString('en-GB').replace('/','-').replace("/",'-');
-	}
-</script>
 
-
-
-<c:if test="${leave == null}">
-	<c:set var="leave" value="''" />
-</c:if>
-<script>
-    $(()=>{
-        var userList = ${userList};
-        var action = '${action}';
-        var user;
-        var manager;
-        if(action == 'Edit'){
-            var leave = ${leave};
-            user = leave.userId;
-            manager = leave.apprUserId;
-            $('form').attr('action','LeaveEdit_Do');
-        } else {
-            user = "${onlineUser.id}";
-            manager = "${onlineUser.managerId}";
-            $('form').attr('action','LeaveAdd_Do');
-        }
-        user = user.toLowerCase();
-        manager = manager.toLowerCase();
-
-        /* Date from leave calendar */
-        if('${date}' != '' && action=='Add'){
-            $('#date_from').val('${date}');
-			$('#date_to').val('${date}');
-            $('#amount').val(1);
-        }
-
-        /* Start Applicant/Approver List */
-        for(let i=0; i<userList.length; i++){
-            let id = userList[i].id.toLowerCase();
-            let name = userList[i].name;
-            let status = userList[i].enable;
-            let option = '<option value="'+id+'">'+name+'</option>';
-
-            if(status == '1'){
-                $('#u_enable').append(option);
-                $('#approver').append(option);
-            }
-            else{
-                $('#u_disable').append(option);
-            }
-        }
-        $('#user').val(user);
-        $('#user').trigger('change');
-        $('#approver').val(manager);
-        $('#approver').trigger('change');
-        $('#user').change(()=>{
-            let val = $('#user').val();
-            for(let i=0; i<userList.length; i++){
-                let user = userList[i].id.toLowerCase();
-                let mng = userList[i].manager;
-                if( user == val ){
-                    $('#approver').val(mng.toLowerCase());
-                    $('#approver').trigger('change');
-                }
-            }
-        })
-        /* End Applicant/Approver List */
-
-        /* Start Leave Edit init */
-        if(leave != null){
-			var noDay = leave.noDay.toString().split(".");
-			var amount = noDay[0];
-			var amount_sub = '0.'+noDay[1];
-			if(isNaN(amount_sub)){ amount_sub = 0;}
-			$('#date_from').val(toDisplayDate(new Date(leave.startDate)));
-			$('#date_to').val(toDisplayDate(new Date(leave.endDate)));
-			$('#amount').val(amount);
-			$('#amount_sub').val(amount_sub);
-			$('#description').html(leave.description);
-			$('#status').val(leave.leaveStatusId);
-			$('#reason').html(leave.reason);
-			$('#lt_'+leave.leaveTypeId).prop('checked','checked');
-			if(leave.halfDay != 0) { $('#hd_'+leave.halfDay).prop('checked','checked'); }
-        }
-        /* End Leave Edit init */
-    })
-</script>
-
-<!-- Start check authority -->
-<c:if test="${!userAuthority.contains('leave.approve')}">
-	<script>
-        $(()=>{
-            $('#status').attr('disabled',true);
-		    $('#status_hidden').val($('#status').val());
-		    $('#status').change(() => {
-			    $('#status_hidden').val($('#status').val());
-		    });
-        })
-	</script>
-</c:if>
-<c:if test="${!userAuthority.contains('leave.viewall')}">
-	<script>
-        $(()=>{
-            $('#user').attr('disabled',true);
-		    $('#user_hidden').val($('#user').val());
-		    $('#user').change(() => { $('#user_hidden').val($('#user').val()); });
-
-            $('#approver').attr('disabled',true);
-		    $('#approver_hidden').val($('#approver').val());
-		    $('#approver').change(() => { $('#approver_hidden').val($('#approver').val()); });
-        })
-	</script>
-</c:if>
-<!-- End check authority -->
-
-<!-- Start datepicker -->
-<c:if test="${holiday!=null}">
-	<script>
-		$(function(){
-			var holiday;
-			var holidays = [];
-			holiday = JSON.parse('${holiday}');
-
-			for(let i=0;i<holiday.length;i++){
-				let start = new Date(holiday[i].start);
-				let end = new Date(holiday[i].end);
-				for(let j=start; j<=end; j.setDate(j.getDate()+1)){
-					holidays.push(toDisplayDate(j));
-				}
-			}
+	function save(tId) {	
+		var trainId = tId;
 		
-			$('#date_from').datepicker({
-				format: 'dd-mm-yyyy',
-				daysOfWeekDisabled: [0,6],
-				datesDisabled: holidays ,
-				autoclose: true, 
-			});
-			$('#date_to').datepicker({
-				format: 'dd-mm-yyyy',
-				daysOfWeekDisabled: [0,6],
-				datesDisabled: holidays ,
-				autoclose: true, 
-			});
-
-			$('.input-daterange').change(function(){
-				let amount = 0;
-				let holiday_count = 0;
-				let from = new Date( toISODate( $('#date_from').val() ) );
-				let to = new Date( toISODate( $('#date_to').val() ) );
-				if(from == to){
-					amount = 1;
-				}
-				if(from < to){
-					amount = ((to-from)/86400000)+1;
-					for(let i=from; i<to; i.setDate(i.getDate()+1)){
-						for(let j=0; j<holidays.length; j++){
-							let holiday_ts = toTimestamp(holidays[j]);
-							if(i.getTime() == holiday_ts){
-								holiday_count++;
-							}
-						}
-						if(i.getDay() == '0' || i.getDay() == '6'){
-							holiday_count++;
-						}
-					}
-					amount -= holiday_count;
-				}
-				else{
-					amount = 1;
-				}
-				$('#amount').val(amount);
-			});
-		});
-	</script>
-</c:if>
-<!-- End datepicker -->
-
-<!--  alert leave type -->
-<script>
-function checkamount() {
-	if (document.getElementById('amount').value == "0"){
-		alert("Amount of day going to change to 1 day \n'Please Check Amount of Day Again'");
-	}
-}
-</script>
-<script>
-
-	function save() {	
-	
 		var name = document.getElementById('user').value;
 		
 		var lecturer = document.getElementById('lecturer').value;
@@ -393,15 +187,17 @@ function checkamount() {
 		var t_tile = document.getElementById('t_title').value;
 		
 		var t_hour = document.getElementById('t_Hour').value;
-		
+	
 		var start_date = document.getElementById('date_from').value;
 		
 		var end_date = document.getElementById('date_to').value;
 		
 		var location = document.getElementById('location').value;
-		
+	
 		var description = document.getElementById('description').value;
 		
+		var user_update = '${onlineUser.id}';
+		console.log(trainId);
 		console.log(name);
 		console.log(lecturer);
 		console.log(t_title);
@@ -417,7 +213,7 @@ function checkamount() {
 						method : "POST",
 						type : "JSON",
 						data : {
-							"trainingid" : ${Traininglist.trainingid},
+							"trainingid" : trainId,
 							"name" : name,
 							"lecturer" : lecturer,
 							"title" : t_tile,
@@ -426,10 +222,10 @@ function checkamount() {
 							"end_date" : end_date,
 							"location" : location,
 							"detail" : description,
-							"user_update" : name,
+							"user_update" : user_update,
 							
 							
-						},
+						}
 						
 
 					}) 
@@ -453,17 +249,4 @@ function checkamount() {
 		});
 	}
 	
-</script>
-<script>
-	$(document).ready(function() {
-
-		$('.select2me').select2();
-
-		/*     var date1 = new Date("06/22/2017");
-		 var date2 = new Date("06/23/2017"); 
-		 var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-		 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-		 alert(diffDays);  */
-
-	});
 </script>
