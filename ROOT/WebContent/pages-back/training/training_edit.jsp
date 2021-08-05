@@ -346,6 +346,6 @@
 		location.href = "Training_list?Id=${onlineUser.id}";
 	};
 	function cancle_admin() {
-		location.href = "Training_list_Admin";
+		location.href = "javascript:history.back(1)";
 	};
 </script>

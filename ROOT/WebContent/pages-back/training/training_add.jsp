@@ -596,7 +596,7 @@ function save_admin() {
 </script>
 <script>
 	function cancle_admin() {
-		location.href = 'Training_list_Admin';
+		location.href = 'javascript:history.back(1)';
 	};
 	
 </script>
