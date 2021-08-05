@@ -43,6 +43,8 @@ public class TrainingAction extends ActionSupport {
 
 	public String training_add() {
 		try {
+			List<Map<String, Object>> userseq = userDAO.sequense();
+			request.setAttribute("userseq", userseq);
 			List<Map<String, Object>> Traininglist = trainingDAO.findAll();
 			request.setAttribute("Traininglist", Traininglist);
 
@@ -56,8 +58,7 @@ public class TrainingAction extends ActionSupport {
 
 	public String training_save() {
 		try {
-
-			Date date = new Date();
+			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 			Training train = new Training();
 
 			String name = request.getParameter("name");
@@ -72,54 +73,27 @@ public class TrainingAction extends ActionSupport {
 			train.setHours(hours);
 			System.out.println("hours " + hours);
 
-//			System.out.println("testtttttt22222");
-//			String Date_Start = request.getParameter("start_date");
-//			
-//			System.out.println("333333");
-//			String Date_End = request.getParameter("end_date");
-//			
-//			System.out.println("3.55");
-//			java.util.Date utilDate = new SimpleDateFormat("dd-MM-yyyy").parse(Date_Start);
-//			java.util.Date start_date = new java.util.Date(utilDate.getTime());
-//			System.out.println("444444");
-//
-//			java.util.Date utilDate1 = new SimpleDateFormat("dd-MM-yyyy").parse(Date_End);
-//			java.util.Date end_date = new java.util.Date(utilDate1.getTime());
-//			System.out.println("55555");
-//			train.setStart_date(start_date);
-//			train.setEnd_date(end_date);
-
-			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-
-//			String S_dateInString = request.getParameter("start_date");
-//			System.out.println(request.getParameter("start_date")+" sdasdasd");
-//			java.sql.Date start_date = Time.valueOf(S_dateInString);
-//			System.out.println("333333");
-//			String E_dateInString = request.getParameter("end_date");
-//			java.sql.Date end_date = formatter.parse(E_dateInString);
-//			System.out.println("444444");
-
 			Date a = formatter.parse(request.getParameter("start_date"));
 			java.sql.Date start_date = new java.sql.Date(a.getTime());
 			System.out.println("start_date : " +request.getParameter("start_date"));
 			train.setStart_date(start_date);
+			
 			Date b = formatter.parse(request.getParameter("end_date"));
 			java.sql.Date end_date = new java.sql.Date(b.getTime());
 			System.out.println("end_date : " +request.getParameter("end_date"));
 			train.setEnd_date(end_date);
-			
-//			train.setStart_date(DateUtil.getCurrentTime());
-//			train.setEnd_date(DateUtil.getCurrentTime());
-			
 
 			String user_update = request.getParameter("user_update");
 			train.setUser_update(user_update);
 			System.out.println("user_update " + user_update);
+			
 			train.setTime_create(DateUtil.getCurrentTime());
 
 			String user_create = request.getParameter("user_create");
-			train.setUser_update(user_create);
+
+			train.setUser_create(user_create);
 			System.out.println("user_create " + user_create);
+			
 			train.setTime_update(DateUtil.getCurrentTime());
 
 			String location = request.getParameter("location");
@@ -172,27 +146,29 @@ public class TrainingAction extends ActionSupport {
 	public String training_edit() throws Exception {
 		System.out.println("zzz");
 		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 			String Id = request.getParameter("trainingid");
 			Integer idedit = Integer.valueOf(Id);
 			Training train = trainingDAO.findById(idedit);
-			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-			
-
-			System.out.println("11111");
 			
 			String title = request.getParameter("title");
 			String location = request.getParameter("location");
 			String lecturer = request.getParameter("lecturer");
 			String detail = request.getParameter("detail");
+			String user_update = request.getParameter("user_update");
+			
 			Date a = formatter.parse(request.getParameter("start_date"));
+			Date b = formatter.parse(request.getParameter("end_date"));
+			
 			java.sql.Date start_date = new java.sql.Date(a.getTime());
 			System.out.println("start_date : " +request.getParameter("start_date"));
 			train.setStart_date(start_date);
-			Date b = formatter.parse(request.getParameter("end_date"));
+			
 			java.sql.Date end_date = new java.sql.Date(b.getTime());
 			System.out.println("end_date : " +request.getParameter("end_date"));
 			train.setEnd_date(end_date);
-			String user_update = request.getParameter("user_update");
+			
+			
 			train.setTrainingid(idedit);
 			train.setTitle(title);
 			train.setLocation(location);
@@ -214,7 +190,6 @@ public class TrainingAction extends ActionSupport {
 			int x = Integer.parseInt(request.getParameter("trainingid"));
 			System.out.println(x);
 			Training Traininglist = trainingDAO.findById(x);
-			
 			request.setAttribute("Traininglist", Traininglist);
 
 			return SUCCESS;
@@ -227,6 +202,19 @@ public class TrainingAction extends ActionSupport {
 	
 	public String training_list() {
 		try {	
+			String x = request.getParameter("Id");
+			List<Map<String, Object>> Traininglist = trainingDAO.findAllById(x);
+			request.setAttribute("Traininglist", Traininglist);
+			System.out.println(Traininglist);
+			return SUCCESS;
+		} catch (Exception e) {
+			log.error(e);
+			return ERROR;
+		}
+
+	}
+	public String training_Alllist() {
+		try {
 			List<Map<String, Object>> Traininglist = trainingDAO.findAll();
 			request.setAttribute("Traininglist", Traininglist);
 			System.out.println(Traininglist);

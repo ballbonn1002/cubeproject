@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="/WEB-INF/tlds/permission.tld" prefix="perm"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -9,8 +9,7 @@
 	type="text/javascript"></script>
 <script src="../assets/pages/scripts/ui-sweetalert.min.js"
 	type="text/javascript"></script>
-<link
-	href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
+<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
 	rel="stylesheet" type="text/css" />
 
 <link rel="shortcut icon" href="favicon.ico" />
@@ -82,7 +81,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-layers font-red"></i> 
-			<span class="caption-subject font-red sbold uppercase">My Training</span>
+			<span id="ss" class="caption-subject font-red sbold uppercase">My Training</span>
 		</div>
 		<div class="actions">
             <button type="button" class="btn btn-sm green-meadow" id="addLeave"
@@ -103,7 +102,7 @@
 				title=""> </a>
 		</div>
 
-		<form action="Searchdate" method="POST">
+		<form action="searchfromto" method="POST">
 			<div class="portlet-body">
 				<div class="row">
 					<div class="col-md-2"></div>
@@ -118,7 +117,7 @@
 									<input type="text" class="form-control" name="startdate"
 										<c:choose>
                                             <c:when test="${startdate == null}">
-                                                value="<fmt:formatDate type="date" value="${now}" pattern="dd-MM-yyyy"/>"
+                                                value="<fmt:formatDate type="date" value="${now}" pattern="01-01-yyyy"/>"
                                             </c:when>
                                             <c:when test="${startdate != null}">
                                                     value="<fmt:formatDate type="date" value="${startdate}" pattern="dd-MM-yyyy"/>"
@@ -138,14 +137,13 @@
 							</div>
 						</div>
 						<div class="col-md-4 col-xs-12" style="text-align: center">
-							<button id="search" type="submit" class="btn btn-sm blue-steel" >
+							<button id="search" type="submit" class="btn btn-sm blue-steel">
 								<i class="fa fa-search"></i> Search
 							</button>
 						</div>
 					</div>
 					<div class="col-md-2"></div>
 				</div>
-				</form>
 
 
 
@@ -185,28 +183,26 @@
 										href="Training_Edit?trainingid=${train.trainingid}"
 										title="edit training">
 										<i class="fa fa-edit"></i>
-									</a>															<!-- icon edit -->
+									</a>					<!-- icon edit -->
 									<a class="btn circle btn-outline btn-sm sbold red"
 										<%-- href="TrainDelete?id=${train.id}" --%>
 										onclick="del(${train.trainingid});"
 										title="delete training" >
 										<i class="fa fa-trash"></i>
-									</a>															<!-- icon delete -->
+									</a>	
+																							<!-- icon delete -->
 								</td>
 							</tr>
 						</c:forEach>
 						</form>
+					
 				</table>
 			</div>
 			</div>
+			
 <script>
 	function add() {
 		document.location = "Training_Add";
-	}
-	
-	function search(){
-		console.log(startdate);
-		console.log(enddate);
 	}
 </script>
 <script>

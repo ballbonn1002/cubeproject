@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="/WEB-INF/tlds/permission.tld" prefix="perm"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="now" value="<%=new java.util.Date()%>" />
@@ -48,8 +49,7 @@
 		<div class="portlet-title">
 			<div class="caption">
 				<i class="fa fa-paperclip font-red"></i> <span id="title"
-					class="caption-subject font-red sbold uppercase">Edit My
-					Training</span> <input type="hidden" name="actionpage" id="actionpage"
+					class="caption-subject font-red sbold uppercase">Edit My Training</span> <input type="hidden" name="actionpage" id="actionpage"
 					value="${action}">
 			</div>
 			<div class="actions">
@@ -62,53 +62,13 @@
 			<form method="post" class="form-horizontal">
 
 				<div class="form-body">
-
 					<!-- Name -->
-					<%-- <div class="form-group form-md-line-input">
-					<label class="col-md-3 control-label" for="form_control_1">Applicant
-						:</label>
-					<div class="col-md-4 ">
-						<select class="bs-select form-control select2me  " name="name"
-							id="userId1" onchange="s(this);">
-							<optgroup label="Enable">
-								<c:forEach var="user" items="${userseq}">
-
-									<c:if test="${user.enable == 1 }">
-										<c:if test="${userSelect == nulll }">
-											<option value="${user.id}"
-												<c:if test="${user.id eq onlineUser.id}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
-										</c:if>
-										<c:if test="${userSelect != nulll }">
-											<option value="${userSelect}"
-												<c:if test="${user.id eq userSelect}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
-										</c:if>
-									</c:if>
-								</c:forEach>
-							</optgroup>
-							<optgroup label="Disable">
-								<c:forEach var="user" items="${userseq}">
-
-									<c:if test="${user.enable == 0 }">
-										<c:if test="${userSelect == nulll }">
-											<option value="${user.id}"
-												<c:if test="${user.id eq onlineUser.id}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
-										</c:if>
-										<c:if test="${userSelect != nulll }">
-											<option value="${userSelect}"
-												<c:if test="${user.id eq userSelect}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
-										</c:if>
-									</c:if>
-								</c:forEach>
-							</optgroup>
-						</select>
-					</div>
-				</div> --%>
-
 					<div class="form-group" >
 						<label class="col-md-3 control-label">Name : </label>
 						<div class="col-md-6">
-							<input id="user" type="text" class="form-control" placeholder=" "
-								value="${Traininglist.user_id}">
+
+						<input id="user" type="text" class="form-control"
+								value="${Traininglist.user_id}" disabled>
 						</div>
 					</div>
 					<!-- End Name -->
@@ -197,15 +157,30 @@
 		</div>
 		<div class="form-actions">
 			<div class="row">
-				<div class="col-xs-12" style="text-align: center;">
-					<button class="btn btn-sm blue-soft" onclick="save()">
-						<i class="fa fa-send-o"></i> Submit
-					</button>
-					<button type="reset" class="btn btn-sm red-intense">
-						<i class="fa fa-close"></i> Cancel
-					</button>
+
+			<div class="col-xs-12" style="text-align: center;">
+				<perm:permission object="training.view">
+				<div  class="btn btn-sm blue-soft" onclick="save()">
+					<i class="fa fa-send-o"></i> Submit
 				</div>
+				</perm:permission>
+				<perm:permission object="trainingAdmin.view">
+				<div  class="btn btn-sm blue-soft" onclick="save_admin()">
+					<i class="fa fa-send-o"></i> Submit
+				</div>
+				</perm:permission>
+				<perm:permission object="training.view">
+				<div  class="btn btn-sm red-intense" onclick="cancle()">
+					<i class="fa fa-close"></i> Cancel
+				</div>
+				</perm:permission>
+				<perm:permission object="trainingAdmin.view">
+				<div class="btn btn-sm red-intense" onclick="cancle_admin()">
+					<i class="fa fa-close"></i> Cancel
+				</div>
+				</perm:permission>
 			</div>
+		</div>
 		</div>
 
 		</form>
@@ -213,229 +188,83 @@
 	</div>
 	
 
-<script>
-var x = ${Traininglist};
-for( var i = 1 ;i<x.lenght ;i++){
-	alert(x.user_id);
-}
 
-</script>
 <script src="../assets/global/plugins/jquery.min.js"
 	type="text/javascript"></script>
-<script>
-function check_char(elm){
-	
-	if(elm.value.match(/['"]/) && elm.value.length>0){
-		swal(
-				{
-					title : "ERROR",
-					text : "ห้ามใส่อักขระพิเศษ",
-					type : "error"
-				},
-				function() {
-					
-				});
-	
-	}
-}
-</script>
-<script>
-	var toISODate = (date) => {
-		return date.substring(6,10)+"-"+date.substring(3,5)+"-"+date.substring(0,2);
-	}
-	var toTimestamp = (date) => {
-		return Date.parse(toISODate(date));
-	}
-	var toDisplayDate = (date) => {
-		return date.toLocaleDateString('en-GB').replace('/','-').replace("/",'-');
-	}
-</script>
 
 
-
-<c:if test="${leave == null}">
-	<c:set var="leave" value="''" />
-</c:if>
-<script>
-    $(()=>{
-        var userList = ${userList};
-        var action = '${action}';
-        var user;
-        var manager;
-        if(action == 'Edit'){
-            var leave = ${leave};
-            user = leave.userId;
-            manager = leave.apprUserId;
-            $('form').attr('action','LeaveEdit_Do');
-        } else {
-            user = "${onlineUser.id}";
-            manager = "${onlineUser.managerId}";
-            $('form').attr('action','LeaveAdd_Do');
-        }
-        user = user.toLowerCase();
-        manager = manager.toLowerCase();
-
-        /* Date from leave calendar */
-        if('${date}' != '' && action=='Add'){
-            $('#date_from').val('${date}');
-			$('#date_to').val('${date}');
-            $('#amount').val(1);
-        }
-
-        /* Start Applicant/Approver List */
-        for(let i=0; i<userList.length; i++){
-            let id = userList[i].id.toLowerCase();
-            let name = userList[i].name;
-            let status = userList[i].enable;
-            let option = '<option value="'+id+'">'+name+'</option>';
-
-            if(status == '1'){
-                $('#u_enable').append(option);
-                $('#approver').append(option);
-            }
-            else{
-                $('#u_disable').append(option);
-            }
-        }
-        $('#user').val(user);
-        $('#user').trigger('change');
-        $('#approver').val(manager);
-        $('#approver').trigger('change');
-        $('#user').change(()=>{
-            let val = $('#user').val();
-            for(let i=0; i<userList.length; i++){
-                let user = userList[i].id.toLowerCase();
-                let mng = userList[i].manager;
-                if( user == val ){
-                    $('#approver').val(mng.toLowerCase());
-                    $('#approver').trigger('change');
-                }
-            }
-        })
-        /* End Applicant/Approver List */
-
-        /* Start Leave Edit init */
-        if(leave != null){
-			var noDay = leave.noDay.toString().split(".");
-			var amount = noDay[0];
-			var amount_sub = '0.'+noDay[1];
-			if(isNaN(amount_sub)){ amount_sub = 0;}
-			$('#date_from').val(toDisplayDate(new Date(leave.startDate)));
-			$('#date_to').val(toDisplayDate(new Date(leave.endDate)));
-			$('#amount').val(amount);
-			$('#amount_sub').val(amount_sub);
-			$('#description').html(leave.description);
-			$('#status').val(leave.leaveStatusId);
-			$('#reason').html(leave.reason);
-			$('#lt_'+leave.leaveTypeId).prop('checked','checked');
-			if(leave.halfDay != 0) { $('#hd_'+leave.halfDay).prop('checked','checked'); }
-        }
-        /* End Leave Edit init */
-    })
-</script>
-
-<!-- Start check authority -->
-<c:if test="${!userAuthority.contains('leave.approve')}">
-	<script>
-        $(()=>{
-            $('#status').attr('disabled',true);
-		    $('#status_hidden').val($('#status').val());
-		    $('#status').change(() => {
-			    $('#status_hidden').val($('#status').val());
-		    });
-        })
-	</script>
-</c:if>
-<c:if test="${!userAuthority.contains('leave.viewall')}">
-	<script>
-        $(()=>{
-            $('#user').attr('disabled',true);
-		    $('#user_hidden').val($('#user').val());
-		    $('#user').change(() => { $('#user_hidden').val($('#user').val()); });
-
-            $('#approver').attr('disabled',true);
-		    $('#approver_hidden').val($('#approver').val());
-		    $('#approver').change(() => { $('#approver_hidden').val($('#approver').val()); });
-        })
-	</script>
-</c:if>
-<!-- End check authority -->
-
-<!-- Start datepicker -->
-<c:if test="${holiday!=null}">
-	<script>
-		$(function(){
-			var holiday;
-			var holidays = [];
-			holiday = JSON.parse('${holiday}');
-
-			for(let i=0;i<holiday.length;i++){
-				let start = new Date(holiday[i].start);
-				let end = new Date(holiday[i].end);
-				for(let j=start; j<=end; j.setDate(j.getDate()+1)){
-					holidays.push(toDisplayDate(j));
-				}
-			}
-		
-			$('#date_from').datepicker({
-				format: 'dd-mm-yyyy',
-				daysOfWeekDisabled: [0,6],
-				datesDisabled: holidays ,
-				autoclose: true, 
-			});
-			$('#date_to').datepicker({
-				format: 'dd-mm-yyyy',
-				daysOfWeekDisabled: [0,6],
-				datesDisabled: holidays ,
-				autoclose: true, 
-			});
-
-			$('.input-daterange').change(function(){
-				let amount = 0;
-				let holiday_count = 0;
-				let from = new Date( toISODate( $('#date_from').val() ) );
-				let to = new Date( toISODate( $('#date_to').val() ) );
-				if(from == to){
-					amount = 1;
-				}
-				if(from < to){
-					amount = ((to-from)/86400000)+1;
-					for(let i=from; i<to; i.setDate(i.getDate()+1)){
-						for(let j=0; j<holidays.length; j++){
-							let holiday_ts = toTimestamp(holidays[j]);
-							if(i.getTime() == holiday_ts){
-								holiday_count++;
-							}
-						}
-						if(i.getDay() == '0' || i.getDay() == '6'){
-							holiday_count++;
-						}
-					}
-					amount -= holiday_count;
-				}
-				else{
-					amount = 1;
-				}
-				$('#amount').val(amount);
-			});
-		});
-	</script>
-</c:if>
-<!-- End datepicker -->
-
-<!--  alert leave type -->
-<script>
-function checkamount() {
-	if (document.getElementById('amount').value == "0"){
-		alert("Amount of day going to change to 1 day \n'Please Check Amount of Day Again'");
-	}
-}
-</script>
 <script>
 
 	function save() {	
 	
-		var name = document.getElementById('user').value;
+		/* var name = document.getElementById('user').value; */
+		
+		var lecturer = document.getElementById('lecturer').value;
+		
+		var t_tile = document.getElementById('t_title').value;
+		
+		var t_hour = document.getElementById('t_Hour').value;
+	
+		var start_date = document.getElementById('date_from').value;
+		
+		var end_date = document.getElementById('date_to').value;
+		
+		var location = document.getElementById('location').value;
+	
+		var description = document.getElementById('description').value;
+		
+		var user_update = '${onlineUser.id}';
+		console.log(trainId);
+		console.log(name);
+		console.log(lecturer);
+		console.log(t_title);
+		console.log(t_hour);
+		console.log(date_from);
+		console.log(date_to);
+		console.log(location);
+		console.log(description);
+		
+ 		$
+					.ajax({
+						url : "Training_EditSave",
+						method : "POST",
+						type : "JSON",
+						data : {
+
+							"trainingid" : ${Traininglist.trainingid},
+							/* "name" : name, */
+							"lecturer" : lecturer,
+							"title" : t_tile,
+							"hours" : t_hour,
+							"start_date" : start_date,
+							"end_date" : end_date,
+							"location" : location,
+							"detail" : description,
+
+							"user_update" : "${onlineUser.id}",
+							
+							
+
+						},
+						success : function(data) {
+							
+							swal(
+									{
+										title : "Pass",
+										text : "Saved Succcess",
+										type : "success"
+									},
+									function() {
+										window.location.href = "Training_list?Id=${onlineUser.id}";
+									});
+						}
+
+					}) 
+		}
+	
+	function save_admin() {	
+		
+		/* var name = document.getElementById('user').value; */
 		
 		var lecturer = document.getElementById('lecturer').value;
 		
@@ -467,7 +296,7 @@ function checkamount() {
 						type : "JSON",
 						data : {
 							"trainingid" : ${Traininglist.trainingid},
-							"name" : name,
+							/* "name" : name, */
 							"lecturer" : lecturer,
 							"title" : t_tile,
 							"hours" : t_hour,
@@ -475,11 +304,22 @@ function checkamount() {
 							"end_date" : end_date,
 							"location" : location,
 							"detail" : description,
-							"user_update" : name,
+							"user_update" : "${onlineUser.id}",
 							
 							
 						},
-						
+						success : function(data) {
+							
+							swal(
+									{
+										title : "Pass",
+										text : "Saved Succcess",
+										type : "success"
+									},
+									function() {
+										window.location.href = "Training_list_Admin";
+									});
+						}
 
 					}) 
 		}
@@ -504,15 +344,10 @@ function checkamount() {
 	
 </script>
 <script>
-	$(document).ready(function() {
-
-		$('.select2me').select2();
-
-		/*     var date1 = new Date("06/22/2017");
-		 var date2 = new Date("06/23/2017"); 
-		 var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-		 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-		 alert(diffDays);  */
-
-	});
+	function cancle() {
+		location.href = "Training_list?Id=${onlineUser.id}";
+	};
+	function cancle_admin() {
+		location.href = "Training_list_Admin";
+	};
 </script>

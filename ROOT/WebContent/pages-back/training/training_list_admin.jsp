@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib uri="/WEB-INF/tlds/permission.tld" prefix="perm"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -82,7 +83,7 @@
 	<div class="portlet-title">
 		<div class="caption">
 			<i class="icon-layers font-red"></i> 
-			<span class="caption-subject font-red sbold uppercase">Training Management</span>
+			<span id="ss" class="caption-subject font-red sbold uppercase">Training Manager</span>
 		</div>
 		<div class="actions">
             <button type="button" class="btn btn-sm green-meadow" id="addLeave"
@@ -103,31 +104,48 @@
 				title=""> </a>
 		</div>
 
-		<form action="" method="POST">									<!-- add action -->
+		<form action="searchfromto" method="POST">
 			<div class="portlet-body">
 				<div class="row">
 					<div class="col-md-2"></div>
 					<div class="col-md-8">
-		 				<div class="col-md-2"></div>
-						<div class="col-md-6 col-xs-8">
-							<select class="form-control select2me" name="type" id="type"
-								style="padding-left: 0px !important; padding-right: 0px; margin-bottom: 5px">
-								<c:forEach var="jobsitelist" items="${jobsitelist}">
-									<option value="${jobsitelist.id_sitejob}"
-										id="${jobsitelist.leaveTypeId}">${jobsitelist.name_site}</option>		<!-- item list -->
-								</c:forEach>
-							</select>
+						<div class="col-md-2">
+							<label class="control-label">Date :</label>
 						</div>
-
+						<div class="col-md-6 col-xs-6">
+							<div class="form-group">
+								<div class="input-group input-large date-picker input-daterange"
+									data-date-format="dd-mm-yyyy">
+									<input type="text" class="form-control" name="startdate"
+										<c:choose>
+                                            <c:when test="${startdate == null}">
+                                                value="<fmt:formatDate type="date" value="${now}" pattern="01-01-yyyy"/>"
+                                            </c:when>
+                                            <c:when test="${startdate != null}">
+                                                    value="<fmt:formatDate type="date" value="${startdate}" pattern="dd-MM-yyyy"/>"
+                                            </c:when>
+                                        </c:choose>>
+									<span class="input-group-addon"> to </span> <input type="text"
+										class="form-control" name="enddate"
+										<c:choose>
+                                            <c:when test="${enddate == null}">
+                                                value="<fmt:formatDate type="date" value="${now}" pattern="dd-MM-yyyy"/>"
+                                            </c:when>
+                                            <c:when test="${enddate != null}">
+                                                value="<fmt:formatDate type="date" value="${enddate}" pattern="dd-MM-yyyy"/>"
+                                            </c:when>
+                                        </c:choose>>
+								</div>
+							</div>
+						</div>
 						<div class="col-md-4 col-xs-12" style="text-align: center">
-							<button id="search" type="submit" class="btn btn-sm blue-steel" onclick="search()">
+							<button id="search" type="submit" class="btn btn-sm blue-steel">
 								<i class="fa fa-search"></i> Search
 							</button>
 						</div>
 					</div>
 					<div class="col-md-2"></div>
 				</div>
-				</form>
 
 
 
@@ -167,28 +185,26 @@
 										href="Training_Edit?trainingid=${train.trainingid}"
 										title="edit training">
 										<i class="fa fa-edit"></i>
-									</a>															<!-- icon edit -->
+									</a>					<!-- icon edit -->
 									<a class="btn circle btn-outline btn-sm sbold red"
 										<%-- href="TrainDelete?id=${train.id}" --%>
 										onclick="del(${train.trainingid});"
 										title="delete training" >
 										<i class="fa fa-trash"></i>
-									</a>															<!-- icon delete -->
+									</a>	
+																							<!-- icon delete -->
 								</td>
 							</tr>
 						</c:forEach>
 						</form>
+					
 				</table>
 			</div>
 			</div>
+			
 <script>
 	function add() {
 		document.location = "Training_Add";
-	}
-	
-	function search(){
-		console.log(startdate);
-		console.log(enddate);
 	}
 </script>
 <script>

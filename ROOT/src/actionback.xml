@@ -3458,6 +3458,11 @@
 			<result name="success" type="tiles">training_list</result>
 			<result name="error">/index.jsp</result>
 		</action>
+		<action name="Training_list_Admin"
+			class="com.cubesofttech.action.TrainingAction" method="training_Alllist">
+			<result name="success" type="tiles">training_list_admin</result>
+			<result name="error">/index.jsp</result>
+		</action>
 
 		<action name="Training_Add"
 			class="com.cubesofttech.action.TrainingAction" method="training_add">
