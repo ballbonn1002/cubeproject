@@ -3496,6 +3496,5 @@
 			<result name="error">/index.jsp</result>
 		</action>
 		
-		<!-- End training -->
 	</package>
 </struts>

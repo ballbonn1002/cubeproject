@@ -227,7 +227,7 @@ public class TrainingAction extends ActionSupport {
 	
 	public String training_list() {
 		try {	
-			List<Training> Traininglist = trainingDAO.searchdate(userLogin, start, end);
+			List<Map<String, Object>> Traininglist = trainingDAO.findAll();
 			request.setAttribute("Traininglist", Traininglist);
 			System.out.println(Traininglist);
 			return SUCCESS;
