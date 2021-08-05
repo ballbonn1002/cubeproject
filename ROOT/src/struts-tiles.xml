@@ -1353,6 +1353,12 @@
 			value="/pages-back/training/training_edit.jsp" />
 	</definition>
 	
+	<definition name="training_list" extends="baseLayout">
+		<put-attribute name="title" value="Searchdate" />
+		<put-attribute name="body"
+			value="/pages-back/training/training_list.jsp" />
+	</definition>
+	
 	
 	<!-- END Training -->
 	

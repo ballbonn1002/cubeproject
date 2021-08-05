@@ -66,6 +66,7 @@
 					<div class="form-group" >
 						<label class="col-md-3 control-label">Name : </label>
 						<div class="col-md-6">
+
 						<input id="user" type="text" class="form-control"
 								value="${Traininglist.user_id}" disabled>
 						</div>
@@ -186,6 +187,7 @@
 		<!-- END FORM-->
 	</div>
 	
+
 
 <script src="../assets/global/plugins/jquery.min.js"
 	type="text/javascript"></script>

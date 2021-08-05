@@ -1,8 +1,6 @@
 <%@page import="org.apache.velocity.runtime.directive.Foreach"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
-<%@ taglib uri="/WEB-INF/tlds/permission.tld" prefix="perm"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -46,8 +44,10 @@
 <div class="portlet light">
 	<div class="portlet-title">
 		<div class="caption">
-			<i class="fa fa-paperclip font-red"></i> <span id="title" class="caption-subject font-red sbold uppercase">Add My Training</span> 
-				<input type="hidden" name="actionpage" id="actionpage" value="${action}">
+			<i class="fa fa-paperclip font-red"></i> <span id="title"
+				class="caption-subject font-red sbold uppercase">Add My
+				Training</span> <input type="hidden" name="actionpage" id="actionpage"
+				value="${action}">
 		</div>
 		<div class="actions">
 			<a class="btn  btn-icon-only btn-default fullscreen"
@@ -60,10 +60,11 @@
 			<div class="form-body">
 
 				<!-- Name -->
-				
-				 <div class="form-group form-md-input">
-					<label class="col-md-3 control-label">Applicant :</label>
+				 <div class="form-group form-md-line-input">
+					<label class="col-md-3 control-label" for="form_control_1">Applicant test
+						:</label>
 					<div class="col-md-4 ">
+
 					<perm:permission object="training.view">
 					
 						<select class="form-control" id="user" disabled >
@@ -120,12 +121,12 @@
 					
 				</div> 
 
-				<!-- <div class="form-group">
+				<div class="form-group">
 					<label class="col-md-3 control-label">Name :</label>
 					<div class="col-md-6">
 						<input id="user" type="text" class="form-control" placeholder=" ">
 					</div>
-				</div> -->
+				</div>
 				<!-- End Name -->
 				<!-- Lecturer: -->
 				<div class="form-group">

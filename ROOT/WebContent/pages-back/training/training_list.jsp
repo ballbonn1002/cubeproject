@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-	<%@ taglib uri="/WEB-INF/tlds/permission.tld" prefix="perm"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="/WEB-INF/tlds/permission.tld" prefix="perm"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -10,8 +9,7 @@
 	type="text/javascript"></script>
 <script src="../assets/pages/scripts/ui-sweetalert.min.js"
 	type="text/javascript"></script>
-<link
-	href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
+<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
 	rel="stylesheet" type="text/css" />
 
 <link rel="shortcut icon" href="favicon.ico" />
@@ -104,7 +102,7 @@
 				title=""> </a>
 		</div>
 
-		<form action="searchfromto" method="POST">
+		<form>
 			<div class="portlet-body">
 				<div class="row">
 					<div class="col-md-2"></div>
@@ -139,7 +137,8 @@
 							</div>
 						</div>
 						<div class="col-md-4 col-xs-12" style="text-align: center">
-							<button id="search" type="submit" class="btn btn-sm blue-steel">
+							<button id="search" type="submit" class="btn btn-sm blue-steel"
+							href="Searchdate?trainingid=${onlineUser.id}">
 								<i class="fa fa-search"></i> Search
 							</button>
 						</div>

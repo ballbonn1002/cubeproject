@@ -120,6 +120,7 @@
 	<li class="nav-item"><a href="myleave_list?Id=${onlineUser.id}"
 		class="nav-link"> <i class="fa fa-hospital-o"></i> <span
 			class="title">My leave</span></a></li>
+
 	<li class="nav-item"><a href="Training_list?Id=${onlineUser.id}" class="nav-link">
 			<!-- link to "My Training" page --> <i class="fa fa-edit"></i> <!-- add icon -->
 			<span class="title">My Training</span>
@@ -235,11 +236,15 @@
 				<li class="nav-item"><a href="job_site_list" class="nav-link">
 						<i class="fa fa-edit"></i> <span class="title">Job Site</span>
 				</a></li>
+
 				<li class="nav-item"><a href="Training_list_Admin" class="nav-link">
 						<!-- link to "My Training" page --> <i class="fa fa-edit"></i> <!-- add icon -->
 						<span class="title">Training Manager</span>
 				</a></li>
 
+				<!-- <li class="nav-item"><a href="Training_Add" class="nav-link">
+						<i class="fa fa-edit"></i> <span class="title">Training Add</span>
+				</a></li> -->
 
 				<li class="nav-item"><a href="openFeedCRUD" class="nav-link">
 						<i class="fa fa-rss"></i> <span class="title">Feed Manage</span>

@@ -2,19 +2,27 @@ package com.cubesofttech.action;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import com.cubesofttech.dao.UserDAO;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.cubesofttech.dao.UserDAO;
 import com.cubesofttech.dao.TrainingDAO;
-import com.cubesofttech.model.Jobsite;
+import com.cubesofttech.model.LeaveType;
+import com.cubesofttech.model.Leaves;
 import com.cubesofttech.model.Training;
-import com.cubesofttech.model.TravelList;
 import com.cubesofttech.model.User;
 import com.cubesofttech.util.DateUtil;
 import com.opensymphony.xwork2.ActionSupport;
@@ -39,8 +47,7 @@ public class TrainingAction extends ActionSupport {
 			request.setAttribute("userseq", userseq);
 			List<Map<String, Object>> Traininglist = trainingDAO.findAll();
 			request.setAttribute("Traininglist", Traininglist);
-			List<User> userlist = userDAO.findAll();
-			request.setAttribute("userlist", userlist);
+
 			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
@@ -76,13 +83,14 @@ public class TrainingAction extends ActionSupport {
 			System.out.println("end_date : " +request.getParameter("end_date"));
 			train.setEnd_date(end_date);
 
-			String user_update = request.getParameter("user_create");
+			String user_update = request.getParameter("user_update");
 			train.setUser_update(user_update);
 			System.out.println("user_update " + user_update);
 			
 			train.setTime_create(DateUtil.getCurrentTime());
 
 			String user_create = request.getParameter("user_create");
+
 			train.setUser_create(user_create);
 			System.out.println("user_create " + user_create);
 			
@@ -183,6 +191,7 @@ public class TrainingAction extends ActionSupport {
 			System.out.println(x);
 			Training Traininglist = trainingDAO.findById(x);
 			request.setAttribute("Traininglist", Traininglist);
+
 			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
@@ -215,6 +224,44 @@ public class TrainingAction extends ActionSupport {
 			return ERROR;
 		}
 
+	}
+	
+	public String searchdate() {
+		try {
+			String user = request.getParameter("trainingid");
+			System.out.println(user);
+			DateTimeFormatter date1 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			LocalDate localDate = LocalDate.now();
+			String s = "00:00:00.0";
+			System.out.println("1");
+			
+			String start = request.getParameter("startdate");
+			String end = request.getParameter("enddate");
+			Timestamp start_date;
+			Timestamp end_date;
+			
+			System.out.println(start);
+			System.out.println(end);
+			
+			if (start == null && end == null) {
+				start_date = DateUtil.dateToTimestamp(date1.format(localDate), s);
+				end_date = DateUtil.changetoEndYear(date1.format(localDate));
+			} else {
+				start_date = DateUtil.dateFormatEdit(start);
+				end_date = DateUtil.dateFormatEdit(end);
+			}
+			
+			List<Map<String, Object>> Traininglist = trainingDAO.findAllById(user);
+			request.setAttribute("Traininglist", Traininglist);
+			
+			return SUCCESS;
+			
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR;
+		}
 	}
 
 }
