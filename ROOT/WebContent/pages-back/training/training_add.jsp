@@ -66,19 +66,58 @@
 					<div class="col-md-4 ">
 					<perm:permission object="training.view">
 					
-						<select class="form-control" id="name" disabled >
+						<select class="form-control" id="user" disabled >
 						<option value="${onlineUser.id}" selected>${onlineUser.name} - ${onlineUser.roleId} </option>
 						
 					</select>
 					</perm:permission>
-					<perm:permission object="trainingAdmin.view">
-						<select class="form-control" id="name" >
+					
+						<%-- <select class="form-control"  >
 						<c:forEach var="user" items="${userlist}">
 						<option value="${user.id}" selected>${user.name} - ${user.roleId} </option>
 						</c:forEach>
-					</select>
+					</select> --%>
+					
+					<perm:permission object="trainingAdmin.view">
+					<select class="bs-select form-control select2me  " id="user" name="name"
+							id="userId1" onchange="s(this);">
+							<optgroup label="Enable">
+								<c:forEach var="user" items="${userseq}">
+
+									<c:if test="${user.enable == 1 }">
+										<c:if test="${userSelect == nulll }">
+											<option value="${user.id}"
+												<c:if test="${user.id eq onlineUser.id}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
+										</c:if>
+										<c:if test="${userSelect != nulll }">
+											<option value="${userSelect}"
+												<c:if test="${user.id eq userSelect}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
+										</c:if>
+									</c:if>
+								</c:forEach>
+							</optgroup>
+							<optgroup label="Disable">
+								<c:forEach var="user" items="${userseq}">
+
+									<c:if test="${user.enable == 0 }">
+										<c:if test="${userSelect == nulll }">
+											<option value="${user.id}"
+												<c:if test="${user.id eq onlineUser.id}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
+										</c:if>
+										<c:if test="${userSelect != nulll }">
+											<option value="${userSelect}"
+												<c:if test="${user.id eq userSelect}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
+										</c:if>
+									</c:if>
+								</c:forEach>
+							</optgroup>
+						</select>
 					</perm:permission>
+					
+					
 					</div>
+					
+					
 				</div> 
 
 				<!-- <div class="form-group">
@@ -167,12 +206,26 @@
 	<div class="form-actions">
 		<div class="row">
 			<div class="col-xs-12" style="text-align: center;">
-				<button class="btn btn-sm blue-soft" onclick="save()">
+				<perm:permission object="training.view">
+				<div  class="btn btn-sm blue-soft" onclick="save()">
 					<i class="fa fa-send-o"></i> Submit
-				</button>
-				<button type="reset" class="btn btn-sm red-intense">
+				</div>
+				</perm:permission>
+				<perm:permission object="trainingAdmin.view">
+				<div  class="btn btn-sm blue-soft" onclick="save_admin()">
+					<i class="fa fa-send-o"></i> Submit
+				</div>
+				</perm:permission>
+				<perm:permission object="training.view">
+				<div  class="btn btn-sm red-intense" onclick="cancle()">
 					<i class="fa fa-close"></i> Cancel
-				</button>
+				</div>
+				</perm:permission>
+				<perm:permission object="trainingAdmin.view">
+				<div class="btn btn-sm red-intense" onclick="cancle_admin()">
+					<i class="fa fa-close"></i> Cancel
+				</div>
+				</perm:permission>
 			</div>
 		</div>
 	</div>
@@ -395,60 +448,120 @@ function checkamount() {
 </script>
 <script>
 
-	function save() {	
-		var name = document.getElementById('name').value;
-		var lecturer = document.getElementById('lecturer').value;
-		var t_tile = document.getElementById('t_title').value;
-		var t_hour = document.getElementById('t_Hour').value;
-		var start_date = document.getElementById('date_from').value;
-		var end_date = document.getElementById('date_to').value;
-		var location = document.getElementById('location').value;
-		var description = document.getElementById('description').value;
-		var usercreate = "${onlineUser.id}";
-		
-		console.log(name);
-		console.log(lecturer);
-		console.log(t_title);
-		console.log(t_hour);
-		console.log(date_from);
-		console.log(date_to);
-		console.log(location);
-		console.log(description);
-		
- 		$
-					.ajax({
-						url : "Training_Save",
-						method : "POST",
-						type : "JSON",
-						data : {
-							"name" : name,
-							"lecturer" : lecturer,
-							"title" : t_tile,
-							"hours" : t_hour,
-							"start_date" : start_date,
-							"end_date" : end_date,
-							"location" : location,
-							"detail" : description,
-							"user_update" : name,
-							"user_create":	usercreate,
-							
-							
-						},
-						success : function(data) {
-							swal(
-									{
-										title : "Pass",
-										text : "Saved Succcess",
-										type : "success"
-									},
-									function() {
-										window.location.href = "Training_Add";
-									});
-						},
-
-					}) 
-		}
+function save() {	
+	var name = document.getElementById('user').value;
+	var lecturer = document.getElementById('lecturer').value;
+	var t_tile = document.getElementById('t_title').value;
+	var t_hour = document.getElementById('t_Hour').value;
+	var start_date = document.getElementById('date_from').value;
+	var end_date = document.getElementById('date_to').value;
+	var location = document.getElementById('location').value;
+	var description = document.getElementById('description').value;
 	
+	console.log(name);
+	console.log(lecturer);
+	console.log(t_title);
+	console.log(t_hour);
+	console.log(date_from);
+	console.log(date_to);
+	console.log(location);
+	console.log(description);
+	if (name == null || name == "" || start_date == null || start_date == "" || end_date == null || end_date == "") {
+	swal("Error!", "Required! Duration", "error");
+}
+	else{	
+		$
+				.ajax({
+					url : "Training_Save",
+					method : "POST",
+					type : "JSON",
+					data : {
+						"name" : name,
+						"lecturer" : lecturer,
+						"title" : t_tile,
+						"hours" : t_hour,
+						"start_date" : start_date,
+						"end_date" : end_date,
+						"location" : location,
+						"detail" : description,
+						"user_update" : "${onlineUser.id}",
+						"user_create":	"${onlineUser.id}",
+						
+						
+					},
+					success : function(data) {
+						
+						swal(
+								{
+									title : "Pass",
+									text : "Saved Succcess",
+									type : "success"
+								},
+								function() {
+									window.location.href = "Training_list?Id=${onlineUser.id}";
+								});
+					}
+
+				}) 
+	}
+}
+function save_admin() {	
+	var name = document.getElementById('user').value;
+	var lecturer = document.getElementById('lecturer').value;
+	var t_tile = document.getElementById('t_title').value;
+	var t_hour = document.getElementById('t_Hour').value;
+	var start_date = document.getElementById('date_from').value;
+	var end_date = document.getElementById('date_to').value;
+	var location = document.getElementById('location').value;
+	var description = document.getElementById('description').value;
+	
+	console.log(name);
+	console.log(lecturer);
+	console.log(t_title);
+	console.log(t_hour);
+	console.log(date_from);
+	console.log(date_to);
+	console.log(location);
+	console.log(description);
+	if (name == null || name == "" || start_date == null || start_date == "" || end_date == null || end_date == "") {
+	swal("Error!", "Required! Duration", "error");
+}
+	else{	
+		$
+				.ajax({
+					url : "Training_Save",
+					method : "POST",
+					type : "JSON",
+					data : {
+						"name" : name,
+						"lecturer" : lecturer,
+						"title" : t_tile,
+						"hours" : t_hour,
+						"start_date" : start_date,
+						"end_date" : end_date,
+						"location" : location,
+						"detail" : description,
+						"user_update" : "${onlineUser.id}",
+						"user_create":	"${onlineUser.id}",
+						
+						
+					},
+					success : function(data) {
+						
+						swal(
+								{
+									title : "Pass",
+									text : "Saved Succcess",
+									type : "success"
+								},
+								function() {
+									window.location.href = "Training_list_Admin";
+								});
+					}
+
+				}) 
+	}
+}
 	function s(sel) {
 		// alert(sel.value) ;
 		var userId = $('#userId1').val();
@@ -480,4 +593,16 @@ function checkamount() {
 		 alert(diffDays);  */
 
 	});
+</script>
+<script>
+	function cancle_admin() {
+		location.href = 'Training_list_Admin';
+	};
+	
+</script>
+<script>
+	function cancle() {
+		location.href = 'Training_list?Id=${onlineUser.id}';
+	};
+	
 </script>
