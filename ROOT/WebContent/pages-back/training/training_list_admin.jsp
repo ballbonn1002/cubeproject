@@ -104,7 +104,7 @@
 				title=""> </a>
 		</div>
 </div>
-		<form>
+		<form action="Training_Search_Admin" method="post">
 			<div class="portlet-body">
 				<div class="row">
 					<div class="col-md-2"></div>
@@ -115,8 +115,8 @@
 						<div class="col-md-6 col-xs-6">
 							<div class="form-group">
 								<div class="input-group input-large date-picker input-daterange"
-									data-date-format="dd-mm-yyyy">
-									<input type="text" class="form-control" name="startdate"
+									data-date-format="dd-mm-yyyy"><!-- <input type="hidden" id="check" name="check" value="false"> -->
+									<input type="text" class="form-control" name="startdate" id="startdate"
 										<c:choose>
                                             <c:when test="${startdate == null}">
                                                 value="<fmt:formatDate type="date" value="${now}" pattern="01-01-yyyy"/>"
@@ -126,7 +126,7 @@
                                             </c:when>
                                         </c:choose>>
 									<span class="input-group-addon"> to </span> <input type="text"
-										class="form-control" name="enddate"
+										class="form-control" name="enddate" id="enddate"
 										<c:choose>
                                             <c:when test="${enddate == null}">
                                                 value="<fmt:formatDate type="date" value="${now}" pattern="dd-MM-yyyy"/>"
@@ -245,6 +245,31 @@ function del(trainingid) {
 			return false;
 		}
 	});
+</script>
+<script>
+$( document ).ready(function() {
+	
+	console.log(sessionStorage.getItem("start"));
+	var a = sessionStorage.getItem("start");
+	console.log(sessionStorage.getItem("end"));
+	var b = sessionStorage.getItem("end");
+	if(a !=null && b !=null){
+		$("#startdate").val(a);
+		$("#enddate").val(b);
+		
+	}
+	
+	sessionStorage.removeItem("start");
+	sessionStorage.removeItem("end");
+	
+	$("#search").click(function() {
+		
+		var start = $("#startdate").val();
+		var end = $("#enddate").val();
+		sessionStorage.setItem("start", start);
+		sessionStorage.setItem("end", end);
+	});
+});
 </script>
 	<script
 		src="../assets/global/plugins/counterup/jquery.waypoints.min.js"

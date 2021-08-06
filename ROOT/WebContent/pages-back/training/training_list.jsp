@@ -103,7 +103,7 @@
 			</a> <a href="javascript:;" class="remove" data-original-title=""
 				title=""> </a>
 		</div>
-		<form action="searchfromto" method="POST">
+		<form action="Training_Search" method="post" >
 			<div class="portlet-body">
 				<div class="row">
 					<div class="col-md-2"></div>
@@ -114,8 +114,8 @@
 						<div class="col-md-6 col-xs-6">
 							<div class="form-group">
 								<div class="input-group input-large date-picker input-daterange"
-									data-date-format="dd-mm-yyyy">
-									<input type="text" class="form-control" name="startdate"
+									data-date-format="dd-mm-yyyy"><!-- <input type="hidden" id="check" name="check" value="true"> -->
+									<input type="text" class="form-control" id="startdate" name="startdate"
 										<c:choose>
                                             <c:when test="${startdate == null}">
                                                 value="<fmt:formatDate type="date" value="${now}" pattern="01-01-yyyy"/>"
@@ -124,8 +124,8 @@
                                                     value="<fmt:formatDate type="date" value="${startdate}" pattern="dd-MM-yyyy"/>"
                                             </c:when>
                                         </c:choose>>
-									<span class="input-group-addon"> to </span> <input type="text"
-										class="form-control" name="enddate"
+									<span class="input-group-addon"> to </span>
+									 <input type="text" class="form-control" id="enddate" name="enddate"
 										<c:choose>
                                             <c:when test="${enddate == null}">
                                                 value="<fmt:formatDate type="date" value="${now}" pattern="dd-MM-yyyy"/>"
@@ -138,9 +138,13 @@
 							</div>
 						</div>
 						<div class="col-md-4 col-xs-12" style="text-align: center">
-							<button id="search" type="submit" class="btn btn-sm blue-steel">
+							<!-- <button type="submit" class="btn btn-sm blue-steel" >
+								<i class="fa fa-search"></i> search
+							</button> -->
+							<button id="search" type="submit" class="btn btn-sm blue-steel" ><!-- onclick="onSearch()" --> 
 								<i class="fa fa-search"></i> Search
 							</button>
+							
 						</div>
 					</div>
 					<div class="col-md-2"></div>
@@ -163,7 +167,6 @@
 						</tr>
 					</thead>
 					
-						<form action="mytraining_list" method="POST">
 						<c:forEach var="train" items="${Traininglist}" varStatus="status">
 							<tr>
 								<td style="vertical-align: middle;">${train.trainingid}</td>						<!-- training history ID -->
@@ -195,13 +198,25 @@
 								</td>
 							</tr>
 						</c:forEach>
-						</form>
 					
 				</table>
 			</div>
 			</div>
 			</div>
 <script>
+/* function onSearch(){
+	var startdate= document.getElementById('startdate').value;
+	var enddate= document.getElementById('enddate').value;
+	$.ajax({
+		    url : "Training_Search.action",
+			type : "POST",
+			data : {
+				"startdate" : startdate,
+				"enddate" : enddate,
+				"user" : "${onlineUser.id}",
+			}
+	 });
+}  */
 	function add() {
 		document.location = "Training_Add";
 	}
@@ -244,6 +259,31 @@ function del(trainingid) {
 			return false;
 		}
 	});
+</script>
+<script>
+$( document ).ready(function() {
+	
+	console.log(sessionStorage.getItem("start"));
+	var a = sessionStorage.getItem("start");
+	console.log(sessionStorage.getItem("end"));
+	var b = sessionStorage.getItem("end");
+	if(a !=null && b !=null){
+		$("#startdate").val(a);
+		$("#enddate").val(b);
+		
+	}
+	
+	sessionStorage.removeItem("start");
+	sessionStorage.removeItem("end");
+	
+	$("#search").click(function() {
+		
+		var start = $("#startdate").val();
+		var end = $("#enddate").val();
+		sessionStorage.setItem("start", start);
+		sessionStorage.setItem("end", end);
+	});
+});
 </script>
 	<script
 		src="../assets/global/plugins/counterup/jquery.waypoints.min.js"

@@ -75,25 +75,25 @@ public class TrainingAction extends ActionSupport {
 
 			Date a = formatter.parse(request.getParameter("start_date"));
 			java.sql.Date start_date = new java.sql.Date(a.getTime());
-			System.out.println("start_date : " +request.getParameter("start_date"));
+			System.out.println("start_date : " + request.getParameter("start_date"));
 			train.setStart_date(start_date);
-			
+
 			Date b = formatter.parse(request.getParameter("end_date"));
 			java.sql.Date end_date = new java.sql.Date(b.getTime());
-			System.out.println("end_date : " +request.getParameter("end_date"));
+			System.out.println("end_date : " + request.getParameter("end_date"));
 			train.setEnd_date(end_date);
 
 			String user_update = request.getParameter("user_update");
 			train.setUser_update(user_update);
 			System.out.println("user_update " + user_update);
-			
+
 			train.setTime_create(DateUtil.getCurrentTime());
 
 			String user_create = request.getParameter("user_create");
 
 			train.setUser_create(user_create);
 			System.out.println("user_create " + user_create);
-			
+
 			train.setTime_update(DateUtil.getCurrentTime());
 
 			String location = request.getParameter("location");
@@ -127,17 +127,17 @@ public class TrainingAction extends ActionSupport {
 //			return ERROR;
 //		}
 //	}
-	
+
 	public String training_delete() throws Exception {
 		try {
 			String trainingid = request.getParameter("trainingid");
 			Integer idValue = Integer.valueOf(trainingid);
-			Training train =  trainingDAO.findById(idValue);
+			Training train = trainingDAO.findById(idValue);
 			System.out.println(trainingid);
 			trainingDAO.delete(train);
-			return SUCCESS; 
-			
-		} catch (Exception e){
+			return SUCCESS;
+
+		} catch (Exception e) {
 			log.error(e.getMessage());
 			return ERROR;
 		}
@@ -150,25 +150,24 @@ public class TrainingAction extends ActionSupport {
 			String Id = request.getParameter("trainingid");
 			Integer idedit = Integer.valueOf(Id);
 			Training train = trainingDAO.findById(idedit);
-			
+
 			String title = request.getParameter("title");
 			String location = request.getParameter("location");
 			String lecturer = request.getParameter("lecturer");
 			String detail = request.getParameter("detail");
 			String user_update = request.getParameter("user_update");
-			
+
 			Date a = formatter.parse(request.getParameter("start_date"));
 			Date b = formatter.parse(request.getParameter("end_date"));
-			
+
 			java.sql.Date start_date = new java.sql.Date(a.getTime());
-			System.out.println("start_date : " +request.getParameter("start_date"));
+			System.out.println("start_date : " + request.getParameter("start_date"));
 			train.setStart_date(start_date);
-			
+
 			java.sql.Date end_date = new java.sql.Date(b.getTime());
-			System.out.println("end_date : " +request.getParameter("end_date"));
+			System.out.println("end_date : " + request.getParameter("end_date"));
 			train.setEnd_date(end_date);
-			
-			
+
 			train.setTrainingid(idedit);
 			train.setTitle(title);
 			train.setLocation(location);
@@ -198,10 +197,9 @@ public class TrainingAction extends ActionSupport {
 			return ERROR;
 		}
 	}
-	
-	
+
 	public String training_list() {
-		try {	
+		try {
 			String x = request.getParameter("Id");
 			List<Map<String, Object>> Traininglist = trainingDAO.findAllById(x);
 			request.setAttribute("Traininglist", Traininglist);
@@ -213,6 +211,7 @@ public class TrainingAction extends ActionSupport {
 		}
 
 	}
+
 	public String training_Alllist() {
 		try {
 			List<Map<String, Object>> Traininglist = trainingDAO.findAll();
@@ -225,43 +224,80 @@ public class TrainingAction extends ActionSupport {
 		}
 
 	}
-	
+
 	public String searchdate() {
+//		String ax =request.getParameter("check");
+//		System.out.println(ax+"1");
+//		try {
+//			System.out.println(ax+"2");
+//			if (ax == "true") {
+//				System.out.println(ax);
+//				User ur = (User) request.getSession().getAttribute("onlineUser");
+//				String user = ur.getId();
+//
+//				Timestamp startdate = DateUtil.myDateStart(request.getParameter("startdate"));
+//				Timestamp enddate = DateUtil.myDateStart(request.getParameter("enddate"));
+//
+//				String sd = new SimpleDateFormat("yyyy-MM-dd").format(startdate);
+//				String ed = new SimpleDateFormat("yyyy-MM-dd").format(enddate);
+//				System.out.println("startdate: " + sd + "   enddate: " + ed);
+//
+//				List<Map<String, Object>> Traininglist = trainingDAO.searchbydate(user, sd, ed);
+//				request.setAttribute("Traininglist", Traininglist);
+//				return SUCCESS;
+//			} 
+//			else if(ax == "false"){
+//				Timestamp startdate = DateUtil.myDateStart(request.getParameter("startdate"));
+//				Timestamp enddate = DateUtil.myDateStart(request.getParameter("enddate"));
+//
+//				String sd = new SimpleDateFormat("yyyy-MM-dd").format(startdate);
+//				String ed = new SimpleDateFormat("yyyy-MM-dd").format(enddate);
+//				System.out.println("startdate: " + sd + "   enddate: " + ed);
+//
+//				List<Map<String, Object>> Traininglist = trainingDAO.searchbydate(sd, ed);
+//				request.setAttribute("Traininglist", Traininglist);
+//				return INPUT;
+//			}
+//			else {
+//				
+//				return ERROR;
+//			}
+//	}catch(Exception e) {
+//		System.out.println(ax+"3");
+//		return ERROR;
+//	}
 		try {
-			String user = request.getParameter("trainingid");
-			System.out.println(user);
-			DateTimeFormatter date1 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			LocalDate localDate = LocalDate.now();
-			String s = "00:00:00.0";
-			System.out.println("1");
-			
-			String start = request.getParameter("startdate");
-			String end = request.getParameter("enddate");
-			Timestamp start_date;
-			Timestamp end_date;
-			
-			System.out.println(start);
-			System.out.println(end);
-			
-			if (start == null && end == null) {
-				start_date = DateUtil.dateToTimestamp(date1.format(localDate), s);
-				end_date = DateUtil.changetoEndYear(date1.format(localDate));
-			} else {
-				start_date = DateUtil.dateFormatEdit(start);
-				end_date = DateUtil.dateFormatEdit(end);
-			}
-			
-			List<Map<String, Object>> Traininglist = trainingDAO.findAllById(user);
+			User ur = (User) request.getSession().getAttribute("onlineUser");
+			String user = ur.getId();
+
+			Timestamp startdate = DateUtil.myDateStart(request.getParameter("startdate"));
+			Timestamp enddate = DateUtil.myDateStart(request.getParameter("enddate"));
+
+			String sd = new SimpleDateFormat("yyyy-MM-dd").format(startdate);
+			String ed = new SimpleDateFormat("yyyy-MM-dd").format(enddate);
+			System.out.println("startdate: " + sd + "   enddate: " + ed);
+
+			List<Map<String, Object>> Traininglist = trainingDAO.searchbydate(user, sd, ed);
 			request.setAttribute("Traininglist", Traininglist);
-			
 			return SUCCESS;
-			
-
-
-		} catch (Exception e) {
-			e.printStackTrace();
+		}catch(Exception e) {
 			return ERROR;
 		}
 	}
+	public String searchdateAdmin() {
+		try {
+		Timestamp startdate = DateUtil.myDateStart(request.getParameter("startdate"));
+		Timestamp enddate = DateUtil.myDateStart(request.getParameter("enddate"));
 
+		String sd = new SimpleDateFormat("yyyy-MM-dd").format(startdate);
+		String ed = new SimpleDateFormat("yyyy-MM-dd").format(enddate);
+		System.out.println("startdate: " + sd + "   enddate: " + ed);
+
+		List<Map<String, Object>> Traininglist = trainingDAO.searchbydate(sd, ed);
+		request.setAttribute("Traininglist", Traininglist);
+		return SUCCESS;
+		}catch(Exception e) {
+			return ERROR;
+		}
+	}
 }

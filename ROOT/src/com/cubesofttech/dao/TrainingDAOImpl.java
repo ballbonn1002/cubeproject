@@ -100,9 +100,26 @@ public class TrainingDAOImpl implements TrainingDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Map<String, Object>> searchbydate = null;
 		try {
-			String sql = "SELECT trainingid, time_create, user_id, title, DAY(`start_date`) AS Day, MONTH(`start_date`) AS Month, DAY(`end_date`) AS ENDDAY, MONTH(`end_date`) AS ENDMONTH, `hours` FROM training "
-					+ "WHERE user_id='"+ userLogin + "'AND start_date='"+ start + "'AND end_date='" + end + "' ORDER BY DATE(`start_date`) ASC";
+			String sql = "SELECT * FROM training WHERE user_id='"+ userLogin + "'AND start_date>='"+ start + "' AND start_date<='" + end + "'";
+			System.out.println(sql);
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			searchbydate = query.list();
 			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return searchbydate;
+	}
+	@Override
+	public List<Map<String, Object>> searchbydate (String start, String end) throws Exception {
+		
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> searchbydate = null;
+		try {
+			String sql = "SELECT * FROM training WHERE start_date>='"+ start + "' AND start_date<='" + end + "'";
+			System.out.println(sql);
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
 			searchbydate = query.list();

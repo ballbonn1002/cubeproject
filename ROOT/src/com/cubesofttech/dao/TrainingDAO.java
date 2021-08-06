@@ -23,7 +23,7 @@ public interface TrainingDAO {
 //	public Training searchbydate(String start, String end) throws Exception;
 
 	public List<Map<String, Object>> searchbydate (String userLogin, String start, String end) throws Exception;
-
+	public List<Map<String, Object>> searchbydate ( String start, String end) throws Exception;
 
 	public List<Map<String, Object>> findAllById(String userid) throws Exception ;
 
