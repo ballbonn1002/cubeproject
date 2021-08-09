@@ -1,6 +1,7 @@
 <%@page import="org.apache.velocity.runtime.directive.Foreach"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="/WEB-INF/tlds/permission.tld" prefix="perm"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -44,10 +45,20 @@
 <div class="portlet light">
 	<div class="portlet-title">
 		<div class="caption">
-			<i class="fa fa-paperclip font-red"></i> <span id="title"
-				class="caption-subject font-red sbold uppercase">Add My
-				Training</span> <input type="hidden" name="actionpage" id="actionpage"
-				value="${action}">
+			<perm:permission object="training.view">
+				<i class="fa fa-paperclip font-red"></i>
+				<span id="title" class="caption-subject font-red sbold uppercase">Add
+					My Training</span>
+				<input type="hidden" name="actionpage" id="actionpage"
+					value="${action}">
+			</perm:permission>
+			<perm:permission object="trainingAdmin.view">
+				<i class="fa fa-paperclip font-red"></i>
+				<span id="title" class="caption-subject font-red sbold uppercase">Add
+					Training</span>
+				<input type="hidden" name="actionpage" id="actionpage"
+					value="${action}">
+			</perm:permission>
 		</div>
 		<div class="actions">
 			<a class="btn  btn-icon-only btn-default fullscreen"
@@ -60,73 +71,73 @@
 			<div class="form-body">
 
 				<!-- Name -->
-				 <div class="form-group form-md-line-input">
-					<label class="col-md-3 control-label" for="form_control_1">Applicant test
+				<div class="form-group form-md-line-input">
+					<label class="col-md-3 control-label" for="form_control_1">Applicant
 						:</label>
 					<div class="col-md-4 ">
 
-					<perm:permission object="training.view">
-					
-						<select class="form-control" id="user" disabled >
-						<option value="${onlineUser.id}" selected>${onlineUser.name} - ${onlineUser.roleId} </option>
-						
-					</select>
-					</perm:permission>
-					
+						<perm:permission object="training.view">
+
+							<select class="form-control" id="user" disabled>
+								<option value="${onlineUser.id}" selected>${onlineUser.name}
+									- ${onlineUser.roleId}</option>
+
+							</select>
+						</perm:permission>
+
 						<%-- <select class="form-control"  >
 						<c:forEach var="user" items="${userlist}">
 						<option value="${user.id}" selected>${user.name} - ${user.roleId} </option>
 						</c:forEach>
 					</select> --%>
-					
-					<perm:permission object="trainingAdmin.view">
-					<select class="bs-select form-control select2me  " id="user" name="name"
-							id="userId1" onchange="s(this);">
-							<optgroup label="Enable">
-								<c:forEach var="user" items="${userseq}">
 
-									<c:if test="${user.enable == 1 }">
-										<c:if test="${userSelect == nulll }">
-											<option value="${user.id}"
-												<c:if test="${user.id eq onlineUser.id}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
-										</c:if>
-										<c:if test="${userSelect != nulll }">
-											<option value="${userSelect}"
-												<c:if test="${user.id eq userSelect}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
-										</c:if>
-									</c:if>
-								</c:forEach>
-							</optgroup>
-							<optgroup label="Disable">
-								<c:forEach var="user" items="${userseq}">
+						<perm:permission object="trainingAdmin.view">
+							<select class="bs-select form-control select2me  " id="user"
+								name="name" id="userId1" onchange="s(this);">
+								<optgroup label="Enable">
+									<c:forEach var="user" items="${userseq}">
 
-									<c:if test="${user.enable == 0 }">
-										<c:if test="${userSelect == nulll }">
-											<option value="${user.id}"
-												<c:if test="${user.id eq onlineUser.id}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
+										<c:if test="${user.enable == 1 }">
+											<c:if test="${userSelect == nulll }">
+												<option value="${user.id}"
+													<c:if test="${user.id eq onlineUser.id}"><c:out value="selected=selected"/></c:if>>${user.department_id}
+													- ${user.name}</option>
+											</c:if>
+											<c:if test="${userSelect != nulll }">
+												<option value="${userSelect}"
+													<c:if test="${user.id eq userSelect}"><c:out value="selected=selected"/></c:if>>${user.department_id}
+													- ${user.name}</option>
+											</c:if>
 										</c:if>
-										<c:if test="${userSelect != nulll }">
-											<option value="${userSelect}"
-												<c:if test="${user.id eq userSelect}"><c:out value="selected=selected"/></c:if>>${user.department_id} - ${user.name}</option>
+									</c:forEach>
+								</optgroup>
+								<optgroup label="Disable">
+									<c:forEach var="user" items="${userseq}">
+
+										<c:if test="${user.enable == 0 }">
+											<c:if test="${userSelect == nulll }">
+												<option value="${user.id}"
+													<c:if test="${user.id eq onlineUser.id}"><c:out value="selected=selected"/></c:if>>${user.department_id}
+													- ${user.name}</option>
+											</c:if>
+											<c:if test="${userSelect != nulll }">
+												<option value="${userSelect}"
+													<c:if test="${user.id eq userSelect}"><c:out value="selected=selected"/></c:if>>${user.department_id}
+													- ${user.name}</option>
+											</c:if>
 										</c:if>
-									</c:if>
-								</c:forEach>
-							</optgroup>
-						</select>
-					</perm:permission>
-					
-					
+									</c:forEach>
+								</optgroup>
+							</select>
+						</perm:permission>
+
+
 					</div>
-					
-					
-				</div> 
 
-				<div class="form-group">
-					<label class="col-md-3 control-label">Name :</label>
-					<div class="col-md-6">
-						<input id="user" type="text" class="form-control" placeholder=" ">
-					</div>
+
 				</div>
+
+
 				<!-- End Name -->
 				<!-- Lecturer: -->
 				<div class="form-group">
@@ -207,26 +218,16 @@
 	<div class="form-actions">
 		<div class="row">
 			<div class="col-xs-12" style="text-align: center;">
-				<perm:permission object="training.view">
-				<div  class="btn btn-sm blue-soft" onclick="save()">
+
+				<div class="btn btn-sm blue-soft" onclick="save()">
 					<i class="fa fa-send-o"></i> Submit
 				</div>
-				</perm:permission>
-				<perm:permission object="trainingAdmin.view">
-				<div  class="btn btn-sm blue-soft" onclick="save_admin()">
-					<i class="fa fa-send-o"></i> Submit
-				</div>
-				</perm:permission>
-				<perm:permission object="training.view">
-				<div  class="btn btn-sm red-intense" onclick="cancle()">
+
+
+				<div class="btn btn-sm red-intense" onclick="cancle()">
 					<i class="fa fa-close"></i> Cancel
 				</div>
-				</perm:permission>
-				<perm:permission object="trainingAdmin.view">
-				<div class="btn btn-sm red-intense" onclick="cancle_admin()">
-					<i class="fa fa-close"></i> Cancel
-				</div>
-				</perm:permission>
+
 			</div>
 		</div>
 	</div>
@@ -499,70 +500,14 @@ function save() {
 									type : "success"
 								},
 								function() {
-									window.location.href = "Training_list?Id=${onlineUser.id}";
+									window.location.href = "javascript:history.back()";
 								});
 					}
 
 				}) 
 	}
 }
-function save_admin() {	
-	var name = document.getElementById('user').value;
-	var lecturer = document.getElementById('lecturer').value;
-	var t_tile = document.getElementById('t_title').value;
-	var t_hour = document.getElementById('t_Hour').value;
-	var start_date = document.getElementById('date_from').value;
-	var end_date = document.getElementById('date_to').value;
-	var location = document.getElementById('location').value;
-	var description = document.getElementById('description').value;
-	
-	console.log(name);
-	console.log(lecturer);
-	console.log(t_title);
-	console.log(t_hour);
-	console.log(date_from);
-	console.log(date_to);
-	console.log(location);
-	console.log(description);
-	if (name == null || name == "" || start_date == null || start_date == "" || end_date == null || end_date == "") {
-	swal("Error!", "Required! Duration", "error");
-}
-	else{	
-		$
-				.ajax({
-					url : "Training_Save",
-					method : "POST",
-					type : "JSON",
-					data : {
-						"name" : name,
-						"lecturer" : lecturer,
-						"title" : t_tile,
-						"hours" : t_hour,
-						"start_date" : start_date,
-						"end_date" : end_date,
-						"location" : location,
-						"detail" : description,
-						"user_update" : "${onlineUser.id}",
-						"user_create":	"${onlineUser.id}",
-						
-						
-					},
-					success : function(data) {
-						
-						swal(
-								{
-									title : "Pass",
-									text : "Saved Succcess",
-									type : "success"
-								},
-								function() {
-									window.location.href = "Training_list_Admin";
-								});
-					}
 
-				}) 
-	}
-}
 	function s(sel) {
 		// alert(sel.value) ;
 		var userId = $('#userId1').val();
@@ -596,14 +541,8 @@ function save_admin() {
 	});
 </script>
 <script>
-	function cancle_admin() {
-		location.href = 'Training_list_Admin';
-	};
-	
-</script>
-<script>
 	function cancle() {
-		location.href = 'Training_list?Id=${onlineUser.id}';
+		location.href = "javascript:history.back()";
 	};
 	
 </script>
