@@ -150,7 +150,7 @@
 
 
 			<div class="portlet-body flip-scroll" style="text-align: center;">
-				<table class="table table-striped table-condensed flip-content table-hover">
+				<table class="table table-striped table-condensed flip-content table-hover" data-toggle="table" data-search="true" id="myTable">
 					<thead>
 						<tr style="background-color:rgb(59, 63, 81);color:white">
 							<th height="41"><center>ID</center></th>
@@ -202,6 +202,19 @@
 			</form>
 			
 	</div>
+	<script>
+
+$(document).ready( function () {
+    $('#myTable').DataTable(
+    {
+        "aLengthMenu": [[20, 40, 60, -1], [20, 40, 60, "All"]],
+        "iDisplayLength": 20,
+       
+                     
+    }		
+    );
+} );
+</script>
 <script>
 	function add() {
 		document.location = "Training_Add";
