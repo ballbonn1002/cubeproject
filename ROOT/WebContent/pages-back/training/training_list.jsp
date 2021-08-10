@@ -154,8 +154,11 @@
 </form>
 
 			<div class="portlet-body flip-scroll" style="text-align: center;">
-				<table class="table table-striped table-condensed flip-content table-hover" id="myTable">
-					<thead>
+
+				<table
+			class="table table-striped table-condensed table-hover order-column compact"
+			data-toggle="table" data-search="true" id="myTable">
+			<thead>
 						<tr style="background-color:rgb(59, 63, 81);color:white">
 							<th height="41"><center>ID</center></th>
 							<th height="41"><center>Submit Date</center></th>
@@ -167,7 +170,7 @@
 							<th height="41"><center>Action</center></th>
 						</tr>
 					</thead>
-					
+					<tbody>
 						<c:forEach var="train" items="${Traininglist}" varStatus="status">
 							<tr>
 								<td style="vertical-align: middle;">${train.trainingid}</td>						<!-- training history ID -->
@@ -199,11 +202,25 @@
 								</td>
 							</tr>
 						</c:forEach>
-					
+					</tbody>
 				</table>
 			</div>
 			</div>
 			</div>
+			
+	<script>
+
+$(document).ready( function () {
+    $('#myTable').DataTable(
+    {
+        "aLengthMenu": [[20, 40, 60, -1], [20, 40, 60, "All"]],
+        "iDisplayLength": 20,
+        
+                     
+    }		
+    );
+} );
+</script>
 <script>
 /* function onSearch(){
 	var startdate= document.getElementById('startdate').value;
