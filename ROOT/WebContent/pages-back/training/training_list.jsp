@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
 	src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js"
@@ -153,7 +154,7 @@
 </form>
 
 			<div class="portlet-body flip-scroll" style="text-align: center;">
-				<table class="table table-striped table-condensed flip-content table-hover">
+				<table class="table table-striped table-condensed flip-content table-hover" id="myTable">
 					<thead>
 						<tr style="background-color:rgb(59, 63, 81);color:white">
 							<th height="41"><center>ID</center></th>
@@ -282,7 +283,8 @@ $( document ).ready(function() {
 		var end = $("#enddate").val();
 		sessionStorage.setItem("start", start);
 		sessionStorage.setItem("end", end);
-	});
+	}
+	
 });
 </script>
 	<script

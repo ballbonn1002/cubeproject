@@ -19,27 +19,20 @@
 	src="${pageContext.request.contextPath}/assets/global/plugins/fancybox/lib/jquery-1.10.1.min.js"></script>
 <script
 	src="${pageContext.request.contextPath}/assets/global/plugins/jquery-ui/jquery-ui.min.js"></script>
-<!--
-<script type="text/javascript"
-	src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
-<script type="text/javascript"
-	src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script> 
+	<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script> 
 <script type="text/javascript"
 	src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript"
 	src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js"></script>
 <script type="text/javascript"
 	src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<!-- <script type="text/javascript"
-	src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js"></script> -->
-<!-- <script type="text/javascript"
-	src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js"></script> -->
 <script type="text/javascript"
 	src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
 <script type="text/javascript"
 	src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+ 
 <script>
   AOS.init();
 </script>
@@ -150,7 +143,7 @@
 
 
 			<div class="portlet-body flip-scroll" style="text-align: center;">
-				<table class="table table-striped table-condensed flip-content table-hover">
+				<table class="table table-striped table-condensed flip-content table-hover" id="myTable">
 					<thead>
 						<tr style="background-color:rgb(59, 63, 81);color:white">
 							<th height="41"><center>ID</center></th>
@@ -268,12 +261,22 @@ $( document ).ready(function() {
 		var end = $("#enddate").val();
 		sessionStorage.setItem("start", start);
 		sessionStorage.setItem("end", end);
-	});
-});
+	} 
+	    
+	
+}
 </script>
-	<script
+<script>
+		$(document).ready( function () {
+	    $('#myTable').DataTable(
+	    		
+	    );
+	} );
+	</script>
+	<script>
 		src="../assets/global/plugins/counterup/jquery.waypoints.min.js"
 		type="text/javascript"></script>
 	<script
 		src="../assets/global/plugins/counterup/jquery.counterup.min.js"
 		type="text/javascript"></script>
+			
