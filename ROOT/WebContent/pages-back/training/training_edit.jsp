@@ -48,9 +48,16 @@
 	<div class="portlet light">
 		<div class="portlet-title">
 			<div class="caption">
+			<perm:permission object="training.view">
 				<i class="fa fa-paperclip font-red"></i> <span id="title"
 					class="caption-subject font-red sbold uppercase">Edit My Training</span> <input type="hidden" name="actionpage" id="actionpage"
 					value="${action}">
+					</perm:permission>
+					<perm:permission object="trainingAdmin.view">
+				<i class="fa fa-paperclip font-red"></i> <span id="title"
+					class="caption-subject font-red sbold uppercase">Edit Training Manager</span> <input type="hidden" name="actionpage" id="actionpage"
+					value="${action}">
+					</perm:permission>
 			</div>
 			<div class="actions">
 				<a class="btn  btn-icon-only btn-default fullscreen"
@@ -240,9 +247,12 @@
 										text : "Saved Succcess",
 										type : "success"
 									},
-									function() {
-										window.location.href = "Training_list_Admin";
-									});
+									function(){
+										
+										window.location=document.referrer;
+											
+											
+										} );
 						}
 
 					}) 

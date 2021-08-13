@@ -62,7 +62,9 @@
 		    opacity: 1;
 		  }
 		}
-		
+		.popover{
+		 word-wrap: break-word;
+		 }
 		</style>
 				<script>
 				
@@ -160,7 +162,8 @@
 					</thead>
 					
 						<c:forEach var="train" items="${Traininglist}" varStatus="status">
-							<tr>
+							<tr data-toggle="popover" title="<b>${train.title}" data-placement="top" data-html="true" data-trigger="hover"
+							data-content="<b>Location : ${train.location}<br>Lecturer : ${train.lecturer}<br>Detail : <br>${train.detail}">
 								<td style="vertical-align: middle;">${train.trainingid}</td>						<!-- training history ID -->
 								<td style="vertical-align: middle;"><fmt:formatDate value="${train.time_create}"
 										pattern="dd-MM-yyyy HH:mm"></fmt:formatDate>							<!-- training submit date -->
@@ -197,6 +200,11 @@
 			</form>
 			
 	</div>
+	<script> 
+ $(function () { 
+ $('[data-toggle="popover"]').popover(); 
+ }); 
+</script> 
 	<script>
 
 $(document).ready( function () {
@@ -212,7 +220,7 @@ $(document).ready( function () {
 </script>
 <script>
 	function add() {
-		document.location = "Training_Add";
+		document.location = "Training_Add;
 	}
 </script>
 <script>

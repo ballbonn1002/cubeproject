@@ -4,6 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
+		<script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
@@ -70,7 +72,9 @@
 		    opacity: 1;
 		  }
 		}
-		
+		.popover{
+		 word-wrap: break-word;
+		 }
 		</style>
 				<script>
 				
@@ -86,6 +90,7 @@
 			<i class="icon-layers font-red"></i> 
 			<span id="ss" class="caption-subject font-red sbold uppercase">My Training</span>
 		</div>
+		
 		<div class="actions">
             <button type="button" class="btn btn-sm green-meadow" id="addLeave"
 				onclick="add()">
@@ -172,7 +177,8 @@
 					</thead>
 					<tbody>
 						<c:forEach var="train" items="${Traininglist}" varStatus="status">
-							<tr>
+							<tr data-toggle="popover" title="<b>${train.title}" data-placement="top" data-html="true" data-trigger="hover"
+							data-content="<b>Location : ${train.location}<br>Lecturer : ${train.lecturer}<br>Detail : <br>${train.detail}">
 								<td style="vertical-align: middle;">${train.trainingid}</td>						<!-- training history ID -->
 								<td style="vertical-align: middle;"><fmt:formatDate value="${train.time_create}"
 										pattern="dd-MM-yyyy HH:mm"></fmt:formatDate>							<!-- training submit date -->
@@ -200,6 +206,7 @@
 									</a>	
 																							<!-- icon delete -->
 								</td>
+								
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -207,70 +214,13 @@
 			</div>
 			</div>
 			</div>
+			<script> 
 			
-	<script>
-
-$(document).ready( function () {
-    $('#myTable').DataTable(
-    {
-        "aLengthMenu": [[20, 40, 60, -1], [20, 40, 60, "All"]],
-        "iDisplayLength": 20,
-        
-                     
-    }		
-    );
-} );
-</script>
-<script>
-/* function onSearch(){
-	var startdate= document.getElementById('startdate').value;
-	var enddate= document.getElementById('enddate').value;
-	$.ajax({
-		    url : "Training_Search.action",
-			type : "POST",
-			data : {
-				"startdate" : startdate,
-				"enddate" : enddate,
-				"user" : "${onlineUser.id}",
-			}
-	 });
-}  */
-	function add() {
-		document.location = "Training_Add";
-	}
-</script>
-<script>
-
-
-function del(trainingid) {
-	console.log(trainingid);
-	swal({
-	      title: "Are you sure!",
-	      text: "You will be deleting this training!",
-	      type: "warning",
-	      showCancelButton: true,
-	      confirmButtonClass: 'btn-danger',
-	      confirmButtonText: 'OK'
-	    }, function (inputValue) {
-	        if (inputValue == false){
-	        	//console.log("canceled");
-	        	return false;
-	        	}
-	        if (inputValue == true) {
-	        	 $.ajax({
-	 				    url : "Training_Del.action",
-	 					data : "trainingid="+ trainingid,
-	 					type : "POST",
-	 					success : function(response) {
-	 						window.location.reload(true);
-	 					}
-	 			 });
-	          return false
-	        }
-	      });
-}
-</script>
-<script>
+ $(function () { 
+ $('[data-toggle="popover"]').popover(); 
+ }); 
+</script> 
+			<script>
 	$('.cannot').keydown(function(e) {
 		// trap the return key being pressed
 		if (e.keyCode === 13 || e.keyCode === 8) {
@@ -303,10 +253,58 @@ $( document ).ready(function() {
 	}
 	
 });
+	
 </script>
-	<script
+	<script>
+
+$(document).ready( function () {
+    $('#myTable').DataTable(
+    {
+        "aLengthMenu": [[20, 40, 60, -1], [20, 40, 60, "All"]],
+        "iDisplayLength": 20,
+    }		
+    );
+} );
+</script>
+<script>
+	
+
+	function add() {
+		document.location = "Training_Add";
+	}
+</script>
+<script
 		src="../assets/global/plugins/counterup/jquery.waypoints.min.js"
 		type="text/javascript"></script>
-	<script
-		src="../assets/global/plugins/counterup/jquery.counterup.min.js"
+	<script src="../assets/global/plugins/counterup/jquery.counterup.min.js"
 		type="text/javascript"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+function del(trainingid) {
+	console.log(trainingid);
+	swal({
+	      title: "Are you sure!",
+	      text: "You will be deleting this training!",
+	      type: "warning",
+	      showCancelButton: true,
+	      confirmButtonClass: 'btn-danger',
+	      confirmButtonText: 'OK'
+	    }, function (inputValue) {
+	        if (inputValue == false){
+	        	//console.log("canceled");
+	        	return false;
+	        	}
+	        if (inputValue == true) {
+	        	 $.ajax({
+	 				    url : "Training_Del.action",
+	 					data : "trainingid="+ trainingid,
+	 					type : "POST",
+	 					success : function(response) {
+	 						window.location.reload(true);
+	 					}
+	 			 });
+	          return false
+	        }
+	      });
+}
+</script>
