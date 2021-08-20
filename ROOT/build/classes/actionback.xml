@@ -3494,6 +3494,16 @@
 			<result name="success" type="tiles">training_list</result>
 			<result name="error">/index.jsp</result>
 		</action>
+		<action name="Training_Search"
+			class="com.cubesofttech.action.TrainingAction" method="searchdate">
+			<result name="success" type="tiles">training_list</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="Training_Search_Admin"
+			class="com.cubesofttech.action.TrainingAction" method="searchdateAdmin">
+			<result name="success" type="tiles">training_list_admin</result>
+			<result name="error">/index.jsp</result>
+		</action>
 		
 		
 		
