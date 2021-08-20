@@ -27,7 +27,7 @@ public class LeaveDAOImpl implements LeaveDAO {
 
 	@Autowired
 	private SessionFactory sessionFactory;
-
+	
 	@Override
 	public void save(Leaves leaves) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
@@ -1068,26 +1068,50 @@ public class LeaveDAOImpl implements LeaveDAO {
 
 	@Override
 	public List<Map<String, Object>> myLeavesList(String userId, Timestamp startDate, Timestamp endDate) {
+//		Session session = this.sessionFactory.getCurrentSession();
+//		Criteria cr = session.createCriteria(Leaves.class);
+//
+//		List list = cr.add(Restrictions.eq("userId", userId)).add(Restrictions.gt("startDate", startDate))
+//				.add(Restrictions.lt("endDate", endDate)).addOrder(Order.desc("leaveId")).list();
 		Session session = this.sessionFactory.getCurrentSession();
-		Criteria cr = session.createCriteria(Leaves.class);
-
-		List list = cr.add(Restrictions.eq("userId", userId)).add(Restrictions.gt("startDate", startDate))
-				.add(Restrictions.lt("endDate", endDate)).addOrder(Order.desc("leaveId")).list();
-
-		return list;
+		List<Map<String, Object>> searchbydate = null;
+		String sql = "SELECT * FROM leaves WHERE user_id ='" + userId +"' AND start_date>='"+ startDate + "' AND start_date<='" + endDate + "'";
+		System.out.println(sql);
+		SQLQuery query = session.createSQLQuery(sql);
+		query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+		searchbydate = query.list();
+		return searchbydate;
 	}
+	
 
 	@Override
 	public List<Map<String, Object>> myLeavesList(String userId, Timestamp startDate, Timestamp endDate,
 			String status) {
+//		Session session = this.sessionFactory.getCurrentSession();
+//		Criteria cr = session.createCriteria(Leaves.class);
+//
+//		List list = cr.add(Restrictions.eq("userId", userId)).add(Restrictions.eq("leaveStatusId", status))
+//				.add(Restrictions.gt("startDate", startDate)).add(Restrictions.lt("endDate", endDate))
+//				.addOrder(Order.desc("leaveId")).list();
 		Session session = this.sessionFactory.getCurrentSession();
-		Criteria cr = session.createCriteria(Leaves.class);
-
-		List list = cr.add(Restrictions.eq("userId", userId)).add(Restrictions.eq("leaveStatusId", status))
-				.add(Restrictions.gt("startDate", startDate)).add(Restrictions.lt("endDate", endDate))
-				.addOrder(Order.desc("leaveId")).list();
-
-		return list;
+		List<Map<String, Object>> searchbydate = null;
+		String sql = "SELECT * FROM leaves WHERE user_id ='" + userId +"' AND start_date>='"+ startDate + "' AND start_date<='" + endDate + "' AND leave_status_id = '"+status+"'";
+		System.out.println(sql);
+		SQLQuery query = session.createSQLQuery(sql);
+		query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+		searchbydate = query.list();
+		return searchbydate;
+	}
+	@Override
+	public List findLeaveId(String userId, Timestamp startDate, Timestamp endDate,String status) {
+		Session session = this.sessionFactory.getCurrentSession();
+		List searchbydate = null;
+		String sql = "SELECT leave_id FROM leaves WHERE user_id ='" + userId +"' AND start_date>='"+ startDate + "' AND start_date<='" + endDate + "' AND leave_status_id = '"+status+"'";
+		System.out.println(sql);
+		SQLQuery query = session.createSQLQuery(sql);
+		query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+		searchbydate = query.list();
+		return searchbydate;
 	}
 
 	@Override

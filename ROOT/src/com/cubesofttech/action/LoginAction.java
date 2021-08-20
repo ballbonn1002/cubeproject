@@ -121,7 +121,6 @@ public class LoginAction extends ActionSupport {
 
 	public String login() {
 		try {
-	
 			String userlogin = request.getParameter("username");
 			request.setAttribute("userlogin", userlogin);
 			HttpSession session = request.getSession();
