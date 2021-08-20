@@ -108,7 +108,8 @@
 					</div>
 					<div class="col-md-2"></div>
 				</div>
-
+</div>
+</form>
 				<div class="row" style="padding-bottom: 15px; padding-top: 15px;">
 				<div class="col-md-1 col-lg-1"></div>
 					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
@@ -256,43 +257,43 @@
 						<form action="myleave_list" method="POST">
 						<c:forEach var="leave" items="${leavelist}" varStatus="status">
 							<tr>
-								<td style="vertical-align: middle;">${leave.leaveId}</td>
-								<td style="vertical-align: middle;"><fmt:formatDate value="${leave.timeCreate}"
+								<td style="vertical-align: middle;">${leave.leave_id}</td>
+								<td style="vertical-align: middle;"><fmt:formatDate value="${leave.time_create}"
 										pattern="dd-MM-yyyy HH:mm"></fmt:formatDate></td>
-								<td>${leave.userId}</td>
+								<td>${leave.user_id}</td>
 								<c:choose>
-									<c:when test="${leave.leaveTypeId.toString() == '1'}">
+									<c:when test="${leave.leave_type_id.toString() == '1'}">
 										<td>${type_1}</td>
 									</c:when>
-									<c:when test="${leave.leaveTypeId.toString() == '2'}">
+									<c:when test="${leave.leave_type_id.toString() == '2'}">
 										<td>${type_2}</td>
 									</c:when>
-									<c:when test="${leave.leaveTypeId.toString() == '3'}">
+									<c:when test="${leave.leave_type_id.toString() == '3'}">
 										<td>${type_3}</td>
 									</c:when>
-									<c:when test="${leave.leaveTypeId.toString() == '5'}">
+									<c:when test="${leave.leave_type_id.toString() == '5'}">
 										<td>${type_5}</td>
 									</c:when>
-									<c:when test="${leave.leaveTypeId.toString() == '6'}">
+									<c:when test="${leave.leave_type_id.toString() == '6'}">
 										<td>${type_6}</td>
 									</c:when>
 
 								</c:choose>
-								<td style="vertical-align: middle;"><fmt:formatDate value="${leave.startDate}"
+								<td style="vertical-align: middle;"><fmt:formatDate value="${leave.start_date}"
 										pattern="dd-MM-yyyy"></fmt:formatDate></td>
-								<td style="vertical-align: middle;"><fmt:formatDate value="${leave.endDate}"
+								<td style="vertical-align: middle;"><fmt:formatDate value="${leave.end_date}"
 										pattern="dd-MM-yyyy"></fmt:formatDate></td>
-								<td style="vertical-align: middle;">${leave.noDay}</td>
-								<td style="vertical-align: middle;"><c:if test="${leave.leaveStatusId.toString() == '0'}">
+								<td style="vertical-align: middle;">${leave.no_day}</td>
+								<td style="vertical-align: middle;"><c:if test="${leave.leave_status_id.toString() == '0'}">
 										<span class="label label-warning">Waiting for
 											approve</span>
-									</c:if> <c:if test="${leave.leaveStatusId.toString() == '1'}">
+									</c:if> <c:if test="${leave.leave_status_id.toString() == '1'}">
 										<span class="label label-success">Approved</span>
-									</c:if> <c:if test="${leave.leaveStatusId.toString() == '2'}">
+									</c:if> <c:if test="${leave.leave_status_id.toString() == '2'}">
 										<span class="label label-danger">Reject</span>
 									</c:if></td>
 								<td style="vertical-align: middle;"><a class="btn circle btn-outline btn-sm sbold blue"
-									href="LeaveEdit?id=${leave.leaveId}"
+									href="LeaveEdit?id=${leave.leave_id}"
 									title="information of leave"><i
 										class="fa fa-clipboard"></i></a></td>
 							</tr>
@@ -300,7 +301,7 @@
 						</form>
 				</table>
 			</div>
-			</div>
+			</div></div>
 <script>
 	function add() {
 		document.location = "LeaveAdd";

@@ -103,45 +103,87 @@
 			<div class="portlet-body">
 				<div class="row">
 					<div class="col-md-2"></div>
-					<div class="col-md-8">
-						<div class="col-md-2">
-							<label class="control-label">Date :</label>
-						</div>
-						<div class="col-md-6 col-xs-6">
-							<div class="form-group">
-								<div class="input-group input-large date-picker input-daterange"
-									data-date-format="dd-mm-yyyy"><!-- <input type="hidden" id="check" name="check" value="false"> -->
-									<input type="text" class="form-control" name="startdate" id="startdate"
-										<c:choose>
-                                            <c:when test="${startdate == null}">
-                                                value="<fmt:formatDate type="date" value="${now}" pattern="01-01-yyyy"/>"
-                                            </c:when>
-                                            <c:when test="${startdate != null}">
-                                                    value="<fmt:formatDate type="date" value="${startdate}" pattern="dd-MM-yyyy"/>"
-                                            </c:when>
-                                        </c:choose>>
-									<span class="input-group-addon"> to </span> <input type="text"
-										class="form-control" name="enddate" id="enddate"
-										<c:choose>
-                                            <c:when test="${enddate == null}">
-                                                value="<fmt:formatDate type="date" value="${now}" pattern="dd-MM-yyyy"/>"
-                                            </c:when>
-                                            <c:when test="${enddate != null}">
-                                                value="<fmt:formatDate type="date" value="${enddate}" pattern="dd-MM-yyyy"/>"
-                                            </c:when>
-                                        </c:choose>>
+							<div class="col-md-1">
+								<label class="control-label" ><b>Date :</b></label>
+							</div>
+							<div class="col-md-6 col-xs-6">
+								<div class="form-group">
+	
+								<div class="col-md-5">
+									<div id="sandbox" class="form-group">
+										<input id="startdate" name="startdate" type="text" class="form-control">
+									</div>
+								</div>
+								<div class="col-md-2" style="text-align: center">
+									<b> TO </b>
+								</div>
+								<div class="col-md-5">
+									<div id="sandbox" class="form-group">
+										<input id="enddate" name="enddate" type="text" class="form-control">
+									</div>
 								</div>
 							</div>
+										
+									
+									<script>
+							$(document).ready( function(){
+							var date = new Date();
+							var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+							var optSimple = {
+									  format: 'dd-mm-yyyy',
+									  todayHighlight: true,
+									  orientation: 'bottom right',
+									  autoclose: true,
+									  container: '#sandbox'
+									};
+							$( '#startdate' ).datepicker( optSimple );
+							$( '#enddate' ).datepicker( optSimple );
+							$( '#startdate' ).datepicker( 'setDate', today );
+							//Show result 
+							console.log($("#startdate").val());
+							console.log($("#enddate").val());
+							var a = sessionStorage.getItem("start");
+							var b = sessionStorage.getItem("end");
+							if(a !=null && b !=null){
+								$("#startdate").val(a);
+								$("#enddate").val(b);
+								
+							}
+							sessionStorage.removeItem("start");
+							sessionStorage.removeItem("end");
+							////////
+							$( "#startdate" ).change(function() {
+								var x =$(this).datepicker( 'getDate');
+								$( '#enddate' ).datepicker( 'setDate', x );
+								console.log($( '#startdate' ).val());
+								console.log($( '#enddate' ).val())
+								}
+							);
+							$("#search").click(function() {
+								
+								var start = $("#startdate").val();
+								var end = $("#enddate").val();
+								sessionStorage.setItem("start", start);
+								sessionStorage.setItem("end", end);
+							}
+							
+							);
+							});
+							</script>
+									</div>
+									
+								
+							
+							<div class="col-md-1 col-xs-1" style="text-align: center">
+								<button id="search" type="submit" class="btn btn-sm blue-steel" >
+									<i class="fa fa-search"></i> Search
+								</button>
+								
+							</div>
+							<div class="col-md-2"></div>
 						</div>
-						<div class="col-md-4 col-xs-12" style="text-align: center">
-							<button id="search" type="submit" class="btn btn-sm blue-steel">
-								<i class="fa fa-search"></i> Search
-							</button>
 						</div>
-					</div>
-					<div class="col-md-2"></div>
-				</div>
-
+		</form>
 
 
 			<div class="portlet-body flip-scroll" style="text-align: center;">
@@ -197,9 +239,7 @@
 				</table>
 			</div>
 			</div>
-			</form>
 			
-	</div>
 	<script> 
  $(function () { 
  $('[data-toggle="popover"]').popover(); 
@@ -220,7 +260,7 @@ $(document).ready( function () {
 </script>
 <script>
 	function add() {
-		document.location = "Training_Add;
+		document.location = "Training_Add";
 	}
 </script>
 <script>
@@ -262,33 +302,7 @@ function del(trainingid) {
 		}
 	});
 </script>
-<script>
-$( document ).ready(function() {
-	
-	console.log(sessionStorage.getItem("start"));
-	var a = sessionStorage.getItem("start");
-	console.log(sessionStorage.getItem("end"));
-	var b = sessionStorage.getItem("end");
-	if(a !=null && b !=null){
-		$("#startdate").val(a);
-		$("#enddate").val(b);
-		
-	}
-	
-	sessionStorage.removeItem("start");
-	sessionStorage.removeItem("end");
-	
-	$("#search").click(function() {
-		
-		var start = $("#startdate").val();
-		var end = $("#enddate").val();
-		sessionStorage.setItem("start", start);
-		sessionStorage.setItem("end", end);
-	} 
-	    
-	
-}
-</script>
+
 <script>
 		$(document).ready( function () {
 	    $('#myTable').DataTable(
