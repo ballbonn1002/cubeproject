@@ -78,7 +78,7 @@
 							<div class="form-group">
 								<div class="input-group input-large date-picker input-daterange"
 									data-date-format="dd-mm-yyyy">
-									<input type="text" class="form-control" name="startdate"
+									<input type="text" class="form-control" name="startdate" id="startdate"
 										<c:choose>
                                             <c:when test="${startdate == null}">
                                                 value="<fmt:formatDate type="date" value="${now}" pattern="01-01-yyyy"/>"
@@ -87,8 +87,8 @@
                                                     value="<fmt:formatDate type="date" value="${startdate}" pattern="dd-MM-yyyy"/>"
                                             </c:when>
                                         </c:choose>>
-									<span class="input-group-addon"> to </span> <input type="text"
-										class="form-control" name="enddate"
+									<span class="input-group-addon"> to </span> 
+									<input type="text"class="form-control" id="enddate" name="enddate"
 										<c:choose>
                                             <c:when test="${enddate == null}">
                                                 value="<fmt:formatDate type="date" value="${now}" pattern="dd-MM-yyyy"/>"
@@ -106,6 +106,30 @@
 							</button>
 						</div>
 					</div>
+					<script>
+							$(document).ready( function(){
+							
+							sessionStorage.removeItem("start");
+							sessionStorage.removeItem("end");
+							////////
+							$( "#startdate" ).change(function() {
+								var x =$(this).datepicker( 'getDate');
+								$( '#enddate' ).datepicker( 'setDate', x );
+								console.log($( '#startdate' ).val());
+								console.log($( '#enddate' ).val())
+								}
+							);
+							$("#search").click(function() {
+								
+								var start = $("#startdate").val();
+								var end = $("#enddate").val();
+								sessionStorage.setItem("start", start);
+								sessionStorage.setItem("end", end);
+							}
+							
+							);
+							});
+							</script>
 					<div class="col-md-2"></div>
 				</div>
 </div>
@@ -157,7 +181,7 @@
 										<c:if test="${tnow < tend}">
 											<span data-count="${quotaLastYear - leave_6}" class="counter">${quotaLastYear - leave_6}</span>
 											<div class="desc" style="font-size: 13px;">${type_6} 
-												<u>คงเหลือ</u>
+												คงเหลือ
 											</div>
 										</c:if>
 									</div>
