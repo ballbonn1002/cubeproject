@@ -80,7 +80,7 @@
 				</div>
 				
 				<div class="form-group">
-					<label class="col-md-3 control-label">Duration :</label>
+					<label class="col-md-3 control-label"><label style="color:red;">*</label>Duration :</label>
 					<div class="col-md-6">
 						<div class="input-group input-large date-picker input-daterange"
 							data-date-format="dd-mm-yyyy">
@@ -98,7 +98,7 @@
 					</div>
 					<label class="col-md-1 control-label" style="text-align: left">Day</label>
 					<div class="col-md-2">
-						<select class="bs-select form-control" name="amount_sub" id="amount_sub">
+						<select onchange="check()" class="bs-select form-control" name="amount_sub" id="amount_sub">
 							<option value="0" selected>0</option>
 							<option value="0.125">1</option>
 							<option value="0.25">2</option>
@@ -113,18 +113,17 @@
 				</div>
 
 				<div class="form-group">
-					<label class="col-md-3 control-label">half day leave :</label>
-					<div class="col-md-6">
-						<div class="md-radio-inline">
-							<label class="mt-radio col-md-6">
-								<input type="radio" name="halfDay" id="hd_1" value="1">Morning<span></span>
-							</label>
-							<label class="mt-radio col-md-6">
-								<input type="radio" name="halfDay" id="hd_2" value="2">Afternoon<span></span>
-							</label>
-						</div>
+				<label class="col-md-3 control-label"> <label id="red">*</label>half day leave :</label>
+				<div class="col-md-6">
+					<div  class="md-radio-inline">
+						<label  class="mt-radio col-md-6"> <input disabled  type="radio"
+							name="halfDay" id="hd_1" value="1">Morning<span></span>
+						</label> <label class="mt-radio col-md-6"> <input disabled type="radio"
+							name="halfDay" id="hd_2" value="2">Afternoon<span></span>
+						</label>
 					</div>
 				</div>
+			</div>
 
 				<div class="form-group">
 					<label class="col-md-3 control-label">Description :</label>
@@ -169,7 +168,7 @@
 			<div class="form-actions">
 				<div class="row">
 					<div class="col-xs-12" style="text-align: center;">
-						<button type="submit" class="btn btn-sm blue-soft" onclick="send()"><i class="fa fa-send-o"></i> Submit</button>
+						<div class="btn btn-sm blue-soft" onclick="send()"><i class="fa fa-send-o"></i> Submit</div>
 						<button type="reset" class="btn btn-sm red-intense"><i class="fa fa-close"></i> Cancel</button>
 					</div>
 				</div>
@@ -439,10 +438,69 @@ console.log("ee");
 		console.log(amount);
 		console.log(amount_sub);
 		console.log(actionpage);
+		var leave_1 = parseFloat(${leave_1}),
+			amountInt = parseFloat(amount),
+			amount_subInt = parseFloat(amount_sub),
+			all =amountInt+amount_subInt, 	
+			y = ${quotaThisYear},
+			type1 = "${type_1}";
+		/*alert(amount_subInt);
+		alert(amountInt);
+		alert(leave_1);
+		alert(all);*/
+		
+		/* alert(typeleave); */
+		
+		
+		if( typeleave == "1" && all > y){
+			
+			
+			swal({
+				  title: 'ต้องการเพิ่มวันลากิจ/พักร้อนใช่ไหม?',
+				  text: "วันลากิจ/ลาพักร้อนของคุณหมดแล้ว!!",
+				  type: 'warning',
+				  showCancelButton: true,
+				  confirmButtonColor: '#3085d6',
+				  cancelButtonColor: '#d33',
+				  confirmButtonText: 'Yes!'
+				},function (inputValue) {
+			        if (inputValue == false){
+			        	//console.log("canceled");
+			        	return false;
+			        	}
+			        if (inputValue == true) {
+			        	$
+						.ajax({
+							/* url : "sendmailleave", */
+							method : "POST",
+							type : "JSON",
+							data : {
+								"name" : name,
+								"typeleave" : typeleave,
+								"from" : from,
+								"to" : to,
+								"des" : des,
+								"amount" : amount,
+								"amount_sub" : amount_sub,
+								"actionpage" : actionpage,
+							},
+							success : function(data) {
+								
+							}
+						
+						}) 
+			          
+			        }
+			      }
+				
+			);
+			
+		
+	}else
 		
  		$
 					.ajax({
-						url : "sendmailleave",
+						/* url : "sendmailleave", */
 						method : "POST",
 						type : "JSON",
 						data : {
@@ -463,3 +521,35 @@ console.log("ee");
 		}
 	
 </script>
+<script>
+
+		
+		function check(){
+		
+		var amount_sub = $("#amount_sub").val();
+		
+		if (amount_sub != 0) {
+			
+			$("#hd_1").prop( "disabled", false );
+			$("#hd_2").prop( "disabled", false );
+			$("#red").css("display", "inline");
+		
+	
+		}else{
+			$("#hd_1").attr('checked', false);
+			$("#hd_2").attr('checked', false);
+			$("#hd_1").prop( "disabled", true );
+			$("#hd_2").prop( "disabled", true );
+			$("#red").css("display", "none");
+			
+		}
+	}
+	
+</script>
+<style>
+#red{
+	display:none;
+	
+	color:red;
+}
+</style>

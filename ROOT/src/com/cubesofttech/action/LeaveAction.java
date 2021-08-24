@@ -1694,6 +1694,125 @@ System.out.println("666666");
 	public String LeaveAdd() {
 		String date = request.getParameter("date");
 		try {
+			/**/
+			User ur = new User();
+			String userLogin = null;
+			String type = request.getParameter("type");
+			if (type == null) {
+				ur = (User) request.getSession().getAttribute("onlineUser");
+				userLogin = ur.getId();
+			} else {
+				userLogin = request.getParameter("name1");
+			}
+
+			String listbyuser = request.getParameter("Id");
+
+			DateTimeFormatter date1 = DateTimeFormatter.ofPattern("01-01-yyyy");
+			LocalDate localDate = LocalDate.now();
+			String s = "00:00:00.0";
+
+			String start = request.getParameter("startdate");
+			String end = request.getParameter("enddate");
+			Timestamp start_date;
+			Timestamp end_date;
+			if (start == null && end == null) {
+				start_date = DateUtil.dateToTimestamp(date1.format(localDate), s);
+				end_date = DateUtil.changetoEndYear(date1.format(localDate));
+			} else {
+				start_date = DateUtil.dateFormatEdit(start);
+				end_date = DateUtil.dateFormatEdit(end);
+			}
+
+			Date enddate = new Date(end_date.getTime());
+			request.setAttribute("enddate", enddate);
+			System.out.println(enddate);
+			System.out.println(end_date);
+			if (userLogin != listbyuser) {
+				listbyuser = userLogin;
+			}
+
+			List<LeaveType> type_leave = leavetypeDAO.findAll_calendar();
+			for (int i = 0; i < type_leave.size(); i++) {
+				LeaveType leave = type_leave.get(i);
+				request.setAttribute("type_" + leave.getLeaveTypeId(), leave.getLeaveTypeName());
+			}
+			List<Map<String, Object>> leavelist = leaveDAO.myLeavesList(userLogin, start_date, end_date);
+		
+			String status = "1";
+			//List<Map<String, Object>> leaveListDashboard = leaveDAO.myLeavesList(userLogin, start_date, end_date, status);
+			List LeaveID = leaveDAO.findLeaveId(userLogin, start_date, end_date, status);
+		
+			request.setAttribute("leavelist", leavelist);
+		
+			Double leave_1 = 0.000, leave_2 = 0.000, leave_3 = 0.000, leave_5 = 0.000, leave_6 = 0.000;
+//
+//			for (Iterator iterator = leavelist.iterator(); iterator.hasNext();) {
+//				Leaves leave = (Leaves) iterator.next();
+//			}
+			int x=0;
+			
+			while (x <= LeaveID.size()-1) {
+				System.out.println("inLoopWhile");
+				String a[] = LeaveID.get(x).toString().split("[={}]");
+				System.out.println("Split Success");
+				for(int b=0;b<=a.length-1;b++) {
+					System.out.println("a["+b+"]= "+a[b]);
+				}
+				int id=0;
+				for(int b=0;b<=a.length-1;b++) {
+					System.out.println("inLoopFor");
+					if(tryParseInt(a[b])) {
+						System.out.println("inIf");
+						id=Integer.parseInt(a[b]);
+						System.out.println("This is Array No: "+b+" ="+a[b]);
+						Leaves leaveDashboard =  leaveDAO.findByLeaveId(id);
+						System.out.println("Ref Success");
+						Double noday = leaveDashboard.getNoDay().doubleValue();
+						System.out.println("This NoDay : "+noday);
+						if (leaveDashboard.getLeaveTypeId().contains("1")) {
+							leave_1 = leave_1 + noday;
+						}
+						if (leaveDashboard.getLeaveTypeId().contains("2")) {
+							leave_2 = leave_2 + noday;
+						}
+						if (leaveDashboard.getLeaveTypeId().contains("3")) {
+							leave_3 = leave_3 + noday;
+						}
+						if (leaveDashboard.getLeaveTypeId().contains("5")) {
+							leave_5 = leave_5 + noday;
+						}
+						if (leaveDashboard.getLeaveTypeId().contains("6")) {
+							leave_6 = leave_6 + noday;
+						}
+					}
+					
+				}
+				x++;
+			}
+			
+System.out.println("777");
+			request.setAttribute("leave_1", leave_1);
+			request.setAttribute("leave_2", leave_2);
+			request.setAttribute("leave_3", leave_3);
+			request.setAttribute("leave_5", leave_5);
+			request.setAttribute("leave_6", leave_6);
+			request.setAttribute("usertest", userLogin);
+			Date day = new Date();
+			LocalDate localdate = day.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			Double quotaLastYear = leaveDAO.LastYearQuota(userLogin, localdate.getYear());
+			Double quotaThisYear = leaveDAO.ThisYearQuota(userLogin);
+			request.setAttribute("quotaThisYear", quotaThisYear);
+		
+			request.setAttribute("quotaLastYear", quotaLastYear);
+			request.setAttribute("leave_6l", quotaLastYear - leave_6);
+
+			String year = localdate.toString().substring(0, 4);
+			Timestamp tend = Timestamp.valueOf(year + "-04-01 00:00:00"); // time end is april month
+			Timestamp tnow = new Timestamp(day.getTime());
+
+			request.setAttribute("tnow", tnow);
+			request.setAttribute("tend", tend);
+			/**/
 			String leaveTypeJSON = leavetypeDAO.getForDisplayJSON();
 			String holidayJSON = holidayDAO.getallOnlyDateJSON();
 			String userListJSON = userDAO.userListJSON();
