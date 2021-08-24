@@ -598,13 +598,21 @@ public class TimesheetService {
 								}
 
 								timesheet.setStatus("W");
+								String name = null;
+								
+								List<Map<String, Object>> wherename = timesheetDAO.wherename(usersum);
+								for (int z = 0; z < wherename.size(); z++) {
+									 name = ((String) wherename.get(z).get("id"));
+									
 
+									System.out.println(name);
+								}
 								List<Map<String, Object>> whereworkhour = timesheetDAO.whereworkhour(searchyear,
-										searchmonth, searchday);
+										searchmonth, searchday, name);
 								// System.out.println(whereworkhour);
 								if (whereworkhour.isEmpty()) {
-									String sdate = searchyear + "-" + searchmonth + "-" + searchday + " 08:30:00";
-									String edate = searchyear + "-" + searchmonth + "-" + searchday + " 17:30:00";
+									String sdate = searchyear + "-" + searchmonth + "-" + searchday + " 08:30:01";
+									String edate = searchyear + "-" + searchmonth + "-" + searchday + " 17:30:59";
 									Timestamp startDate = Timestamp.valueOf(sdate);
 									Timestamp endDate = Timestamp.valueOf(edate);
 									timesheet.setTimeCheckIn(startDate);
@@ -631,12 +639,12 @@ public class TimesheetService {
 								}
 								timesheet.setTimeCreate(DateUtil.getCurrentTime());
 								timesheet.setTeam(teamsum);
-								List<Map<String, Object>> wherename = timesheetDAO.wherename(usersum);
-								for (int z = 0; z < wherename.size(); z++) {
-									String name = ((String) wherename.get(z).get("id"));
-									timesheet.setUserCreate(name);
+								List<Map<String, Object>> wherename1 = timesheetDAO.wherename(usersum);
+								for (int z = 0; z < wherename1.size(); z++) {
+									String name1 = ((String) wherename1.get(z).get("id"));
+									timesheet.setUserCreate(name1);
 
-									System.out.println(name);
+									System.out.println(name1);
 								}
 
 								timesheetDAO.save(timesheet);

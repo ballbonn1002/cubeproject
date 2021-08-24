@@ -392,18 +392,26 @@ tr{
 										
 										<!-- aa -->
 											<c:choose>
-												<c:when test="${TimeCompare >= 8}"> 
-													<div  class="btn-sm btn-info" >
-														<i class="fa fa-check"></i> 
+											<c:when test="${TimeCompare < 4}"> 
+													<div  class="btn-sm btn-danger" >
+														<i class="fa fa-fire"></i> 
 															
-													8:00  hrs.
+													${TimeCompare}:${TimeCompareM}  hrs.
 													
 													</div>
 												</c:when>
-												<c:when test="${TimeCompare < 8}">
+												<c:when test="${TimeCompare < 9}"> 
 													<div  class="btn-sm btn-danger" >
-														<i class="fa fa-fire"></i>
-													${TimeCompare}:${TimeCompareM}  hrs.
+														<i class="fa fa-fire"></i> 
+															
+													${TimeCompare - 1}:${TimeCompareM}  hrs.
+													
+													</div>
+												</c:when>
+												<c:when test="${TimeCompare >= 9}">
+													<div  class="btn-sm btn-info" >
+														<i class="fa fa-check"></i>
+													8:00  hrs.
 													</div>
 												</c:when>
 												

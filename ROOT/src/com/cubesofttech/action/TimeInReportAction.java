@@ -566,6 +566,8 @@ public class TimeInReportAction extends ActionSupport {
 				ot_min_count += timeout_min - timein_min;
 			}
 
+			System.out.println();
+			
 			if (workstart_min != 0 && workend_min != 0) {
 				if (workstart_min < timein_min) {
 					latecount += 1;
@@ -723,15 +725,27 @@ public class TimeInReportAction extends ActionSupport {
 		leave_day = leave_day_min_count / 480;
 		leave_hour = (leave_day_min_count % 480) / 60;
 		leave_min = (leave_day_min_count % 480) % 60;
-
+		System.out.println("late_min_count : "+late_min_count);
 		// late and early calculate
-		if (late_min_count < 60) {
-			late_min_count = 0;
-		}
+		
+//		if (late_min_count < 60) {
+//			late_min_count = 0;
+//		}
 
-		late_day_count = (late_min_count + early_min_count) / 480;
-		late_hour = ((late_min_count + early_min_count) % 480) / 60;
-		late_min = ((late_min_count + early_min_count) % 480) % 60;
+//		late_day_count = (late_min_count + early_min_count) / 480;
+//		System.out.println("late_min_count : "+late_min_count);
+//		System.out.println("early_min_count : "+early_min_count);
+//		System.out.println("late_day_count : "+late_day_count);
+//		late_hour = ((late_min_count + early_min_count) % 480) / 60;
+//		late_min = ((late_min_count + early_min_count) % 480) % 60;
+				
+		late_day_count = (late_min_count) / 480;
+		System.out.println("late_min_count : "+late_min_count);
+		System.out.println("early_min_count : "+early_min_count);
+		System.out.println("late_day_count : "+late_day_count);
+		late_hour = ((late_min_count) % 480) / 60;
+		late_min = ((late_min_count) % 480) % 60;
+		
 		// late and early condition
 		int ot_day = ot_min_count / 480;
 		int ot_hour = (ot_min_count % 480) / 60;
@@ -770,7 +784,8 @@ public class TimeInReportAction extends ActionSupport {
 		TimeCal.put("ot_x1_hour", String.format("%02d", ot_x1_hour) + ":" + String.format("%02d", ot_x1_min));
 		TimeCal.put("ot_x15_day_count", ot_x1_5_day);
 		TimeCal.put("ot_x15_hour", String.format("%02d", ot_x1_5_hour) + ":" + String.format("%02d", ot_x1_5_min));
-
+		System.out.println("Timein : "+Timein);
+		System.out.println("Timeout : "+Timeout);
 		return TimeCal;
 	}
 
@@ -992,6 +1007,8 @@ public class TimeInReportAction extends ActionSupport {
 				dayinlist.add(parser.format(map.get("time_check_in")));
 				Timein.add(parsers.format(map.get("time_check_in")));
 				Timeout.add(parsers.format(map.get("time_check_out")));
+				
+			
 				OTmark.add(map.get("description").toString());
 				if (map.get("work_time_start") != null || !map.get("work_time_start").toString().equals("")) {
 					Workstart = map.get("work_time_start").toString();
@@ -1105,6 +1122,9 @@ public class TimeInReportAction extends ActionSupport {
 
 						int time = (time_out_m - time_in_m) / 60;
 						int time_min = (time_out_m - time_in_m) % 60;
+						
+						
+						
 						sumworkmin += time_out_m - time_in_m;
 						if (!Workstart.equals("0:00")) {
 							if (time_in_m > workstart_min || workend_min > time_out_m) {
@@ -1140,11 +1160,19 @@ public class TimeInReportAction extends ActionSupport {
 							cell.setCellStyle(style);
 						}
 						cell = row.createCell(10);
-						if ((time_out_m - time_in_m) >= (8 * 60)) {
-							cell.setCellValue(String.format("%02d", 8) + ":" + String.format("%02d", 0));
-						} else {
-							cell.setCellValue(String.format("%02d", time) + ":" + String.format("%02d", time_min));
+						
+						if(time_out_m <= 780) {					
+								cell.setCellValue(String.format("%02d", time) + ":" + String.format("%02d", time_min));						
 						}
+						else if(time < 9) {
+								cell.setCellValue(String.format("%02d", time-1) + ":" + String.format("%02d", time_min));							
+						}
+						else if(time >= 9) {				
+								cell.setCellValue(String.format("%02d", 8) + ":" + String.format("%02d", 0));						
+						}
+						
+						
+						
 
 						cell.setCellStyle(style);
 
