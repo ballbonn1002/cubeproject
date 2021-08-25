@@ -923,6 +923,14 @@ public class BorrowAction extends ActionSupport {
 			return ERROR;
 		}
 	}
+	public boolean tryParseInt(String value) {
+	    try {
+	        int x= Integer.parseInt(value);
+	        return true;
+	    } catch (NumberFormatException e) {
+	        return false;
+	    }
+	}
 
 	public String leave_calendar() throws Exception{
 		try {
@@ -964,38 +972,51 @@ public class BorrowAction extends ActionSupport {
 			Double leave_1 = 0.000, leave_2 = 0.000, leave_3 = 0.000, leave_5 = 0.000, leave_6 = 0.000;
 			
 			String status = "1";
-			List leaveListDashboard = leaveDAO.myLeavesList(userId, start_date, end_date,status);
+			List LeaveID = leaveDAO.findLeaveId(userId, start_date, end_date, status);
 			
 			if (leavelist != null) {
 				request.setAttribute("leave", leavelist);
-				for (Iterator iterator = leavelist.iterator(); iterator.hasNext();) {
-					Leaves leave = (Leaves) iterator.next();
-				}
+				int x=0;
 				
-				for (Iterator iterator = leaveListDashboard.iterator(); iterator.hasNext();) {
-					Leaves leaveDashboard = (Leaves) iterator.next();
-					Double noday = leaveDashboard.getNoDay().doubleValue();
-					if (leaveDashboard.getLeaveTypeId().contains("1")) {
-						leave_1 = leave_1 + noday;
+				while (x <= LeaveID.size()-1) {
+					System.out.println("inLoopWhile");
+					String a[] = LeaveID.get(x).toString().split("[={}]");
+					System.out.println("Split Success");
+					for(int b=0;b<=a.length-1;b++) {
+						System.out.println("a["+b+"]= "+a[b]);
 					}
-					if (leaveDashboard.getLeaveTypeId().contains("2")) {
-						leave_2 = leave_2 + noday;
+					int id=0;
+					for(int b=0;b<=a.length-1;b++) {
+						System.out.println("inLoopFor");
+						if(tryParseInt(a[b])) {
+							System.out.println("inIf");
+							id=Integer.parseInt(a[b]);
+							System.out.println("This is Array No: "+b+" ="+a[b]);
+							Leaves leaveDashboard =  leaveDAO.findByLeaveId(id);
+							System.out.println("Ref Success");
+							Double noday = leaveDashboard.getNoDay().doubleValue();
+							System.out.println("This NoDay : "+noday);
+							if (leaveDashboard.getLeaveTypeId().contains("1")) {
+								leave_1 = leave_1 + noday;
+							}
+							if (leaveDashboard.getLeaveTypeId().contains("2")) {
+								leave_2 = leave_2 + noday;
+							}
+							if (leaveDashboard.getLeaveTypeId().contains("3")) {
+								leave_3 = leave_3 + noday;
+							}
+							if (leaveDashboard.getLeaveTypeId().contains("5")) {
+								leave_5 = leave_5 + noday;
+							}
+							if (leaveDashboard.getLeaveTypeId().contains("6")) {
+								leave_6 = leave_6 + noday;
+							}
+						}
 					}
-					if (leaveDashboard.getLeaveTypeId().contains("3")) {
-						leave_3 = leave_3 + noday;
-					}
-					if (leaveDashboard.getLeaveTypeId().contains("5")) {
-						leave_5 = leave_5 + noday;
-					}
-					if (leaveDashboard.getLeaveTypeId().contains("6")) {
-						leave_6 = leave_6 + noday;
-					}
+					x++;
 				}
-
+	System.out.println("666666");
 			}
-			
-			
-
 			request.setAttribute("leave_1", leave_1);
 			request.setAttribute("leave_2", leave_2);
 			request.setAttribute("leave_3", leave_3);

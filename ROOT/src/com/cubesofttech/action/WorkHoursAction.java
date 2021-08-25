@@ -2981,7 +2981,6 @@ public class WorkHoursAction extends ActionSupport {
 			String timecalendar = request.getParameter("timecalendar");
 			String datecalendar = request.getParameter("datecalendar");
 			request.setAttribute("datecalendar", datecalendar);
-
 			String month = null;
 			String year = null;
 			if (datecalendar == null) {
@@ -3247,33 +3246,56 @@ public class WorkHoursAction extends ActionSupport {
 			DateTimeFormatter dateT = DateTimeFormatter.ofPattern("01-01-yyyy");
 			LocalDate localDate = LocalDate.now();
 			String s = "00:00:00.0";
-
+			
 			Timestamp start_date = DateUtil.dateToTimestamp(dateT.format(localDate), s);
 			Timestamp end_date = DateUtil.changetoEndYear(dateT.format(localDate));
 			List leavelist = leaveDAO.myLeavesList(userId, start_date, end_date);
 			Double leave_1 = 0.000, leave_2 = 0.000, leave_3 = 0.000, leave_5 = 0.000, leave_6 = 0.000;
-
+			String status = "1";
+			List LeaveID = leaveDAO.findLeaveId(userId, start_date, end_date, status);
 			if (leavelist != null) {
 				request.setAttribute("leave", leavelist);
-				for (Iterator iterator = leavelist.iterator(); iterator.hasNext();) {
-					Leaves leave = (Leaves) iterator.next();
-					Double noday = leave.getNoDay().doubleValue();
-					if (leave.getLeaveTypeId().contains("1")) {
-						leave_1 += noday;
+				int x=0;
+				while (x <= LeaveID.size()-1) {
+					System.out.println("inLoopWhile");
+					String a[] = LeaveID.get(x).toString().split("[={}]");
+					System.out.println("Split Success");
+					for(int b=0;b<=a.length-1;b++) {
+						System.out.println("a["+b+"]= "+a[b]);
 					}
-					if (leave.getLeaveTypeId().contains("2")) {
-						leave_2 += noday;
+					int id=0;
+					for(int b=0;b<=a.length-1;b++) {
+						System.out.println("inLoopFor");
+						if(tryParseInt(a[b])) {
+							System.out.println("inIf");
+							id=Integer.parseInt(a[b]);
+							System.out.println("This is Array No: "+b+" ="+a[b]);
+							Leaves leaveDashboard =  leaveDAO.findByLeaveId(id);
+							System.out.println("Ref Success");
+							Double noday = leaveDashboard.getNoDay().doubleValue();
+							System.out.println("This NoDay : "+noday);
+							if (leaveDashboard.getLeaveTypeId().contains("1")) {
+								leave_1 = leave_1 + noday;
+							}
+							if (leaveDashboard.getLeaveTypeId().contains("2")) {
+								leave_2 = leave_2 + noday;
+							}
+							if (leaveDashboard.getLeaveTypeId().contains("3")) {
+								leave_3 = leave_3 + noday;
+							}
+							if (leaveDashboard.getLeaveTypeId().contains("5")) {
+								leave_5 = leave_5 + noday;
+							}
+							if (leaveDashboard.getLeaveTypeId().contains("6")) {
+								leave_6 = leave_6 + noday;
+							}
+						}
+						
 					}
-					if (leave.getLeaveTypeId().contains("3")) {
-						leave_3 += noday;
-					}
-					if (leave.getLeaveTypeId().contains("5")) {
-						leave_5 += noday;
-					}
-					if (leave.getLeaveTypeId().contains("6")) {
-						leave_6 += noday;
-					}
+					x++;
 				}
+				
+	System.out.println("777");
 			}
 			request.setAttribute("leave_1", leave_1);
 			request.setAttribute("leave_2", leave_2);
@@ -3285,6 +3307,14 @@ public class WorkHoursAction extends ActionSupport {
 			e.printStackTrace();
 			return ERROR;
 		}
+	}
+	public boolean tryParseInt(String value) {
+	    try {
+	        int x= Integer.parseInt(value);
+	        return true;
+	    } catch (NumberFormatException e) {
+	        return false;
+	    }
 	}
 
 	public String searchAlll_calendar() {
