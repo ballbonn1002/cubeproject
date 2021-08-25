@@ -264,31 +264,31 @@ var AppCalendar = function() {
             var id_leave = [];
             var mycolor = ['red','grey','white','yellow','green','purple'];
             <c:forEach var="leave" items="${leave}">
-            var text = '${leave.startDate}';
+            var text = '${leave.start_date}';
             text = text.substring(0,10);
-            var text2 =  '${leave.endDate}';
+            var text2 =  '${leave.end_date}';
             text2 = text2.substring(0,10);
-            <c:if test="${leave.leaveTypeId.toString() == 1 }">
+            <c:if test="${leave.leave_type_id.toString() == 1 }">
             var text3 = 'ลากิจ/พักร้อน';
             </c:if>
             
-            <c:if test="${leave.leaveTypeId.toString() == 2 }">
+            <c:if test="${leave.leave_type_id.toString() == 2 }">
             var text3 = 'ลาอื่นๆ';
             </c:if>
             
-            <c:if test="${leave.leaveTypeId.toString() == 3 }">
+            <c:if test="${leave.leave_type_id.toString() == 3 }">
             var text3 = 'ลาป่วย';
             </c:if>
-            <c:if test="${leave.leaveTypeId.toString() == 4 }">
+            <c:if test="${leave.leave_type_id.toString() == 4 }">
             var text3 = 'ขาดงาน';
             </c:if>
-            <c:if test="${leave.leaveTypeId.toString() == 5 }">
+            <c:if test="${leave.leave_type_id.toString() == 5 }">
             var text3 = 'ลาโดยไม่รับค่าจ้าง';
             </c:if>
-            <c:if test="${leave.leaveTypeId.toString() == 6 }">
+            <c:if test="${leave.leave_type_id.toString() == 6 }">
             var text3 = 'ลาพักร้อนที่เหลือจากปีก่อน';
             </c:if>
-            <c:if test="${leave.leaveTypeId.toString() == 9 }">
+            <c:if test="${leave.leave_type_id.toString() == 9 }">
             var text3 = 'อื่นๆ';
             </c:if>
      
@@ -300,7 +300,7 @@ var AppCalendar = function() {
             <c:set var = "string2" value = "${fn:replace(string1,newline,'')}" />
             
             var text4 = '${string2}';
-            var text5 = '${leave.leaveId}';
+            var text5 = '${leave.leave_id}';
             var user = "${userId}";
             start_date.push(date1);
             end_date.push(date2);

@@ -331,36 +331,36 @@
 	            var mycolor  = ['red','grey','blue','yellow','green','purple'];
 	            
 	            <c:forEach var="leave" items="${leave}">
-	            var leaveStart = '${leave.startDate}';
+	            var leaveStart = '${leave.start_date}';
 	            	leaveStart = leaveStart.substring(0,10);
-	            var leaveEnd   = '${leave.endDate}';
+	            var leaveEnd   = '${leave.end_date}';
 	            	leaveEnd   = leaveEnd.substring(0,10);
 	            
-	            <c:if test="${leave.leaveTypeId.toString() == 1 }">
+	            <c:if test="${leave.leave_type_id.toString() == 1 }">
 	            	var leaveType = 'ลากิจ/พักร้อน';
 	            </c:if>
 	            
-	            <c:if test="${leave.leaveTypeId.toString() == 2 }">
+	            <c:if test="${leave.leave_type_id.toString() == 2 }">
 	            	var leaveType = 'ลาอื่นๆ';
 	            </c:if>
 	            
-	            <c:if test="${leave.leaveTypeId.toString() == 3 }">
+	            <c:if test="${leave.leave_type_id.toString() == 3 }">
 	            	var leaveType = 'ลาป่วย';
 	            </c:if>
 	            
-	            <c:if test="${leave.leaveTypeId.toString() == 4 }">
+	            <c:if test="${leave.leave_type_id.toString() == 4 }">
 	            	var leaveType = 'ขาดงาน';
 	            </c:if>
 	            
-	            <c:if test="${leave.leaveTypeId.toString() == 5 }">
+	            <c:if test="${leave.leave_type_id.toString() == 5 }">
 	           		var leaveType = 'ลาโดยไม่รับค่าจ้าง';
 	            </c:if>
 	            
-	            <c:if test="${leave.leaveTypeId.toString() == 6 }">
+	            <c:if test="${leave.leave_type_id.toString() == 6 }">
 	            	var leaveType = 'ลาพักร้อนที่เหลือจากปีก่อน';
 	            </c:if>
 	            
-	            <c:if test="${leave.leaveTypeId.toString() == 9 }">
+	            <c:if test="${leave.leave_type_id.toString() == 9 }">
 	            	var leaveType = 'อื่นๆ';
 	            </c:if>
 	     
@@ -372,7 +372,7 @@
 	            <c:set var = "string2" value = "${fn:replace(string1,newline,'')}" />
 	            
 	            var desLeave = '${string2}';
-	            var leaveID  = '${leave.leaveId}';
+	            var leaveID  = '${leave.leave_id}';
 	            var user     = "${userId}";
 	            BeginDate.push(dateLeave);
 	            EndDate.push(dateLeaveE);
