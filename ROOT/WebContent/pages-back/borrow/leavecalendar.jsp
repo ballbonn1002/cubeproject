@@ -34,12 +34,10 @@
 .fc-sat, .fc-sun {
 	background-color: #E9EDEF;
 }
-
 .fully_colored_holiday, .fully_colored_holidaydiv,
 	.fully_colored_holidayspan {
 	background: #E9EDEF;
 }
-
 .fc-day-grid-event>.fc-content {
 	white-space: normal;
 }
@@ -63,7 +61,6 @@
 	<div class="col-md-9">
 		<select class="bs-select form-control" name="name">
 			<option value="All">All</option>
-
 		</select> -->
 	<form action="searchLeaveCalendar" method="post">
 		<input type="hidden" id="tempuser" value="${onlineUser.id}" />
@@ -237,26 +234,20 @@
 
 <script>
 		$(document).ready(function() {
-
 			// page is now ready, initialize the calendar...
-
 			$('#calendar').fullCalendar();
 			
-
 		});
 	</script>
 
 <script type="text/javascript">
 var AppCalendar = function() {
-
     return {
         //main function to initiate the module
         init: function() {
             this.initCalendar();
         },
-
         initCalendar: function() {
-
             if (!jQuery().fullCalendar) {
                 return;
             }
@@ -264,7 +255,6 @@ var AppCalendar = function() {
             if(date_time != ""){           
             var noTime = $.fullCalendar.moment(date_time,"YYYY-MM-DD");
              }else{ var noTime = moment(); }        
-
             var start_date = [];
             var end_date = [];
             var name =[];
@@ -390,7 +380,6 @@ var AppCalendar = function() {
             des1.push(text14);
             id1.push(text15);
             </c:forEach>
-
             var y;                    
             for(y in start_date1){
             	events2.push(	{
@@ -408,8 +397,6 @@ var AppCalendar = function() {
             }
            
       		
-
-
                    
             var date = new Date();
             var d = date.getDate();
@@ -418,7 +405,6 @@ var AppCalendar = function() {
             
         
             var h = {};
-
             if (App.isRTL()) {
                 if ($('#calendar').parents(".portlet").width() <= 720) {
                     $('#calendar').addClass("mobile");
@@ -453,7 +439,6 @@ var AppCalendar = function() {
                 }
             }
             
-
             var initDrag = function(el) {
             	
                 // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
@@ -481,25 +466,19 @@ var AppCalendar = function() {
                 initDrag(html); // DIE !!! ********************************************* !!
                 
             };
-
             $('#external-events div.external-event').each(function() {
                 initDrag($(this));
             });
-
             $('#event_add').unbind('click').click(function() {
                 var title = $('#event_title').val();
                 addEvent(title);
             });
-
             //predefined events
             $('#event_box').html("");
             addEvent("My Event 1");
             addEvent("My Event 2");
            
-
             $('#calendar').fullCalendar('destroy'); // destroy the calendar
-
-
             $('#calendar').fullCalendar({ //re-initialize the calendar
                 
             	header: h,
@@ -516,16 +495,13 @@ var AppCalendar = function() {
                     var originalEventObject = $(this).data('eventObject');
                     // we need to copy it, so that multiple events don't have a reference to the same object
                     var copiedEventObject = $.extend({}, originalEventObject);
-
                     // assign it the date that was reported
                     copiedEventObject.start = date;
                     copiedEventObject.allDay = allDay;
                     copiedEventObject.className = $(this).attr("data-class");
-
                     // render the event on the calendar
                     // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
                     $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-
                     // is the "remove after drop" checkbox checked?
                     if ($('#drop-remove').is(':checked')) {
                         // if so, remove the element from the "Draggable Events" list
@@ -576,11 +552,11 @@ var AppCalendar = function() {
                 	  if (confirm("Are you sure Delete ?")) {                 		
                 		     document.location = "delete_leave_calecdar?leave_id="+ calEvent.id ;
                   	  }
-
                 });
                 element.find(".searchon").on('click',function() { //Search Function
                   
-                     	  document.location = "myleave_edit?flag=1&Id="+calEvent.id+"&date="+moment(calEvent.start).format('DD-MM-YYYY')+"&thisuser=" +calEvent.className ;                     
+                     	  document.location = "LeaveEdit?flag=0&id=" + calEvent.id ;   
+                     	// "holiday_edit_calendar?flag=0&id=" + calEvent.id
                 	                  });
                   
                   },
@@ -626,22 +602,17 @@ var AppCalendar = function() {
                       	document.location = "leave_resize_calendar?id="+event.id +"&date_end="+moment2.format("DD-MM-YYYY");
                          }   
                      }, 
-
-                 editable: true,
+                 editable: false,
                 eventLimit: true,
            
                 events: events1
                 
-
-
             });
             $('#calendar').fullCalendar( 'addEventSource',events2);
         }
-
     };
    
 }();
-
 jQuery(document).ready(function() {    
    AppCalendar.init();
    
@@ -679,7 +650,6 @@ jQuery(document).ready(function() {
   //  alert(user);
   	document.getElementById(user).selected = "true";
 	}else{
-
     $('.select2me').select2();
 	}
 });</script>
@@ -691,9 +661,7 @@ $('.counter').each(function() {
 	  $({ countNum: $this.text()}).animate({
 	    countNum: countTo
 	  },
-
 	  {
-
 	    duration:1000,
 	    easing:'linear',
 	    step: function() {
@@ -703,11 +671,8 @@ $('.counter').each(function() {
 	      $this.text(this.countNum);
 	      //alert('finished');
 	    }
-
 	  });  
 	  
 	  
-
 	});
-
 </script>
