@@ -573,9 +573,6 @@ var AppCalendar = function() {
                         	 document.location = "LeaveAdd?date="+date.format("DD-MM-YYYY"); 
                          }
                      }
-                
-                	 
-                   
                   },
                /*     eventDrop: function(event, delta, revertFunc) { // ลากเพื่อแก้ไข
                 		var moment2 = moment(event.end);                		
