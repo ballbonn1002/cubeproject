@@ -74,6 +74,7 @@
 					<label class="col-md-3 control-label">Type of leave :</label>
 					<div class="col-md-6">
 						<div id="leaveTypes" class="md-radio-inline">
+						<div id="leaveTypes_hidden" class="md-radio-inline">
 						</div>
 						</div>
 					</div>
@@ -85,8 +86,10 @@
 						<div class="input-group input-large date-picker input-daterange"
 							data-date-format="dd-mm-yyyy">
 							<input type="text" class="form-control" id="date_from" name="from" required>
+								<input hidden class="hide" name="from_hidden" id="date_from_hidden" type="text">
 							<span class="input-group-addon"> to </span>
 							<input type="text" class="form-control" id="date_to" name="to" required>
+								<input hidden class="hide" name="to_hidden" id="date_to_hidden" type="text">
 						</div>
 					</div>
 				</div>
@@ -95,6 +98,7 @@
 					<label class="col-md-3 control-label">Amount :</label>
 					<div class="col-md-2">
 						<input type="text" class="form-control" id="amount" name="amount" min="1" max="1000" maxlength="3" required>
+						<input hidden class="hide" name="amount_hidden" id="amount_hidden" type="text">
 					</div>
 					<label class="col-md-1 control-label" style="text-align: left">Day</label>
 					<div class="col-md-2">
@@ -108,6 +112,7 @@
 							<option value="0.75">6</option>
 							<option value="0.875">7</option>
 						</select>
+						<input hidden class="hide" name="amount_sub_hidden" id="amount_sub_hidden" type="text">
 					</div>
 					<label class="col-md-1 control-label" style="text-align: left">Hours</label>
 				</div>
@@ -116,10 +121,12 @@
 				<label class="col-md-3 control-label"> <label id="red">*</label>half day leave :</label>
 				<div class="col-md-6">
 					<div  class="md-radio-inline">
-						<label  class="mt-radio col-md-6"> <input disabled  type="radio"
-							name="halfDay" id="hd_1" value="1">Morning<span></span>
-						</label> <label class="mt-radio col-md-6"> <input disabled type="radio"
-							name="halfDay" id="hd_2" value="2">Afternoon<span></span>
+						<label  class="mt-radio col-md-6"> 
+							<input disabled  type="radio" name="halfDay" id="hd_1" value="1">Morning<span></span>
+								<input hidden class="hide" name="halfDay_hidden" id="hd_1_hidden" type="text">
+						</label> <label class="mt-radio col-md-6"> 
+							<input disabled type="radio" name="halfDay" id="hd_2" value="2">Afternoon<span></span>
+								<input hidden class="hide" name="halfDay_hidden" id="hd_2_hidden" type="text">
 						</label>
 					</div>
 				</div>
@@ -130,6 +137,7 @@
 					<div class="col-md-6">
 						<textarea style="word-break: break-all; white-space: normal;"
 							maxlength="1024" class="form-control" rows="6" name="description" id="description" onkeyup='check_char(this)'></textarea>
+							<input hidden class="hide" name="description_hidden" id="description_hidden" type="text">
 						<div class="form-control-focus"></div>
 					</div>
 				</div>
@@ -160,6 +168,7 @@
 					<label class="col-md-3 control-label">Reason :</label>
 					<div class="col-md-6">
 						<textarea class="form-control" name="reason" id="reason" rows="3" maxlength="1024" onkeyup='check_char(this)'></textarea>
+							<input hidden class="hide" name="reason_hidden" id="reason_hidden" type="text">
 						<div class="form-control-focus"></div>
 					</div>
 				</div>
@@ -168,8 +177,8 @@
 			<div class="form-actions">
 				<div class="row">
 					<div class="col-xs-12" style="text-align: center;">
-						<div class="btn btn-sm blue-soft" onclick="send()"><i class="fa fa-send-o"></i> Submit</div>
-						<button type="reset" class="btn btn-sm red-intense"><i class="fa fa-close"></i> Cancel</button>
+						<div class="btn btn-sm blue-soft" onclick="send()" id="btn_submit"><i class="fa fa-send-o"></i> Submit</div>
+						<button type="reset" class="btn btn-sm red-intense" id="btn_cancel"><i class="fa fa-close"></i> Cancel</button>
 					</div>
 				</div>
 			</div>
@@ -218,7 +227,8 @@ function check_char(elm){
 				if(leaveTypes[i].id != '4' && leaveTypes[i].id != '9'){
 					let radio =	'<label class="mt-radio col-md-6">'
 							+'<input type="radio" name="leaveType" onclick="checkamount()" id="lt_'+leaveTypes[i].id+'" value="'+leaveTypes[i].id+'" required>'+leaveTypes[i].name
-							+'<span></span></label>';
+							+'<span></span></label>'
+							+'<input hidden class="hide" name="leaveType_hidden" id="lt_hidden" type="text"';
 					$('#leaveTypes').append(radio);
 				}
 			}
@@ -254,6 +264,7 @@ function check_char(elm){
             var leave = ${leave};
             user = leave.userId;
             manager = leave.apprUserId;
+            department = leave.leaveStatusId.toString();
             $('form').attr('action','LeaveEdit_Do');
         } else {
             user = "${onlineUser.id}";
@@ -326,11 +337,146 @@ function check_char(elm){
 <c:if test="${!userAuthority.contains('leave.approve')}">
 	<script>
         $(()=>{
-            $('#status').attr('disabled',true);
-		    $('#status_hidden').val($('#status').val());
-		    $('#status').change(() => {
+        	if(department == '0'){
+        		$('#status').attr('disabled',true);
+        		$('#status_hidden').val($('#status').val());
+        		$('#status').change(() => {
+ 				   $('#status_hidden').val($('#status').val());
+ 				 });
+        	}
+        	if(department == '1'){
+        		$('#lt_').attr('disabled',true);
+         		$('#lt_hidden').val($('#lt_').val());
+         		$('#lt_').change(() => {
+ 				   $('#lt_hidden').val($('#lt_').val());
+ 				  $('#leaveTypes_hidden').append(radio);
+ 			    });
+        		 
+        		$('#date_from').attr('disabled',true);
+        		$('#date_from_hidden').val($('#date_from').val());
+        		$('#date_from').change(() => {
+				    $('#date_from_hidden').val($('#date_from').val());
+			    });
+        		
+        		$('#date_to').attr('disabled',true);
+        		$('#date_to_hidden').val($('#date_to').val());
+			    $('#date_to').change(() => {
+				    $('#date_to_hidden').val($('#date_to').val());
+			    });
+        		
+        		$('#amount').attr('disabled',true);
+        		$('#amount_hidden').val($('#amount').val());
+			    $('#amount').change(() => {
+				    $('#amount_hidden').val($('#amount').val());
+			    });
+        		
+        		$('#amount_sub').attr('disabled',true);
+        		$('#amount_sub_hidden').val($('#amount_sub').val());
+			    $('#amount_sub').change(() => {
+				    $('#amount_sub_hidden').val($('#amount_sub').val());
+			    });
+			    
+			    $('#hd_1').attr('disabled',true);
+			    $('#hd_1_hidden').val($('#hd_1').val());
+			    $('#hd_1').change(() => {
+				    $('#hd_1_hidden').val($('#hd_1').val());
+			    });
+			    
+			    $('#hd_2').attr('disabled',true);
+			    $('#hd_2_hidden').val($('#hd_2').val());
+			    $('#hd_2').change(() => {
+				    $('#hd_2_hidden').val($('#hd_2').val());
+			    });
+        		
+        		$('#description').attr('disabled',true);
+        		$('#description_hidden').val($('#description').val());
+			    $('#description').change(() => {
+				    $('#description_hidden').val($('#description').val());
+			    });
+        		
+	            $('#status').attr('disabled',true);
 			    $('#status_hidden').val($('#status').val());
-		    });
+			    $('#status').change(() => {
+				    $('#status_hidden').val($('#status').val());
+			    });
+			    
+			    $('#reason').attr('disabled',true);
+			    $('#reason_hidden').val($('#reason').val());
+			    $('#reason').change(() => {
+				    $('#reason_hidden').val($('#reason').val());
+			    });
+			    
+			    $('#btn_submit').attr('disabled',true);
+			    $('#btn_cancel').attr('disabled',true);
+        	}
+        	if(department == '2'){
+       		 
+         		$('#lt_').attr('disabled',true);
+         		$('#lt_hidden').val($('#lt_').val());
+         		$('#lt_').change(() => {
+ 				   $('#lt_hidden').val($('#lt_').val());
+ 				  $('#leaveTypes_hidden').append(radio);
+ 			    });
+         		
+        		$('#date_from').attr('disabled',true);
+        		$('#date_from_hidden').val($('#date_from').val());
+        		$('#date_from').change(() => {
+				    $('#date_from_hidden').val($('#date_from').val());
+			    });
+        		
+        		$('#date_to').attr('disabled',true);
+        		$('#date_to_hidden').val($('#date_to').val());
+			    $('#date_to').change(() => {
+				    $('#date_to_hidden').val($('#date_to').val());
+			    });
+        		
+        		$('#amount').attr('disabled',true);
+        		$('#amount_hidden').val($('#amount').val());
+			    $('#amount').change(() => {
+				    $('#amount_hidden').val($('#amount').val());
+			    });
+        		
+        		$('#amount_sub').attr('disabled',true);
+        		$('#amount_sub_hidden').val($('#amount_sub').val());
+			    $('#amount_sub').change(() => {
+				    $('#amount_sub_hidden').val($('#amount_sub').val());
+			    });
+        		
+			    $('#hd_1').attr('disabled',true);
+			    $('#hd_1_hidden').val($('#hd_1').val());
+			    $('#hd_1').change(() => {
+				    $('#hd_1_hidden').val($('#hd_1').val());
+			    });
+			    
+			    $('#hd_2').attr('disabled',true);
+			    $('#hd_2_hidden').val($('#hd_2').val());
+			    $('#hd_2').change(() => {
+				    $('#hd_2_hidden').val($('#hd_2').val());
+			    });
+			    
+        		$('#description').attr('disabled',true);
+        		$('#description_hidden').val($('#description').val());
+			    $('#description').change(() => {
+				    $('#description_hidden').val($('#description').val());
+			    });
+        		
+	            $('#status').attr('disabled',true);
+			    $('#status_hidden').val($('#status').val());
+			    $('#status').change(() => {
+				    $('#status_hidden').val($('#status').val());
+			    });
+			    
+			    $('#reason').attr('disabled',true);
+			    $('#reason_hidden').val($('#reason').val());
+			    $('#reason').change(() => {
+				    $('#reason_hidden').val($('#reason').val());
+			    });
+			    
+			    $('#btn_submit').attr('disabled',true);
+			    $('#btn_cancel').attr('disabled',true);
+        	}
+        	
+
         })
 	</script>
 </c:if>

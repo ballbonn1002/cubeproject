@@ -193,12 +193,12 @@
 					<thead>
 						<tr style="background-color:rgb(59, 63, 81);color:white">
 							<th height="41"><center>ID</center></th>
-							<th height="41"><center>Submit Date</center></th>
 							<th height="41"><center>Name</center></th>
 							<th height="41"><center>Title</center></th>
 							<th height="41"><center>Start Date</center></th>
 							<th height="41"><center>Until Date</center></th>
 							<th height="41"><center>Hour</center></th>
+							<th height="41"><center>Submit Date</center></th>
 							<th height="41"><center>Action</center></th>
 						</tr>
 					</thead>
@@ -207,17 +207,17 @@
 							<tr data-toggle="popover" title="<b>${train.title}" data-placement="top" data-html="true" data-trigger="hover"
 							data-content="<b>Location : ${train.location}<br>Lecturer : ${train.lecturer}<br>Detail : <br>${train.detail}">
 								<td style="vertical-align: middle;">${train.trainingid}</td>						<!-- training history ID -->
-								<td style="vertical-align: middle;"><fmt:formatDate value="${train.time_create}"
-										pattern="dd-MM-yyyy HH:mm"></fmt:formatDate>							<!-- training submit date -->
-								</td>
-								<td style="vertical-align: middle;">${train.user_id}</td>														<!-- user id -->
-								<td style="vertical-align: middle;">${train.title}</td>																		<!-- training title name -->
+								<td style="vertical-align: middle;">${train.user_id}</td>							<!-- user id -->
+								<td style="vertical-align: middle;">${train.title}</td>								<!-- training title name -->
 								<td style="vertical-align: middle;"><fmt:formatDate value="${train.start_date}"
 										pattern="dd-MM-yyyy"></fmt:formatDate>									<!-- training start date -->
 								</td>
 								<td style="vertical-align: middle;"><fmt:formatDate value="${train.end_date}"
 										pattern="dd-MM-yyyy"></fmt:formatDate></td>								<!-- training end date -->
 								<td style="vertical-align: middle;">${train.hours}</td>							<!-- training hour -->
+								<td style="vertical-align: middle;"><fmt:formatDate value="${train.time_create}"
+										pattern="dd-MM-yyyy HH:mm"></fmt:formatDate>							<!-- training submit date -->
+								</td>
 								
 								<td style="vertical-align: middle;">
 									<a class="btn circle btn-outline btn-sm sbold blue"

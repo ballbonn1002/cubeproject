@@ -43,6 +43,12 @@
 <link
 	href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
 	rel="stylesheet" type="text/css" />
+<style>
+.end {
+	text-align-last: right;
+	font-size: 10px;
+}
+</style>
 <div class="portlet light">
 	<div class="portlet-title">
 		<div class="caption">
@@ -144,8 +150,12 @@
 				<div class="form-group">
 					<label class="col-md-3 control-label">Lecturer :</label>
 					<div class="col-md-6">
-						<input id="lecturer" type="text" class="form-control"
-							placeholder=" ">
+						<input id="lecturer" type="text" class="form-control length" data-id="1"
+							placeholder=" " maxlength="255">
+							<div class="end" id="count1" style="display: none;">
+							    <span class="form-text text-muted" id="current_count_1" >0</span>
+							    <span class="form-text text-muted" id="maximum_count_1">/ 255</span>
+							</div>
 					</div>
 				</div>
 
@@ -154,8 +164,12 @@
 				<div class="form-group">
 					<label class="col-md-3 control-label">Training Title :</label>
 					<div class="col-md-6">
-						<input id="t_title" type="text" class="form-control"
-							placeholder=" ">
+						<input id="t_title" type="text" class="form-control length" data-id="2"
+							placeholder=" " maxlength="255">
+							<div class="end" id="count2" style="display: none;">
+							    <span class="form-text text-muted" id="current_count_2" >0</span>
+							    <span class="form-text text-muted" id="maximum_count_2">/ 255</span>
+							</div>
 					</div>
 				</div>
 				<!-- End Training Title -->
@@ -181,16 +195,13 @@
 			<div class="form-group">
 				<label class="col-md-3 control-label">Hour Training :</label>
 				<div class="col-md-3">
-					<select class="bs-select form-control" name="amount_sub"
-						id="t_Hour">
-						<option value="1" selected>1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option>
-						<option value="7">7</option>
-					</select>
+					<input type="number" class="form-control length" id="t_Hour" data-id="3" 
+						oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+    					maxlength = "3">
+    					<div class="end" id="count3" style="display: none;">
+							<span class="form-text text-muted" id="current_count_3" >0</span>
+							<span class="form-text text-muted" id="maximum_count_3">/ 3</span>
+						</div>
 				</div>
 			</div>
 			<!-- End Hour Training -->
@@ -199,8 +210,12 @@
 			<div class="form-group">
 				<label class="col-md-3 control-label">Location :</label>
 				<div class="col-md-6">
-					<input type="text" id="location" class="form-control"
-						placeholder=" ">
+					<input type="text" id="location" class="form-control length" data-id="4"
+						placeholder=" " maxlength="255">
+						<div class="end" id="count4" style="display: none;">
+						    <span class="form-text text-muted" id="current_count_4" >0</span>
+						    <span class="form-text text-muted" id="maximum_count_4">/ 255</span>
+						</div>
 				</div>
 			</div>
 			<!-- End Location -->
@@ -209,8 +224,12 @@
 				<label class="col-md-3 control-label">Description :</label>
 				<div class="col-md-6">
 					<textarea style="word-break: break-all; white-space: normal;"
-						maxlength="1024" class="form-control" rows="6" name="description"
+						maxlength="1024" class="form-control length" rows="6" name="description" data-id="5"
 						id="description" onkeyup='check_char(this)'></textarea>
+						<div class="end" id="count5" style="display: none;">
+							<span class="form-text text-muted" id="current_count_5" >0</span>
+							<span class="form-text text-muted" id="maximum_count_5">/ 1024</span>
+						</div>
 					<div class="form-control-focus"></div>
 				</div>
 			</div>
@@ -240,6 +259,38 @@
 
 <script src="../assets/global/plugins/jquery.min.js"
 	type="text/javascript"></script>
+<script>
+$(document).ready(function() {
+	$('.end').hide();
+	
+	$('.select2me').select2();
+
+		/*     var date1 = new Date("06/22/2017");
+		 var date2 = new Date("06/23/2017"); 
+		 var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+		 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+		 alert(diffDays);  */
+	});
+</script>
+<script>
+	$('.length').keyup(function(){
+		var id = $(this).data('id');
+		var check = $(this).val().length;
+		
+		console.log(id);
+		console.log(check);
+		
+		if(check > 0){
+			document.getElementById('count'+id).style.display = "block";
+		
+		}else{
+			document.getElementById('count'+id).style.display = "none";
+		}
+		
+		document.getElementById('current_count_'+id).innerHTML = check ;
+	});
+
+</script>
 <script>
 function check_char(elm){
 	
@@ -352,32 +403,6 @@ function check_char(elm){
     })
 </script>
 
-<!-- Start check authority -->
-<c:if test="${!userAuthority.contains('leave.approve')}">
-	<script>
-        $(()=>{
-            $('#status').attr('disabled',true);
-		    $('#status_hidden').val($('#status').val());
-		    $('#status').change(() => {
-			    $('#status_hidden').val($('#status').val());
-		    });
-        })
-	</script>
-</c:if>
-<c:if test="${!userAuthority.contains('leave.viewall')}">
-	<script>
-        $(()=>{
-            $('#user').attr('disabled',true);
-		    $('#user_hidden').val($('#user').val());
-		    $('#user').change(() => { $('#user_hidden').val($('#user').val()); });
-
-            $('#approver').attr('disabled',true);
-		    $('#approver_hidden').val($('#approver').val());
-		    $('#approver').change(() => { $('#approver_hidden').val($('#approver').val()); });
-        })
-	</script>
-</c:if>
-<!-- End check authority -->
 
 <!-- Start datepicker -->
 <c:if test="${holiday!=null}">
@@ -527,19 +552,6 @@ function save() {
 		});
 	}
 	
-</script>
-<script>
-	$(document).ready(function() {
-
-		$('.select2me').select2();
-
-		/*     var date1 = new Date("06/22/2017");
-		 var date2 = new Date("06/23/2017"); 
-		 var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-		 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-		 alert(diffDays);  */
-
-	});
 </script>
 <script>
 	function cancle() {

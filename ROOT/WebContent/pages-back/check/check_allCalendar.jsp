@@ -677,6 +677,13 @@
 							});
 				});
 </script>
+<c:if test="${!userAuthority.contains('leave.approve')}">
+	<script>
+		$(()=>{
+			$(".closeon").hide();
+		})
+	</script>
+</c:if>
 
 
 <link

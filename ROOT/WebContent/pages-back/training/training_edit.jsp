@@ -42,8 +42,12 @@
 <link
 	href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
 	rel="stylesheet" type="text/css" />
-
-	
+<style>
+.end {
+	text-align-last: right;
+	font-size: 10px;
+}
+</style>
 
 	<div class="portlet light">
 		<div class="portlet-title">
@@ -83,8 +87,12 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Lecturer :</label>
 						<div class="col-md-6">
-							<input id="lecturer" type="text" class="form-control"
-								value="${Traininglist.lecturer}">
+							<input id="lecturer" type="text" class="form-control length" data-id="1" 
+								maxlength="255" value="${Traininglist.lecturer}">
+								<div class="end" id="count1" >
+								    <span class="form-text text-muted" id="current_count_1" >0</span>
+								    <span class="form-text text-muted" id="maximum_count_1">/ 255</span>
+								</div>
 						</div>
 					</div>
 
@@ -93,8 +101,12 @@
 					<div class="form-group">
 						<label class="col-md-3 control-label">Training Title :</label>
 						<div class="col-md-6">
-							<input id="t_title" type="text" class="form-control"
-								value="${Traininglist.title}">
+							<input id="t_title" type="text" class="form-control length" data-id="2" 
+								maxlength="255" value="${Traininglist.title}">
+									<div class="end" id="count2" >
+								    <span class="form-text text-muted" id="current_count_2" >0</span>
+								    <span class="form-text text-muted" id="maximum_count_2">/ 255</span>
+								</div>
 						</div>
 					</div>
 					<!-- End Training Title -->
@@ -126,17 +138,13 @@
 				<div class="form-group">
 					<label class="col-md-3 control-label">Hour Training :</label>
 					<div class="col-md-3">
-						<select class="bs-select form-control" name="amount_sub"
-							id="t_Hour">
-							<option value="${Traininglist.hours}" selected>${Traininglist.hours}</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-						</select>
+						<input type="number" class="form-control length" id="t_Hour" data-id="3"
+						oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+    					maxlength = "3" value="${Traininglist.hours}">
+    					<div class="end" id="count3" >
+							<span class="form-text text-muted" id="current_count_3" >0</span>
+							<span class="form-text text-muted" id="maximum_count_3">/ 3</span>
+						</div>
 					</div>
 				</div>
 				<!-- End Hour Training -->
@@ -145,8 +153,12 @@
 				<div class="form-group">
 					<label class="col-md-3 control-label">Location :</label>
 					<div class="col-md-6">
-						<input type="text" id="location" class="form-control"
-							value="${Traininglist.location}">
+						<input type="text" id="location" class="form-control length" data-id="4" 
+							maxlength="255" value="${Traininglist.location}">
+							<div class="end" id="count4" >
+							    <span class="form-text text-muted" id="current_count_4" >0</span>
+							    <span class="form-text text-muted" id="maximum_count_4">/ 255</span>
+							</div>
 					</div>
 				</div>
 				<!-- End Location -->
@@ -155,8 +167,12 @@
 					<label class="col-md-3 control-label">Description :</label>
 					<div class="col-md-6">
 						<textarea style="word-break: break-all; white-space: normal;"
-							maxlength="1024" class="form-control" rows="6" name="description"
+							maxlength="1024" class="form-control length" rows="6" name="description" data-id="5"
 							id="description" onkeyup='check_char(this)'>${Traininglist.detail}</textarea>
+							<div class="end" id="count5" >
+							    <span class="form-text text-muted" id="current_count_5" >0</span>
+							    <span class="form-text text-muted" id="maximum_count_5">/ 1024</span>
+							</div>
 						<div class="form-control-focus"></div>
 					</div>
 				</div>
@@ -188,8 +204,17 @@
 
 <script src="../assets/global/plugins/jquery.min.js"
 	type="text/javascript"></script>
-
-
+<script>
+$( document ).ready(function() {
+	var a = $('#lecturer').val().length;
+	for(var i=1; i<=10; i++){
+		var x = document.getElementsByClassName('length');
+		if(x.length > 0){
+			document.getElementById('current_count_'+i).innerHTML =  x[i-1].value.length;
+		}
+	}
+});
+</script>
 <script>
 
 	
