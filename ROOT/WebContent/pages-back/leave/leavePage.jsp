@@ -177,7 +177,7 @@
 			<div class="form-actions">
 				<div class="row">
 					<div class="col-xs-12" style="text-align: center;">
-						<div class="btn btn-sm blue-soft" onclick="send()" id="btn_submit"><i class="fa fa-send-o"></i> Submit</div>
+						<div class="btn btn-sm blue-soft"  id="btn_submit"><i class="fa fa-send-o"></i> Submit</div>
 						<button type="reset" class="btn btn-sm red-intense" id="btn_cancel"><i class="fa fa-close"></i> Cancel</button>
 					</div>
 				</div>
