@@ -3,6 +3,8 @@ package com.cubesofttech.mail;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -14,7 +16,8 @@ public class EmailService
     @Autowired
     private JavaMailSender mailSender;
       
-  
+	Logger log = Logger.getLogger(getClass());
+	
     /**
      * This method will send compose and send the message 
      * */
@@ -26,6 +29,8 @@ public class EmailService
         message.setSubject("test1111test");
         message.setText("user = "+user+" leaveType = "+leaveType+" description = "+description+" halfDay = "+ halfDay+" from = "+from+" to ="+ endDate+" noDay = "+noDay);
         mailSender.send(message);
+        
+        Log.debug(message);
     }
 
 

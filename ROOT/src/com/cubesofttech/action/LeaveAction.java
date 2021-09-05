@@ -213,7 +213,7 @@ public class LeaveAction extends ActionSupport {
 		
 			List<Map<String, Object>> userleave = leaveDAO.findUserLeave(userLogin,start_date,end_date);
 			request.setAttribute("userleave", userleave);
-			System.out.println(userleave);
+			log.debug(userleave);
 			BigDecimal LeavenumT1 = new BigDecimal(0);
 			BigDecimal LeavenumT2 = new BigDecimal(0);
 			BigDecimal LeavenumT3 = new BigDecimal(0);
@@ -225,7 +225,7 @@ public class LeaveAction extends ActionSupport {
 			for (int i = 0; i < userleave.size(); i++) {
 				Character type = (Character) userleave.get(i).get(TYPELEAVE);
 				BigDecimal num = (BigDecimal) userleave.get(i).get(NODAY);
-				System.out.println(type + "  " + num);
+				log.debug(type + "  " + num);
 
 				switch (type) {
 				case '1':
@@ -254,15 +254,15 @@ public class LeaveAction extends ActionSupport {
 				}
 			}
 
-			System.out.println(start_date + " userleave "   + end_date);
-			System.out.println("*****************************");
-			System.out.println(LeavenumT1);
-			System.out.println(LeavenumT2);
-			System.out.println(LeavenumT3);
-			System.out.println(LeavenumT4);
-			System.out.println(LeavenumT5);
-			System.out.println(LeavenumT6);
-			System.out.println(LeavenumT9);
+			log.debug(start_date + " userleave "   + end_date);
+			log.debug("*****************************");
+			log.debug(LeavenumT1);
+			log.debug(LeavenumT2);
+			log.debug(LeavenumT3);
+			log.debug(LeavenumT4);
+			log.debug(LeavenumT5);
+			log.debug(LeavenumT6);
+			log.debug(LeavenumT9);
 
 			request.setAttribute("LeavenumT1", LeavenumT1);
 			request.setAttribute("LeavenumT2", LeavenumT2);
@@ -644,10 +644,10 @@ public class LeaveAction extends ActionSupport {
 			String startdate = request.getParameter("startdate");
 			String enddate = request.getParameter("enddate");
 			
-			System.out.println(userSelect);
-			System.out.println(typeLeaves);
-			System.out.println(startdate);
-			System.out.println(enddate);
+			log.debug(userSelect);
+			log.debug(typeLeaves);
+			log.debug(startdate);
+			log.debug(enddate);
 			
 			DateTimeFormatter date1 = DateTimeFormatter.ofPattern("01-01-yyyy");
 			LocalDate localDate = LocalDate.now();
@@ -727,10 +727,10 @@ public class LeaveAction extends ActionSupport {
 			String startdate = request.getParameter("startdate");
 			String enddate = request.getParameter("enddate");
 			
-			System.out.println(userSelect);
-			System.out.println(leaveStatus);
-			System.out.println(startdate);
-			System.out.println(enddate);
+			log.debug(userSelect);
+			log.debug(leaveStatus);
+			log.debug(startdate);
+			log.debug(enddate);
 			
 			DateTimeFormatter date1 = DateTimeFormatter.ofPattern("01-01-yyyy");
 			LocalDate localDate = LocalDate.now();
@@ -784,7 +784,7 @@ public class LeaveAction extends ActionSupport {
 			String user = request.getParameter("name1");
 			List<Map<String, Object>> userleave = leaveDAO.findUserLeave(user,start_date1,end_date1);
 			request.setAttribute("userleave", userleave);
-			System.out.println(userleave);
+			log.debug(userleave);
 			BigDecimal LeavenumT1 = new BigDecimal(0);
 			BigDecimal LeavenumT2 = new BigDecimal(0);
 			BigDecimal LeavenumT3 = new BigDecimal(0);
@@ -796,7 +796,7 @@ public class LeaveAction extends ActionSupport {
 			for (int i = 0; i < userleave.size(); i++) {
 				Character type = (Character) userleave.get(i).get(TYPELEAVE);
 				BigDecimal num = (BigDecimal) userleave.get(i).get(NODAY);
-				System.out.println(type + "  " + num);
+				log.debug(type + "  " + num);
 
 				switch (type) {
 				case '1':
@@ -1588,8 +1588,8 @@ public class LeaveAction extends ActionSupport {
 
 			Date enddate = new Date(end_date.getTime());
 			request.setAttribute("enddate", enddate);
-			System.out.println(enddate);
-			System.out.println(end_date);
+			log.debug(enddate);
+			log.debug(end_date);
 			if (userLogin != listbyuser) {
 				listbyuser = userLogin;
 			}
@@ -1615,23 +1615,23 @@ public class LeaveAction extends ActionSupport {
 			int x=0;
 			
 			while (x <= LeaveID.size()-1) {
-				System.out.println("inLoopWhile");
+				log.debug("inLoopWhile");
 				String a[] = LeaveID.get(x).toString().split("[={}]");
-				System.out.println("Split Success");
+				log.debug("Split Success");
 				for(int b=0;b<=a.length-1;b++) {
-					System.out.println("a["+b+"]= "+a[b]);
+					log.debug("a["+b+"]= "+a[b]);
 				}
 				int id=0;
 				for(int b=0;b<=a.length-1;b++) {
-					System.out.println("inLoopFor");
+					log.debug("inLoopFor");
 					if(tryParseInt(a[b])) {
-						System.out.println("inIf");
+						log.debug("inIf");
 						id=Integer.parseInt(a[b]);
-						System.out.println("This is Array No: "+b+" ="+a[b]);
+						log.debug("This is Array No: "+b+" ="+a[b]);
 						Leaves leaveDashboard =  leaveDAO.findByLeaveId(id);
-						System.out.println("Ref Success");
+						log.debug("Ref Success");
 						Double noday = leaveDashboard.getNoDay().doubleValue();
-						System.out.println("This NoDay : "+noday);
+						log.debug("This NoDay : "+noday);
 						if (leaveDashboard.getLeaveTypeId().contains("1")) {
 							leave_1 = leave_1 + noday;
 						}
@@ -1653,7 +1653,7 @@ public class LeaveAction extends ActionSupport {
 				x++;
 			}
 			
-System.out.println("666666");
+log.debug("666666");
 			request.setAttribute("leave_1", leave_1);
 			request.setAttribute("leave_2", leave_2);
 			request.setAttribute("leave_3", leave_3);
@@ -1725,8 +1725,8 @@ System.out.println("666666");
 
 			Date enddate = new Date(end_date.getTime());
 			request.setAttribute("enddate", enddate);
-			System.out.println(enddate);
-			System.out.println(end_date);
+			log.debug(enddate);
+			log.debug(end_date);
 			if (userLogin != listbyuser) {
 				listbyuser = userLogin;
 			}
@@ -1752,23 +1752,23 @@ System.out.println("666666");
 			int x=0;
 			
 			while (x <= LeaveID.size()-1) {
-				System.out.println("inLoopWhile");
+				log.debug("inLoopWhile");
 				String a[] = LeaveID.get(x).toString().split("[={}]");
-				System.out.println("Split Success");
+				log.debug("Split Success");
 				for(int b=0;b<=a.length-1;b++) {
-					System.out.println("a["+b+"]= "+a[b]);
+					log.debug("a["+b+"]= "+a[b]);
 				}
 				int id=0;
 				for(int b=0;b<=a.length-1;b++) {
-					System.out.println("inLoopFor");
+					log.debug("inLoopFor");
 					if(tryParseInt(a[b])) {
-						System.out.println("inIf");
+						log.debug("inIf");
 						id=Integer.parseInt(a[b]);
-						System.out.println("This is Array No: "+b+" ="+a[b]);
+						log.debug("This is Array No: "+b+" ="+a[b]);
 						Leaves leaveDashboard =  leaveDAO.findByLeaveId(id);
-						System.out.println("Ref Success");
+						log.debug("Ref Success");
 						Double noday = leaveDashboard.getNoDay().doubleValue();
-						System.out.println("This NoDay : "+noday);
+						log.debug("This NoDay : "+noday);
 						if (leaveDashboard.getLeaveTypeId().contains("1")) {
 							leave_1 = leave_1 + noday;
 						}
@@ -1790,7 +1790,7 @@ System.out.println("666666");
 				x++;
 			}
 			
-System.out.println("777");
+log.debug("777");
 			request.setAttribute("leave_1", leave_1);
 			request.setAttribute("leave_2", leave_2);
 			request.setAttribute("leave_3", leave_3);
@@ -1892,7 +1892,7 @@ System.out.println("777");
 			// Data send mail
 			//List<Map<String, Object>> leaveType_mail = leavetypeDAO.findByLeaveTypeId(leaveType);
 			
-			emailservice.sendMail(user,leaveType,description,halfDay,from,to,noDay);
+			//emailservice.sendMail(user,leaveType,description,halfDay,from,to,noDay);
 			
 			
 			Leaves leave = new Leaves();

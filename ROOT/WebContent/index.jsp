@@ -68,7 +68,17 @@ License: You must have a valid license purchased only from themeforest(the above
                 </div>
                 <div class="col-md-6 login-container bs-reset mt-login-5-bsfix" >
                     <div class="login-content">
-                        <h1>Login to your account</h1>
+                    <%--
+                     <div class="alert alert-warning aos-init aos-animate" data-aos="flip-up" id="messagebox">
+								<div class="row">
+									<div class="col-md-12" id="messagealert">UAT : ระบบสำหรับทดสอบ v. 20210904</div>
+								</div>
+							</div>
+						 --%>
+					    <h1>Login to your account</h1>
+                        
+                       
+							
                          <form id="form" class="login-form" action="authorization" method="post">
                             <div class="alert alert-danger display-hide">
                                 <button class="close" data-close="alert"></button>
@@ -133,7 +143,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             </div>
                             <div class="col-xs-8 bs-reset">
                                 <div class="login-copyright text-right">
-                                    <p>2017 &copy; Cube SoftTech Co., Ltd. TS Management System v.20200201</p>
+                                    <p>2021 &copy; Cube SoftTech Co., Ltd. TS Management System v.20210904</p>
                                 </div>
                             </div>
                         </div>

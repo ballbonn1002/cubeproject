@@ -557,3 +557,6 @@ CREATE TABLE `room` ( `idroom` INT(64) NOT NULL AUTO_INCREMENT , `room_name` VAR
 -26/8/2564
 CREATE TABLE `meeting` ( `idmeeting` INT(64) NOT NULL AUTO_INCREMENT , `idroom` INT(64) NOT NULL , `time_start` TIME NULL , `time_end` TIME NULL , `date` TIMESTAMP NULL , `user_reserve` VARCHAR(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL , PRIMARY KEY (`idmeeting`)) ENGINE = InnoDB;
 
+-- PROD/UAT
+
+
