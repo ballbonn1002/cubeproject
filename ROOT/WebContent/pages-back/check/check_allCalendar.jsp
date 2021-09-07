@@ -616,15 +616,15 @@
 											element.find(".fc-title").css('color', 'black');
 										} else if (calEvent.className =="leave"){
 											element.find(".fc-title").prepend("<i class='fa fa-thumb-tack searchon'></i>&nbsp;")
-											element.find("div.fc-content").append( "<span> <i class='fa fa-trash closeon' style='float:right;position:absolute;right:0;top:0position:absolute;right:0;top:0'></i> </span>" );
-										} else if (calEvent.className =="status"){
+/* 											element.find("div.fc-content").append( "<span> <i class='fa fa-trash closeon' style='float:right;position:absolute;right:0;top:0position:absolute;right:0;top:0'></i> </span>" );
+ */										} else if (calEvent.className =="status"){
 											element.find(".fc-title").prepend("<i class='fa fa-hourglass-start'></i>&nbsp;")
 										} else if (calEvent.className =="totalwork"){
 											element.find(".fc-title").prepend("<i class='fa fa-hourglass'></i>&nbsp;")
 										} else {
 											element.find(".fc-title").prepend("<i class='fa fa-hourglass-half'> </i>&nbsp;");
 										}
-										 element.find(".closeon").on('click',function() {                //Delete Function 
+ 										 element.find(".closeon").on('click',function() {                //Delete Function 
 						                	  if (confirm("Are you sure Delete ?")) {                 		
 						                		     document.location = "delete_leave_calecdar?leave_id="+ calEvent.id ;
 						                  	  }
@@ -677,13 +677,6 @@
 							});
 				});
 </script>
-<c:if test="${!userAuthority.contains('leave.approve')}">
-	<script>
-		$(()=>{
-			$(".closeon").hide();
-		})
-	</script>
-</c:if>
 
 
 <link

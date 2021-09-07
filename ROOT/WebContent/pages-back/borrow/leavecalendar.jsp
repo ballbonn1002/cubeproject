@@ -544,8 +544,8 @@ var AppCalendar = function() {
                     });
                     if(calEvent.className != "holiday"){
                     element.find(".fc-title").prepend("<i class='fa fa-search searchon' style='margin:5px;' ></i>");                    
-                    element.find("div.fc-content").append( "<span> <i class='fa fa-trash closeon' style='float:right;position:absolute;right:0;top:0position:absolute;right:0;top:0'></i> </span>" );
-                        }else{ 
+/*                     element.find("div.fc-content").append( "<span> <i class='fa fa-trash closeon' style='float:right;position:absolute;right:0;top:0position:absolute;right:0;top:0'></i> </span>" );
+ */                        }else{ 
                         	element.find(".fc-title").css('color', 'black');
 							}
                    element.find(".closeon").on('click',function() {                //Delete Function 
