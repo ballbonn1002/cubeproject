@@ -545,4 +545,15 @@ ALTER TABLE `equipment` ADD `wifiaddress` VARCHAR(128) CHARACTER SET utf8 COLLAT
 ALTER TABLE `equipment` ADD `display` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `lanaddress`;
 
 
+--add inviting
+-26/8/2564
+CREATE TABLE `inviting` ( `idinvite` INT(64) NOT NULL AUTO_INCREMENT , `idmeeting` INT(64) NOT NULL , `member` VARCHAR(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL , PRIMARY KEY (`idinvite`)) ENGINE = InnoDB;
+
+--add room
+-26/8/2564
+CREATE TABLE `room` ( `idroom` INT(64) NOT NULL AUTO_INCREMENT , `room_name` VARCHAR(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL , `user_create` VARCHAR(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL , `user_update` VARCHAR(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL , `time_create` TIMESTAMP NULL , `time_update` TIMESTAMP NULL , PRIMARY KEY (`idroom`)) ENGINE = InnoDB;
+
+--add meeting
+-26/8/2564
+CREATE TABLE `meeting` ( `idmeeting` INT(64) NOT NULL AUTO_INCREMENT , `idroom` INT(64) NOT NULL , `time_start` TIME NULL , `time_end` TIME NULL , `date` TIMESTAMP NULL , `user_reserve` VARCHAR(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL , PRIMARY KEY (`idmeeting`)) ENGINE = InnoDB;
 

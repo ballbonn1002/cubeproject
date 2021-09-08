@@ -46,7 +46,6 @@
 <script>
   AOS.init();
 </script>
-<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 <c:set var="now" value="<%=new java.util.Date()%>" />
 <style>
 @media only screen and (max-width: 1200px) {

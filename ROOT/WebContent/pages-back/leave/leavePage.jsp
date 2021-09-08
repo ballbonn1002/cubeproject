@@ -6,7 +6,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="now" value="<%=new java.util.Date()%>" />
 <fmt:formatDate type="date" value="${now}" pattern="dd-MM-yyyy" var="date_now" />
-<fmt:formatDate type="date" value="${now}" pattern="31-03-yyyy" var="lastday"/>
+<fmt:formatDate type="date" value="${now}" pattern="dd-MM-yyyy" var="lastday"/>
 <script
 	src="../assets/global/plugins/fancybox/lib/jquery-1.10.1.min.js"></script>
 
@@ -86,10 +86,10 @@
 						<div class="input-group input-large date-picker input-daterange"
 							data-date-format="dd-mm-yyyy">
 							<input type="text" class="form-control" id="date_from" name="from" required>
-								<input hidden class="hide" name="from_hidden" id="date_from_hidden" type="text">
+								<input  class="hide" name="from_hidden" id="date_from_hidden" type="text" hidden>
 							<span class="input-group-addon"> to </span>
 							<input type="text" class="form-control" id="date_to" name="to" required>
-								<input hidden class="hide" name="to_hidden" id="date_to_hidden" type="text">
+								<input class="hide" name="to_hidden" id="date_to_hidden" type="text" hidden>
 						</div>
 					</div>
 				</div>
@@ -233,7 +233,7 @@ function check_char(elm){
 				}
 			}
 
-			$('input:radio[name="leaveType"]').change(function(){
+			 $('input:radio[name="leaveType"]').change(function(){
 				if( $(this).val() == '6' ){
 					let lastday = '${lastday}';
 					let lastday_ts = toTimestamp(lastday);
@@ -243,12 +243,13 @@ function check_char(elm){
 					if(selectedDateTo_ts > lastday_ts){
 						$('#date_to').val(lastday);
 					}
-				}
+				
 				else{
 					$('#date_to').datepicker('setEndDate','');
 				}
-			})
-		})
+				}
+			} );
+		});
 	</script>
 </c:if>
 <!-- End leaveType Radio -->

@@ -1075,7 +1075,7 @@ public class LeaveDAOImpl implements LeaveDAO {
 //				.add(Restrictions.lt("endDate", endDate)).addOrder(Order.desc("leaveId")).list();
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Map<String, Object>> searchbydate = null;
-		String sql = "SELECT * FROM leaves WHERE user_id ='" + userId +"' AND start_date>='"+ startDate + "' AND start_date<='" + endDate + "'";
+		String sql = "SELECT * FROM leaves WHERE user_id ='" + userId +"' AND start_date>='"+ startDate + "' AND start_date<='" + endDate + "' ORDER BY leave_id DESC";
 		System.out.println(sql);
 		SQLQuery query = session.createSQLQuery(sql);
 		query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);

@@ -3505,6 +3505,21 @@
 			<result name="error">/index.jsp</result>
 		</action>
 		
+		<action name="Select_Room"
+			class="com.cubesofttech.action.MeetingAction" method="selectRoom">
+			<result name="success" type="tiles">select_room</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="Reserve_Room"
+			class="com.cubesofttech.action.MeetingAction" method="reserveRoom">
+			<result name="success" type="tiles">select_room</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="Create_Room"
+			class="com.cubesofttech.action.MeetingAction" method="createRoom">
+			<result name="success" type="tiles">select_room</result>
+			<result name="error">/index.jsp</result>
+		</action>
 		
 		
 	</package>

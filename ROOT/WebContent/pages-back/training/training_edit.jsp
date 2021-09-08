@@ -273,10 +273,7 @@ $( document ).ready(function() {
 										type : "success"
 									},
 									function(){
-										
 										window.location=document.referrer;
-											
-											
 										} );
 						}
 
