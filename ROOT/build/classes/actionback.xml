@@ -3505,6 +3505,7 @@
 			<result name="error">/index.jsp</result>
 		</action>
 		
+		<!-- meeting -->
 		<action name="Select_Room"
 			class="com.cubesofttech.action.MeetingAction" method="selectRoom">
 			<result name="success" type="tiles">select_room</result>
@@ -3521,6 +3522,17 @@
 			<result name="error">/index.jsp</result>
 		</action>
 		
+		<action name="Meeting_Manager">
+			<result name="success" type="tiles">meeting_manager</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<action name="Create_Room"
+			class="com.cubesofttech.action.RoomAction" method="roomandmember_list">
+			<result name="success" type="tiles">meeting_manager_selectroom</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<!-- meeting -->
 		
 	</package>
 </struts>
