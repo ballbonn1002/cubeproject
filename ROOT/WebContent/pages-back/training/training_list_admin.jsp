@@ -111,7 +111,7 @@
 	
 								<div class="col-md-5">
 									<div id="sandbox" class="form-group">
-										<input id="startdate" name="startdate" type="text" class="form-control">
+										<input id="startdate" name="startdate" type="text" class="form-control" readonly>
 									</div>
 								</div>
 								<div class="col-md-2" style="text-align: center">
@@ -119,7 +119,7 @@
 								</div>
 								<div class="col-md-5">
 									<div id="sandbox" class="form-group">
-										<input id="enddate" name="enddate" type="text" class="form-control">
+										<input id="enddate" name="enddate" type="text" class="form-control" readonly>
 									</div>
 								</div>
 							</div>
@@ -139,6 +139,7 @@
 							$( '#startdate' ).datepicker( optSimple );
 							$( '#enddate' ).datepicker( optSimple );
 							$( '#startdate' ).datepicker( 'setDate', today );
+							$( '#enddate' ).datepicker( 'setDate', "31-12-2021" );
 							//Show result 
 							console.log($("#startdate").val());
 							console.log($("#enddate").val());

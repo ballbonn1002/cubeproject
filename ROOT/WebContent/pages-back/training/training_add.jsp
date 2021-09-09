@@ -182,8 +182,8 @@
 					<div class="input-group input-large date-picker input-daterange"
 						data-date-format="dd-mm-yyyy">
 						<input type="text" class="form-control" id="date_from" name="from"
-							required> <span class="input-group-addon"> to </span> <input
-							type="text" class="form-control" id="date_to" name="to" required>
+							readonly required> <span class="input-group-addon" > to </span> <input
+							type="text" class="form-control" id="date_to" name="to" readonly required>
 					</div>
 
 
@@ -197,11 +197,12 @@
 				<div class="col-md-3">
 					<input type="number" class="form-control length" id="t_Hour" data-id="3" 
 						oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-    					maxlength = "3">
+    					maxlength = "3" onkeypress="return event.charCode >= 48" min="1" >
     					<div class="end" id="count3" style="display: none;">
 							<span class="form-text text-muted" id="current_count_3" >0</span>
 							<span class="form-text text-muted" id="maximum_count_3">/ 3</span>
 						</div>
+						
 				</div>
 			</div>
 			<!-- End Hour Training -->
@@ -294,7 +295,7 @@ $(document).ready(function() {
 <script>
 function check_char(elm){
 	
-	if(elm.value.match(/['"]/) && elm.value.length>0){
+	if(elm.value.match(/[&quat]/) && elm.value.length>0){
 		swal(
 				{
 					title : "ERROR",
