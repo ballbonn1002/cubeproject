@@ -12,6 +12,7 @@ public interface RoomDAO {
 	public Room findById(Integer idroom) throws Exception;
 
 	public List<Map<String, Object>> findAll() throws Exception;
+	public List<Map<String, Object>> findAll2() throws Exception;
 
 	public void save(Room room) throws Exception;
 

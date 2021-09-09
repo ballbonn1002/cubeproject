@@ -244,6 +244,11 @@
 						<!-- link to "My Training" page --> <i class="fa fa-edit"></i> <!-- add icon -->
 						<span class="title">Training Manager</span>
 				</a></li>
+				
+				<li class="nav-item"><a href="Training_list_Admin" class="nav-link">
+						<!-- link to "My Training" page --> <i class="fa fa-edit"></i> <!-- add icon -->
+						<span class="title">meeting Manager</span>
+				</a></li>
 
 				<!-- <li class="nav-item"><a href="Training_Add" class="nav-link">
 						<i class="fa fa-edit"></i> <span class="title">Training Add</span>
