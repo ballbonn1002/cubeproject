@@ -1357,10 +1357,23 @@
 	
 	
 	<!-- END Training -->
+	
 	<!-- Meeting -->
 	<definition name="select_room" extends="baseLayout">
 		<put-attribute name="title" value="Select_Room" />
 		<put-attribute name="body"
 			value="/pages-back/meeting/selectRoom.jsp" />
+	</definition>
+	
+	<definition name="meeting_manager" extends="baseLayout">
+		<put-attribute name="title" value="Meeting_Manager" />
+		<put-attribute name="body"
+			value="/pages-back/meeting/meeting_manager.jsp" />
+	</definition>
+	
+	<definition name="meeting_manager_selectroom" extends="baseLayout">
+		<put-attribute name="title" value="Meeting_Manager_selectroom" />
+		<put-attribute name="body"
+			value="/pages-back/meeting/meeting_selectroom.jsp" />
 	</definition>
 </tiles-definitions>
