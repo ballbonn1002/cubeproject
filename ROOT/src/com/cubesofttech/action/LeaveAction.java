@@ -1976,17 +1976,15 @@ log.debug("777");
 
 	public String Leave_inList() {
 		try {
+			System.out.println("Hello");System.out.println("Hello");System.out.println("Hello");
 			User onlineUser = (User) request.getSession().getAttribute("onlineUser");
 			String id_s = request.getParameter("leave_id");
 			int id = Integer.parseInt(id_s);
-
 			String user = request.getParameter("user");
 			String status = ("1");
-
 			Leaves leave = leaveDAO.findByLeaveId(id);
 			leave.setLeaveStatusId(status);
 			leaveDAO.save(leave);
-
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();

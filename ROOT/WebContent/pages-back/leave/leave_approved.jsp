@@ -155,6 +155,8 @@
 										Waiting for approve</option>
 									<option value="1"
 										<c:if test="${ appr == 1 }"><c:out value="selected=selected"/></c:if>>Approved</option>
+									<option value="2"
+										<c:if test="${ appr == 2 }"><c:out value="selected=selected"/></c:if>>Reject</option>
 
 								</select>
 							</div>
@@ -231,8 +233,7 @@
 						</div>
 						<div align="center"
 							class="col-xs-12 col-sm-5 col-md-3 col-lg-2 paddingmd">
-							<button id="" onclick="myFunction()" type="
-								submit"
+							<button id="" onclick="myFunction()" type="submit"
 								class="btn btn-sm blue-steel">
 								<i class="fa fa-search"></i> Search
 
@@ -1142,19 +1143,14 @@ function myFunction(){
 	function ajaxLoad(boo) {
 		leaveId=boo;
 	 $.ajax({
-         url: '${pageContext.request.contextPath}/Leave_inList',
+         url: 'Leave_inList',
          type: 'POST',
          data : {
         	"leave_id" : leaveId
          }, 
-	 }).done(function(data) {
-		 $('.wait-'+boo).hide();
-		 $('.app-'+boo).show();
-		 swal("Success!","Leave ID "+boo+" was approved")
-		 location.reload();
-		}).fail(function() {
-			swal("Fail to approve ID : "+boo)
-		});
+         
+	 });
+	 location.reload();
 	}
 		
 			    
