@@ -9,7 +9,8 @@ public interface InvitingDAO {
 	public Inviting findById(Integer idinviting) throws Exception;
 
 	public List<Map<String, Object>> findAll() throws Exception;
-
+	public List<Map<String, Object>> findAll2() throws Exception;
+	
 	public void save(Inviting inviting) throws Exception;
 
 	public void update(Inviting inviting) throws Exception;
