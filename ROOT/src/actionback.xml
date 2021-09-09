@@ -3527,7 +3527,7 @@
 			<result name="error">/index.jsp</result>
 		</action>
 		
-		<action name="Create_Room"
+		<action name="Meeting_Manager_Selectroom"
 			class="com.cubesofttech.action.RoomAction" method="roomandmember_list">
 			<result name="success" type="tiles">meeting_manager_selectroom</result>
 			<result name="error">/index.jsp</result>

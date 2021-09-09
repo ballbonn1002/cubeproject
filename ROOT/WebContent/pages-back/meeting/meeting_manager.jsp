@@ -50,6 +50,11 @@
 				class="caption-subject font-red sbold uppercase">Meeting
 				Manager</span>
 		</div>
+		<br>
+		<a href="Meeting_Manager_Selectroom"><div class="btn btn-sm blue-soft" >
+					<i class="fa fa-send-o"></i> Meeting_Manager_Selectroom
+				</div></a>
+		
 
 		<div class="portlet light">
 			<main class="col py-5">

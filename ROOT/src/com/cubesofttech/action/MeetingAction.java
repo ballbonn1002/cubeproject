@@ -31,10 +31,11 @@ public class MeetingAction extends ActionSupport {
 	 private MeetingDAO meetingDAO;
 	@Autowired
 	 private RoomDAO roomDAO;
-	@Autowired
-	private InvitingDAO InvitingDAO;
-	@Autowired
-	private UserDAO userDAO;
+		/*
+		 * @Autowired private InvitingDAO InvitingDAO;
+		 * 
+		 * @Autowired private UserDAO userDAO;
+		 */
 	
 	public String myMeetingList() {
 		User ur = (User) request.getSession().getAttribute("onlineUser");
@@ -137,91 +138,53 @@ public class MeetingAction extends ActionSupport {
 		}catch(Exception e) {return ERROR;}
 	}
 	
-	//inviting
-		public String inviting_list() {
-			try {
-				List<Map<String, Object>> Invitinglist = InvitingDAO.findAll();
-				request.setAttribute("Invitinglist", Invitinglist);
-				System.out.println(Invitinglist);
-				return SUCCESS;
-			} catch (Exception e) {
-				log.error(e);
-				return ERROR;
-			}
-
-		}
-		
-		public String inviting_add() {
-			try {
-				List<Map<String, Object>> userseq = userDAO.sequense();
-				request.setAttribute("userseq", userseq);
-				List<Map<String, Object>> invitinglist = InvitingDAO.findAll();
-				request.setAttribute("invitinglist", invitinglist);
-
-				return SUCCESS;
-			} catch (Exception e) {
-				log.error(e);
-				return ERROR;
-			}
-
-		}
-		
-		
-		
-		//meeting
-		public String meeting_list() {
-			try {
-				List<Map<String, Object>> Meetinglist = meetingDAO.findAll();
-				request.setAttribute("Meetinglist", Meetinglist);
-				System.out.println(Meetinglist);
-				return SUCCESS;
-			} catch (Exception e) {
-				log.error(e);
-				return ERROR;
-			}
-
-		}
-		public String meeting_add() {
-			try {
-				List<Map<String, Object>> userseq = userDAO.sequense();
-				request.setAttribute("userseq", userseq);
-				List<Map<String, Object>> meetinglist = meetingDAO.findAll();
-				request.setAttribute("meetinglist", meetinglist);
-
-				return SUCCESS;
-			} catch (Exception e) {
-				log.error(e);
-				return ERROR;
-			}
-
-		}
-		
-		//Room
-		public String room_list() {
-			System.out.println("egg");
-			try {
-				List<Map<String, Object>> Roomlist = roomDAO.findAll();
-				request.setAttribute("Roomlist", Roomlist);
-				System.out.println(Roomlist);
-				return SUCCESS;
-			} catch (Exception e) {
-				log.error(e);
-				System.out.println("error");
-				return ERROR;
-			}
-
-		}
-		
-		public String invitingMember_list() {
-			try {
-				List<Map<String, Object>> invitingMemberlist = InvitingDAO.findAll2();
-				request.setAttribute("invitingMemberlist", invitingMemberlist);
-				System.out.println(invitingMemberlist);
-				return SUCCESS;
-			} catch (Exception e) {
-				log.error(e);
-				return ERROR;
-			}
-
-		}
+	/*
+	 * //inviting public String inviting_list() { try { List<Map<String, Object>>
+	 * Invitinglist = InvitingDAO.findAll(); request.setAttribute("Invitinglist",
+	 * Invitinglist); System.out.println(Invitinglist); return SUCCESS; } catch
+	 * (Exception e) { log.error(e); return ERROR; }
+	 * 
+	 * }
+	 * 
+	 * public String inviting_add() { try { List<Map<String, Object>> userseq =
+	 * userDAO.sequense(); request.setAttribute("userseq", userseq);
+	 * List<Map<String, Object>> invitinglist = InvitingDAO.findAll();
+	 * request.setAttribute("invitinglist", invitinglist);
+	 * 
+	 * return SUCCESS; } catch (Exception e) { log.error(e); return ERROR; }
+	 * 
+	 * }
+	 * 
+	 * 
+	 * 
+	 * //meeting public String meeting_list() { try { List<Map<String, Object>>
+	 * Meetinglist = meetingDAO.findAll(); request.setAttribute("Meetinglist",
+	 * Meetinglist); System.out.println(Meetinglist); return SUCCESS; } catch
+	 * (Exception e) { log.error(e); return ERROR; }
+	 * 
+	 * } public String meeting_add() { try { List<Map<String, Object>> userseq =
+	 * userDAO.sequense(); request.setAttribute("userseq", userseq);
+	 * List<Map<String, Object>> meetinglist = meetingDAO.findAll();
+	 * request.setAttribute("meetinglist", meetinglist);
+	 * 
+	 * return SUCCESS; } catch (Exception e) { log.error(e); return ERROR; }
+	 * 
+	 * }
+	 * 
+	 * //Room public String room_list() { System.out.println("egg"); try {
+	 * List<Map<String, Object>> Roomlist = roomDAO.findAll();
+	 * request.setAttribute("Roomlist", Roomlist); System.out.println(Roomlist);
+	 * return SUCCESS; } catch (Exception e) { log.error(e);
+	 * System.out.println("error"); return ERROR; }
+	 * 
+	 * }
+	 * 
+	 * public String invitingMember_list() { try { List<Map<String, Object>>
+	 * invitingMemberlist = InvitingDAO.findAll2();
+	 * request.setAttribute("invitingMemberlist", invitingMemberlist);
+	 * System.out.println(invitingMemberlist); return SUCCESS; } catch (Exception e)
+	 * { log.error(e); return ERROR; }
+	 * 
+	 * }
+	 */
 }

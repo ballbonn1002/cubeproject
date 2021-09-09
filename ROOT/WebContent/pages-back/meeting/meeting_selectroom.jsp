@@ -64,13 +64,14 @@
 	<div class="portlet-body">
 	
 		<div class="row "
-			style="display: flex; align-items: center; justify-content: center;">
+			>
 
 			<div class="card-content" style="display: none;">
 				<c:forEach var="room" items="${Roomlist}" varStatus="status">
 					<fmt:formatDate type="date" value="${room.time_create}"
 						pattern="HH:mm" var="time_create" />
-					<div class="col-md-3 no-gutters border">
+					<div class="col-lg-3">
+					<div class="card" id="card" style="transform-style: preserve-3d;height:200px;margin-top:20px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" >
 						<ul class="nav nav-pills mb-3" role="tablist">
 							<li class="nav-item"><a
 								class="nav-link text-uppercase active" data-toggle="tab"
@@ -189,317 +190,11 @@
 
 						</div>
 					</div>
+					</div>
 				</c:forEach>
 
 
-				<!-- test -->
-				<div class="col-sm-3 no-gutters"
-					style="border: 1px solid black; margin: 10px; height: 200px; width: 300px;">
-					<ul class="nav nav-pills mb-3" role="tablist">
-						<li class="nav-item"><a
-							class="nav-link text-uppercase active" data-toggle="tab"
-							href="#tab0" role="tab">Meeting Room 0</a></li>
-						<li class="nav-item ml-auto"><a
-							class="nav-link text-uppercase" data-toggle="tab"
-							href="#tab-list0" role="tab">ตารางจองห้อง</a></li>
-
-					</ul>
-
-					<div class="tab-content py-3 padding-title">
-						<div class="tab-pane active" id="tab0" role="tabpanel">
-							<h4 class="card-title">
-								<span class="head_name">Name:</span> 0
-							</h4>
-							<div class="c-body">สร้างเมื่อวันที่: 0</div>
-							<div class="c-body">
-								คนสร้าง: <span>0</span>
-							</div>
-
-
-
-
-
-						</div>
-						<div class="tab-pane" id="tab-list0" role="tabpanel">
-							<!-- <h4 class="card-title head_name">ตารางจองห้อง</h4> -->
-							<table
-								class="table table-striped table-condensed table-hover order-column compact"
-								data-toggle="table" data-search="true" id="myTable">
-								<thead>
-									<tr style="background-color: rgb(59, 63, 81); color: white">
-										<th height="41"><center>เวลาที่จอง</center></th>
-
-									</tr>
-								</thead>
-								<tbody>
-
-									<tr>
-										<td style="vertical-align: middle;">1234</td>
-
-
-
-
-									</tr>
-
-								</tbody>
-							</table>
-
-							<!-- Button trigger modal -->
-							<button type="button" class="btn btn-primary" data-toggle="modal"
-								data-target="#exampleModal">Launch demo modal</button>
-
-							<!-- Modal -->
-							<div class="modal fade" id="exampleModal" tabindex="-1"
-								role="dialog" aria-labelledby="exampleModalLabel"
-								aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLabel">MEMBER
-												INVITED</h5>
-											<button type="button" class="close" data-dismiss="modal"
-												aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<div class="modal-body">
-											<table
-												class="table table-striped table-condensed table-hover order-column compact"
-												data-toggle="table" data-search="true" id="myTable">
-												<thead>
-													<tr style="background-color: rgb(59, 63, 81); color: white">
-														<th height="41"><center>9.00-12.00</center></th>
-
-													</tr>
-												</thead>
-												<tbody>
-
-													<tr>
-														<td style="vertical-align: middle;">id</td>
-
-														<td style="vertical-align: middle;">user</td>
-												</tbody>
-											</table>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
-												data-dismiss="modal">Close</button>
-
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-
-					</div>
-				</div>
-
-				<div class="col-sm-3 no-gutters"
-					style="border: 1px solid black; margin: 10px; height: 200px; width: 275px;">
-					<ul class="nav nav-pills mb-3" role="tablist">
-						<li class="nav-item"><a
-							class="nav-link text-uppercase active" data-toggle="tab"
-							href="#tab0" role="tab">Meeting Room 0</a></li>
-						<li class="nav-item ml-auto"><a
-							class="nav-link text-uppercase" data-toggle="tab"
-							href="#tab-list0" role="tab">List</a></li>
-
-					</ul>
-
-					<div class="tab-content py-3 padding-title">
-						<div class="tab-pane active" id="tab0" role="tabpanel">
-							<h4 class="card-title">
-								<span class="head_name">Name:</span> 0
-							</h4>
-							<div class="c-body">สร้างเมื่อวันที่: 0</div>
-							<div class="c-body">
-								คนสร้าง: <span>0</span>
-							</div>
-
-
-
-
-
-						</div>
-						<div class="tab-pane" id="tab-list0" role="tabpanel">
-							<h4 class="card-title head_name">ตารางจองห้อง</h4>
-							<table
-								class="table table-striped table-condensed table-hover order-column compact"
-								data-toggle="table" data-search="true" id="myTable">
-								<thead>
-									<tr style="background-color: rgb(59, 63, 81); color: white">
-										<th height="41"><center>เวลาที่จอง</center></th>
-
-									</tr>
-								</thead>
-								<tbody>
-
-									<tr>
-										<td style="vertical-align: middle;">1234</td>
-
-
-
-
-									</tr>
-
-								</tbody>
-							</table>
-
-							<!-- Button trigger modal -->
-							<button type="button" class="btn btn-primary" data-toggle="modal"
-								data-target="#exampleModal">Launch demo modal</button>
-
-							<!-- Modal -->
-							<div class="modal fade" id="exampleModal" tabindex="-1"
-								role="dialog" aria-labelledby="exampleModalLabel"
-								aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLabel">MEMBER
-												INVITED</h5>
-											<button type="button" class="close" data-dismiss="modal"
-												aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<div class="modal-body">
-											<table
-												class="table table-striped table-condensed table-hover order-column compact"
-												data-toggle="table" data-search="true" id="myTable">
-												<thead>
-													<tr style="background-color: rgb(59, 63, 81); color: white">
-														<th height="41"><center>9.00-12.00</center></th>
-
-													</tr>
-												</thead>
-												<tbody>
-
-													<tr>
-														<td style="vertical-align: middle;">id</td>
-
-														<td style="vertical-align: middle;">user</td>
-												</tbody>
-											</table>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
-												data-dismiss="modal">Close</button>
-
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-
-					</div>
-				</div>
-
-				<div class="col-sm-3 no-gutters"
-					style="border: 1px solid black; margin: 10px; height: 275px;">
-					<ul class="nav nav-pills mb-3" role="tablist">
-						<li class="nav-item"><a
-							class="nav-link text-uppercase active" data-toggle="tab"
-							href="#tab0" role="tab">Meeting Room 0</a></li>
-						<li class="nav-item ml-auto"><a
-							class="nav-link text-uppercase" data-toggle="tab"
-							href="#tab-list0" role="tab">List</a></li>
-
-					</ul>
-
-					<div class="tab-content py-3 padding-title">
-						<div class="tab-pane active" id="tab0" role="tabpanel">
-							<h4 class="card-title">
-								<span class="head_name">Name:</span> 0
-							</h4>
-							<div class="c-body">สร้างเมื่อวันที่: 0</div>
-							<div class="c-body">
-								คนสร้าง: <span>0</span>
-							</div>
-
-
-
-
-
-						</div>
-						<div class="tab-pane" id="tab-list0" role="tabpanel">
-							<h4 class="card-title head_name">ตารางจองห้อง</h4>
-							<table
-								class="table table-striped table-condensed table-hover order-column compact"
-								data-toggle="table" data-search="true" id="myTable">
-								<thead>
-									<tr style="background-color: rgb(59, 63, 81); color: white">
-										<th height="41"><center>เวลาที่จอง</center></th>
-
-									</tr>
-								</thead>
-								<tbody>
-
-									<tr>
-										<td style="vertical-align: middle;">1234</td>
-
-
-
-
-									</tr>
-
-								</tbody>
-							</table>
-
-							<!-- Button trigger modal -->
-							<button type="button" class="btn btn-primary" data-toggle="modal"
-								data-target="#exampleModal">Launch demo modal</button>
-
-							<!-- Modal -->
-							<div class="modal fade" id="exampleModal" tabindex="-1"
-								role="dialog" aria-labelledby="exampleModalLabel"
-								aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLabel">MEMBER
-												INVITED</h5>
-											<button type="button" class="close" data-dismiss="modal"
-												aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<div class="modal-body">
-											<table
-												class="table table-striped table-condensed table-hover order-column compact"
-												data-toggle="table" data-search="true" id="myTable">
-												<thead>
-													<tr style="background-color: rgb(59, 63, 81); color: white">
-														<th height="41"><center>9.00-12.00</center></th>
-
-													</tr>
-												</thead>
-												<tbody>
-
-													<tr>
-														<td style="vertical-align: middle;">id</td>
-
-														<td style="vertical-align: middle;">user</td>
-												</tbody>
-											</table>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
-												data-dismiss="modal">Close</button>
-
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-
-					</div>
-				</div>
-
-
-
-
-				<!-- end -->
+				
 			</div>
 		</div>
 	</div>
@@ -675,7 +370,7 @@ function getPageList(totalPages, page, maxLength){
 }
 
 $(function(){
-  var numberOfItems = $(".card-content .col-sm-3").length;
+  var numberOfItems = $(".card-content .card").length;
   var limitPerPage = 12; //How many card items visible per a page
   var totalPages = Math.ceil(numberOfItems / limitPerPage);
   var paginationSize = 7; //How many page elements visible in the pagination
@@ -686,7 +381,7 @@ $(function(){
 
     currentPage = whichPage;
 
-    $(".card-content .col-sm-3").hide().slice((currentPage - 1) * limitPerPage, currentPage * limitPerPage).show();
+    $(".card-content .card").hide().slice((currentPage - 1) * limitPerPage, currentPage * limitPerPage).show();
 
     $(".paginationx li").slice(1, -1).remove();
 
