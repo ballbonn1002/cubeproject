@@ -3528,7 +3528,7 @@
 		</action>
 		
 		<action name="Meeting_Manager_Selectroom"
-			class="com.cubesofttech.action.RoomAction" method="roomandmember_list">
+			class="com.cubesofttech.action.MeetingAction" method="selectRoom">
 			<result name="success" type="tiles">meeting_manager_selectroom</result>
 			<result name="error">/index.jsp</result>
 		</action>
