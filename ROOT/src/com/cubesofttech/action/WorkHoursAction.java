@@ -3635,22 +3635,27 @@ public class WorkHoursAction extends ActionSupport {
 
 			if (leavelist != null) {
 				request.setAttribute("leave", leavelist);
-				for (Iterator iterator = leavelist.iterator(); iterator.hasNext();) {
-					Leaves leave = (Leaves) iterator.next();
-					Double noday = leave.getNoDay().doubleValue();
-					if (leave.getLeaveTypeId().contains("1")) {
+				for (int ix=0; ix<leavelist.size(); ix++) {
+					//Leaves leave = (Leaves) leavelist.get(ix);
+					
+					Map<String, Object> leave = (Map<String, Object>) leavelist.get(ix);
+					
+					String leaveTypeId = leave.get("leave_type_id").toString();
+					Double noday = Convert.parseDouble(leave.get("no_day").toString());
+					
+					if (leaveTypeId.equals("1")) {
 						leave_1 += noday;
 					}
-					if (leave.getLeaveTypeId().contains("2")) {
+					if (leaveTypeId.equals("2")) {
 						leave_2 += noday;
 					}
-					if (leave.getLeaveTypeId().contains("3")) {
+					if (leaveTypeId.equals("3")) {
 						leave_3 += noday;
 					}
-					if (leave.getLeaveTypeId().contains("5")) {
+					if (leaveTypeId.equals("5")) {
 						leave_5 += noday;
 					}
-					if (leave.getLeaveTypeId().contains("6")) {
+					if (leaveTypeId.equals("6")) {
 						leave_6 += noday;
 					}
 				}
@@ -4983,9 +4988,9 @@ public class WorkHoursAction extends ActionSupport {
 			request.setAttribute("year", year);
 			request.setAttribute("month", month);
 			if (name.equals("All")) {
-				// ª×èÍ All
+				// ï¿½ï¿½ï¿½ï¿½ All
 				if (month.equals("13")) {
-					// ª×èÍ All à´×Í¹ All
+					// ï¿½ï¿½ï¿½ï¿½ All ï¿½ï¿½Í¹ All
 
 					List<Map<String, Object>> userAll = userDAO.findAllUserYear(year);
 					int r = 0;
@@ -5054,7 +5059,7 @@ public class WorkHoursAction extends ActionSupport {
 					request.setAttribute("list", list);
 
 				} else {
-					// ª×èÍ All à´×Í¹áÅéÇáµè
+					// ï¿½ï¿½ï¿½ï¿½ All ï¿½ï¿½Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 					List<Map<String, Object>> userAll = userDAO.findAllUser(month, year);
 					int r = 0;
@@ -5126,9 +5131,9 @@ public class WorkHoursAction extends ActionSupport {
 				}
 
 			} else {
-				// ª×èÍáÅéÇáµè
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				if (month.equals("13")) {
-					// ª×èÍáÅéÇáµè à´×Í¹ All
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Í¹ All
 
 					List<Map<String, Object>> userworkIN = workHoursDAO.UserworkAllMonth(name, year);
 					List<Map<String, Object>> userworkOUT = workHoursDAO.UserworkAllMonthOUT(name, year);
@@ -5179,7 +5184,7 @@ public class WorkHoursAction extends ActionSupport {
 					request.setAttribute("list", list);
 
 				} else {
-					// ª×èÍáÅéÇáµè à´×Í¹áÅéÇáµè
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 					List<Map<String, Object>> userworkIN = workHoursDAO.Userwork(name, month, year);
 					List<Map<String, Object>> userworkOUT = workHoursDAO.UserworkOUT(name, month, year);
