@@ -203,10 +203,11 @@
 											<c:if test="${list.user_reserve==onlineUser.id}">
 													<td style="width: 25px; transform-style: preserve-3d;" >
 													
-															<div class="btn-group dropright" data-toggle="dropdown"
-																aria-haspopup="false" aria-expanded="true"></div>
+															<i id="owner" class="fa fa-ellipsis-v fa-lg"
+																aria-hidden="false" role="button" data-toggle="dropdown"
+																aria-haspopup="false" aria-expanded="true"></i>
 																
-															<div class="dropdown-menu "aria-labelledby="owner">
+															<div class="dropdown-menu "aria-labelledby="owner" style="transform: translate3d(0,0,20px) !important;">
 																<button class="dropdown-item btn btn-primary" >Action</button> 
 																<button class="dropdown-item btn btn-success" >Another action</button> 
 																<button class="dropdown-item btn btn-danger" >Something else here</button>
@@ -335,29 +336,6 @@
 		</div>
 			</div>
 			</div>
-			
-			
-			<div class="btn-group dropright">
-  <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Dropright
-  </button>
-  <div class="dropdown-menu">
-    <!-- Dropdown menu links -->
-  </div>
-</div>
-
-<!-- Split dropright button -->
-<div  class="btn-group dropright">
-  <button style="background-color:red;" type="button" class="btn btn-secondary">
-    Split dropright
-  </button>
-  <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <span class="sr-only">Toggle Dropright</span>
-  </button>
-  <div class="dropdown-menu">
-    <!-- Dropdown menu links -->
-  </div>
-</div>
 			<script> 
 			$(document).ready(function () {
 				///////////////POPOVER//////////////

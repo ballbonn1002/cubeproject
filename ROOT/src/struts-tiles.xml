@@ -1359,6 +1359,11 @@
 	<!-- END Training -->
 	
 	<!-- Meeting -->
+	<definition name="meeting_calendar" extends="baseLayout">
+		<put-attribute name="title" value="Meeting_Calendar" />
+		<put-attribute name="body"
+			value="/pages-back/meeting/meeting_calendar.jsp" />
+	</definition>
 	<definition name="select_room" extends="baseLayout">
 		<put-attribute name="title" value="Select_Room" />
 		<put-attribute name="body"

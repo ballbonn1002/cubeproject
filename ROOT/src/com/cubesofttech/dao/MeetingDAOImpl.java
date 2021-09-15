@@ -197,5 +197,34 @@ public class MeetingDAOImpl implements MeetingDAO{
 		session.flush();
 		
 	}
+	@Override
+	public List<Map<String, Object>> findAll_calendar() throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> faqJoin = null;
+		try {
+			String sql = "SELECT * FROM meeting";
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			faqJoin = query.list();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return faqJoin;
+	}
+	@Override
+	public List<Meeting> findnext_Year(String keyword) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Meeting> meetinglist = null;
+		try {
+			String sql = "SELECT * FROM meeting WHERE date LIKE '%"+keyword+"%' order by date ASC; ";
+			SQLQuery query = session.createSQLQuery(sql);
+			query.addEntity(Meeting.class);
+			meetinglist = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }

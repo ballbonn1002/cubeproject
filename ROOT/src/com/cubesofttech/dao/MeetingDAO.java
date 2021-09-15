@@ -23,4 +23,6 @@ public interface MeetingDAO {
 	public void update(Meeting meeting) throws Exception;
 
 	public void delete(Meeting meeting) throws Exception;
+	public List<Map<String, Object>> findAll_calendar() throws Exception;
+	public List<Meeting> findnext_Year(String keyword) throws Exception;
 }

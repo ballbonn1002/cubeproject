@@ -1,15 +1,20 @@
 package com.cubesofttech.action;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.dao.InvitingDAO;
@@ -26,7 +31,12 @@ public class MeetingAction extends ActionSupport {
 	
 	private static final long serialVersionUID = 1L;
 	HttpServletRequest request = ServletActionContext.getRequest();
+	HttpServletResponse response = ServletActionContext.getResponse();
+
 	private static final Logger log = Logger.getLogger(FaqAction.class);
+	private static  Calendar cal = Calendar.getInstance(); // Use Calendar .Year
+	private static  String checkFlag ="";
+	
 	@Autowired
 	 private MeetingDAO meetingDAO;
 	@Autowired
@@ -36,6 +46,77 @@ public class MeetingAction extends ActionSupport {
 		 * 
 		 * @Autowired private UserDAO userDAO;
 		 */
+	public String List1() {
+		try {
+			checkFlag = "0";
+			String date = request.getParameter("date");
+			String date2 = request.getParameter("date2");
+			if(date != null){
+				java.util.Date utilDate = new SimpleDateFormat("dd-MM-yyyy").parse(date);
+				java.sql.Date meeting_date = new java.sql.Date(utilDate.getTime());
+				request.setAttribute("flag12",meeting_date);     
+				//flag12 = Set default Date for Calendar
+			}
+			if(date2 != null){
+				request.setAttribute("flag12",date2);      
+				//flag12 = Set default Date for Calendar
+			}
+			List<Map<String, Object>> meetinglist = meetingDAO.findAll_calendar();
+			request.setAttribute("meetinglist", meetinglist);
+			String flag_cal = request.getParameter("flag");
+			if(flag_cal != null ){
+				Calendar cal1 = Calendar.getInstance(); 
+				cal = cal1;
+			}
+			
+			int month = cal.get(Calendar.MONTH);
+			int year = cal.get(Calendar.YEAR);
+			
+			request.setAttribute("num_month", month);
+			request.setAttribute("num_year", year);
+			
+			checkFlag ="0";
+			
+			return SUCCESS;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR;
+		}
+	}
+	public void findnext_year() {
+		try {
+			String next = request.getParameter("year_next");
+			List<Meeting> meetinglist = meetingDAO.findnext_Year(next);
+			
+			JSONArray arrayObj1 = new JSONArray();
+			JSONArray arrayObj2 = new JSONArray();
+			JSONArray arrayObj3 = new JSONArray();
+			JSONArray arrayObj4 = new JSONArray();
+			JSONArray arrayObj5 = new JSONArray();
+			
+			for(int i = 0 ; i < meetinglist.size(); i++ ) {
+				arrayObj1.put(meetinglist.get(i).getIdmeeting());
+				arrayObj2.put(meetinglist.get(i).getDate().toString());
+		    	arrayObj3.put(meetinglist.get(i).getTime_start().toString());
+		    	arrayObj4.put(meetinglist.get(i).getTime_end().toString());
+		    	arrayObj5.put(meetinglist.get(i).getUser_reserve());
+			}
+			
+			PrintWriter out = response.getWriter();
+			JSONObject json = new JSONObject();
+			
+			json.put("id", arrayObj1);
+		    json.put("title", arrayObj3 + " - " + arrayObj4);
+		    json.put("start", arrayObj2);
+		    
+		    out.print(json);
+		 	out.flush();
+		 	out.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public String myMeetingList() {
 		User ur = (User) request.getSession().getAttribute("onlineUser");
