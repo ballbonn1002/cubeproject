@@ -41,6 +41,8 @@ public class MeetingAction extends ActionSupport {
 	 private MeetingDAO meetingDAO;
 	@Autowired
 	 private RoomDAO roomDAO;
+	@Autowired
+	private UserDAO userDAO;
 		/*
 		 * @Autowired private InvitingDAO InvitingDAO;
 		 * 
@@ -137,6 +139,9 @@ public class MeetingAction extends ActionSupport {
 	public String selectRoom() {
 			System.out.println("hello");
 		try {
+			List<Map<String, Object>> userseq = userDAO.sequense();
+			request.setAttribute("userseq", userseq);
+			System.out.println("11111xxxx");
 			User ur = (User) request.getSession().getAttribute("onlineUser");
 			String user = ur.getId();
 			String date = new SimpleDateFormat("yyyy-MM-dd").format(DateUtil.getCurrentTime());
