@@ -1,29 +1,61 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@ taglib uri="/WEB-INF/tlds/permission.tld" prefix="perm"%>
+<%@ taglib uri="/WEB-INF/tlds/permission.tld" prefix="perm"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-		<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
- <script
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+<!-- sweetalert  -->
+<script
 	src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js"
 	type="text/javascript"></script>
- <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
+<link
+	href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
 	rel="stylesheet" type="text/css" />
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+
+
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css"
+	rel="stylesheet" />
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 
 <link rel="shortcut icon" href="favicon.ico" />
+<link
+	href="../assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css"
+	rel="stylesheet" type="text/css" />
+<link
+	href="../assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css"
+	rel="stylesheet" type="text/css" />
+<link href="../assets/global/css/components.min.css" rel="stylesheet"
+	id="style_components" type="text/css" />
+<link href="../assets/global/css/plugins.min.css" rel="stylesheet"
+	type="text/css" />
+<script
+	src="../assets/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"
+	type="text/javascript" defer></script>
+<script src="../assets/global/plugins/typeahead/handlebars.min.js"
+	type="text/javascript" defer></script>
+<script src="../assets/global/plugins/typeahead/typeahead.bundle.min.js"
+	type="text/javascript" defer></script>
+<script
+	src="../assets/pages/scripts/components-bootstrap-tagsinput.min.js"
+	type="text/javascript" defer></script>
+
 <script
 	src="${pageContext.request.contextPath}/assets/global/plugins/fancybox/lib/jquery-1.10.1.min.js"></script>
 <script
 	src="${pageContext.request.contextPath}/assets/global/plugins/jquery-ui/jquery-ui.min.js"></script>
 
 <script type="text/javascript"
-	src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script> 
+	src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"
 	src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript"
@@ -40,75 +72,130 @@
 	src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<!-- multi-select -->
+<script
+	src="../assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js"
+	type="text/javascript"></script>
+	<script
+	src="../assets/global/plugins/jquery-multi-select/js/jquery.quicksearch.js"
+	type="text/javascript"></script>
+
+<link
+	href="../assets/global/plugins/jquery-multi-select/css/multi-select.css"
+	rel="stylesheet" type="text/css" />
 <script>
   AOS.init();
 </script>
 
 <style>
 @media only screen and (max-width: 1200px) {
-    #search {
-        margin-top: 15px;
-    }
+	#search {
+		margin-top: 15px;
+	}
 }
 </style>
 <style>
-		tr{    
-		  opacity: 0;
-		  animation-name: fadeIn;
-		  animation-duration: 2s;
-		  animation-iteration-count: 1;
-		  animation-fill-mode: forwards;
-		}
-		@keyframes fadeIn {
-		  from {
-		    opacity: 0;
-		  }
-		  
-		  to {
-		    opacity: 1;
-		  }
-		}
-		  .card:hover{
-		overflow:auto;
-		} 
-		.card{
-		overflow:hidden;
-		
-		}  
-		.popover{
-		 word-wrap: break-word;
-		 }
-		 #owner:hover{
-		 color:#2596be;
-		 cursor:pointer;
-		 }
-		 #icon{
-		 color:white;
-		 }
-		 #icon:hover{
-		 color:salmon;
-		 }
-		 .timepicker {
-  position:absolute;
-  z-index:1000;
-  float:left;
-  width:160px;
-  padding-bottom:5px;
-  margin:2px 0 0 0;
-  list-style:none;
-  font-size:14px;
-  text-align:center;
-  background-color:#fff;
-  border:1px solid #ccc;
-  border:1px solid rgba(0,0,0,0.15);
-  border-radius:4px;
-  -webkit-box-shadow:0 6px 12px rgba(0,0,0,0.175);
-  box-shadow:0 6px 12px rgba(0,0,0,0.175);
-  background-clip: padding-box;
+.dropdown:hover {
+	cursor: pointer;
 }
-		 
-		</style>
-				<script>
+
+.center {
+	text-align: center
+}
+
+.card {
+	box-shadow: 5px 10px 18px #888888;
+	padding-bottom: 15px;
+	height: 200px;
+	z-index: auto;
+}
+
+.dropup {
+	align-items: center;
+}
+
+#icon {
+	
+}
+
+.name-room {
+	text-align: center;
+}
+
+.timepicker {
+	position: absolute;
+	/* z-index:1000 */;
+	float: left;
+	width: 160px;
+	padding-bottom: 5px;
+	margin: 2px 0 0 0;
+	list-style: none;
+	font-size: 14px;
+	text-align: center;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	border-radius: 4px;
+	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	background-clip: padding-box;
+}
+</style>
+<!-- pagination -->
+<style>
+.paginationx {
+	text-align: center;
+	margin: 30px 30px 60px;
+	user-select: none;
+}
+
+.paginationx li {
+	display: inline-block;
+	margin: 5px;
+	box-shadow: 0 5px 25px rgb(1 1 1/ 10%);
+}
+
+.paginationx li a {
+	color: #fff;
+	text-decoration: none;
+	font-size: 1.2em;
+	line-height: 45px;
+}
+
+.previous-page, .next-page {
+	background: #0AB1CE;
+	width: 80px;
+	border-radius: 45px;
+	cursor: pointer;
+	transition: 0.3s ease;
+}
+
+.previous-page:hover {
+	transform: translateX(-5px);
+}
+
+.next-page:hover {
+	transform: translateX(5px);
+}
+
+.current-page, .dots {
+	background: #ccc;
+	width: 45px;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.activex {
+	background: #0AB1CE;
+}
+
+.disablex {
+	background: #ccc;
+}
+</style>
+<!-- pagination -->
+<script>
 				
 				$("tr:not(:first)").each(function (index ) {
 					   $(this).css('animation-delay',index *0.01 +'s');
@@ -116,28 +203,31 @@
 								
 				</script>
 
-<div class="portlet light bordered" >
+<div class="portlet light bordered">
 	<div class="portlet-title">
-	
+
 		<div class="caption">
-			<i class="icon-layers font-red"></i> 
-			<span id="ss" class="caption-subject font-red sbold uppercase">Room ${today} ${date}</span> 
-			<c:set var="s" value="<%=new java.util.Date()%>"/>
-			<fmt:formatDate var="a" pattern = "HH:mm"  value = "${s}" />
+			<i class="icon-layers font-red"></i> <span id="ss"
+				class="caption-subject font-red sbold uppercase">Room
+				${today} ${date}</span>
+			<c:set var="s" value="<%=new java.util.Date()%>" />
+			<fmt:formatDate var="a" pattern="HH:mm" value="${s}" />
 		</div>
-		
+
 		<div class="actions">
-            <button type="button" class="btn btn-sm green-meadow" id="addLeave"
-            data-toggle="modal" data-target="#addRoom" data-backdrop="static" data-keyboard="false">
+			<button type="button" class="btn btn-sm green-meadow" id="addLeave"
+				data-toggle="modal" data-target="#addRoom" data-backdrop="static"
+				data-keyboard="false">
 				<i class="fa fa-key"></i> <b>CREATE ROOM</b>
 			</button>
 			<a class="btn  btn-icon-only btn-default fullscreen"
 				href="javascript:;" data-original-title="" title=""> </a>
 		</div>
-		
-	
+
+
 	</div>
-	<div class="portlet-body" >
+
+	<div class="portlet-body">
 		<div class="tools">
 			<a href="javascript:;" class="collapse" data-original-title=""
 				title=""> </a> <a href="#portlet-config" data-toggle="modal"
@@ -146,197 +236,359 @@
 			</a> <a href="javascript:;" class="remove" data-original-title=""
 				title=""> </a>
 		</div>
-			<div class="portlet-body">
-				
-</div>
 
 
-			
-
-			<div class="portlet-body flip-scroll" style="text-align: center;">
 
 
-		
-						<div class="row ">
-						<c:forEach var="amount" items="${amountRoom}">
-						
-						<div class="col-xs-12 col-lg-3 col-xl-3" >
-						<div class="card" id="card" style="transform-style: preserve-3d;height:200px;margin-top:20px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" >
-						
-								<table id="${amount.idroom}">
-								<thead>
-								
-								<tr style="background-color:rgb(59, 63, 81);color:white">
-								<th style="width:25px;"></th>
-								<th height="41"><center>Room No. ${amount.idroom} ${amount.room_name}</center></th>
-								<th style="width:37px;"><a id="icon" class="btn btn-light"  
-								data-toggle="modal" data-target="#Reserve" data-backdrop="static" data-keyboard="false"
-								 onClick="Reserve(${amount.idroom})">
-							
-								
-								<i class="fa fa-plus" ></i>
-								
-								</a>
-								</th>
-								</tr>
-								</thead>
+
+		<div class="portlet-body flip-scroll">
+
+
+
+			<div class="row ">
+				<div class="card-content" style="display: none;">
+					<c:forEach var="amount" items="${amountRoom}">
+
+						<div class="col-xs-12 col-lg-3 col-xl-3" id="card-content">
+							<div class="card" style="height: 60vh;">
+								<div class="card-header" id="${amount.idroom}">
+									<table>
+										<thead>
+
+											<tr style="background-color: rgb(59, 63, 81); color: white">
+												<th style="width: 60px;"></th>
+												<th height="41"><center>Room No.
+														${amount.idroom} ${amount.room_name}</center></th>
+												<th style="width: 37px;"><a id="icon"
+													class="btn btn-light" data-toggle="modal"
+													data-target="#Reserve" data-backdrop="static"
+													data-keyboard="false" onClick="Reserve(${amount.idroom})">
+
+
+														<i style="color: white;" class="fa fa-plus"></i>
+
+												</a></th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div class="card-body">
 									<c:forEach var="list" items="${AllMeetperDay}">
+										<fmt:formatDate type="date" value="${list.time_start}"
+											pattern="HH:mm" var="time_start" />
+										<fmt:formatDate type="date" value="${list.time_end}"
+											pattern="HH:mm" var="time_end" />
+										<table>
+											<thead>
 
-										<c:if test="${list.idroom==amount.idroom}">
-										<c:if test="${list.time_start>a}">
-											<tr class="bg-success owner" height="41">
-											
-											<c:if test="${list.user_reserve==onlineUser.id}">
-											<td style="width:25px">
-											<i class="fa fa-user" aria-hidden="true"></i>
-											</td>
-											</c:if>
-											<c:if test="${list.user_reserve!=onlineUser.id}">
-											<td style="width:25px">
-											
-											</td>
-											</c:if>
-											
-												<td><i class="fa fa-clock-o" aria-hidden="true"></i>
-												<b><fmt:formatDate type="date" value="${list.time_start}" pattern="HH:mm"/> น. - <fmt:formatDate type="date" value="${list.time_end}" pattern="HH:mm"/> น.</b></td>
-											
-											<c:if test="${list.user_reserve==onlineUser.id}">
-													<td style="width: 25px; transform-style: preserve-3d;" >
-													
-															<i id="owner" class="fa fa-ellipsis-v fa-lg"
-																aria-hidden="false" role="button" data-toggle="dropdown"
-																aria-haspopup="false" aria-expanded="true"></i>
-																
-															<div class="dropdown-menu "aria-labelledby="owner" style="transform: translate3d(0,0,20px) !important;">
-																<button class="dropdown-item btn btn-primary" >Action</button> 
-																<button class="dropdown-item btn btn-success" >Another action</button> 
-																<button class="dropdown-item btn btn-danger" >Something else here</button>
-															</div>
-														
+												<tr style="background-color: rgb(59, 63, 81); color: white">
+													<th hidden style="width: 60px;"></th>
+													<th hidden height="41"></th>
+													<th hidden style="width: 37px;"></th>
+												</tr>
+											</thead>
 
-													</td>
+
+											<c:if test="${list.idroom==amount.idroom}">
+												<c:if test="${list.time_start>a}">
+													<tr class="bg-success owner" height="41">
+														<c:if test="${list.user_reserve==onlineUser.id}">
+															<td class="center"><i class="fa fa-user"
+																aria-hidden="true"></i> ${list.user_reserve}</td>
+														</c:if>
+														<c:if test="${list.user_reserve!=onlineUser.id}">
+															<td class="center" style="width: 25px"></td>
+														</c:if>
+
+														<td class="center"><i class="fa fa-clock-o"
+															aria-hidden="true"></i> <b>${time_start} น. -
+																${time_end} น. </b></td>
+
+														<c:if test="${list.user_reserve==onlineUser.id}">
+															<td class="center" style="width: 25px;">
+																<div class="dropdown">
+																	<div class="dropdown-toggle"
+																		id="dropdownMenu${list.idroom}" data-toggle="dropdown"
+																		aria-haspopup="true" aria-expanded="false">
+																		<i class="fa fa-ellipsis-v "> </i>
+																	</div>
+																	<ul class="dropdown-menu  pull-right  "
+																		aria-labelledby="dropdownMenu${list.idroom}">
+																		<li><a data-toggle="modal" data-target="#Edit"
+																			data-backdrop="static" data-keyboard="false"
+																			onClick="Edit(${amount.idroom},${list.idmeeting},'${time_start}','${time_end}')">
+																				Edit</a></li>
+																		<li><a data-toggle="modal"
+																			data-target="#Inviting" data-backdrop="static"
+																			data-keyboard="false">Invite</a></li>
+																		<li><a href="#">Delete</a></li>
+
+																	</ul>
+																</div>
+															</td>
+														</c:if>
+														<c:if test="${list.user_reserve!=onlineUser.id}">
+															<td class="center" style="width: 25px"></td>
+														</c:if>
+													</tr>
 												</c:if>
-											<c:if test="${list.user_reserve!=onlineUser.id}">
-											<td style="width:25px">
-											</td>
+												<c:if test="${list.time_start<=a && list.time_end>=a}">
+													<tr class="bg-warning" height="41">
+
+														<c:if test="${list.user_reserve==onlineUser.id}">
+															<td class="center"><i class="fa fa-user"
+																aria-hidden="true"></i> ${list.user_reserve}</td>
+														</c:if>
+														<c:if test="${list.user_reserve!=onlineUser.id}">
+															<td class="center" style="width: 25px"></td>
+														</c:if>
+
+														<td class="center"><i class="fa fa-clock-o"
+															aria-hidden="true"></i> <b> <fmt:formatDate
+																	type="date" value="${list.time_start}" pattern="HH:mm" />
+																น. - <fmt:formatDate type="date"
+																	value="${list.time_end}" pattern="HH:mm" /> น.
+														</b></td>
+
+
+
+														<td class="center" style="width: 25px"><i
+															class="fa fa-hourglass-end" aria-hidden="true"></i></td>
+
+
+													</tr>
+												</c:if>
+
+												<c:if test="${list.time_end<a}">
+													<tr height="41">
+
+														<c:if test="${list.user_reserve==onlineUser.id}">
+															<td class="center"><i class="fa fa-user"
+																aria-hidden="true"> </i> ${list.user_reserve}</td>
+														</c:if>
+														<c:if test="${list.user_reserve!=onlineUser.id}">
+															<td class="center" style="width: 25px"></td>
+														</c:if>
+
+														<td class="center"><i class="fa fa-clock-o"
+															aria-hidden="true"></i> <b><fmt:formatDate
+																	type="date" value="${list.time_start}" pattern="HH:mm" />
+																น. - <fmt:formatDate type="date"
+																	value="${list.time_end}" pattern="HH:mm" /> น.</b></td>
+
+
+														<td class="center" style="width: 25px"><i
+															class="fa fa-check" aria-hidden="true"></i></td>
+
+
+													</tr>
+												</c:if>
+
 											</c:if>
-											
-											</tr>
-										</c:if>
-										<c:if test="${list.time_start<=a && list.time_end>=a}">
-											<tr class="bg-warning" height="41">
-											
-											<c:if test="${list.user_reserve==onlineUser.id}">
-											<td style="width:25px">
-											<i class="fa fa-user" aria-hidden="true"></i>
-											</td>
-											</c:if>
-											<c:if test="${list.user_reserve!=onlineUser.id}">
-											<td style="width:25px">
-											
-											</td>
-											</c:if>
-											
-												<td><i class="fa fa-clock-o" aria-hidden="true"></i> <b>
-												<fmt:formatDate type="date" value="${list.time_start}" pattern="HH:mm"/> น. - <fmt:formatDate type="date" value="${list.time_end}" pattern="HH:mm"/> น.</b></td>
-											
-											
-										
-											<td style="width:25px">
-											<i class="fa fa-hourglass-end" aria-hidden="true"></i>
-											</td>
-											
-											
-											</tr>
-										</c:if>
-										
-										<c:if test="${list.time_end<a}">
-											<tr height="41">
-											
-											<c:if test="${list.user_reserve==onlineUser.id}">
-											<td style="width:25px">
-											<i class="fa fa-user" aria-hidden="true"></i>
-											</td>
-											</c:if>
-											<c:if test="${list.user_reserve!=onlineUser.id}">
-											<td style="width:25px">
-											
-											</td>
-											</c:if>
-											
-												<td><i class="fa fa-clock-o" aria-hidden="true"></i>
-												<b><fmt:formatDate type="date" value="${list.time_start}" pattern="HH:mm"/> น. - <fmt:formatDate type="date" value="${list.time_end}" pattern="HH:mm"/> น.</b></td>
-											
-											
-											<td style="width:25px">
-											<i class="fa fa-check" aria-hidden="true"></i>
-											</td>
-											
-											
-											</tr>
-										</c:if>
-										</c:if>
-										
+
+										</table>
 									</c:forEach>
-								</table>
+
+								</div>
 							</div>
-							</div>
-							
-							</c:forEach>
+
 						</div>
-					
-<!--Reserve Room Modal -->
-<div class="modal fade" id="Reserve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel" style="font-size:20px"><b>Reserve Room</b></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="Cancel()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      
-        <input type="text" id="time_start" name="time_start" style="text-align:center;" readonly/>  To 
-        <input type="text" id="time_end" name="time_end" style="text-align:center;" readonly />
-        <button  type="button" class="btn btn-warning" onClick="Reset()">Reset</button>
-        <hr>
-        <div></div>
-      </div>
-      <div class="modal-footer">
-        <button  id="cancel" type="button" class="btn btn-secondary" data-dismiss="modal" onClick="Cancel()">Close</button>
-        <button  id="btnReserve" type="button" class="btn btn-primary" onClick="confirm()">Reserve</button>
-      </div>
-    </div>
-  </div>
+
+					</c:forEach>
+				</div>
+			</div>
+
+			<!--Edit Room Modal -->
+			<div class="modal fade" id="Edit" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel"
+								style="font-size: 20px">
+								<b>Edit Room</b>
+							</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close" onClick="Cancel()">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+
+							<div style="text-align: center;">
+								<input type="text" id="time_start" name="time_start"
+									style="text-align: center;" readonly /> To <input
+									style="text-align: center;" type="text" id="time_end"
+									name="time_end" readonly />
+
+								<button type="button" class="btn btn-warning" onClick="Reset()">Reset</button>
+							</div>
+							<hr>
+							<input style="visibility: hidden;" type="text" id="idmeeting"
+								name="idmeeting" value="" />
+						</div>
+						<div class="modal-footer">
+							<button id="cancel" type="button" class="btn btn-secondary"
+								data-dismiss="modal" onClick="Cancel()">Close</button>
+							<button id="btnReserve" type="button" class="btn btn-primary"
+								onClick="Editx()">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--Reserve Room Modal -->
+			<div class="modal fade" id="Reserve" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel"
+								style="font-size: 20px">
+								<b>Reserve Room</b>
+							</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close" onClick="Cancel()">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div style="text-align: center;">
+
+								<input type="text" id="time_start" name="time_start"
+									style="text-align: center;" readonly /> To <input type="text"
+									id="time_end" name="time_end" style="text-align: center;"
+									readonly />
+								<button type="button" class="btn btn-warning" onClick="Reset()">Reset</button>
+							</div>
+							<hr>
+							<div></div>
+						</div>
+						<div class="modal-footer">
+							<button id="cancel" type="button" class="btn btn-secondary"
+								data-dismiss="modal" onClick="Cancel()">Close</button>
+							<button id="btnReserve" type="button" class="btn btn-primary"
+								onClick="confirm()">Reserve</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--Add Room Modal -->
+			<div class="modal fade" id="addRoom" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel"
+								style="font-size: 20px">
+								<b>Create Room</b>
+							</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<label><b>Room Name</b></label> <input id="roomName"
+								class="form-control" aria-describedby="roomHelp"
+								placeholder="Put Your Room Name"
+								style="text-align: center; text-transform: capitalize;">
+							<small id="roomHelp" class="form-text text-muted">Your
+								name will show on title room.</small>
+						</div>
+						<div class="modal-footer">
+							<button id="cancelRoom" type="button" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+							<button id="btnCreate" type="button" class="btn btn-primary"
+								onclick="CreateRoom()">Create</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Inviting Modal -->
+			<div class="modal fade" id="Inviting" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel"
+								style="font-size: 20px">
+								<b>Inviting Member</b>
+							</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close" onClick="Cancel()">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+
+							<div>
+
+
+								<a href='#' id='select-all'>select all</a>/<a href='#'
+									id='deselect-all'>deselect all</a> <select id='custom-headers'
+									multiple='multiple'>
+									<option value='elem_1' selected>elem 1</option>
+									<option value='elem_2'>elem 2</option>
+									<option value='elem_3'>elem 3</option>
+									<option value='elem_4' selected>elem 4</option>
+
+									<option value='elem_100'>elem 100</option>
+								</select>
+
+							</div>
+
+
+						</div>
+						<div class="modal-footer">
+							<button id="cancel" type="button" class="btn btn-secondary"
+								data-dismiss="modal" onClick="Cancel()">Close</button>
+							<button id="btnReserve" type="button" class="btn btn-primary"
+								onClick="#">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+
+	</div>
+	<div class="paginationx">
+		<!-- <li class="page-item previous-page disablex li"><a
+			class="page-link" href="#">Prev</a></li>
+		<li class="page-item current-page activex li"><a
+			class="page-link" href="#">1</a></li>
+		<li class="page-item dots li"><a class="page-link" href="#">...</a></li>
+		<li class="page-item current-page li"><a class="page-link"
+			href="#">5</a></li>
+		<li class="page-item current-page li"><a class="page-link"
+			href="#">6</a></li>
+		<li class="page-item dots li"><a class="page-link" href="#">...</a></li>
+		<li class="page-item current-page li"><a class="page-link"
+			href="#">10</a></li>
+		<li class="page-item next-page li"><a class="page-link" href="#">Next</a></li> -->
+	</div>
+
+
+
+
+
+
+
+
+
 </div>
 
-<!--Add Room Modal -->
-<div class="modal fade" id="addRoom" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel" style="font-size:20px"><b>Create Room</b></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <label><b>Room Name</b></label>
-    <input id="roomName" class="form-control" aria-describedby="roomHelp" placeholder="Put Your Room Name" style="text-align:center;text-transform:capitalize;">
-    <small id="roomHelp" class="form-text text-muted">Your name will show on title room.</small>
-      </div>
-      <div class="modal-footer">
-        <button id="cancelRoom" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="btnCreate" type="button" class="btn btn-primary" onclick="CreateRoom()">Create</button>
-      </div>
-    </div>
-  </div>
-</div>
-		</div>
-			</div>
-			</div>
-			<script> 
+
+
+
+
+<script> 
+
+
 			$(document).ready(function () {
 				///////////////POPOVER//////////////
 				
@@ -396,7 +648,7 @@
 				   $(".datetimepicker").find('thead th').onclick=false;
 				  
 			});
-</script> 
+</script>
 
 <script>
 
@@ -406,10 +658,13 @@
 		var s=[];
 		var e=[];
 		var roomSelect;
+		var idmeeting;
+		
 //////////////////////////////////////////////
 	function Reserve(x){
 	
 		  roomSelect=x;
+		  /* alert(roomSelect); */
 		  document.getElementById("btnReserve").disabled = true;
 		<c:forEach var="room" items="${checkRoomToday}">
 		  id.push(${room.idroom});
@@ -422,6 +677,103 @@
 		 $("#"+x).clone().appendTo('.modal-body');
 		$(".modal-body").find("#icon").remove().end().find("#owner").remove();
 			}
+//////////////////////////////////////////////
+
+//////////////////////////////////////////////
+	function Edit(idroom,idmeeting,time_start,time_end){
+			
+		  roomSelect=idroom;
+		  idmeeting=idmeeting;
+		  time_start=time_start;
+		  time_end = time_end;
+		  
+		  /* alert(roomSelect);
+		  alert(idmeeting); */
+		   
+		  document.getElementById("btnReserve").disabled = true;
+		<c:forEach var="room" items="${checkRoomToday}">
+		  id.push(${room.idroom});
+		  var start='${room.time_start}'.substring(0,5);
+		  s.push(start);
+		  var end='${room.time_end}'.substring(0,5);
+		  e.push(end);
+		</c:forEach>
+		/*Open Modal Edit  */
+		 $("#"+idroom).clone().appendTo('.modal-body');
+		$(".modal-body").find("#icon").remove().end().find("#owner").remove();
+		$('#time_start').val(
+				 time_start);
+		$('#time_end').val(
+				 time_end);
+		 $('#idmeeting').attr('value', idmeeting).val(idmeeting);
+		/* $('#idmeeting').val(idmeeting); */
+			}
+			
+	<!-- แก้ไขข้อมูล -->
+			
+	function Editx() {
+		
+		var a = time_start;
+		var b = time_end;
+		var c=0;
+		var idmeeting= $("input[name=idmeeting]").val();
+		
+		/* alert(typeof(idmeeting)); */
+		document.getElementById("cancel").click();
+		
+		swal({
+		      title: "Are you sure!",
+		      text: "ต้องการแก้ไขข้อมูลใช่ไหม!",
+		      type: "warning",
+		      showCancelButton: true,
+		      confirmButtonClass: 'btn-primary',
+		      confirmButtonText: 'Confirm'
+		    }, function (inputValue) {
+		        if (inputValue == false){
+		        	console.log("canceled");
+		        	}
+		        if (inputValue == true) {
+		        	 $.ajax({
+		        		 	type : "POST",
+		 				    url : "Edit_Room",
+		 					data : {
+		 						"time_start": a,
+		 						"time_end": b,
+		 						/* "dateData":"${date}", */
+		 						"user_reserve":"${onlineUser.id}",
+		 						"meetingid":idmeeting
+		 					}
+		 			 }
+		        	 ),complete(c);
+		        }
+		      });
+	}
+	function completex(c){ setInterval(function(){
+		if(c===0){
+		swal(
+			{
+				title : "Reserved",
+				text : "This room is reserved",
+				type : "success"
+			},
+			 function() {
+				  location.reload();
+				} );
+			}
+		else if(c===1){
+			$('#roomName').val("");
+			swal(
+					{
+						title : "Created Room",
+						text : "This room is created",
+						type : "success"
+					},
+					 function() {
+						  location.reload();
+						} );
+		}
+	    
+	},300);}
 //////////////////////////////////////////////
 	function check(){
 	 var y=0;
@@ -593,15 +945,14 @@ function invite(f){
 }
 </script>
 
-<script
-		src="../assets/global/plugins/counterup/jquery.waypoints.min.js"
-		type="text/javascript"></script>
+<script src="../assets/global/plugins/counterup/jquery.waypoints.min.js"
+	type="text/javascript"></script>
 <script src="../assets/global/plugins/counterup/jquery.counterup.min.js"
-		type="text/javascript"></script>
-<script src="/path/to/cdn/jquery.slim.min.js"></script>
+	type="text/javascript"></script>
 
 
-  
+
+
 <script>
 function confirm() {
 	
@@ -665,3 +1016,129 @@ function complete(c){ setInterval(function(){
 },300);}
 
 </script>
+<!-- multiselect style-->
+<style>
+.search-input {
+	margin-bottom: 10px;
+}
+</style>
+
+<!-- multiselect -->
+<script>
+
+$('#custom-headers').multiSelect({
+	  selectableHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"12\"'>",
+	  selectionHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"4\"'>",
+	  afterInit: function(ms){
+	    var that = this,
+	        $selectableSearch = that.$selectableUl.prev(),
+	        $selectionSearch = that.$selectionUl.prev(),
+	        selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
+	        selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
+
+	    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+	    .on('keydown', function(e){
+	      if (e.which === 40){
+	        that.$selectableUl.focus();
+	        return false;
+	      }
+	    });
+
+	    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+	    .on('keydown', function(e){
+	      if (e.which == 40){
+	        that.$selectionUl.focus();
+	        return false;
+	      }
+	    });
+	  },
+	  afterSelect: function(){
+	    this.qs1.cache();
+	    this.qs2.cache();
+	  },
+	  afterDeselect: function(){
+	    this.qs1.cache();
+	    this.qs2.cache();
+	  }
+	});
+</script>
+
+
+<!-- เปลี่ยนหน้า -->
+<script>
+
+function getPageList(totalPages, page, maxLength){
+  function range(start, end){
+    return Array.from(Array(end - start + 1), (_, i) => i + start);
+  }
+
+  var sideWidth = maxLength < 9 ? 1 : 2;
+  var leftWidth = (maxLength - sideWidth * 2 - 3) >> 1;
+  var rightWidth = (maxLength - sideWidth * 2 - 3) >> 1;
+
+  if(totalPages <= maxLength){
+    return range(1, totalPages);
+  }
+
+  if(page <= maxLength - sideWidth - 1 - rightWidth){
+    return range(1, maxLength - sideWidth - 1).concat(0, range(totalPages - sideWidth + 1, totalPages));
+  }
+
+  if(page >= totalPages - sideWidth - 1 - rightWidth){
+    return range(1, sideWidth).concat(0, range(totalPages- sideWidth - 1 - rightWidth - leftWidth, totalPages));
+  }
+
+  return range(1, sideWidth).concat(0, range(page - leftWidth, page + rightWidth), 0, range(totalPages - sideWidth + 1, totalPages));
+}
+
+$(function(){
+  var numberOfItems = $(".card-content .card").length;
+  var limitPerPage = 4; //How many card items visible per a page
+  var totalPages = Math.ceil(numberOfItems / limitPerPage);
+  var paginationSize = 7; //How many page elements visible in the pagination
+  var currentPage;
+
+  function showPage(whichPage){
+    if(whichPage < 1 || whichPage > totalPages) return false;
+
+    currentPage = whichPage;
+
+    $(".card-content .card").hide().slice((currentPage - 1) * limitPerPage, currentPage * limitPerPage).show();
+
+    $(".paginationx li").slice(1, -1).remove();
+
+    getPageList(totalPages, currentPage, paginationSize).forEach(item => {
+      $("<li>").addClass("page-item").addClass(item ? "current-page" : "dots")
+      .toggleClass("activex", item === currentPage).append($("<a>").addClass("page-link")
+      .attr({href: "javascript:void(0)"}).text(item || "...")).insertBefore(".next-page");
+    });
+
+    $(".previous-page").toggleClass("disablex", currentPage === 1);
+    $(".next-page").toggleClass("disablex", currentPage === totalPages);
+    return true;
+  }
+
+  $(".paginationx").append(
+    $("<li>").addClass("page-item").addClass("previous-page").append($("<a>").addClass("page-link").attr({href: "javascript:void(0)"}).text("Prev")),
+    $("<li>").addClass("page-item").addClass("next-page").append($("<a>").addClass("page-link").attr({href: "javascript:void(0)"}).text("Next"))
+  );
+
+  $(".card-content").show();
+  showPage(1);
+
+  $(document).on("click", ".paginationx li.current-page:not(.activex)", function(){
+    return showPage(+$(this).text());
+  });
+
+  $(".next-page").on("click", function(){
+    return showPage(currentPage + 1);
+  });
+
+  $(".previous-page").on("click", function(){
+    return showPage(currentPage - 1);
+  });
+});
+</script>
+
+
+
