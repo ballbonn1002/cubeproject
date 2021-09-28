@@ -77,7 +77,7 @@
 <script
 	src="../assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js"
 	type="text/javascript"></script>
-	<script
+<script
 	src="../assets/global/plugins/jquery-multi-select/js/jquery.quicksearch.js"
 	type="text/javascript"></script>
 
@@ -319,8 +319,9 @@
 																			onClick="Edit(${amount.idroom},${list.idmeeting},'${time_start}','${time_end}')">
 																				Edit</a></li>
 																		<li><a data-toggle="modal"
-																			data-target="#Inviting" data-backdrop="static"
-																			data-keyboard="false">Invite</a></li>
+																			data-target="#Inviting-room${amount.idroom}-idmeeting" data-backdrop="static"
+																			data-keyboard="false"
+																			onClick="inviting(${amount.idroom},${list.idmeeting},'${time_start}','${time_end}')">Invite</a></li>
 																		<li><a href="#">Delete</a></li>
 
 																	</ul>
@@ -508,21 +509,21 @@
 			</div>
 
 			<!-- Inviting Modal -->
-			<div class="modal fade" id="Inviting" tabindex="-1" role="dialog"
+			<div class="modal fade" id="Inviting"  tabindex="-1" role="dialog"
 				aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="exampleModalLabel"
 								style="font-size: 20px">
-								<b>Inviting Member</b>
+								<b id="invite-header">Inviting Member</b>
 							</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close" onClick="Cancel()">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						<div class="modal-body">
+						<div class="modal-body" >
 
 							<div>
 
@@ -530,12 +531,10 @@
 								<a href='#' id='select-all'>select all</a>/<a href='#'
 									id='deselect-all'>deselect all</a> <select id='custom-headers'
 									multiple='multiple'>
-									<option value='elem_1' selected>elem 1</option>
-									<option value='elem_2'>elem 2</option>
-									<option value='elem_3'>elem 3</option>
-									<option value='elem_4' selected>elem 4</option>
+									<c:forEach var="user" items="${userseq}">
+										<option value='${user.id }'>${user.id }</option>
 
-									<option value='elem_100'>elem 100</option>
+									</c:forEach>
 								</select>
 
 							</div>
@@ -818,6 +817,7 @@
 }
 //////////////////////////////////////////////
 	function Cancel(){
+		
 		$(".modal-body ").find('table').remove();
 		$('#time_end').val("");
 		   time_end=$('#time_end').val();
@@ -825,6 +825,11 @@
 		   $('#time_start').val("");
 		   time_end=$('#time_start').val();
 		   $('#time_start').datetimepicker('update');
+		   alert(roomSelect);
+		   alert(idmeeting);
+		   $("#Inviting-room"+roomSelect+"-idmeeting").attr("id", "Inviting");
+		   
+		   
 	}
 //////////////////////////////////////////////
 	function CreateRoom(){
@@ -939,10 +944,24 @@
     });
 });
 //////////////////////////////////////////////
-function invite(f){
-	console.log(f);
-	console.log('sss');
-}
+/* inviting  */
+function inviting(idroom,idmeeting,time_start,time_end){
+			
+		  roomSelect=idroom;
+		  idmeeting=idmeeting;
+		  time_start=time_start;
+		  time_end = time_end;
+		  
+
+		/*Open Modal Edit  */
+		/* $('#idmeeting').attr('value', idmeeting).val(idmeeting); */
+		$("#Inviting").attr("id",  "Inviting-room"+roomSelect+"-idmeeting"); 
+		$('#invite-header').text("Inviting Member Room: "+ roomSelect);
+		
+		$('<div>' + "ช่วงเวลาการประชุม "+ time_start +" น. - "+  time_end +" น."+ '</div>').appendTo('#invite-header');
+	
+		
+			}
 </script>
 
 <script src="../assets/global/plugins/counterup/jquery.waypoints.min.js"
@@ -1027,8 +1046,8 @@ function complete(c){ setInterval(function(){
 <script>
 
 $('#custom-headers').multiSelect({
-	  selectableHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"12\"'>",
-	  selectionHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"4\"'>",
+	  selectableHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='ค้นหาชื่อที่ต้องการเชิญ'>",
+	  selectionHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='ค้นหาชื่อคนที่เชิญแล้ว'>",
 	  afterInit: function(ms){
 	    var that = this,
 	        $selectableSearch = that.$selectableUl.prev(),
