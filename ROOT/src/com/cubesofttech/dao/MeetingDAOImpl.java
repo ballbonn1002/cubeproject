@@ -162,8 +162,7 @@ public class MeetingDAOImpl implements MeetingDAO{
 
 		List<Map<String, Object>> faqJoin = null;
 		try {
-			String sql = "SELECT idmeeting, idroom, time_start, time_end, date, user_reserve "
-					+ "FROM meeting WHERE date='" + date_cal + "' ORDER BY time_start";
+			String sql = "SELECT  * FROM meeting WHERE date='" + date_cal + "' ORDER BY time_start";
 
 			System.out.println("SQL: " + sql);
 			SQLQuery query = session.createSQLQuery(sql);

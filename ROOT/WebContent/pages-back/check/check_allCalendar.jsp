@@ -56,6 +56,9 @@
 .fc-day-grid-event>.fc-content {
 	white-space: normal;
 }
+div.fc-event-container{
+	margin-top: 18px;
+}
 </style>
 
 <c:set var="now" value="<%=new java.util.Date()%>" />
