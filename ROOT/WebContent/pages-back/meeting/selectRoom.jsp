@@ -99,30 +99,24 @@
 .dropdown:hover {
 	cursor: pointer;
 }
-
 .center {
 	text-align: center
 }
-
 .card {
 	box-shadow: 5px 10px 18px #888888;
 	padding-bottom: 15px;
 	height: 200px;
 	z-index: auto;
 }
-
 .dropup {
 	align-items: center;
 }
-
 #icon {
 	
 }
-
 .name-room {
 	text-align: center;
 }
-
 .timepicker {
 	position: absolute;
 	/* z-index:1000 */;
@@ -149,20 +143,17 @@
 	margin: 30px 30px 60px;
 	user-select: none;
 }
-
 .paginationx li {
 	display: inline-block;
 	margin: 5px;
 	box-shadow: 0 5px 25px rgb(1 1 1/ 10%);
 }
-
 .paginationx li a {
 	color: #fff;
 	text-decoration: none;
 	font-size: 1.2em;
 	line-height: 45px;
 }
-
 .previous-page, .next-page {
 	background: #0AB1CE;
 	width: 80px;
@@ -170,26 +161,21 @@
 	cursor: pointer;
 	transition: 0.3s ease;
 }
-
 .previous-page:hover {
 	transform: translateX(-5px);
 }
-
 .next-page:hover {
 	transform: translateX(5px);
 }
-
 .current-page, .dots {
 	background: #ccc;
 	width: 45px;
 	border-radius: 50%;
 	cursor: pointer;
 }
-
 .activex {
 	background: #0AB1CE;
 }
-
 .disablex {
 	background: #ccc;
 }
@@ -208,8 +194,8 @@
 
 		<div class="caption">
 			<i class="icon-layers font-red"></i> <span id="ss"
-				class="caption-subject font-red sbold uppercase">Room
-				${today} ${date}</span>
+				class="caption-subject font-red sbold uppercase">Meeting Room | 
+				${date_cal}</span>
 			<c:set var="s" value="<%=new java.util.Date()%>" />
 			<fmt:formatDate var="a" pattern="HH:mm" value="${s}" />
 		</div>
@@ -586,12 +572,13 @@
 
 
 <script> 
-
-
-			$(document).ready(function () {
-				///////////////POPOVER//////////////
+$(document).ready(function () {
+	
+	let search = new URLSearchParams(window.location.search);
+	let date_cal = search.get('date_cal');
+	///////////////POPOVER//////////////
 				
-				///////////////POPOVER//////////////
+	///////////////POPOVER//////////////
 				var opt={
 						pickDate: false,
 					    minuteStep: 15,
@@ -650,7 +637,6 @@
 </script>
 
 <script>
-
 		var time_end;
 		var time_start;
 		var id=[];
@@ -677,7 +663,6 @@
 		$(".modal-body").find("#icon").remove().end().find("#owner").remove();
 			}
 //////////////////////////////////////////////
-
 //////////////////////////////////////////////
 	function Edit(idroom,idmeeting,time_start,time_end){
 			
@@ -863,7 +848,6 @@
 //////////////////////////////////////////////
 	function toast(){
 		Command: toastr["warning"]("Sorry,This time has already been spent!", "Warning")
-
 		toastr.options = {
 		  "closeButton": false,
 		  "debug": false,
@@ -884,7 +868,6 @@
 }
 	function toast2(){
 		Command: toastr["error"]("Your Time is Wrong!", "Error")
-
 		toastr.options = {
 		  "closeButton": false,
 		  "debug": false,
@@ -905,7 +888,6 @@
 }
 	function toast3(){
 		Command: toastr["success"]("You can use this time.", "Good time")
-
 		toastr.options = {
 		  "closeButton": false,
 		  "debug": false,
@@ -952,7 +934,6 @@ function inviting(idroom,idmeeting,time_start,time_end){
 		  time_start=time_start;
 		  time_end = time_end;
 		  
-
 		/*Open Modal Edit  */
 		/* $('#idmeeting').attr('value', idmeeting).val(idmeeting); */
 		$("#Inviting").attr("id",  "Inviting-room"+roomSelect+"-idmeeting"); 
@@ -1033,7 +1014,6 @@ function complete(c){ setInterval(function(){
 	}
     
 },300);}
-
 </script>
 <!-- multiselect style-->
 <style>
@@ -1044,7 +1024,6 @@ function complete(c){ setInterval(function(){
 
 <!-- multiselect -->
 <script>
-
 $('#custom-headers').multiSelect({
 	  selectableHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='ค้นหาชื่อที่ต้องการเชิญ'>",
 	  selectionHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='ค้นหาชื่อคนที่เชิญแล้ว'>",
@@ -1054,7 +1033,6 @@ $('#custom-headers').multiSelect({
 	        $selectionSearch = that.$selectionUl.prev(),
 	        selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
 	        selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
-
 	    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
 	    .on('keydown', function(e){
 	      if (e.which === 40){
@@ -1062,7 +1040,6 @@ $('#custom-headers').multiSelect({
 	        return false;
 	      }
 	    });
-
 	    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
 	    .on('keydown', function(e){
 	      if (e.which == 40){
@@ -1085,79 +1062,58 @@ $('#custom-headers').multiSelect({
 
 <!-- เปลี่ยนหน้า -->
 <script>
-
 function getPageList(totalPages, page, maxLength){
   function range(start, end){
     return Array.from(Array(end - start + 1), (_, i) => i + start);
   }
-
   var sideWidth = maxLength < 9 ? 1 : 2;
   var leftWidth = (maxLength - sideWidth * 2 - 3) >> 1;
   var rightWidth = (maxLength - sideWidth * 2 - 3) >> 1;
-
   if(totalPages <= maxLength){
     return range(1, totalPages);
   }
-
   if(page <= maxLength - sideWidth - 1 - rightWidth){
     return range(1, maxLength - sideWidth - 1).concat(0, range(totalPages - sideWidth + 1, totalPages));
   }
-
   if(page >= totalPages - sideWidth - 1 - rightWidth){
     return range(1, sideWidth).concat(0, range(totalPages- sideWidth - 1 - rightWidth - leftWidth, totalPages));
   }
-
   return range(1, sideWidth).concat(0, range(page - leftWidth, page + rightWidth), 0, range(totalPages - sideWidth + 1, totalPages));
 }
-
 $(function(){
   var numberOfItems = $(".card-content .card").length;
   var limitPerPage = 4; //How many card items visible per a page
   var totalPages = Math.ceil(numberOfItems / limitPerPage);
   var paginationSize = 7; //How many page elements visible in the pagination
   var currentPage;
-
   function showPage(whichPage){
     if(whichPage < 1 || whichPage > totalPages) return false;
-
     currentPage = whichPage;
-
     $(".card-content .card").hide().slice((currentPage - 1) * limitPerPage, currentPage * limitPerPage).show();
-
     $(".paginationx li").slice(1, -1).remove();
-
     getPageList(totalPages, currentPage, paginationSize).forEach(item => {
       $("<li>").addClass("page-item").addClass(item ? "current-page" : "dots")
       .toggleClass("activex", item === currentPage).append($("<a>").addClass("page-link")
       .attr({href: "javascript:void(0)"}).text(item || "...")).insertBefore(".next-page");
     });
-
     $(".previous-page").toggleClass("disablex", currentPage === 1);
     $(".next-page").toggleClass("disablex", currentPage === totalPages);
     return true;
   }
-
   $(".paginationx").append(
     $("<li>").addClass("page-item").addClass("previous-page").append($("<a>").addClass("page-link").attr({href: "javascript:void(0)"}).text("Prev")),
     $("<li>").addClass("page-item").addClass("next-page").append($("<a>").addClass("page-link").attr({href: "javascript:void(0)"}).text("Next"))
   );
-
   $(".card-content").show();
   showPage(1);
-
   $(document).on("click", ".paginationx li.current-page:not(.activex)", function(){
     return showPage(+$(this).text());
   });
-
   $(".next-page").on("click", function(){
     return showPage(currentPage + 1);
   });
-
   $(".previous-page").on("click", function(){
     return showPage(currentPage - 1);
   });
 });
 </script>
-
-
-

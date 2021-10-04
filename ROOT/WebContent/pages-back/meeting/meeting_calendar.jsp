@@ -4,27 +4,21 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <script src="../assets/ajax/jquery-1.10.2.js" type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<link href="../assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
 
-<link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
 <script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-<script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+
 <script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
 <script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
 <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+
+<script src="../assets/global/plugins/moment.min.js" type="text/javascript"></script>
+<link href="../assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
 
 
 
 <c:set var="now" value="<%=new java.util.Date()%>" />
 
-<!-- <style>
-@media only screen and (max-width: 1200px) {
-    #search {
-        margin-top: 15px;
-    }
-}
-</style> -->
 <style>
 @keyframes fadeIn {
 	from {
@@ -35,23 +29,168 @@
 		opacity: 1;
 	}
 }
+@media screen and (min-width: 1216px) {
+  div.details {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 1215px) {
+  div.details {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 1199px) {
+  div.details {
+    font-size: 30px;
+  }
+}
+div.fc-event-container{
+	margin-top: 18px;
+}
+a.fc-day-grid-event .fc-h-event{
+	max-height: 33.6px;
+	align-items: center;
+}
 #caption_text {
 	height: 15px;
 	margin-bottom: 10px;
+}
+.fc-past {
+	background-color: #f9fafb;
 
 }
-.fc-future{
-	background-color: #d1f2eb;
+.fc-sat, .fc-sun {
+	background-color: #f0f2f4;
 }
-.fc-sat, .fc-sun{
-	background-color: #e9edef;
+.dashboard-stat .details {
+	text-align: center;
+	position: absolute;
+	right: 10px;
+	padding-right: 20px;
 }
+/* .details {
+  	font-size: 25px; 
+	text-align: center;
+	color: #ffffff;
+	padding-top: 47px;
+ 	padding-left: 10px; 
+ 	padding-right: 50px; 
+} */
 
 .purple{
-     background:#9b59b6 ;   
+     background-color: #9b59b6;   
 }
 	
 </style>
+
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="fa fa-users font-red"></i>
+			<span class="caption-subject font-red sbold uppercase">Booking Meeting Room | ${today}</span>
+		</div>
+	</div> <!-- END portlet title -->
+	<div class="portlet-body">
+		<div class="tools">
+			<a href="javascript:;" class="collapse" data-original-title="" title=""></a> 
+			<a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""></a> 
+			<a href="javascript:;" class="reload" data-original-title="" title=""></a>
+			<a href="javascript:;" class="remove" data-original-title="" title=""></a>
+		</div>
+		<div class="row " style="margin-left: 45px; margin-right: 5px;padding-bottom: 15px; padding-top: 15px; text-align: center;">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 portlet light bordered" id="todaybox" style="margin-right: 50px;">
+				<div class="portlet light">
+					<div class="portlet-title">
+						<div class="caption">
+							<span class="caption-subject bold uppercase">Today</span>
+							<span class="caption-helper" style="margin-left: 7px;">meeting</span>
+						</div>
+					</div>
+					<div class="portlet-body">
+						<div class="dashboard-stat dashboard-stat-v2 red-intense">
+							<div class="visual">
+								<i class="fa fa-users"></i>
+							</div>
+							<div class="details" style="font-size:24px;color:#ffffff;padding-top:47px;margin-right:40px;">
+								<span id="meeting_box" style="margin-left: 5px;"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-7 portlet light bordered">
+				<div class="portlet light">
+					<div class="portlet-title">
+						<div class="caption">
+							<span class="caption-subject bold uppercase">Coming soon</span>
+							<span class="caption-helper" style="margin-left: 7px;">meeting</span>
+						</div>
+					</div>
+					<div class="portlet-body">
+						<div class="col-md-4" style="margin-bottom: 39px;">
+							<div class="dashboard-stat dashboard-stat-v2 yellow-casablanca">
+								<div class="visual">
+									<i class="fa fa-users"></i>
+								</div>
+								<div class="details" style="font-size:24px;color:#ffffff;padding-top:45px;padding-left:25px;">
+									<span id="meeting_box1"></span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4" style="margin-bottom: 39px;">
+							<div class="dashboard-stat dashboard-stat-v2 yellow-saffron">
+								<div class="visual">
+									<i class="fa fa-users"></i>
+								</div>
+								<div class="details" style="font-size:24px;color:#ffffff;padding-top:45px;padding-left:25px;">
+									<span id="meeting_box2" ></span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4" style="margin-bottom: 39px;">
+							<div class="dashboard-stat dashboard-stat-v2 green-haze">
+								<div class="visual">
+									<i class="fa fa-users"></i>
+								</div>
+								<div class="details" style="font-size:24px;color:#ffffff;padding-top:45px;padding-left:25px;">
+									<span id="meeting_box3" ></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> <!-- END row -->
+		
+		
+		<div class="portlet-body">
+			<div class="portlet-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="portlet light portlet-fit bordered calendar">
+							<div class="portlet-title">
+								<div class="caption">
+									<i class=" icon-layers font-green"></i>
+									<span class="caption-subject font-green sbold uppercase">Meeting Calendar</span>
+								</div>
+							</div>
+							<!-- CALENDAR -->
+							<div class="portlet-body">
+								<div class="row">
+									<div class="col-md-12 col-sm-12">
+										<div class="calendar" id="calendar"> </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> <!-- END portlet body -->
+</div> <!-- END portlet bordered -->
 
 <script>
 $("tr:not(:first)").each(function (index ) {
@@ -61,243 +200,14 @@ $("tr:not(:first)").each(function (index ) {
 								
 </script>
 
-<div class="portlet light bordered">
-	<div class="portlet-title">
-		<div class="caption">
-			<i class="fa fa-users font-red"></i>
-			<span class="caption-subject font-red sbold uppercase">Booking Meeting Room</span>
-		</div>
-	</div>
-	<div class="portlet-body">
-		<div class="tools">
-			<a href="javascript:;" class="collapse" data-original-title="" title=""></a> 
-			<a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""></a> 
-			<a href="javascript:;" class="reload" data-original-title="" title=""></a>
-			<a href="javascript:;" class="remove" data-original-title="" title=""></a>
-		</div>
-				<div class="row" style="padding-bottom: 15px; padding-top: 15px; text-align: center;">
-				<div class="col-md-2 col-lg-2"></div>
-				
-				<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-					<div class="row" id="caption_text"><span>Today</span></div>
-					
-						<a class="dashboard-stat dashboard-stat-v2 red-intense">
-							<div class="visual">
-								<!-- <i class="fa fa-suitcase"></i> -->
-							</div>
-							<div class="details">
-<%-- 								<form action="myleave_list" method="POST">
-									<div class="number">
-										<c:if test="${tnow >= tend}">  <!-- if now over april -->
-										${leave_6}/${quotaLastYear}
-											<c:if test="${leave_6l < 0}">
-												<span data-counter="counterup" data-value="">${leave_6l}</span>
-											</c:if>
-											<c:if test="${leave_6l >= 0}">
-												<span data-counter="counterup" data-value="">0</span>
-											</c:if>
-											<div class="desc" style="font-size: 13px;">${type_6}</div>
-										</c:if>
-										<c:if test="${tnow < tend}">
-											<span data-count="${quotaLastYear - leave_6}" class="counter">${quotaLastYear - leave_6}</span>
-											<div class="desc" style="font-size: 13px;">${type_6} 
-												คงเหลือ
-											</div>
-										</c:if>
-									</div>
-								</form> --%>
-							</div>
-						</a>
-					</div>
-					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-					
-						<div class="row" id="caption_text"></div>
-						
-						<a class="dashboard-stat dashboard-stat-v2 yellow-casablanca">
-							<div class="visual">
-								<!-- <i class="fa fa-ambulance"></i> -->
-							</div>
-							<div class="details">
-<%-- 								<form action="myleave_list" method="POST">
-									<div class="number">
-										<c:choose>
-											<c:when test="${leave_3 != null}">
-												<span data-counter="counterup" data-value="">${leave_3}</span>
-												<div class="desc">${type_3}</div>
-											</c:when>
-											<c:when test="${leave_3 == null}">
-												<span data-counter="counterup" data-value="">0</span>
-												<div class="desc">${type_3}</div>
-											</c:when>
-										</c:choose>
-									</div>
-								</form> --%>
-							</div>
-						</a>
-					</div>
-					
-					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-						<div class="row" id="caption_text"><span>Coming Soon</span></div>
-						<a class="dashboard-stat dashboard-stat-v2 yellow-saffron">
-							<div class="visual">
-								<!-- <i class="fa fa-newspaper-o"></i> -->
-							</div>
-							<div class="details">
-								<%-- <form action="myleave_list" method="POST">
-									<div class="number">
-										<c:choose>
-											<c:when test="${leave_2 != null}">
-												<span data-counter="counterup" data-value="">${leave_2}</span>
-												<div class="desc">${type_2}</div>
-											</c:when>
-											<c:when test="${leave_2 == null}">
-												<span data-counter="counterup" data-value="">0</span>
-												<div class="desc">${type_2}</div>
-											</c:when>
-										</c:choose>
-									</div>
-								</form> --%>
-							</div>
-						</a>
-					</div>
-					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-						<div class="row" id="caption_text"></div>
-					
-						<a class="dashboard-stat dashboard-stat-v2 green-haze">
-							<div class="visual">
-								<!-- <i class="fa fa-battery-quarter"></i> -->
-							</div>
-							<div class="details">
-<%-- 								<form action="myleave_list" method="POST">
-									<div class="number">
-										<c:choose>
-											<c:when test="${leave_5 != null}">
-												<span data-counter="counterup" data-value="">${leave_5}</span>
-												<div class="desc">${type_5}</div>
-											</c:when>
-											<c:when test="${leave_5 == null}">
-												<span data-counter="counterup" data-value="">0</span>
-												<div class="desc">${type_5}</div>
-											</c:when>
-										</c:choose>
-									</div>
-								</form> --%>
-							</div>
-						</a>
-					<div class="col-md-2"></div>
-				</div>
-			</div>
-			<div>
-				<button type="button" class="btn green-meadow" onclick="select()">Select</button>
-			</div>
-			<div class="portlet-body">
-				<div class="portlet-body">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="portlet light portlet-fit bordered calendar">
-								<div class="portlet-title">
-									<div class="caption">
-                                        <i class=" icon-layers font-green"></i>
-                                        <span class="caption-subject font-green sbold uppercase">Meeting </span>
-                                    </div>
-								</div>
-								<!-- Calendar -->
-								<div class="portlet-body">
-                                    <div class="row">
-                                        <div class="col-md-12 col-sm-12">
-                                            <div class="calendar" id="calendar"> </div>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                                <!-- Calendar-->
-							</div>
-						</div>
-					</div>
-					<!-- END PAGE BASE CONTENT -->
-				</div>
-			</div>
-			
-
-			<%-- <div class="portlet-body flip-scroll" style="text-align: center;">
-				<table class="table table-striped table-condensed flip-content table-hover">
-					<thead>
-						<tr style="background-color:rgb(59, 63, 81);color:white">
-							<th height="41"><center>Leave ID</center></th>
-							<th height="41"><center>Submit date</center></th>
-							<th height="41"><center>The applicant</center></th>
-							<th height="41"><center>Type of leave</center></th>
-							<th height="41"><center>Start date (Since)</center></th>
-							<th height="41"><center>End date (Until)</center></th>
-							<th height="41"><center>Amount the day</center></th>
-							<th height="41"><center>Status</center></th>
-							<th height="41"><center>Leave application form</center></th>
-						</tr>
-					</thead>
-					
-						<form action="myleave_list" method="POST">
-						<c:forEach var="leave" items="${leavelist}" varStatus="status">
-							<tr>
-								<td style="vertical-align: middle;">${leave.leave_id}</td>
-								<td style="vertical-align: middle;"><fmt:formatDate value="${leave.time_create}"
-										pattern="dd-MM-yyyy HH:mm"></fmt:formatDate></td>
-								<td>${leave.user_id}</td>
-								<c:choose>
-									<c:when test="${leave.leave_type_id.toString() == '1'}">
-										<td>${type_1}</td>
-									</c:when>
-									<c:when test="${leave.leave_type_id.toString() == '2'}">
-										<td>${type_2}</td>
-									</c:when>
-									<c:when test="${leave.leave_type_id.toString() == '3'}">
-										<td>${type_3}</td>
-									</c:when>
-									<c:when test="${leave.leave_type_id.toString() == '5'}">
-										<td>${type_5}</td>
-									</c:when>
-									<c:when test="${leave.leave_type_id.toString() == '6'}">
-										<td>${type_6}</td>
-									</c:when>
-
-								</c:choose>
-								<td style="vertical-align: middle;"><fmt:formatDate value="${leave.start_date}"
-										pattern="dd-MM-yyyy"></fmt:formatDate></td>
-								<td style="vertical-align: middle;"><fmt:formatDate value="${leave.end_date}"
-										pattern="dd-MM-yyyy"></fmt:formatDate></td>
-								<td style="vertical-align: middle;">${leave.no_day}</td>
-								<td style="vertical-align: middle;"><c:if test="${leave.leave_status_id.toString() == '0'}">
-										<span class="label label-warning">Waiting for
-											approve</span>
-									</c:if> <c:if test="${leave.leave_status_id.toString() == '1'}">
-										<span class="label label-success">Approved</span>
-									</c:if> <c:if test="${leave.leave_status_id.toString() == '2'}">
-										<span class="label label-danger">Reject</span>
-									</c:if></td>
-								<td style="vertical-align: middle;"><a class="btn circle btn-outline btn-sm sbold blue"
-									href="LeaveEdit?id=${leave.leave_id}"
-									title="information of leave"><i
-										class="fa fa-clipboard"></i></a></td>
-							</tr>
-						</c:forEach>
-						</form>
-				</table>
-			</div> --%>
-	</div>
-</div>
-
 <script type="text/javascript">
 $(document).ready(function() {
-		$('#calendar').fullCalendar();
+	$('#calendar').fullCalendar();
 	
-
-
+		
 });
-function select() {
-	document.location = "Select_Room";
-	console.log("888");
-}
-
 </script>
+
 <script>
 var myevent = [];
 var AppCalendar = function() {
@@ -307,7 +217,6 @@ var AppCalendar = function() {
             this.initCalendar();
         },
         initCalendar: function() {
-        	console.log('0000000')
         	if (!jQuery().fullCalendar) {
                 return;
             }
@@ -322,12 +231,12 @@ var AppCalendar = function() {
         	var meeting_date = [];
         	var time_start = [];
         	var time_end = [];
+        	var room_name = [];
         	var name = [];
         	var reserver = [];
         	var room_id = [];
         	var events1 = [];
-        	var mycolor = ['purple'];
-        	var mytype = [1,2,3,4,5,6];
+        	var mycolor = ['red', 'purple'];
         	
         	<c:forEach var="meeting" items="${meetinglist}">
 	        	var idmeeting = '${meeting.idmeeting}';
@@ -336,6 +245,7 @@ var AppCalendar = function() {
 	        	var text2 = '${meeting.time_end}';
 	        	var user_reserve = '${meeting.user_reserve}';
 	        	var idroom = '${meeting.idroom}';
+	        	var room = '${meeting.room_name}';
 	        	
 	        	var date1 = text.substring(0, 10);
 	        	var start1 = text1.substring(0, 5);
@@ -344,24 +254,33 @@ var AppCalendar = function() {
 	        	
 	        	var date2 = new Date(date1);
 	        	
-	        	id.push(idmeeting);
+	        	id.push(idroom);
 	        	meeting_date.push(date2);
 	        	time_start.push(start1);
 	        	time_end.push(end1);
 	        	name.push(timefull);
 	        	reserver.push(user_reserve);
-	        	room_id.push(idroom);
+	        	room_name.push(room);
+	        	    	
         	</c:forEach>
+
+        	window.localStorage.setItem('meeting', JSON.stringify(meeting_date));
         	
         	var x;
         	for(x in meeting_date){
+        		
         		events1.push({
         				id:id[x],
-        				title: name[x],
-        				start: new Date(meeting_date[x].getFullYear(),meeting_date[x].getMonth(),meeting_date[x].getDate()),
-        				end: new Date(meeting_date[x].getFullYear(),meeting_date[x].getMonth(),meeting_date[x].getDate() + 1 ),
+        				title: 'Room '+id[x] + ' : ' + room_name[x] ,
+        				start: new Date(meeting_date[x].getFullYear(),
+        						meeting_date[x].getMonth(),
+        						meeting_date[x].getDate()),
+        				end: new Date(meeting_date[x].getFullYear(),
+        						meeting_date[x].getMonth(),
+        						meeting_date[x].getDate() + 1 ),
         			backgroundColor: App.getBrandColor('purple'),
-/*         			className: mytype[x%6], */
+        			description: name[x] + '<br>' +'Reserver : ' + reserver[x],
+         			className: 'meeting',
         			allDay: true,
         		});
         	}
@@ -370,6 +289,7 @@ var AppCalendar = function() {
             var d = date.getDate();
             var m = date.getMonth();
             var y = date.getFullYear();
+            var id = id[x];
             
             var h = {};
             
@@ -457,6 +377,8 @@ var AppCalendar = function() {
                 defaultDate: moment(noTime),
                 slotMinutes: 15,
                 editable: true,
+                
+                
                 droppable: true, // this allows things to be dropped onto the calendar !!!
 
                 drop: function(date, allDay) { // this function is called when something is dropped
@@ -488,14 +410,8 @@ var AppCalendar = function() {
                 	var type_color = "";
                 	var start = moment(calEvent.start).get('date');
                     var end = moment(calEvent.end).get('date');
-/*                     switch(calEvent.className) {
-                    	case 1: type_color = 'red';  break;
-                    	case 2:  type_color ='grey'; break;
-                   	 	case 3: type_color ='blue'; break;
-                   	 	case 4: type_color ='yellow'; break;
-                   	 	case 5: type_color ='green'; break;
-                   	 	case 6: type_color ='purple'; break;
-                    } */
+                    var events = $('#calendar').fullCalendar('clientEvents');
+
                     var for_i = end-start; 
                     for(var i  = 0 ; i < for_i ; i++ ){
                       	var dataToFind = moment(calEvent.start).format('YYYY-MM-DD');
@@ -508,36 +424,45 @@ var AppCalendar = function() {
                 	var moment2 = moment(calEvent.end);  
                 	
                 	element.popover({
+
                 		animation:true,
                 		placement: 'bottom',
                 		container:"body",
                         html:true,
                         delay: 100,
                         title: '<b>'+calEvent.title +'</b>',
-                        content:   '<b>' +$.fullCalendar.formatRange(moment1, moment2 -1 , 'D MMMM YYYY') + "</b><br/>"
-                        + "<p style=\"max-width:500px;word-wrap:break-word;margin-bottom:50px;\"> &nbsp; "+ calEvent.description + " <br/>"
+                        content: '<b>' +$.fullCalendar.formatRange(moment1, moment2 -1 , 'D MMMM YYYY') + "</b><br/>"
+                        	+ "<p style=\"max-width:500px;word-wrap:break-word;margin-bottom:50px;\">  "+ calEvent.description + " <br/>"
                         
-                       + "</p>",                 
+                       		+ "</p>",                 
                         trigger: 'hover'
+
                 	});
                 	
+					
+                	element.find(".fc-title").css('font-weight', 'inherit');
                     element.find(".fc-title").prepend("<i class='fa fa-users' style='margin:5px;' ></i>");
                     
-                    element.find(".users").on('click',function() {
+                    element.find(".fc-content").on('click',function() {
 /*                     	document.location = "holiday_edit_calendar?flag=0&id=" + calEvent.id ;                     	  
  */						alert("Hello !");
+
                     });
 
                 },
                 dayClick: function(date, jsEvent, view){
                 	var events = $('#calendar').fullCalendar('clientEvents');
                 	for (var i = 0; i < events.length; i++) {
-                		if (moment(date).isSame(moment(events[i].start))) {
-                            alert("Dont Click");
-                            break;
-                        } else if (i == events.length - 1) {
-/*                        	 document.location = "holiday_add?flag=0&date_cal=" + date.format("DD-MM-YYYY") ;
- */
+                		if (moment(date).isSame(moment(events[i].start))) { // cannot click if have event
+                			document.location = "Select_Room?flag=0&date_cal=" + date.format("YYYY-MM-DD");
+                			console.log("date_cal="+date.format("YYYY-MM-DD"));
+                		
+                			break;
+                			
+                        } else if (i == events.length - 1) { //can click is it no event
+                        	document.location = "Select_Room?flag=0&date_cal=" + date.format("YYYY-MM-DD");
+                        	console.log("date_cal="+date.format("YYYY-MM-DD"));
+
                         }
                 	}
                 },
@@ -614,8 +539,7 @@ jQuery(document).ready(function() {
 				success : function(data) {
 					var obj = JSON.parse(data);
 					var i = 0 ;
-					var mycolor =['red','purple'];
-/* 					var mytype=[1,2,3,4,5,6]; */
+					var mycolor =['purple'];
 					for(i in obj.id) {
 						var meeting_date = new Date(obj.start[i]);
 						events2.push({
@@ -624,7 +548,7 @@ jQuery(document).ready(function() {
 							start: new Date(meeting_date.getFullYear(),meeting_date.getMonth(),meeting_date.getDate()),
 							end: new Date(end_date.getFullYear(),end_date.getMonth(),end_date.getDate() + 1 ),							  					 
 							allDay: true,
-/* 							className: mytype[i%6], */
+ 							className: 'meeting', 
 							backgroundColor: App.getBrandColor('purple'),
 
 						});
@@ -640,4 +564,58 @@ jQuery(document).ready(function() {
 	});
 	
 });
+</script>
+<script>
+//function for box at meeting calendar
+	//Date Now
+	var today = '${today}';
+	var meeting = JSON.parse(window.localStorage.getItem('meeting'));
+	
+	var daynow = meeting.filter(element => element.includes(today));
+	var a = daynow.toString();
+	var format = a.substring(0, 10);
+	var now = moment(format).format('DD-MM-YYYY');
+	
+	if (now == "Invalid date"){
+		document.getElementById("meeting_box").innerHTML = " ";
+		//Find meeting event next from current date
+		console.log(today);
+		var meetingday = meeting.find(element => element > today);
+		var format1 = meetingday.substring(0, 10);
+		var meeting_next = moment(format1).format('DD-MM-YYYY');
+		document.getElementById("meeting_box1").innerHTML = meeting_next;
+		
+		//Find meeting event next to ...
+		meetingday1 = meeting.find(element => element > meetingday);
+		var format2 = meetingday1.substring(0, 10);
+		var meeting_next1 = moment(format2).format('DD-MM-YYYY');
+		document.getElementById("meeting_box2").innerHTML = meeting_next1;
+		
+		meetingday2 = meeting.find(element => element > meetingday1);
+		var format3 = meetingday2.substring(0, 10);
+		var meeting_next2 = moment(format3).format('DD-MM-YYYY');
+		document.getElementById("meeting_box3").innerHTML = meeting_next2;
+		
+	} else {
+		document.getElementById("meeting_box").innerHTML = now;
+		
+		//Find meeting event next from current date
+		console.log(today);
+		var meetingday = meeting.find(element => element > daynow);
+		var format1 = meetingday.substring(0, 10);
+		var meeting_next = moment(format1).format('DD-MM-YYYY');
+		document.getElementById("meeting_box1").innerHTML = meeting_next;
+	
+		//Find meeting event next to ...
+		meetingday1 = meeting.find(element => element > meetingday);
+		var format2 = meetingday1.substring(0, 10);
+		var meeting_next1 = moment(format2).format('DD-MM-YYYY');
+		document.getElementById("meeting_box2").innerHTML = meeting_next1;
+		
+		meetingday2 = meeting.find(element => element > meetingday1);
+		var format3 = meetingday2.substring(0, 10);
+		var meeting_next2 = moment(format3).format('DD-MM-YYYY');
+		document.getElementById("meeting_box3").innerHTML = meeting_next2;
+	}
+
 </script>
