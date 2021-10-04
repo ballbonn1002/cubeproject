@@ -3323,9 +3323,12 @@ public class WorkHoursAction extends ActionSupport {
 			request.setAttribute(USERID, request.getParameter("usercalendar"));
 
 			// check list
+			String userLogin = null;
 			String usercalendar = request.getParameter("usercalendar");
 			request.setAttribute("usercalendar", usercalendar);
 			User ur = (User) request.getSession().getAttribute("onlineUser");
+			userLogin = ur.getId();
+			
 			String logonUser = request.getParameter("usercalendar");
 
 			String positionusers = null;
@@ -3631,34 +3634,63 @@ public class WorkHoursAction extends ActionSupport {
 			Timestamp end_date = DateUtil.changetoEndYear(dateT.format(localDate));
 
 			List leavelist = leaveDAO.myLeavesList(userId, start_date, end_date);
+			String status = "1";
+			List LeaveID = leaveDAO.findLeaveId(userLogin, start_date, end_date, status);
+
 			Double leave_1 = 0.000, leave_2 = 0.000, leave_3 = 0.000, leave_5 = 0.000, leave_6 = 0.000;
 
 			if (leavelist != null) {
 				request.setAttribute("leave", leavelist);
-				for (int ix=0; ix<leavelist.size(); ix++) {
-					//Leaves leave = (Leaves) leavelist.get(ix);
-					
-					Map<String, Object> leave = (Map<String, Object>) leavelist.get(ix);
-					
-					String leaveTypeId = leave.get("leave_type_id").toString();
-					Double noday = Convert.parseDouble(leave.get("no_day").toString());
-					
-					if (leaveTypeId.equals("1")) {
-						leave_1 += noday;
+				/*
+				 * for (Iterator iterator = leavelist.iterator(); iterator.hasNext();) { Leaves
+				 * leave = (Leaves) iterator.next(); Double noday =
+				 * leave.getNoDay().doubleValue(); if (leave.getLeaveTypeId().contains("1")) {
+				 * leave_1 += noday; } if (leave.getLeaveTypeId().contains("2")) { leave_2 +=
+				 * noday; } if (leave.getLeaveTypeId().contains("3")) { leave_3 += noday; } if
+				 * (leave.getLeaveTypeId().contains("5")) { leave_5 += noday; } if
+				 * (leave.getLeaveTypeId().contains("6")) { leave_6 += noday; } }
+				 */
+				int x=0;
+				
+				while (x <= LeaveID.size()-1) {
+					System.out.println("inLoopWhile");
+					String a[] = LeaveID.get(x).toString().split("[={}]");
+					System.out.println("Split Success");
+					for(int b=0;b<=a.length-1;b++) {
+						System.out.println("a["+b+"]= "+a[b]);
 					}
-					if (leaveTypeId.equals("2")) {
-						leave_2 += noday;
+					int id=0;
+					for(int b=0;b<=a.length-1;b++) {
+						System.out.println("inLoopFor");
+						if(tryParseInt(a[b])) {
+							System.out.println("inIf");
+							id=Integer.parseInt(a[b]);
+							System.out.println("This is Array No: "+b+" ="+a[b]);
+							Leaves leaveDashboard =  leaveDAO.findByLeaveId(id);
+							System.out.println("Ref Success");
+							Double noday = leaveDashboard.getNoDay().doubleValue();
+							System.out.println("This NoDay : "+noday);
+							if (leaveDashboard.getLeaveTypeId().contains("1")) {
+								leave_1 = leave_1 + noday;
+							}
+							if (leaveDashboard.getLeaveTypeId().contains("2")) {
+								leave_2 = leave_2 + noday;
+							}
+							if (leaveDashboard.getLeaveTypeId().contains("3")) {
+								leave_3 = leave_3 + noday;
+							}
+							if (leaveDashboard.getLeaveTypeId().contains("5")) {
+								leave_5 = leave_5 + noday;
+							}
+							if (leaveDashboard.getLeaveTypeId().contains("6")) {
+								leave_6 = leave_6 + noday;
+							}
+						}
+						
 					}
-					if (leaveTypeId.equals("3")) {
-						leave_3 += noday;
-					}
-					if (leaveTypeId.equals("5")) {
-						leave_5 += noday;
-					}
-					if (leaveTypeId.equals("6")) {
-						leave_6 += noday;
-					}
+					x++;
 				}
+				
 			}
 			request.setAttribute("leave_1", leave_1);
 			request.setAttribute("leave_2", leave_2);
@@ -4988,9 +5020,9 @@ public class WorkHoursAction extends ActionSupport {
 			request.setAttribute("year", year);
 			request.setAttribute("month", month);
 			if (name.equals("All")) {
-				// ï¿½ï¿½ï¿½ï¿½ All
+				// ª×èÍ All
 				if (month.equals("13")) {
-					// ï¿½ï¿½ï¿½ï¿½ All ï¿½ï¿½Í¹ All
+					// ª×èÍ All à´×Í¹ All
 
 					List<Map<String, Object>> userAll = userDAO.findAllUserYear(year);
 					int r = 0;
@@ -5059,7 +5091,7 @@ public class WorkHoursAction extends ActionSupport {
 					request.setAttribute("list", list);
 
 				} else {
-					// ï¿½ï¿½ï¿½ï¿½ All ï¿½ï¿½Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+					// ª×èÍ All à´×Í¹áÅéÇáµè
 
 					List<Map<String, Object>> userAll = userDAO.findAllUser(month, year);
 					int r = 0;
@@ -5131,9 +5163,9 @@ public class WorkHoursAction extends ActionSupport {
 				}
 
 			} else {
-				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				// ª×èÍáÅéÇáµè
 				if (month.equals("13")) {
-					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Í¹ All
+					// ª×èÍáÅéÇáµè à´×Í¹ All
 
 					List<Map<String, Object>> userworkIN = workHoursDAO.UserworkAllMonth(name, year);
 					List<Map<String, Object>> userworkOUT = workHoursDAO.UserworkAllMonthOUT(name, year);
@@ -5184,7 +5216,7 @@ public class WorkHoursAction extends ActionSupport {
 					request.setAttribute("list", list);
 
 				} else {
-					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+					// ª×èÍáÅéÇáµè à´×Í¹áÅéÇáµè
 
 					List<Map<String, Object>> userworkIN = workHoursDAO.Userwork(name, month, year);
 					List<Map<String, Object>> userworkOUT = workHoursDAO.UserworkOUT(name, month, year);

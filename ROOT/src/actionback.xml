@@ -3506,6 +3506,11 @@
 		</action>
 		
 		<!-- meeting -->
+		<action name="Meeting_Calendar"
+			class="com.cubesofttech.action.MeetingAction" method="List1">
+			<result name="success" type="tiles">meeting_calendar</result>
+			<result name="error">/index.jsp</result>
+		</action>
 		<action name="Select_Room"
 			class="com.cubesofttech.action.MeetingAction" method="selectRoom">
 			<result name="success" type="tiles">select_room</result>
@@ -3528,7 +3533,7 @@
 		</action>
 		
 		<action name="Meeting_Manager_Selectroom"
-			class="com.cubesofttech.action.MeetingAction" method="selectRoom">
+			class="com.cubesofttech.action.RoomAction" method="roomandmember_list">
 			<result name="success" type="tiles">meeting_manager_selectroom</result>
 			<result name="error">/index.jsp</result>
 		</action>

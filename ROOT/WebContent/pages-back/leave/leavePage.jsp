@@ -276,10 +276,65 @@ function check_char(elm){
         manager = manager.toLowerCase();
 
         /* Date from leave calendar */
-        if('${date}' != '' && action=='Add'){
+        if('${date}' != null && action=='Add'){
             $('#date_from').val('${date}');
 			$('#date_to').val('${date}');
             $('#amount').val(1);
+            
+            var holiday;
+			var holidays = [];
+			holiday = JSON.parse('${holiday}');
+
+			for(let i=0;i<holiday.length;i++){
+				let start = new Date(holiday[i].start);
+				let end = new Date(holiday[i].end);
+				for(let j=start; j<=end; j.setDate(j.getDate()+1)){
+					holidays.push(toDisplayDate(j));
+				}
+			}
+		
+			$('#date_from').datepicker({
+				format: 'dd-mm-yyyy',
+				daysOfWeekDisabled: [0,6],
+				datesDisabled: holidays ,
+				autoclose: true, 
+			});
+			$('#date_to').datepicker({
+				format: 'dd-mm-yyyy',
+				daysOfWeekDisabled: [0,6],
+				datesDisabled: holidays ,
+				autoclose: true, 
+			});
+
+			$('.input-daterange').change(function(){
+				let amount = 0;
+				let holiday_count = 0;
+				let from = new Date( toISODate( $('#date_from').val() ) );
+				let to = new Date( toISODate( $('#date_to').val() ) );
+				if(from == to){
+					amount = 1;
+				}
+				if(from < to){
+					amount = ((to-from)/86400000)+1;
+					for(let i=from; i<to; i.setDate(i.getDate()+1)){
+						for(let j=0; j<holidays.length; j++){
+							let holiday_ts = toTimestamp(holidays[j]);
+							if(i.getTime() == holiday_ts){
+								holiday_count++;
+							}
+						}
+						if(i.getDay() == '0' || i.getDay() == '6'){
+							holiday_count++;
+						}
+					}
+					amount -= holiday_count;
+				}
+				else{
+					amount = 1;
+				}
+				$('#amount').val(amount);
+			});
+            
         }
 
         /* Start Applicant/Approver List */
@@ -497,6 +552,7 @@ function check_char(elm){
 <!-- End check authority -->
 
 <!-- Start datepicker -->
+
 <c:if test="${holiday!=null}">
 	<script>
 		$(function(){

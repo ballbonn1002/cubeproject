@@ -125,9 +125,13 @@
 			<!-- link to "My Training" page --> <i class="fa fa-edit"></i> <!-- add icon -->
 			<span class="title">My Training</span>
 	</a></li>
-	<li class="nav-item"><a href="Select_Room" class="nav-link">
-			<!-- link to "My Training" page --> <i class="fa fa-edit"></i> <!-- add icon -->
+	<li class="nav-item"><a href="Meeting_Calendar" class="nav-link">
+			<!-- link to "My Training" page --> <i class="fa fa-users"></i> <!-- add icon -->
 			<span class="title">My Meeting</span>
+	</a></li>
+	<li class="nav-item"><a href="Select_Room" class="nav-link">
+			<!-- link to "My Training" page --> <i class="fa fa-users"></i> <!-- add icon -->
+			<span class="title">Select Room</span>
 	</a></li>
 	<!-- travel -->
 	<perm:permission object="travel.view">
@@ -247,7 +251,7 @@
 				
 				<li class="nav-item"><a href="Meeting_Manager" class="nav-link">
 						<!-- link to "My Training" page --> <i class="fa fa-edit"></i> <!-- add icon -->
-						<span class="title">meeting Manager</span>
+						<span class="title">Meeting Manager</span>
 				</a></li>
 
 				<!-- <li class="nav-item"><a href="Training_Add" class="nav-link">

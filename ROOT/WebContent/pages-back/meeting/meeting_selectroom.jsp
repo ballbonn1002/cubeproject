@@ -50,9 +50,7 @@
 
 			<i class="fa fa-paperclip font-red"></i> <span id="title"
 				class="caption-subject font-red sbold uppercase">Select Room</span>
-			<div style="padding-top: 5px;">
-				<i class="fa fa-calendar"></i></i> Date :
-			</div>
+				<div style="padding-top:5px;"><i class="fa fa-calendar"></i></i> Date : </div>
 			<input type="hidden" name="actionpage" id="actionpage"
 				value="${action}">
 
@@ -64,147 +62,144 @@
 	</div>
 
 	<div class="portlet-body">
-
-		<div class="row ">
+	
+		<div class="row "
+			>
 
 			<div class="card-content" style="display: none;">
-				<c:forEach var="room" items="${amountRoom}" varStatus="status">
+				<c:forEach var="room" items="${Roomlist}" varStatus="status">
 					<fmt:formatDate type="date" value="${room.time_create}"
 						pattern="HH:mm" var="time_create" />
-					<fmt:formatDate type="date" value="${room.time_create}"
-						pattern="dd-MM-yyyy" var="date" />
 					<div class="col-lg-3">
-						<div class="card" id="card"
-							style="transform-style: preserve-3d; height: 200px; margin-top: 20px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-							<ul class="nav nav-pills mb-3" role="tablist">
-								<li class="nav-item"><a
-									class="nav-link text-uppercase active" data-toggle="tab"
-									href="#tab${room.idroom}" role="tab">Meeting Room
-										${room.idroom}</a></li>
-								<li class="nav-item ml-auto"><a
-									class="nav-link text-uppercase" data-toggle="tab"
-									href="#tab-list${room.idroom}" role="tab">ตารางจองห้อง</a></li>
+					<div class="card" id="card" style="transform-style: preserve-3d;height:200px;margin-top:20px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" >
+						<ul class="nav nav-pills mb-3" role="tablist">
+							<li class="nav-item"><a
+								class="nav-link text-uppercase active" data-toggle="tab"
+								href="#tab${room.idroom}" role="tab">Meeting Room
+									${room.idroom}</a></li>
+							<li class="nav-item ml-auto"><a
+								class="nav-link text-uppercase" data-toggle="tab"
+								href="#tab-list${room.idroom}" role="tab">ตารางจองห้อง</a></li>
 
 
-							</ul>
+						</ul>
 
-							<div class="tab-content py-3 padding-title">
-								<div class="tab-pane active" id="tab${room.idroom}"
-									role="tabpanel">
-									<h4 class="card-title">
-										<span class="head_name">Name:</span> ${room.room_name}
-									</h4>
-									<div class="c-body">สร้างเมื่อวันที่: ${date}</div>
-									<div class="c-body">เวลา: ${time_create} น.</div>
-									<div class="c-body">
-										คนสร้าง: <span>${room.user_create}</span>
-									</div>
-
-
-
-
-
+						<div class="tab-content py-3 padding-title">
+							<div class="tab-pane active" id="tab${room.idroom}"
+								role="tabpanel">
+								<h4 class="card-title">
+									<span class="head_name">Name:</span> ${room.room_name}
+								</h4>
+								<div class="c-body">สร้างเมื่อวันที่: ${time_create} น.</div>
+								<div class="c-body">
+									คนสร้าง: <span>${room.user_create}</span>
 								</div>
-								<div class="tab-pane " id="tab-list${room.idroom}"
-									role="tabpanel">
-									<!-- <h4 class="card-title head_name">ตารางจองห้อง</h4> -->
-									<div class="scroll" >
-										<table class="table table-bordered ">
-											<thead>
-												<tr style="background-color: rgb(59, 63, 81); color: white">
-													<th hidden></th>
-
-												</tr>
-											</thead>
-											<tbody>
-												<c:forEach var="time" items="${AllMeetperDay}">
-													<fmt:formatDate type="date" value="${time.time_start}"
-														pattern="HH:mm" var="time_start" />
-													<fmt:formatDate type="date" value="${time.time_end}"
-														pattern="HH:mm" var="time_end" />
-													<tr>
-
-														<td data-toggle="modal"
-															data-target="#exampleModal${time.idinvite}">${time_start}
-															- ${time_end}</td>
 
 
 
 
-													</tr>
 
-												</c:forEach>
-												<!-- <tr>
+							</div>
+							<div class="tab-pane" id="tab-list${room.idroom}" role="tabpanel">
+								<!-- <h4 class="card-title head_name">ตารางจองห้อง</h4> -->
+								<table class="table table-bordered">
+									<thead>
+										<tr style="background-color: rgb(59, 63, 81); color: white">
+											<th hidden></th>
+
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="time" items="${invitingMemberlist}">
+											<fmt:formatDate type="date" value="${time.time_start}"
+												pattern="HH:mm" var="time_start" />
+											<fmt:formatDate type="date" value="${time.time_end}"
+												pattern="HH:mm" var="time_end" />
+											<tr>
+
+												<td data-toggle="modal"
+													data-target="#exampleModal${time.idinvite}">${time_start}
+													- ${time_end}</td>
+												<td>${time.idinvite}</td>
+
+
+
+											</tr>
+
+										</c:forEach>
+										<!-- <tr>
 										<td>test1 </td>
 										</tr> -->
 
-											</tbody>
-										</table>
+									</tbody>
+								</table>
 
+
+								<!-- Modal -->
+								<c:forEach var="time" items="${invitingMemberlist}">
+									<fmt:formatDate type="date" value="${time.time_start}"
+										pattern="HH:mm" var="time_start" />
+									<fmt:formatDate type="date" value="${time.time_end}"
+										pattern="HH:mm" var="time_end" />
+									<div class="modal fade" id="exampleModal${time.idinvite}"
+										tabindex="-1" role="dialog"
+										aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLabel">MEMBER
+														INVITED</h5>
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<div class="modal-body">
+													<table
+														class="table table-striped table-condensed table-hover order-column compact"
+														data-toggle="table" data-search="true" id="myTable">
+														<thead>
+															<tr
+																style="background-color: rgb(59, 63, 81); color: white">
+																<th height="41"><center>${time_start}-${time_end}</center></th>
+
+															</tr>
+														</thead>
+														<tbody>
+															
+
+																<tr style="color: black">
+																	<td style="vertical-align: middle;">${time.member}</td>
+
+
+																</tr>
+														
+														</tbody>
+													</table>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary"
+														data-dismiss="modal">Close</button>
+
+												</div>
+											</div>
+										</div>
 									</div>
-
-								</div>
-
+								</c:forEach>
 							</div>
+
 						</div>
+					</div>
 					</div>
 				</c:forEach>
 
 
-
+				
 			</div>
 		</div>
 	</div>
 
-	<!-- Modal -->
-	<c:forEach var="time" items="${AllMeetperDay}">
-		<fmt:formatDate type="date" value="${time.time_start}" pattern="HH:mm"
-			var="time_start" />
-		<fmt:formatDate type="date" value="${time.time_end}" pattern="HH:mm"
-			var="time_end" />
-		<div class="modal fade" id="exampleModal${time.idinvite}"
-			tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-			aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">MEMBER INVITED</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<table
-							class="table table-striped table-condensed table-hover order-column compact"
-							data-toggle="table" data-search="true" id="myTable">
-							<thead>
-								<tr style="background-color: rgb(59, 63, 81); color: white">
-									<th height="41"><center>${time_start}-${time_end}</center></th>
 
-								</tr>
-							</thead>
-							<tbody>
-
-
-								<tr style="color: black">
-									<td style="vertical-align: middle;">${time.member}</td>
-
-
-								</tr>
-
-							</tbody>
-						</table>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-							data-dismiss="modal">Close</button>
-
-					</div>
-				</div>
-			</div>
-		</div>
-	</c:forEach>
 
 
 
@@ -264,21 +259,12 @@
 	font-weight: 400;
 }
 
-
-.scroll:hover {
-	overflow: auto;
-}
-
-.scroll {
-	overflow: hidden;
-	height: 150px;
-}
-
 .border {
 	border: 1px solid #E0DADA;
 	border-radius: 5%;
 	margin: 10px;
 	height: 200px;
+	
 	align-items: flex-start;
 	justify-content: flex-start;
 	box-shadow: 5px 5px 5px #E0DADA;
