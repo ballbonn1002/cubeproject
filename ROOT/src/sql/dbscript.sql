@@ -559,4 +559,64 @@ CREATE TABLE `meeting` ( `idmeeting` INT(64) NOT NULL AUTO_INCREMENT , `idroom` 
 
 -- PROD/UAT
 
+CREATE TABLE `training` (
+  `trainingid` bigint(20) NOT NULL,
+  `user_id` varchar(32) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `hours` int(3) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `user_update` varchar(32) DEFAULT NULL,
+  `time_update` timestamp NULL DEFAULT NULL,
+  `user_create` varchar(32) DEFAULT NULL,
+  `time_create` timestamp NULL DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `lecturer` varchar(255) DEFAULT NULL,
+  `detail` varchar(1024) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `training` (`trainingid`, `user_id`, `title`, `hours`, `start_date`, `end_date`, `user_update`, `time_update`, `user_create`, `time_create`, `location`, `lecturer`, `detail`) VALUES
+(1, 'thanet.s', 'Java', 8, '2021-06-01', '2021-06-30', 'thanet.s', '2021-08-11 08:28:54', 'thanet.s', '2021-07-01 03:00:10', 'homeee', 'aum', 'hutsss5555hutsss5555hutsss5555hutsss5555hutsss5555hutsss5555hutsss5555hutsss5555hutsss5555hutsss5555hutsss5555'),
+(2, 'thanet.s', 'JSP', 4, '2021-07-02', '2021-07-02', 'thanet.s', '2021-07-02 03:00:10', 'thanet.s', '2021-07-02 03:00:10', NULL, NULL, NULL),
+(3, 'thanet.s', 'Python', 5, '2021-07-03', '2021-07-04', 'Milk.HR', '2021-07-05 03:03:11', 'Milk.HR', '2021-07-05 03:03:11', NULL, NULL, NULL),
+(4, 'thanet.s', 'C+', 9, '2021-07-12', '2021-07-13', 'thanet.s', '2021-08-11 07:02:07', 'Milk.HR', '2021-07-13 03:03:11', '', '', ''),
+(5, 'thanet.s', 'PHP', 3, '2021-07-14', '2021-07-15', 'thanet.s', '2021-07-15 03:06:30', 'thanet.s', '2021-07-15 03:06:30', NULL, NULL, NULL),
+(6, 'thanet.s', 'React', 2, '2021-07-16', '2021-07-17', 'Kookkik.HR', '2021-07-17 03:06:30', 'Kookkik.HR', '2021-07-17 03:06:30', NULL, NULL, NULL),
+(7, 'thanet.s', 'SpringFramework', 10, '2021-07-19', '2021-07-22', 'thanet.s', '2021-07-23 03:06:30', 'thanet.s', '2021-07-23 03:06:30', NULL, NULL, NULL),
+(8, 'thanet.s', 'StrutsFramewor', 18, '2021-07-26', '2021-07-28', 'thanet.s', '2021-08-11 07:01:27', 'Ploy.HR', '2021-07-29 03:06:30', '', '', 'sss'),
+(11, 'aum.r', 'HMH', 3, '2021-08-11', '2021-08-11', 'aum.r', '2021-08-03 08:28:27', NULL, '2021-08-03 08:28:27', 'home', 'aum', 'descrpit'),
+(12, 'aum.r', 'eafef', 3, '2021-08-25', '2021-08-25', 'aum.r', '2021-08-03 08:36:38', NULL, '2021-08-03 08:36:38', 'hunt', 'sad', 'gg'),
+(13, 'aum.r', 'Training', 2, '2021-08-24', '2021-08-24', 'IT', '2021-08-03 08:39:16', 'IT', '2021-08-03 08:39:16', '555', 'GoodGame', 'wad'),
+(14, 'aum.r', 'Bangkokasd', 3, '2021-08-11', '2021-08-11', 'thanet.s', '2021-08-05 04:05:31', 'kunanon.r', '2021-08-03 08:42:03', 'thailandsss', 'bangkok', 'thaisssadasd'),
+(16, 'aum.r', 'awdwd', 2, '2021-08-23', '2021-08-23', 'thanet.s', '2021-08-11 04:27:24', 'thanet.s', '2021-08-11 04:23:07', 'awd', '55555', 'awdwdwss'),
+(17, 'aum.r', 'test', 4, '2021-08-09', '2021-08-11', 'thanet.s', '2021-08-11 04:28:46', 'thanet.s', '2021-08-11 04:28:21', 'test', 'test', 'test'),
+(18, 'aum.r', 'home', 4, '2021-08-23', '2021-08-23', 'thanet.s', '2021-08-11 07:07:49', 'thanet.s', '2021-08-11 07:07:49', 'ad', 'home', 'sad'),
+(19, 'aum.r', 'helper', 1, '2021-08-23', '2021-08-23', 'thanet.s', '2021-08-11 07:09:08', 'thanet.s', '2021-08-11 07:09:08', 'facebook', 'ss', 'facebook'),
+(20, 'aum.r', 'helperDev', 1, '2021-08-23', '2021-08-23', 'thanet.s', '2021-08-11 07:09:31', 'thanet.s', '2021-08-11 07:09:31', 'facebook', 'ss', 'facebook'),
+(21, 'aum.r', 'document', 1, '2021-08-24', '2021-08-24', 'thanet.s', '2021-08-11 07:10:17', 'thanet.s', '2021-08-11 07:10:17', 'document', 'dd', 'document'),
+(22, 'Thanet.s', 'Java', 3, '2021-08-18', '2021-08-18', 'thanet.s', '2021-08-11 07:32:22', 'thanet.s', '2021-08-11 07:32:22', 'sabc', 'abc', 'abc'),
+(23, 'Thanet.s', 'abc', 3, '2021-08-18', '2021-08-18', 'thanet.s', '2021-08-11 07:32:46', 'thanet.s', '2021-08-11 07:32:46', 'sabc', 'abc', 'abc'),
+(24, 'Thanet.s', 'thanet', 3, '2021-08-17', '2021-08-17', 'thanet.s', '2021-09-06 12:56:45', 'thanet.s', '2021-08-11 07:33:12', 'thanet', 'thanet', 'thanet'),
+(25, 'Thanet.s', 'thanet', 4, '2021-08-17', '2021-08-17', 'thanet.s', '2021-08-11 07:33:41', 'thanet.s', '2021-08-11 07:33:41', 'thanetthanet', 'thanet', 'thanetthanet'),
+(26, 'aum.r', '50005', 1, '2021-08-11', '2021-08-11', 'thanet.s', '2021-08-11 07:34:05', 'thanet.s', '2021-08-11 07:34:05', 'asd', 'ss', 'zxc'),
+(27, 'Thanet.s', 'yummy', 5, '2021-08-24', '2021-08-24', 'thanet.s', '2021-08-11 07:35:34', 'thanet.s', '2021-08-11 07:35:34', 'yummy', 'yummy', 'yummy'),
+(28, 'Thanet.s', 'bbbbb', 3, '2021-08-25', '2021-08-25', 'thanet.s', '2021-08-11 07:45:39', 'thanet.s', '2021-08-11 07:45:39', 'bbbbb', 'bbbbb', 'bbbbb'),
+(29, 'pimrat.p', 'dd', 3, '2021-08-25', '2021-08-25', 'thanet.s', '2021-08-11 07:56:28', 'thanet.s', '2021-08-11 07:56:28', 'dd', 'dd', 'dd'),
+(30, 'Nitikarn.v', 'sad', 3, '2021-08-23', '2021-08-23', 'thanet.s', '2021-08-11 07:58:51', 'thanet.s', '2021-08-11 07:58:51', 'sad', 'sad', 'asd'),
+(31, 'Pongotorn.k', 'awdwd', 5, '2021-09-12', '2021-09-12', 'thanet.s', '2021-09-09 04:13:02', 'thanet.s', '2021-09-09 04:13:02', 'awdd', 'eawd', 'awdd');
+
+INSERT INTO `authorized_object` (`authorized_object_id`,`name`,`description`,`time_create`,`time_update`,`authorized_object_group_id`) VALUES
+('training.view','training.view','My Training','2021-08-03 14:44:55','2021-08-03 14:44:55','1'),
+('trainingAdmin.view','trainingAdmin.view','Training for Admin','2021-08-03 14:44:55','2021-08-03 14:44:55','1');
+
+
+ALTER TABLE `training`
+  ADD PRIMARY KEY (`trainingid`);
+
+ALTER TABLE `training`
+  MODIFY `trainingid` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+/PROD UAT 2021-10-05
+
+
 
