@@ -174,6 +174,39 @@ public class MeetingDAOImpl implements MeetingDAO{
 		}
 		return faqJoin;
 	}
+	
+	@Override
+    public List<Map<String, Object>> findAllinvite(Integer idmeeting) throws Exception {
+        Session session = this.sessionFactory.getCurrentSession();
+
+        List<Map<String, Object>> invitinglist = null;
+        try {
+			
+			
+//			  String sql =
+//			  "SELECT inviting.idinvite,inviting.member,meeting.idmeeting,meeting.time_start,meeting.time_end,meeting.date "
+//			  +"FROM meeting " +
+//			  "INNER JOIN inviting ON inviting.idmeeting=meeting.idmeeting " +
+//			  "WHERE meeting.idmeeting = '"+idmeeting+"'";
+			 
+			    
+        	
+			
+			  String sql = "SELECT meeting.idmeeting,meeting.date,meeting.time_start,meeting.time_end,inviting.member,inviting.idinvite " +
+			  "FROM meeting LEFT JOIN inviting ON meeting.idmeeting=inviting.idmeeting " +
+			  "WHERE meeting.idmeeting= '"+idmeeting+"'";
+			 
+
+             System.out.println("SQL: " + sql);
+            SQLQuery query = session.createSQLQuery(sql);
+            query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+            invitinglist= query.list();
+        } catch (Exception e) {
+            // Log.debug("Method findAll in [FaqDAOImpl] Error!");
+            e.printStackTrace();
+        }
+        return invitinglist;
+    }
 
 	@Override
 	public void save(Meeting meeting) throws Exception {
@@ -228,5 +261,6 @@ public class MeetingDAOImpl implements MeetingDAO{
 		}
 		return null;
 	}
+	
 
 }

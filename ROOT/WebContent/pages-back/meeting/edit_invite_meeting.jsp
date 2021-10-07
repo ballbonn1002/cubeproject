@@ -139,7 +139,7 @@
 							</c:forEach>
 						</tbody>
 					</table>
-					<button id="btnReserve" type="button" class="btn btn-primary"
+					<button  type="button" class="btn btn-primary"
 					onClick="inviting()">Invite</button>
 				</div>
 			</div>
