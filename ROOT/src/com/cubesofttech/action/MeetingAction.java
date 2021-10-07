@@ -164,6 +164,7 @@ public class MeetingAction extends ActionSupport {
 	//		request.setAttribute("listToday", listToday);
 			List<Map<String, Object>> checkRoom = meetingDAO.checkRoomToday(date_cal);
 			request.setAttribute("checkRoomToday", checkRoom);
+			System.out.println("checkRoomToday" + checkRoom);
 			List<Map<String, Object>> amountRoom = roomDAO.getAmountRoom();
 			request.setAttribute("amountRoom", amountRoom);
 			String today = new SimpleDateFormat("dd-MMMM-yyyy").format(DateUtil.getCurrentTime());
