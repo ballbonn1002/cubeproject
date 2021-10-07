@@ -45,8 +45,6 @@ public class MeetingAction extends ActionSupport {
 	private UserDAO userDAO;
 		/*
 		 * @Autowired private InvitingDAO InvitingDAO;
-		 * 
-		 * @Autowired private UserDAO userDAO;
 		 */
 	public String List1() {
 		try {
@@ -65,11 +63,17 @@ public class MeetingAction extends ActionSupport {
 			}
 			List<Map<String, Object>> meetinglist = meetingDAO.findAll_calendar();
 			request.setAttribute("meetinglist", meetinglist);
+			
+			List<Map<String, Object>> Roomlist = roomDAO.findAll();
+			request.setAttribute("Roomlist", Roomlist);
+			
 			String flag_cal = request.getParameter("flag");
 			if(flag_cal != null ){
 				Calendar cal1 = Calendar.getInstance(); 
 				cal = cal1;
 			}
+			String today = new SimpleDateFormat("yyyy-MM-dd").format(DateUtil.getCurrentTime());
+			request.setAttribute("today", today);
 			
 			int month = cal.get(Calendar.MONTH);
 			int year = cal.get(Calendar.YEAR);
@@ -137,23 +141,29 @@ public class MeetingAction extends ActionSupport {
 		}
 	}
 	public String selectRoom() {
-			System.out.println("hello");
+		System.out.println("hello");
 		try {
+			String flag = request.getParameter("flag");
+			String date_cal = request.getParameter("date_cal");	
+			System.out.println(date_cal);
+			
 			List<Map<String, Object>> userseq = userDAO.sequense();
 			request.setAttribute("userseq", userseq);
 			System.out.println("11111xxxx");
+			
 			User ur = (User) request.getSession().getAttribute("onlineUser");
 			String user = ur.getId();
 			String date = new SimpleDateFormat("yyyy-MM-dd").format(DateUtil.getCurrentTime());
-			List<Map<String, Object>> listPerDay = meetingDAO.findAll();
+			List<Map<String, Object>> listPerDay = meetingDAO.findAll(date_cal);
 			request.setAttribute("AllMeetperDay", listPerDay);
 	//		List<Map<String, Object>> listToday = meetingDAO.myTodayMeet(user,today);
 	//		request.setAttribute("listToday", listToday);
-			List<Map<String, Object>> checkRoom = meetingDAO.checkRoomToday(date);
+			List<Map<String, Object>> checkRoom = meetingDAO.checkRoomToday(date_cal);
 			request.setAttribute("checkRoomToday", checkRoom);
 			List<Map<String, Object>> amountRoom = roomDAO.getAmountRoom();
 			request.setAttribute("amountRoom", amountRoom);
 			String today = new SimpleDateFormat("dd-MMMM-yyyy").format(DateUtil.getCurrentTime());
+			request.setAttribute("date_cal", date_cal);
 			request.setAttribute("today", today);
 			request.setAttribute("date", date);
 			return SUCCESS;
@@ -164,11 +174,11 @@ public class MeetingAction extends ActionSupport {
 	}
 	public String createRoom() {
 		
-		Room room=new Room();
+		Room room = new Room();
 		try {
-		String room_name=request.getParameter("room_name");
-		String user_create=request.getParameter("user_create");
-		String user_update=request.getParameter("user_create");
+		String room_name = request.getParameter("room_name");
+		String user_create = request.getParameter("user_create");
+		String user_update = request.getParameter("user_create");
 		
 		room.setRoom_name(room_name);
 		room.setUser_create(user_create);
@@ -177,6 +187,7 @@ public class MeetingAction extends ActionSupport {
 		room.setTime_update(DateUtil.getCurrentTime());
 		roomDAO.save(room);
 		return SUCCESS;
+		
 		}catch(Exception e) {
 		return ERROR;
 		}

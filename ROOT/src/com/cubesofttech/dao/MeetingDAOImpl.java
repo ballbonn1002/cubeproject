@@ -88,14 +88,14 @@ public class MeetingDAOImpl implements MeetingDAO{
 		return ans;
 	}
 	@Override
-	public List<Map<String, Object>> checkRoomToday(String today) throws Exception {
+	public List<Map<String, Object>> checkRoomToday(String date_cal) throws Exception {
 		
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Map<String, Object>> ans = null;
 		
 		try {
 			String sql = "SELECT time_start,time_end,idroom "
-					+ "FROM meeting WHERE date='2021-09-02' ORDER BY time_start";
+					+ "FROM meeting WHERE date='" + date_cal + "' ORDER BY time_start";
 			 System.out.println("SQL: " + sql);
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
@@ -157,12 +157,12 @@ public class MeetingDAOImpl implements MeetingDAO{
 	return faqJoin;
 	}
 	@Override
-	public List<Map<String, Object>> findAll() throws Exception {
+	public List<Map<String, Object>> findAll(String date_cal) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 
 		List<Map<String, Object>> faqJoin = null;
 		try {
-			String sql = "SELECT * FROM meeting WHERE date='2021-09-02' ORDER BY time_start";
+			String sql = "SELECT  * FROM meeting WHERE date='" + date_cal + "' ORDER BY time_start";
 
 			System.out.println("SQL: " + sql);
 			SQLQuery query = session.createSQLQuery(sql);
@@ -202,7 +202,9 @@ public class MeetingDAOImpl implements MeetingDAO{
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Map<String, Object>> faqJoin = null;
 		try {
-			String sql = "SELECT * FROM meeting";
+			String sql = "SELECT meeting.idmeeting, meeting.idroom, meeting.time_start, meeting.time_end, meeting.date, meeting.user_reserve, room.room_name"
+						+ " FROM meeting LEFT JOIN room ON meeting.idroom = room.idroom" 
+						+ " ORDER BY meeting.date ASC";
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
 			faqJoin = query.list();
