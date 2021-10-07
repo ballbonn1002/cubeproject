@@ -3516,8 +3516,28 @@
 			<result name="success" type="tiles">select_room</result>
 			<result name="error">/index.jsp</result>
 		</action>
+		<action name="Edit_Room"
+			class="com.cubesofttech.action.MeetingAction" method="inviting_list">
+			<result name="success" type="tiles">edit_invite_meeting</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="Edit_Invite_Room"
+			class="com.cubesofttech.action.MeetingAction" method="meeting_edit">
+			<result name="success" type="tiles">select_room</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="Invite_member"
+			class="com.cubesofttech.action.invitingAction" method="inviting_add">
+			<result name="success" type="tiles">select_room</result>
+			<result name="error">/index.jsp</result>
+		</action>
 		<action name="Reserve_Room"
 			class="com.cubesofttech.action.MeetingAction" method="reserveRoom">
+			<result name="success" type="tiles">select_room</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="Delete_Meeting"
+			class="com.cubesofttech.action.MeetingAction" method="meeting_delete">
 			<result name="success" type="tiles">select_room</result>
 			<result name="error">/index.jsp</result>
 		</action>

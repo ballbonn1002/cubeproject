@@ -1369,6 +1369,11 @@
 		<put-attribute name="body"
 			value="/pages-back/meeting/selectRoom.jsp" />
 	</definition>
+	<definition name="edit_invite_meeting" extends="baseLayout">
+		<put-attribute name="title" value="Edit_Invite_Meeting" />
+		<put-attribute name="body"
+			value="/pages-back/meeting/edit_invite_meeting.jsp" />
+	</definition>
 	
 	<definition name="meeting_manager" extends="baseLayout">
 		<put-attribute name="title" value="Meeting_Manager" />
