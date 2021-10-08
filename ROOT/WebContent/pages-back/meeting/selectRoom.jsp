@@ -272,7 +272,7 @@
 																<ul class="dropdown-menu  pull-right  "
 																	aria-labelledby="dropdownMenu${list.idroom}">
 																	<li><a
-																		href="Edit_Room?meetingid=${list.idmeeting}&roomid=${amount.idroom}">Edit
+																		href="Edit_Room?meetingid=${list.idmeeting}&roomid=${amount.idroom}&date_cal=${date_cal}">Edit
 																			and Invite</a></li>
 																	 <li><a data-toggle="modal" data-target="#Edit"
 																		data-backdrop="static" data-keyboard="false"
