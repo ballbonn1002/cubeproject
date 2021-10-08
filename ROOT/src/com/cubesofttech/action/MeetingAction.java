@@ -17,11 +17,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.cubesofttech.dao.InvitingDAO;
+
 import com.cubesofttech.dao.MeetingDAO;
+import com.cubesofttech.dao.MemberInvitingDAO;
 import com.cubesofttech.dao.RoomDAO;
 import com.cubesofttech.dao.UserDAO;
-import com.cubesofttech.model.Inviting;
+import com.cubesofttech.model.MemberInviting;
 import com.cubesofttech.model.Meeting;
 import com.cubesofttech.model.Room;
 import com.cubesofttech.model.User;
@@ -40,10 +41,15 @@ public class MeetingAction extends ActionSupport {
 
 	@Autowired
 	private MeetingDAO meetingDAO;
+	
 	@Autowired
 	private RoomDAO roomDAO;
+	
 	@Autowired
 	private UserDAO userDAO;
+	
+	@Autowired
+	private MemberInvitingDAO memberInvitingDAO;
 
 	public String List1() {
 		try {
@@ -222,19 +228,43 @@ public class MeetingAction extends ActionSupport {
 	}
 
 	public String reserveRoom() {
+		System.out.println("in");
 		try {
 			SimpleDateFormat formatter = new SimpleDateFormat("hh:mm");
+			
 			SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+			
 			Meeting meet = new Meeting();
+			
 			String name = request.getParameter("user_reserve");
+			System.out.println("name = "+name);
+			
 			String start = request.getParameter("time_start");
+			System.out.println("start = "+start);
+			
 			String end = request.getParameter("time_end");
-			Date dateParse = formatDate.parse("2021-09-02");
+			System.out.println("end = "+end);
+			
+			String dateget = request.getParameter("dateData");
+			System.out.println("date = "+dateget);
+			
+			
+			 Date dateParse = formatDate.parse(dateget);
+			 System.out.println("dateParse = "+dateParse);
+			 
+			
 			int idroom = Integer.parseInt(request.getParameter("idroom"));
+			System.out.println("idroom"+idroom);
+			
 			java.sql.Time time_start = new java.sql.Time(formatter.parse(start).getTime());
+			System.out.println("time_start"+time_start);
+			
 			java.sql.Time time_end = new java.sql.Time(formatter.parse(end).getTime());
+			System.out.println("time_end"+time_end);
+			
 			java.sql.Date date = new java.sql.Date(dateParse.getTime());
 			System.out.println("date"+date);
+			
 			meet.setUser_reserve(name);
 			meet.setTime_start(time_start);
 			meet.setTime_end(time_end);
@@ -317,7 +347,7 @@ public class MeetingAction extends ActionSupport {
             request.setAttribute("roomid", RoomNo);
             
             String date = new SimpleDateFormat("yyyy-MM-dd").format(DateUtil.getCurrentTime());
-            List<Map<String, Object>> checkRoom = meetingDAO.checkRoomToday(date);
+            List<Map<String, Object>> checkRoom = meetingDAO.checkRoomToday(date_cal);
 			request.setAttribute("checkRoomToday", checkRoom);
             return SUCCESS;
         } catch (Exception e) {
@@ -325,6 +355,34 @@ public class MeetingAction extends ActionSupport {
             return ERROR;
         }
 
+    }
+	
+	public String inviting_add() {
+		System.out.println("test inviting");
+		MemberInviting inviting =new MemberInviting(); 
+        try {
+
+        String Id = request.getParameter("idmeeting");
+        System.out.println("Id = "+Id);
+//        String idmeeting=request.getParameter("idmeeting");
+        Integer idedit = Integer.valueOf(Id);
+        System.out.println(idedit);
+//        List<Map<String, Object>> test = member_invitingDAO.findAll();
+//        System.out.println("test = "+test);
+		
+        String member = request.getParameter("member");
+        System.out.println(member);
+        
+        inviting.setMember(member);
+        System.out.println("k1");
+        inviting.setIdmeeting(idedit);
+        System.out.println("k2");
+        memberInvitingDAO.save(inviting);
+        System.out.println("k3");
+        return SUCCESS;
+        }catch(Exception e) {
+        return ERROR;
+        }
     }
 	
 	
