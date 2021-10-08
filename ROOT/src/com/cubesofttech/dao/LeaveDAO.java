@@ -13,7 +13,9 @@ public interface LeaveDAO {
 	public void save(Leaves leaves) throws Exception;
 
 	public List<Leaves> findAll() throws Exception;
-
+	
+    public List<Map<String,Object>> findAllList() throws Exception;
+    
 	public Leaves findByLeaveId(int leaveId) throws Exception;
 
 	public void update(Leaves leaves) throws Exception;

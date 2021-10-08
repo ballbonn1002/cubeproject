@@ -1842,9 +1842,9 @@
 			                '<th colspan="7" class="datepicker-title"></th>'+
 			              '</tr>'+
 							'<tr>'+
-								'<th class="prev"><i class="fa fa-angle-left"></i></th>'+
+								'<th class="prev"><i class="fa fa-arrow-left" aria-hidden="true"></i></th>'+
 								'<th colspan="5" class="datepicker-switch"></th>'+
-								'<th class="next"><i class="fa fa-angle-right"></i></th>'+
+								'<th class="next"><i class="fa fa-arrow-right" aria-hidden="true"></i></th>'+
 							'</tr>'+
 						'</thead>',
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',

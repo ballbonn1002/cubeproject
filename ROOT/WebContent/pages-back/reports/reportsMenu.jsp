@@ -69,6 +69,7 @@ div.text-overflow {
 								title=""> </a> <a href="javascript:;" class="remove"
 								data-original-title="" title=""> </a>
 						</div>
+						
 
 						<a href="BI">
 							<button class="btn dark btn-block btn-outline" title="Report BI">
@@ -603,6 +604,46 @@ div.text-overflow {
 									>TimeSheet In Report</div>
 							</button>
 						</a> <br>
+						<a href="SignResign">
+							<button class="btn purple btn-block btn-outline">
+								<div class="col-md-3 ">
+									<i class="fa fa-user sbold"></i>
+								</div>
+								<div class="col-md-9 sbold text-overflow">Sign & Resign Report</div>
+
+							</button></a><br>
+							<a href="SignperYear">
+							<button class="btn red-flamingo btn-block btn-outline" >
+								<div class="col-md-3 ">
+									<i class="fa fa-user sbold"></i>
+								</div>
+								<div class="col-md-9 sbold text-overflow">Sign & Resign Per Year Report</div>
+
+							</button></a><br>
+							<a href="StatusEm">
+							<button class="btn yellow-gold btn-block btn-outline" >
+								<div class="col-md-3 ">
+									<i class="fa fa-user sbold"></i>
+								</div>
+								<div class="col-md-9 sbold text-overflow">Status Employee Report</div>
+
+							</button></a><br>
+							<a href="DonutChartLeave">
+							<button class="btn red btn-block btn-outline">
+								<div class="col-md-3 ">
+									<i class="fa fa-user sbold"></i>
+								</div>
+								<div class="col-md-9 sbold text-overflow">Donut Chart Leave Report</div>
+
+							</button></a><br>
+							<a href="powerBIleave">
+							<button class="btn red btn-block btn-outline">
+								<div class="col-md-3 ">
+									<i class="fa fa-user sbold"></i>
+								</div>
+								<div class="col-md-9 sbold text-overflow">power</div>
+
+							</button></a><br>
 
 					</div>
 				</div>

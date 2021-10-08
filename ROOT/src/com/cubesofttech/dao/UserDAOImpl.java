@@ -47,6 +47,20 @@ public class UserDAOImpl implements UserDAO {
 		}
 		return userList;
 	}
+	@Override
+	public List<Map<String, Object>> findAllleaves() throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> userList = null;
+		try {
+			String sql = "SELECT leaves.user_id,user.department_id FROM leaves INNER JOIN user ON leaves.user_id=user.id GROUP BY leaves.user_id";
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			userList = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return userList;
+	}
 
 	@Override
 	public User findById(String id) throws Exception {
@@ -78,7 +92,32 @@ public class UserDAOImpl implements UserDAO {
 		}
 		return findByemail;
 	}
-
+	@Override
+	public List<Map<String, Object>> findAllforReport() throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> userList = null;
+		try {
+			String sql = " SELECT* FROM user";
+			SQLQuery query = session.createSQLQuery(sql);
+			userList = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return userList;
+	}
+	public List countYear() throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		String year = null;
+		List list=null;
+		try {
+			String sql = " SELECT COUNT(DISTINCT EXTRACT(YEAR FROM start_date)) AS numyear FROM user";
+			SQLQuery query = session.createSQLQuery(sql);
+			list = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 	@Override
 	public List<Map<String, Object>> findById3(String ur) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();

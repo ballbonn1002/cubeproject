@@ -3558,6 +3558,30 @@
 			<result name="error">/index.jsp</result>
 		</action>
 		<!-- meeting -->
-		
+		<action name="SignResign" class="com.cubesofttech.action.GraphAction"
+			method="test">
+			<result name="success" type="tiles">sign_resign</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="SignperYear" class="com.cubesofttech.action.GraphAction"
+			method="signperYear">
+			<result name="success" type="tiles">signperyear</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="StatusEm" class="com.cubesofttech.action.GraphAction"
+			method="statusEm_Report">
+			<result name="success" type="tiles">statusEm</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="DonutChartLeave" class="com.cubesofttech.action.GraphAction"
+			method="donutChartLeave">
+			<result name="success" type="tiles">donutLeave</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="powerBIleave" class="com.cubesofttech.action.GraphAction"
+			method="testpowerBI">
+			<result name="success" type="tiles">powerBIleave</result>
+			<result name="error">/index.jsp</result>
+		</action>
 	</package>
 </struts>

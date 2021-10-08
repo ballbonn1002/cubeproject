@@ -581,7 +581,31 @@
 		<put-attribute name="body"
 			value="/pages-back/charts/powerBI.jsp" />
 	</definition>
-
+<definition name="sign_resign" extends="baseLayout">
+		<put-attribute name="title" value="SignResign" />
+		<put-attribute name="body"
+			value="/pages-back/charts/signResign.jsp" />
+	</definition>
+	<definition name="signperyear" extends="baseLayout">
+		<put-attribute name="title" value="SignperYear" />
+		<put-attribute name="body"
+			value="/pages-back/charts/signperyear.jsp" />
+	</definition>
+	<definition name="powerBIleave" extends="baseLayout">
+		<put-attribute name="title" value="testBI" />
+		<put-attribute name="body"
+			value="/pages-back/charts/powerBIleave.jsp" />
+	</definition>
+	<definition name="statusEm" extends="baseLayout">
+		<put-attribute name="title" value="StatusEm" />
+		<put-attribute name="body"
+			value="/pages-back/charts/statusEm.jsp" />
+	</definition>
+	<definition name="donutLeave" extends="baseLayout">
+		<put-attribute name="title" value="DonutLeave" />
+		<put-attribute name="body"
+			value="/pages-back/charts/donutLeave.jsp" />
+	</definition>
 	<definition name="leavesReport" extends="baseLayout">
 		<put-attribute name="title" value="Leaves Report" />
 		<put-attribute name="body"
