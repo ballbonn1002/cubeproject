@@ -245,8 +245,7 @@ $( document ).ready(function() {
 		console.log(location);
 		console.log(description);
 		
- 		$
-					.ajax({
+ 		$.ajax({
 						url : "Training_EditSave",
 						method : "POST",
 						type : "JSON",

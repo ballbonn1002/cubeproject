@@ -107,19 +107,22 @@
 					name="time_start" value="${time_start}" style="text-align: center;"
 					readonly /> To <input style="text-align: center;" type="text"
 					id="time_end" name="time_end" value="${time_end}" readonly />
-
-
 			</div>
+			
+			
+			
 			<hr>
-			<div>
-				<div class="center card">
+			<div class="row ">
+
+			<div  class="col-xs-12 col-lg-36col-xl-6">
+				<div  class="center card" style="width:50%; align-items:center;">
 
 
-					<table class="table">
+					<table  class="table">
 						<thead>
 
-							<tr style="background-color: rgb(59, 63, 81); color: white">
-								<th scope="col">Room No. ${roomid.idroom}
+							<tr  style="background-color: rgb(59, 63, 81); color: white">
+								<th style="text-align:center;" scope="col">Room No. ${roomid.idroom}
 									${roomid.room_name}</th>
 
 							</tr>
@@ -139,15 +142,39 @@
 							</c:forEach>
 						</tbody>
 					</table>
-					<button  type="button" class="btn btn-primary"
-					onClick="inviting()">Invite</button>
+
 				</div>
+			</div>
+			
+			<div class="col-md-2 ">
+				<select class="bs-select form-control select2me  " id="user"
+					name="inviting" id="inviting" onchange="s(this);">
+					<optgroup label="Enable">
+						<c:forEach var="user" items="${userseq}">
+
+							<c:if test="${user.enable == 1 }">
+								<c:if test="${userSelect == nulll }">
+									<option value="${user.id}"
+										<c:if test="${user.id eq onlineUser.id}"><c:out value="selected=selected"/></c:if>>${user.department_id}
+										- ${user.name}</option>
+								</c:if>
+								<c:if test="${userSelect != nulll }">
+									<option value="${userSelect}"
+										<c:if test="${user.id eq userSelect}"><c:out value="selected=selected"/></c:if>>${user.department_id}
+										- ${user.name}</option>
+								</c:if>
+							</c:if>
+						</c:forEach>
+					</optgroup>
+				</select>
+
+			</div>
+			<div class="col-md-4 ">
+				<button type="button" class="btn btn-primary" onClick="inviting()">Invite</button>
+			</div>
 			</div>
 
 
-
-
-			
 			<%-- <select id='custom-headers' multiple='multiple' id="inviting"
 				name="inviting[]">
 				<c:forEach var="user" items="${userseq}">
@@ -155,40 +182,24 @@
 
 				</c:forEach>
 			</select> --%>
-			
-			<select class="bs-select form-control select2me  " id="user"
-								name="inviting" id="inviting" onchange="s(this);">
-								<optgroup label="Enable">
-									<c:forEach var="user" items="${userseq}">
-
-										<c:if test="${user.enable == 1 }">
-											<c:if test="${userSelect == nulll }">
-												<option value="${user.id}"
-													<c:if test="${user.id eq onlineUser.id}"><c:out value="selected=selected"/></c:if>>${user.department_id}
-													- ${user.name}</option>
-											</c:if>
-											<c:if test="${userSelect != nulll }">
-												<option value="${userSelect}"
-													<c:if test="${user.id eq userSelect}"><c:out value="selected=selected"/></c:if>>${user.department_id}
-													- ${user.name}</option>
-											</c:if>
-										</c:if>
-									</c:forEach>
-								</optgroup>
-								</select>
-
-
-
 			<hr>
-			<div class="footer">
+			
+			
+			<div class="row ">
+			
+			</div>
+			<br>
+			<div>
 				<button id="cancel" type="button" class="btn btn-secondary"
-					data-dismiss="modal" onClick="Cancel()">Close</button>
+					 onClick="Cancel()">Cancel</button>
 				<button id="btnReserve" type="button" class="btn btn-primary"
 					onClick="Edit()">Save</button>
-			</div>
+			</div> 
 		</div>
 
+	
 	</div>
+	
 
 
 
@@ -316,6 +327,8 @@ $(document).ready(function () {
 		  "showMethod": "fadeIn",
 		  "hideMethod": "fadeOut"
 		}
+	
+	
 }
 //////////////////////////////////////////////
 
@@ -464,7 +477,7 @@ function Edit() {
 	alert(time_end)
 	alert(idmeeting) */
 	
-	document.getElementById("cancel").click();
+	
 	
 	 $.ajax({
 		 	type : "POST",
@@ -490,35 +503,37 @@ function Edit() {
 				}
 			})
 	 }
-	 
-
+	
 	function inviting(){
-		alert("in")
-		var member = $("select[name=inviting]").val();
 		
-		/* var member=[]; 
-		 $('select[name="inviting[]"] option:selected').each(function() {
-			 member.push($(this).val());
-		 }); */
-		 alert(member)
-		 $.ajax({
+		var member = $("select[name=inviting]").val();
+		var idmeeting= ${Mlist[0].idmeeting};
+		
+		 /* window.location.href='Invite_member'; */
+		  $.ajax({
 			type : "JSON",
-			method : "POST",
+			method: 'POST',
 		    url : "Invite_member",
 			data : {
 				"member":  member,
+				"idmeeting":idmeeting,
 				},
 				success : function(data) {
 					
 					swal(
 							{
 								title : "Pass",
-								text : "Invited Succcess",
+								text : "Saved Succcess",
 								type : "success"
-							}
-							);
+							},
+							 function() {
+								 location.reload();
+							} );
 				}
-			})
+				
+			}); 
+			
+			
 		
 	}
 	
