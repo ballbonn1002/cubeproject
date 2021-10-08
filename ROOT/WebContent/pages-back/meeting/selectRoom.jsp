@@ -491,7 +491,7 @@
 						   time_end=$('#time_end').val();
 						   $('#time_end').datetimepicker('update');
 						   toast2();
-						   document.getElementById("btnReserve").disabled = true;
+						  /*  document.getElementById("btnReserve").disabled = tru */e;
 					  } 
 					   else{
 						   time_end=$('#time_end').val();
@@ -520,7 +520,7 @@
 	function Reserve(x){
 	
 		  roomSelect=x;
-		  document.getElementById("btnReserve").disabled = true;
+	 	  document.getElementById("btnReserve").disabled = true;
 		<c:forEach var="room" items="${checkRoomToday}">
 		  id.push(${room.idroom});
 		  var start='${room.time_start}'.substring(0,5);
@@ -570,7 +570,7 @@
 		toast3();
 	}
 	else{
-		document.getElementById("btnReserve").disabled = true;
+		 document.getElementById("btnReserve").disabled = true; 
 	}
 	
 		
@@ -686,7 +686,7 @@
 		   $('#time_start').val("");
 		   time_end=$('#time_start').val();
 		   $('#time_start').datetimepicker('update');
-		   document.getElementById("btnReserve").disabled = true;
+		   document.getElementById("btnReserve").disabled = true; 
 	}
 //////////////////////////////////////////////
 	$('body').on('click', function (e) {
@@ -738,12 +738,12 @@ function confirm() {
 	 					data : {
 	 						"time_start": a,
 	 						"time_end": b,
-	 						"dateData":"${date}",
+	 						"dateData":"${date_cal}",
 	 						"user_reserve":"${onlineUser.id}",
 	 						"idroom":roomSelect
 	 					}
 	 			 }
-	        	 ),complete(c);
+	        	 ),complete(c); 
 	        }
 	      });
 }

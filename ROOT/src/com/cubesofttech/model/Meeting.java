@@ -31,6 +31,7 @@ public class Meeting implements Serializable{
 	private String user_reserve;
 	@Column(name = "idroom")
 	private Integer idroom;
+	
 	public int getIdmeeting() {
 		return idmeeting;
 	}
@@ -67,5 +68,6 @@ public class Meeting implements Serializable{
 	public void setIdroom(Integer idroom) {
 		this.idroom = idroom;
 	}
+	
 	
 }
