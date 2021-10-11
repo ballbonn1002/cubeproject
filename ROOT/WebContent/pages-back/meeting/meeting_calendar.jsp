@@ -206,7 +206,7 @@ a.fc-day-grid-event .fc-h-event{
 								style="font-size: 20px">
 								<b>Member invited</b>
 							</h5>
-							<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" >
+							<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" onclick="Cancel();">
 						</button>
 						</div>
 			<div class="modal-body">
@@ -221,7 +221,7 @@ a.fc-day-grid-event .fc-h-event{
 			</div>
 			</div>
 			<div class="modal-footer">
-							<button id="cancel" type="button" class="btn btn-secondary"
+							<button id="cancel" type="button" class="btn btn-secondary" onclick="Cancel();"
 								data-dismiss="modal" ><b>Close</b></button>
 							
 						</div>
@@ -251,8 +251,10 @@ $(document).ready(function() {
 </script>
 
 <script>
-var idmeet;
 var myevent = [];
+function Cancel(){
+	$("#trData").html("");
+}
 var AppCalendar = function() {
 	return {
 		//main function to initiate the module
@@ -490,29 +492,33 @@ var AppCalendar = function() {
                     	if('${onlineUser.id}'=='${user.id}'.toLowerCase()){
                     		if('${user.roleId}'=='admin'||'${user.roleId}'=='HR'){
                     			var check="";
-                    			idmeet = calEvent.meetingId;
+                    			var idmeet = calEvent.meetingId;
                     			<c:forEach var="data" items="${invite}">
                     			if(idmeet=='${data.idmeeting}'){
-                    			<c:set var="id" value="${data.idmeeting}"/>
-                    			check=${id};
+                    			<c:set var="idmeeting" value="${data.idmeeting}"/>
+                    			check=${idmeeting};
                     			}
                     			</c:forEach>
                     			if(check!=""){
+                    				console.log(check);
                     			var str="<thead> <tr style='background-color: rgb(59, 63, 81); color: white ;height:40px;'>"+
-										"<th style='text-align:center;'>Member Name</th></tr></thead>"+
+										"<th style='text-align:center;'>Member Name</th></tr></thead>";
                     			<c:forEach var='data' items="${invite}">
-                    			<c:if test="${data.idmeeting==id}">
-                    			"<tr><td style='padding:5px;'>${data.member}</td></tr>"+
-                    			</c:if>
+                    			if(${data.idmeeting}===check){
+                    				str+="<tr><td style='padding:5px;'>${data.member}</td></tr>";
+                    			}
                     			</c:forEach>
-                    			"";
-                    			console.log(str);
                     			}else{
+                    				console.log(check+" check is null");
                     				var str="<thead> <tr style='background-color: rgb(59, 63, 81); color: white ;height:40px;'>"+
 											"<th style='text-align:center;'>Member Name</th></tr></thead>"+
                     						"<tr style='padding:5px;'><td>no one in this room</td></tr>";
                     			}
-                    			$("#myModal").modal();
+                    			var opt={
+                    					backdrop:'static',
+										keyboard:false
+                    			};
+                    			$("#myModal").modal(opt);
                     			$("#trData").html(str);
                     		}
                     		
