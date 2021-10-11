@@ -3547,8 +3547,9 @@
 			<result name="error">/index.jsp</result>
 		</action>
 		
-		<action name="Meeting_Manager">
-			<result name="success" type="tiles">meeting_manager</result>
+		<action name="Meeting_Manager" 
+			class="com.cubesofttech.action.MeetingAction" method="List1">
+			<result name="success" type="tiles">meeting_calendar</result>
 			<result name="error">/index.jsp</result>
 		</action>
 		
