@@ -321,8 +321,6 @@ var AppCalendar = function() {
         	</c:forEach>
 
         	window.localStorage.setItem('meeting', JSON.stringify(meeting_date));
-        	window.localStorage.setItem('timestart', JSON.stringify(time_start));
-        	window.localStorage.setItem('timeend', JSON.stringify(time_end));
 
         	var x;
         	for(x in meeting_date){
@@ -339,7 +337,7 @@ var AppCalendar = function() {
         			backgroundColor: App.getBrandColor('purple'),
         			description: name[x] + '<br>' +'Reserver : ' + reserver[x],
          			className: 'meeting',
-        			/* allDay: true, */
+        			 allDay: true, 
 
         		});
         	}
@@ -437,8 +435,7 @@ var AppCalendar = function() {
                 slotMinutes: 15,
                 editable: true,
                 droppable: true, // this allows things to be dropped onto the calendar !!!
-				minTime: timestart[x],	//'09:00:00',
-				maxTime: timeend[x],	//'18:00:00',
+
                 drop: function(date, allDay) { // this function is called when something is dropped
                     // retrieve the dropped element's stored Event Object
                 	var originalEventObject = $(this).data('eventObject');
@@ -702,10 +699,4 @@ jQuery(document).ready(function() {
 		document.getElementById("meeting_box3").innerHTML = meeting_next2;
 	}
 	
-</script>
-<script>
-
-
-
-
 </script>
