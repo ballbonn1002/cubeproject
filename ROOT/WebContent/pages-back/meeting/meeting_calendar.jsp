@@ -201,40 +201,28 @@ a.fc-day-grid-event .fc-h-event{
 				aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
-						<div class="modal-header">
+						<div class="modal-header" style='background-color: rgb(59, 63, 81); color: white ;'>
 							<h5 class="modal-title" id="exampleModalLabel"
 								style="font-size: 20px">
-								<b>Reserved Room</b>
+								<b>Member invited</b>
 							</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close" >
-								<span aria-hidden="true">&times;</span>
-							</button>
+							<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" >
+						</button>
 						</div>
 			<div class="modal-body">
 			<div class="row ">
 				<div class="col-lg-12" style="align:center;">
-						<table width="50%" class="text-center">
-							<thead>
-								<tr style="background-color: rgb(59, 63, 81); color: white ;height:40px;">
-									<th style="text-align:center;">Member Name</th>
-								</tr>
-							</thead>
-							
-							
-							<tr id="trData">
-								
-							</tr>
-							
-							
+						<center>
+						<table width="50%" class="text-center" id="trData" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
 						</table>
+						</center>
 					
 				</div>
 			</div>
 			</div>
 			<div class="modal-footer">
 							<button id="cancel" type="button" class="btn btn-secondary"
-								data-dismiss="modal" >Close</button>
+								data-dismiss="modal" ><b>Close</b></button>
 							
 						</div>
 					</div>
@@ -510,17 +498,19 @@ var AppCalendar = function() {
                     			}
                     			</c:forEach>
                     			if(check!=""){
-                    			var str=" "+
+                    			var str="<thead> <tr style='background-color: rgb(59, 63, 81); color: white ;height:40px;'>"+
+										"<th style='text-align:center;'>Member Name</th></tr></thead>"+
                     			<c:forEach var='data' items="${invite}">
                     			<c:if test="${data.idmeeting==id}">
-                    			"<td>${data.member}</td>"
+                    			"<tr><td style='padding:5px;'>${data.member}</td></tr>"+
                     			</c:if>
                     			</c:forEach>
-                    			+"";
+                    			"";
                     			console.log(str);
                     			}else{
-                    				var str=""+
-                    				"<td>no one in this room</td>";
+                    				var str="<thead> <tr style='background-color: rgb(59, 63, 81); color: white ;height:40px;'>"+
+											"<th style='text-align:center;'>Member Name</th></tr></thead>"+
+                    						"<tr style='padding:5px;'><td>no one in this room</td></tr>";
                     			}
                     			$("#myModal").modal();
                     			$("#trData").html(str);
