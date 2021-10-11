@@ -166,6 +166,7 @@ a.fc-day-grid-event .fc-h-event{
 				</div>
 			</div>
 		</div> <!-- END row -->
+
 		</perm:permission>
 		
 		<div class="portlet-body">
@@ -177,6 +178,7 @@ a.fc-day-grid-event .fc-h-event{
 								<div class="caption">
 									<i class=" icon-layers font-green"></i>
 									<span class="caption-subject font-green sbold uppercase">Meeting Calendar</span>
+									<p id="fortest"></p>
 								</div>
 							</div>
 							<!-- CALENDAR -->
@@ -250,8 +252,13 @@ $("tr:not(:first)").each(function (index ) {
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#calendar').fullCalendar();
-	
+/*	var events = $('#calendar').fullCalendar('clientEvents');
+	var events11 = events.length;
+	console.log(events11);
+ 	for (var i = 0; i < events.length; i++;) {
 		
+	} 
+*/
 });
 </script>
 
@@ -314,10 +321,11 @@ var AppCalendar = function() {
         	</c:forEach>
 
         	window.localStorage.setItem('meeting', JSON.stringify(meeting_date));
-        	
+        	window.localStorage.setItem('timestart', JSON.stringify(time_start));
+        	window.localStorage.setItem('timeend', JSON.stringify(time_end));
+
         	var x;
         	for(x in meeting_date){
-        		
         		events1.push({
         				meetingId:meetingId[x],
         				id:id[x],
@@ -331,15 +339,16 @@ var AppCalendar = function() {
         			backgroundColor: App.getBrandColor('purple'),
         			description: name[x] + '<br>' +'Reserver : ' + reserver[x],
          			className: 'meeting',
-        			allDay: true,
+        			/* allDay: true, */
+
         		});
         	}
+        	
         	myevent = events1;
             var date = new Date();
             var d = date.getDate();
             var m = date.getMonth();
             var y = date.getFullYear();
-            var id = id[x];
             
             var h = {};
             
@@ -427,10 +436,9 @@ var AppCalendar = function() {
                 defaultDate: moment(noTime),
                 slotMinutes: 15,
                 editable: true,
-                
-                
                 droppable: true, // this allows things to be dropped onto the calendar !!!
-
+				minTime: timestart[x],	//'09:00:00',
+				maxTime: timeend[x],	//'18:00:00',
                 drop: function(date, allDay) { // this function is called when something is dropped
                     // retrieve the dropped element's stored Event Object
                 	var originalEventObject = $(this).data('eventObject');
@@ -460,7 +468,6 @@ var AppCalendar = function() {
                 	var type_color = "";
                 	var start = moment(calEvent.start).get('date');
                     var end = moment(calEvent.end).get('date');
-                    var events = $('#calendar').fullCalendar('clientEvents');
 
                     var for_i = end-start; 
                     for(var i  = 0 ; i < for_i ; i++ ){
@@ -489,10 +496,10 @@ var AppCalendar = function() {
 
                 	});
                 	
-					
                 	element.find(".fc-title").css('font-weight', 'inherit');
                     element.find(".fc-title").prepend("<i class='fa fa-users' style='margin:5px;' ></i>");
-                    
+              
+
                     element.find(".fc-content").on('click',function() {
                     	<c:forEach var="user" items="${user1}">
                     	if('${onlineUser.id}'=='${user.id}'.toLowerCase()){
@@ -624,9 +631,9 @@ jQuery(document).ready(function() {
 							title: obj.title[i],
 							start: new Date(meeting_date.getFullYear(),meeting_date.getMonth(),meeting_date.getDate()),
 							end: new Date(end_date.getFullYear(),end_date.getMonth(),end_date.getDate() + 1 ),							  					 
-							allDay: true,
- 							className: 'meeting', 
 							backgroundColor: App.getBrandColor('purple'),
+							className: 'meeting',
+							/* allDay: true, */
 
 						});
 					}
@@ -646,7 +653,7 @@ jQuery(document).ready(function() {
 //function for box at meeting calendar
 	//Date Now
 	var today = '${today}';
-	var meeting = JSON.parse(window.localStorage.getItem('meeting'));
+	const meeting = JSON.parse(window.localStorage.getItem('meeting'));
 	
 	var daynow = meeting.filter(element => element.includes(today));
 	var a = daynow.toString();
@@ -694,5 +701,11 @@ jQuery(document).ready(function() {
 		var meeting_next2 = moment(format3).format('DD-MM-YYYY');
 		document.getElementById("meeting_box3").innerHTML = meeting_next2;
 	}
+	
+</script>
+<script>
+
+
+
 
 </script>
