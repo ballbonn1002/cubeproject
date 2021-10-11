@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="/WEB-INF/tlds/permission.tld" prefix="perm"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <script src="../assets/ajax/jquery-1.10.2.js" type="text/javascript"></script>
@@ -90,6 +91,7 @@ a.fc-day-grid-event .fc-h-event{
 		<div class="caption">
 			<i class="fa fa-users font-red"></i>
 			<span class="caption-subject font-red sbold uppercase">Booking Meeting Room | ${today}</span>
+			
 		</div>
 	</div> <!-- END portlet title -->
 	<div class="portlet-body">
@@ -99,6 +101,7 @@ a.fc-day-grid-event .fc-h-event{
 			<a href="javascript:;" class="reload" data-original-title="" title=""></a>
 			<a href="javascript:;" class="remove" data-original-title="" title=""></a>
 		</div>
+		<perm:permission object="training.view">
 		<div class="row " style="margin-left: 45px; margin-right: 5px;padding-bottom: 15px; padding-top: 15px; text-align: center;">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 portlet light bordered" id="todaybox" style="margin-right: 50px;">
 				<div class="portlet light">
@@ -163,7 +166,7 @@ a.fc-day-grid-event .fc-h-event{
 				</div>
 			</div>
 		</div> <!-- END row -->
-		
+		</perm:permission>
 		
 		<div class="portlet-body">
 			<div class="portlet-body">
@@ -191,7 +194,51 @@ a.fc-day-grid-event .fc-h-event{
 		</div>
 	</div> <!-- END portlet body -->
 </div> <!-- END portlet bordered -->
-
+<!-- Modal zone -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel"
+								style="font-size: 20px">
+								<b>Reserved Room</b>
+							</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close" >
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+			<div class="modal-body">
+			<div class="row ">
+				<div class="col-lg-12" style="align:center;">
+						<table width="50%" class="text-center">
+							<thead>
+								<tr style="background-color: rgb(59, 63, 81); color: white ;height:40px;">
+									<th style="text-align:center;">Member Name</th>
+								</tr>
+							</thead>
+							
+							
+							<tr id="trData">
+								
+							</tr>
+							
+							
+						</table>
+					
+				</div>
+			</div>
+			</div>
+			<div class="modal-footer">
+							<button id="cancel" type="button" class="btn btn-secondary"
+								data-dismiss="modal" >Close</button>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- End Modal zone -->
 <script>
 $("tr:not(:first)").each(function (index ) {
 	$(this).css('animation-delay',index *0.01 +'s');
@@ -209,6 +256,7 @@ $(document).ready(function() {
 </script>
 
 <script>
+var idmeet;
 var myevent = [];
 var AppCalendar = function() {
 	return {
@@ -227,6 +275,7 @@ var AppCalendar = function() {
         	} else {
         		var noTime = moment();
         	}
+        	var meetingId=[];
         	var id = [];
         	var meeting_date = [];
         	var time_start = [];
@@ -253,7 +302,7 @@ var AppCalendar = function() {
 	        	var timefull = start1 + " - " + end1;
 	        	
 	        	var date2 = new Date(date1);
-	        	
+	        	meetingId.push(idmeeting);
 	        	id.push(idroom);
 	        	meeting_date.push(date2);
 	        	time_start.push(start1);
@@ -270,6 +319,7 @@ var AppCalendar = function() {
         	for(x in meeting_date){
         		
         		events1.push({
+        				meetingId:meetingId[x],
         				id:id[x],
         				title: 'Room '+id[x] + ' : ' + room_name[x] ,
         				start: new Date(meeting_date[x].getFullYear(),
@@ -444,9 +494,36 @@ var AppCalendar = function() {
                     element.find(".fc-title").prepend("<i class='fa fa-users' style='margin:5px;' ></i>");
                     
                     element.find(".fc-content").on('click',function() {
-/*                     	document.location = "holiday_edit_calendar?flag=0&id=" + calEvent.id ;                     	  
- */						alert("Hello !");
-
+                    	<c:forEach var="user" items="${user1}">
+                    	if('${onlineUser.id}'=='${user.id}'.toLowerCase()){
+                    		if('${user.roleId}'=='admin'||'${user.roleId}'=='HR'){
+                    			var check="";
+                    			idmeet = calEvent.meetingId;
+                    			<c:forEach var="data" items="${invite}">
+                    			if(idmeet=='${data.idmeeting}'){
+                    			<c:set var="id" value="${data.idmeeting}"/>
+                    			check=${id};
+                    			}
+                    			</c:forEach>
+                    			if(check!=""){
+                    			var str=" "+
+                    			<c:forEach var='data' items="${invite}">
+                    			<c:if test="${data.idmeeting==id}">
+                    			"<td>${data.member}</td>"
+                    			</c:if>
+                    			</c:forEach>
+                    			+"";
+                    			console.log(str);
+                    			}else{
+                    				var str=""+
+                    				"<td>no one in this room</td>";
+                    			}
+                    			$("#myModal").modal();
+                    			$("#trData").html(str);
+                    		}
+                    		
+                    	}
+					</c:forEach>
                     });
 
                 },

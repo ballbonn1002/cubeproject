@@ -620,14 +620,6 @@ div.text-overflow {
 								<div class="col-md-9 sbold text-overflow">Sign & Resign Per Year Report</div>
 
 							</button></a><br>
-							<a href="StatusEm">
-							<button class="btn yellow-gold btn-block btn-outline" >
-								<div class="col-md-3 ">
-									<i class="fa fa-user sbold"></i>
-								</div>
-								<div class="col-md-9 sbold text-overflow">Status Employee Report</div>
-
-							</button></a><br>
 							<a href="DonutChartLeave">
 							<button class="btn red btn-block btn-outline">
 								<div class="col-md-3 ">

@@ -97,7 +97,7 @@ public class UserDAOImpl implements UserDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Map<String, Object>> userList = null;
 		try {
-			String sql = " SELECT* FROM user";
+			String sql = " SELECT * FROM user";
 			SQLQuery query = session.createSQLQuery(sql);
 			userList = query.list();
 		} catch (Exception e) {

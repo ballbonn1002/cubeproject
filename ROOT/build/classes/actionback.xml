@@ -3547,8 +3547,9 @@
 			<result name="error">/index.jsp</result>
 		</action>
 		
-		<action name="Meeting_Manager">
-			<result name="success" type="tiles">meeting_manager</result>
+		<action name="Meeting_Manager" 
+			class="com.cubesofttech.action.MeetingAction" method="List1">
+			<result name="success" type="tiles">meeting_calendar</result>
 			<result name="error">/index.jsp</result>
 		</action>
 		
@@ -3566,11 +3567,6 @@
 		<action name="SignperYear" class="com.cubesofttech.action.GraphAction"
 			method="signperYear">
 			<result name="success" type="tiles">signperyear</result>
-			<result name="error">/index.jsp</result>
-		</action>
-		<action name="StatusEm" class="com.cubesofttech.action.GraphAction"
-			method="statusEm_Report">
-			<result name="success" type="tiles">statusEm</result>
 			<result name="error">/index.jsp</result>
 		</action>
 		<action name="DonutChartLeave" class="com.cubesofttech.action.GraphAction"
