@@ -3516,7 +3516,7 @@
 			<result name="success" type="tiles">select_room</result>
 			<result name="error">/index.jsp</result>
 		</action>
-		<action name="Edit_Room"
+		<action name="Edit_Meeting"
 			class="com.cubesofttech.action.MeetingAction" method="inviting_list">
 			<result name="success" type="tiles">edit_invite_meeting</result>
 			<result name="error">/index.jsp</result>

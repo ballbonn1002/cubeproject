@@ -169,6 +169,7 @@
 
 
 								<tbody>
+								
 									<c:forEach var="list" items="${AllMeetperDay}">
 										<fmt:formatDate type="date" value="${list.time_end}"
 											pattern="HH:mm" var="end" />
@@ -189,6 +190,7 @@
 											</tr>
 										</c:if>
 									</c:forEach>
+									
 								</tbody>
 
 							</table>
@@ -217,15 +219,14 @@
 								<tbody>
 									<c:forEach var="invitedList" items="${Mlist}">
 										<tr>
-
-											<td style="text-align: center;">${invitedList.member }</td>
-											<td style="text-align: center;"><a
-												class="btn circle btn-outline btn-sm sbold red"
-												<%-- href="TrainDelete?id=${train.id}" --%>
-										onclick="del(${invitedList.idinvite});"
-												title="delete invited"> <i class="fa fa-trash"></i>
-											</a></td>
-
+											<td style="text-align: center;">${invitedList.member}</td>
+											<c:if test="${invitedList.member!=null}">
+											<td style="text-align: center;">
+												<a class="btn circle btn-outline btn-sm sbold red" onclick="del(${invitedList.idinvite});">
+													<i class="fa fa-trash"></i>
+												</a>
+											</td>
+											</c:if>
 										</tr>
 
 
@@ -656,6 +657,7 @@ function del(meetingid) {
 </script>
 
 <script>
+
 $(document).ready(function() {
 
 	var value = "${flag}";

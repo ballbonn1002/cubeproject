@@ -182,13 +182,14 @@
 				class="caption-subject font-red sbold uppercase">Room ${date_cal}</span>
 			<c:set var="s" value="<%=new java.util.Date()%>" />
 			<fmt:formatDate var="a" pattern="HH:mm" value="${s}" />
+			<fmt:formatDate var="datetoday" pattern="yyyy-MM-dd" value="${s}" />
 		</div>
 
 		<div class="actions">
 			<button type="button" class="btn btn-sm green-meadow" id="addLeave"
 				data-toggle="modal" data-target="#addRoom" data-backdrop="static"
 				data-keyboard="false">
-				<i class="fa fa-key"></i> <b>CREATE ROOM</b>
+				<i class="fa fa-key"></i> <b>CREATE ROOM </b>
 			</button>
 			<a class="btn  btn-icon-only btn-default fullscreen"
 				href="javascript:;" data-original-title="" title=""> </a>
@@ -229,19 +230,56 @@
 											<th style="width:100px" class="center" >Name</th>
 											<th height="41"><center>Room No.
 													${amount.idroom} ${amount.room_name}</center></th>
-											<th style="width: 37px;"><a id="icon"
-												class="btn btn-light" data-toggle="modal"
-												data-target="#Reserve" data-backdrop="static"
-												data-keyboard="false" onClick="Reserve(${amount.idroom})">
+											<c:if test="${date_cal>=datetoday}">
+												<th style="width: 37px;"><a id="icon"
+													class="btn btn-light" data-toggle="modal"
+													data-target="#Reserve" data-backdrop="static"
+													data-keyboard="false" onClick="Reserve(${amount.idroom})">
 
 
-													<i class="fa fa-plus"></i>
+														<i class="fa fa-plus"></i>
 
-											</a></th>
+												</a></th>
+											</c:if>
+											
+											<c:if test="${date_cal<datetoday}">
+												<th style="width: 37px;"></th>
+											</c:if>
 										</tr>
 									</thead>
 									<c:forEach var="list" items="${AllMeetperDay}">
-										
+									<!-- อดีต -->
+									<c:if test="${list.date<datetoday}">
+										<c:if test="${list.idroom==amount.idroom}">
+											
+
+												<tr height="41">
+
+													<c:if test="${list.user_reserve==onlineUser.id}">
+														<td ><i class="fa fa-user"
+															aria-hidden="true"></i> ${list.user_reserve}</td>
+													</c:if>
+													<c:if test="${list.user_reserve!=onlineUser.id}">
+														<td ></td>
+													</c:if>
+
+													<td><i class="fa fa-clock-o" aria-hidden="true"></i> <b><fmt:formatDate
+																type="date" value="${list.time_start}" pattern="HH:mm" />
+															น. - <fmt:formatDate type="date" value="${list.time_end}"
+																pattern="HH:mm" /> น.</b></td>
+
+
+													<td style="width: 25px"><i class="fa fa-check"
+														aria-hidden="true"></i></td>
+
+
+												</tr>
+											
+										</c:if>
+										</c:if>
+									
+									<!-- ปัจจุบัน -->
+										<c:if test="${list.date==datetoday}">
 										<c:if test="${list.idroom==amount.idroom}">
 											<c:if test="${list.time_start>a}">
 												<tr class="bg-success owner" height="41">
@@ -271,7 +309,7 @@
 																<ul class="dropdown-menu  pull-right  "
 																	aria-labelledby="dropdownMenu${list.idroom}">
 																	<li><a
-																		href="Edit_Room?meetingid=${list.idmeeting}&roomid=${amount.idroom}&date_cal=${date_cal}">Edit
+																		href="Edit_Meeting?meetingid=${list.idmeeting}&roomid=${amount.idroom}&date_cal=${date_cal}">Edit
 																			and Invite</a></li>
 																	 <li><a data-toggle="modal" data-target="#Edit"
 																		data-backdrop="static" data-keyboard="false"
@@ -281,7 +319,7 @@
 																		data-target="#Inviting-room${amount.idroom}-idmeeting"
 																		data-backdrop="static" data-keyboard="false"
 																		onClick="inviting(${amount.idroom},${list.idmeeting},'${time_start}','${time_end}')">Invite</a></li> --%> 
-																	<li><a onclick="del(${list.idmeeting},);">Delete</a></li>
+																	<li><a onclick="del(${list.idmeeting});">Delete</a></li>
 																	
 
 																</ul>
@@ -346,7 +384,69 @@
 												</tr>
 											</c:if>
 										</c:if>
+										</c:if>
+										
+										
+										<!-- ยังไม่ถึง -->
+										<c:if test="${list.date>datetoday}">
+										<c:if test="${list.idroom==amount.idroom}">
+											
+												<tr class="bg-success owner" height="41">
 
+													<c:if test="${list.user_reserve==onlineUser.id}">
+														<td class="center" ><i class="fa fa-user"
+															aria-hidden="true"></i> ${list.user_reserve}</td>
+													</c:if>
+													<c:if test="${list.user_reserve!=onlineUser.id}">
+														<td ></td>
+													</c:if>
+
+													<td><i class="fa fa-clock-o" aria-hidden="true"></i> <b><fmt:formatDate
+																type="date" value="${list.time_start}" pattern="HH:mm" />
+															น. - <fmt:formatDate type="date" value="${list.time_end}"
+																pattern="HH:mm" /> น.</b></td>
+
+													<c:if test="${list.user_reserve==onlineUser.id}">
+														<td >
+
+															<div class="dropdown">
+																<div class="dropdown-toggle"
+																	id="dropdownMenu${list.idroom}" data-toggle="dropdown"
+																	aria-haspopup="true" aria-expanded="false">
+																	<i class="fa fa-ellipsis-v "> </i>
+																</div>
+																<ul class="dropdown-menu  pull-right  "
+																	aria-labelledby="dropdownMenu${list.idroom}">
+																	<li><a
+																		href="Edit_Room?meetingid=${list.idmeeting}&roomid=${amount.idroom}&date_cal=${date_cal}">Edit
+																			and Invite</a></li>
+																	 <li><a data-toggle="modal" data-target="#Edit"
+																		data-backdrop="static" data-keyboard="false"
+																		onClick="Edit(${amount.idroom},${list.idmeeting},'${time_start}','${time_end}')">
+																			Edit</a></li>
+																	<%-- <li><a data-toggle="modal"
+																		data-target="#Inviting-room${amount.idroom}-idmeeting"
+																		data-backdrop="static" data-keyboard="false"
+																		onClick="inviting(${amount.idroom},${list.idmeeting},'${time_start}','${time_end}')">Invite</a></li> --%> 
+																	<li><a onclick="del(${list.idmeeting},);">Delete</a></li>
+																	
+
+																</ul>
+															</div>
+
+
+														</td>
+													</c:if>
+													<c:if test="${list.user_reserve!=onlineUser.id}">
+														<td></td>
+													</c:if>
+
+												</tr>
+											</c:if>
+											
+										</c:if>
+										
+									
 									</c:forEach>
 								</table>
 							</div>
@@ -880,4 +980,6 @@ $(function(){
 <script>
 var search = new URLSearchParams(window.location.search);
  var date_cal = search.get('date_cal'); 
+
+ alert(date_cal)
 </script>
