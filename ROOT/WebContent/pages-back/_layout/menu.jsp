@@ -129,10 +129,7 @@
 			<!-- link to "My Training" page --> <i class="fa fa-users"></i> <!-- add icon -->
 			<span class="title">My Meeting</span>
 	</a></li>
-	<li class="nav-item"><a href="Select_Room" class="nav-link">
-			<!-- link to "My Training" page --> <i class="fa fa-users"></i> <!-- add icon -->
-			<span class="title">Select Room</span>
-	</a></li>
+	
 	<!-- travel -->
 	<perm:permission object="travel.view">
 		<li class="nav-item"><a href="javascript:;" id="travelMenu"
