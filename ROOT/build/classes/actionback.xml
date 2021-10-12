@@ -3521,13 +3521,13 @@
 			<result name="success" type="tiles">edit_invite_meeting</result>
 			<result name="error">/index.jsp</result>
 		</action>
-		<action name="Edit_Invite_Room"
+		 <action name="Edit_Invite_Room"
 			class="com.cubesofttech.action.MeetingAction" method="meeting_edit">
-			<result name="success" type="tiles">select_room</result>
+			<result name="success" type="tiles">edit_invite_meeting</result>
 			<result name="error">/index.jsp</result>
-		</action>
+		</action> 
 		<action name="Invite_member"
-			class="com.cubesofttech.action.invitingAction" method="inviting_add">
+			class="com.cubesofttech.action.MeetingAction" method="inviting_add">
 			<result name="success" type="tiles">select_room</result>
 			<result name="error">/index.jsp</result>
 		</action>
@@ -3547,8 +3547,9 @@
 			<result name="error">/index.jsp</result>
 		</action>
 		
-		<action name="Meeting_Manager">
-			<result name="success" type="tiles">meeting_manager</result>
+		<action name="Meeting_Manager" 
+			class="com.cubesofttech.action.MeetingAction" method="List1">
+			<result name="success" type="tiles">meeting_calendar</result>
 			<result name="error">/index.jsp</result>
 		</action>
 		
@@ -3558,6 +3559,25 @@
 			<result name="error">/index.jsp</result>
 		</action>
 		<!-- meeting -->
-		
+		<action name="SignResign" class="com.cubesofttech.action.GraphAction"
+			method="test">
+			<result name="success" type="tiles">sign_resign</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="SignperYear" class="com.cubesofttech.action.GraphAction"
+			method="signperYear">
+			<result name="success" type="tiles">signperyear</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="DonutChartLeave" class="com.cubesofttech.action.GraphAction"
+			method="donutChartLeave">
+			<result name="success" type="tiles">donutLeave</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="powerBIleave" class="com.cubesofttech.action.GraphAction"
+			method="testpowerBI">
+			<result name="success" type="tiles">powerBIleave</result>
+			<result name="error">/index.jsp</result>
+		</action>
 	</package>
 </struts>

@@ -50,6 +50,18 @@ public class LeaveDAOImpl implements LeaveDAO {
 		}
 		return leaveList;
 	}
+	
+	@Override
+	public List<Map<String, Object>> findAllList() throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> list = null;
+		try {
+			list = session.createCriteria(Leaves.class).add(Restrictions.eq("leaveStatusId","1")).list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 
 	@Override
 	public Leaves findByLeaveId(int leaveId) throws Exception {

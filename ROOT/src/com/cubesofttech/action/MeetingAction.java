@@ -51,6 +51,7 @@ public class MeetingAction extends ActionSupport {
 	
 	@Autowired
 	private MemberInvitingDAO memberInvitingDAO;
+	
 
 	public String List1() {
 		try {
@@ -67,9 +68,12 @@ public class MeetingAction extends ActionSupport {
 				request.setAttribute("flag12", date2);
 				// flag12 = Set default Date for Calendar
 			}
+			List<User> userlist=userDAO.findAll();
+			request.setAttribute("user1", userlist);
 			List<Map<String, Object>> meetinglist = meetingDAO.findAll_calendar();
 			request.setAttribute("meetinglist", meetinglist);
-			
+			List<Map<String, Object>> invite = memberInvitingDAO.findAll();
+			request.setAttribute("invite", invite);
 			List<Map<String, Object>> Roomlist = roomDAO.findAll();
 			request.setAttribute("Roomlist", Roomlist);
 			

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="/WEB-INF/tlds/permission.tld" prefix="perm"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <script src="../assets/ajax/jquery-1.10.2.js" type="text/javascript"></script>
@@ -90,6 +91,7 @@ a.fc-day-grid-event .fc-h-event{
 		<div class="caption">
 			<i class="fa fa-users font-red"></i>
 			<span class="caption-subject font-red sbold uppercase">Booking Meeting Room | ${today}</span>
+			
 		</div>
 	</div> <!-- END portlet title -->
 	<div class="portlet-body">
@@ -99,6 +101,7 @@ a.fc-day-grid-event .fc-h-event{
 			<a href="javascript:;" class="reload" data-original-title="" title=""></a>
 			<a href="javascript:;" class="remove" data-original-title="" title=""></a>
 		</div>
+		<perm:permission object="training.view">
 		<div class="row " style="margin-left: 45px; margin-right: 5px;padding-bottom: 15px; padding-top: 15px; text-align: center;">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 portlet light bordered" id="todaybox" style="margin-right: 50px;">
 				<div class="portlet light">
@@ -163,7 +166,8 @@ a.fc-day-grid-event .fc-h-event{
 				</div>
 			</div>
 		</div> <!-- END row -->
-		
+
+		</perm:permission>
 		
 		<div class="portlet-body">
 			<div class="portlet-body">
@@ -174,6 +178,7 @@ a.fc-day-grid-event .fc-h-event{
 								<div class="caption">
 									<i class=" icon-layers font-green"></i>
 									<span class="caption-subject font-green sbold uppercase">Meeting Calendar</span>
+									<p id="fortest"></p>
 								</div>
 							</div>
 							<!-- CALENDAR -->
@@ -191,7 +196,39 @@ a.fc-day-grid-event .fc-h-event{
 		</div>
 	</div> <!-- END portlet body -->
 </div> <!-- END portlet bordered -->
-
+<!-- Modal zone -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header" style='background-color: rgb(59, 63, 81); color: white ;'>
+							<h5 class="modal-title" id="exampleModalLabel"
+								style="font-size: 20px">
+								<b>Member invited</b>
+							</h5>
+							<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" onclick="Cancel();">
+						</button>
+						</div>
+			<div class="modal-body">
+			<div class="row ">
+				<div class="col-lg-12" style="align:center;">
+						<center>
+						<table width="50%" class="text-center" id="trData" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+						</table>
+						</center>
+					
+				</div>
+			</div>
+			</div>
+			<div class="modal-footer">
+							<button id="cancel" type="button" class="btn btn-secondary" onclick="Cancel();"
+								data-dismiss="modal" ><b>Close</b></button>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- End Modal zone -->
 <script>
 $("tr:not(:first)").each(function (index ) {
 	$(this).css('animation-delay',index *0.01 +'s');
@@ -203,13 +240,21 @@ $("tr:not(:first)").each(function (index ) {
 <script type="text/javascript">
 $(document).ready(function() {
 	$('#calendar').fullCalendar();
-	
+/*	var events = $('#calendar').fullCalendar('clientEvents');
+	var events11 = events.length;
+	console.log(events11);
+ 	for (var i = 0; i < events.length; i++;) {
 		
+	} 
+*/
 });
 </script>
 
 <script>
 var myevent = [];
+function Cancel(){
+	$("#trData").html("");
+}
 var AppCalendar = function() {
 	return {
 		//main function to initiate the module
@@ -227,6 +272,7 @@ var AppCalendar = function() {
         	} else {
         		var noTime = moment();
         	}
+        	var meetingId=[];
         	var id = [];
         	var meeting_date = [];
         	var time_start = [];
@@ -253,7 +299,7 @@ var AppCalendar = function() {
 	        	var timefull = start1 + " - " + end1;
 	        	
 	        	var date2 = new Date(date1);
-	        	
+	        	meetingId.push(idmeeting);
 	        	id.push(idroom);
 	        	meeting_date.push(date2);
 	        	time_start.push(start1);
@@ -265,11 +311,11 @@ var AppCalendar = function() {
         	</c:forEach>
 
         	window.localStorage.setItem('meeting', JSON.stringify(meeting_date));
-        	
+
         	var x;
         	for(x in meeting_date){
-        		
         		events1.push({
+        				meetingId:meetingId[x],
         				id:id[x],
         				title: 'Room '+id[x] + ' : ' + room_name[x] ,
         				start: new Date(meeting_date[x].getFullYear(),
@@ -281,15 +327,16 @@ var AppCalendar = function() {
         			backgroundColor: App.getBrandColor('purple'),
         			description: name[x] + '<br>' +'Reserver : ' + reserver[x],
          			className: 'meeting',
-        			allDay: true,
+        			 allDay: true, 
+
         		});
         	}
+        	
         	myevent = events1;
             var date = new Date();
             var d = date.getDate();
             var m = date.getMonth();
             var y = date.getFullYear();
-            var id = id[x];
             
             var h = {};
             
@@ -377,8 +424,6 @@ var AppCalendar = function() {
                 defaultDate: moment(noTime),
                 slotMinutes: 15,
                 editable: true,
-                
-                
                 droppable: true, // this allows things to be dropped onto the calendar !!!
 
                 drop: function(date, allDay) { // this function is called when something is dropped
@@ -410,7 +455,6 @@ var AppCalendar = function() {
                 	var type_color = "";
                 	var start = moment(calEvent.start).get('date');
                     var end = moment(calEvent.end).get('date');
-                    var events = $('#calendar').fullCalendar('clientEvents');
 
                     var for_i = end-start; 
                     for(var i  = 0 ; i < for_i ; i++ ){
@@ -439,14 +483,47 @@ var AppCalendar = function() {
 
                 	});
                 	
-					
                 	element.find(".fc-title").css('font-weight', 'inherit');
                     element.find(".fc-title").prepend("<i class='fa fa-users' style='margin:5px;' ></i>");
-                    
-                    element.find(".fc-content").on('click',function() {
-/*                     	document.location = "holiday_edit_calendar?flag=0&id=" + calEvent.id ;                     	  
- */						alert("Hello !");
+              
 
+                    element.find(".fc-content").on('click',function() {
+                    	<c:forEach var="user" items="${user1}">
+                    	if('${onlineUser.id}'=='${user.id}'.toLowerCase()){
+                    		if('${user.roleId}'=='admin'||'${user.roleId}'=='HR'){
+                    			var check="";
+                    			var idmeet = calEvent.meetingId;
+                    			<c:forEach var="data" items="${invite}">
+                    			if(idmeet=='${data.idmeeting}'){
+                    			<c:set var="idmeeting" value="${data.idmeeting}"/>
+                    			check=${idmeeting};
+                    			}
+                    			</c:forEach>
+                    			if(check!=""){
+                    				console.log(check);
+                    			var str="<thead> <tr style='background-color: rgb(59, 63, 81); color: white ;height:40px;'>"+
+										"<th style='text-align:center;'>Member Name</th></tr></thead>";
+                    			<c:forEach var='data' items="${invite}">
+                    			if(${data.idmeeting}===check){
+                    				str+="<tr><td style='padding:5px;'>${data.member}</td></tr>";
+                    			}
+                    			</c:forEach>
+                    			}else{
+                    				console.log(check+" check is null");
+                    				var str="<thead> <tr style='background-color: rgb(59, 63, 81); color: white ;height:40px;'>"+
+											"<th style='text-align:center;'>Member Name</th></tr></thead>"+
+                    						"<tr style='padding:5px;'><td>no one in this room</td></tr>";
+                    			}
+                    			var opt={
+                    					backdrop:'static',
+										keyboard:false
+                    			};
+                    			$("#myModal").modal(opt);
+                    			$("#trData").html(str);
+                    		}
+                    		
+                    	}
+					</c:forEach>
                     });
 
                 },
@@ -547,9 +624,9 @@ jQuery(document).ready(function() {
 							title: obj.title[i],
 							start: new Date(meeting_date.getFullYear(),meeting_date.getMonth(),meeting_date.getDate()),
 							end: new Date(end_date.getFullYear(),end_date.getMonth(),end_date.getDate() + 1 ),							  					 
-							allDay: true,
- 							className: 'meeting', 
 							backgroundColor: App.getBrandColor('purple'),
+							className: 'meeting',
+							/* allDay: true, */
 
 						});
 					}
@@ -569,7 +646,7 @@ jQuery(document).ready(function() {
 //function for box at meeting calendar
 	//Date Now
 	var today = '${today}';
-	var meeting = JSON.parse(window.localStorage.getItem('meeting'));
+	const meeting = JSON.parse(window.localStorage.getItem('meeting'));
 	
 	var daynow = meeting.filter(element => element.includes(today));
 	var a = daynow.toString();
@@ -617,5 +694,5 @@ jQuery(document).ready(function() {
 		var meeting_next2 = moment(format3).format('DD-MM-YYYY');
 		document.getElementById("meeting_box3").innerHTML = meeting_next2;
 	}
-
+	
 </script>

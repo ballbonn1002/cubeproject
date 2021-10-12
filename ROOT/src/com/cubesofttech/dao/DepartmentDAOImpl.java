@@ -47,6 +47,21 @@ public class DepartmentDAOImpl implements DepartmentDAO{
 		}
 		return departmentList;
 	}
+    
+    @Override
+    public List<Map<String, Object>> findAllList() throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> departmentList = null;
+		try {
+			String sql = "SELECT * FROM department";
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			departmentList = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return departmentList;
+	}
 
 
 

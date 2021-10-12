@@ -10,7 +10,11 @@ public interface UserDAO {
 	public void save(User user) throws Exception;
 
 	public List<User> findAll() throws Exception;
-
+	
+	public List<Map<String, Object>> findAllleaves() throws Exception;
+	
+	public List countYear() throws Exception;
+	
 	public User findById(String id) throws Exception;
 
 	/*
@@ -28,6 +32,8 @@ public interface UserDAO {
 	public void delete(User user) throws Exception;
 
 	public List<User> findBySelect(String usertoappr) throws Exception;
+	
+	public List<Map<String, Object>> findAllforReport() throws Exception;
 
 	public List<Map<String, Object>> allName() throws Exception;
 

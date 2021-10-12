@@ -179,8 +179,7 @@
 
 		<div class="caption">
 			<i class="icon-layers font-red"></i> <span id="ss"
-				class="caption-subject font-red sbold uppercase">Room
-				${date_cal}</span>
+				class="caption-subject font-red sbold uppercase">Room ${date_cal}</span>
 			<c:set var="s" value="<%=new java.util.Date()%>" />
 			<fmt:formatDate var="a" pattern="HH:mm" value="${s}" />
 		</div>
@@ -880,6 +879,5 @@ $(function(){
 </script>
 <script>
 var search = new URLSearchParams(window.location.search);
-var date_cal = search.get('date_cal');
-
+ var date_cal = search.get('date_cal'); 
 </script>
