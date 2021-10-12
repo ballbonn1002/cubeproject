@@ -25,6 +25,7 @@ import com.cubesofttech.dao.UserDAO;
 import com.cubesofttech.model.MemberInviting;
 import com.cubesofttech.model.Meeting;
 import com.cubesofttech.model.Room;
+import com.cubesofttech.model.Training;
 import com.cubesofttech.model.User;
 import com.cubesofttech.util.DateUtil;
 import com.opensymphony.xwork2.ActionSupport;
@@ -349,6 +350,8 @@ public class MeetingAction extends ActionSupport {
             String date = new SimpleDateFormat("yyyy-MM-dd").format(DateUtil.getCurrentTime());
             List<Map<String, Object>> checkRoom = meetingDAO.checkRoomToday(date_cal);
 			request.setAttribute("checkRoomToday", checkRoom);
+			
+			
             return SUCCESS;
         } catch (Exception e) {
             log.error(e);
@@ -370,8 +373,28 @@ public class MeetingAction extends ActionSupport {
 //        List<Map<String, Object>> test = member_invitingDAO.findAll();
 //        System.out.println("test = "+test);
 		
+        
+        
         String member = request.getParameter("member");
         System.out.println(member);
+        
+//        List<Map<String, Object>> InvitingCheckMember = memberInvitingDAO.findmember(member);
+//        System.out.println("InvitingCheckMember"+InvitingCheckMember);
+//		List<Map<String, Object>> InvitingCheckMemberId = memberInvitingDAO.findmemberId(idedit);
+//		System.out.println("InvitingCheckMemberId"+InvitingCheckMemberId);
+//		String name = InvitingCheckMember.toString();
+//		String id = InvitingCheckMemberId.toString();
+//		log.debug(name);
+//		log.debug(name.length());
+//		if (id.length() != 2) {
+//			request.setAttribute("flag", "1");
+//			return INPUT;
+//		}
+//		if (name.length() != 2) {
+//			request.setAttribute("flag2", "1");
+//			return INPUT;
+//		}
+//        
         
         inviting.setMember(member);
         System.out.println("k1");
@@ -379,11 +402,47 @@ public class MeetingAction extends ActionSupport {
         System.out.println("k2");
         memberInvitingDAO.save(inviting);
         System.out.println("k3");
+        
+        
+        
+        
+        
         return SUCCESS;
         }catch(Exception e) {
         return ERROR;
         }
     }
+	
+	public String invited_delete() throws Exception {
+		System.out.println("del");
+		try {
+			String meetingid = request.getParameter("meetingid");
+			System.out.println(meetingid);
+			Integer idValue = Integer.valueOf(meetingid);
+			MemberInviting invited = memberInvitingDAO.findById(idValue);
+			System.out.println(invited);
+			
+			memberInvitingDAO.delete(invited);
+			return SUCCESS;
+
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return ERROR;
+		}
+	}
+	
+	
+	/*
+	 * public String testx() {
+	 * 
+	 * String Id[] = request.getParameter("idmeeting"); var x = id[].lenght-1
+	 * 
+	 * 
+	 * 
+	 * 
+	 * return SUCCESS; }
+	 */
+	 
 	
 	
 	

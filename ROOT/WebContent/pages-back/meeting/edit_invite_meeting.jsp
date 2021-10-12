@@ -97,59 +97,29 @@
 
 		<div class="portlet-body flip-scroll">
 
-
-			<fmt:formatDate type="date" value="${Mlist[0].time_start}"
-				pattern="HH:mm" var="time_start" />
-			<fmt:formatDate type="date" value="${Mlist[0].time_end}"
-				pattern="HH:mm" var="time_end" />
-			<div style="text-align: center;">
-				<label>Change Time:</label> <input type="text" id="time_start"
-					name="time_start" value="${time_start}" style="text-align: center;"
-					readonly /> To <input style="text-align: center;" type="text"
-					id="time_end" name="time_end" value="${time_end}" readonly />
-			</div>
-			
-			
-			
-			<hr>
 			<div class="row ">
 
-			<div  class="col-xs-12 col-lg-36col-xl-6">
-				<div  class="center card" style="width:50%; align-items:center;">
+				<div class="col-xs-12 col-lg-6 col-xl-6"
+					style="margin: 5px 0px 5px 0px;">
+					<fmt:formatDate type="date" value="${Mlist[0].time_start}"
+						pattern="HH:mm" var="time_start" />
+					<fmt:formatDate type="date" value="${Mlist[0].time_end}"
+						pattern="HH:mm" var="time_end" />
+					<div style="text-align: center;">
+						<label>Change Time:</label> <input type="text" id="time_start"
+							name="time_start" value="${time_start}"
+							style="text-align: center;" readonly /> To <input
+							style="text-align: center;" type="text" id="time_end"
+							name="time_end" value="${time_end}" readonly />
+					</div>
 
-
-					<table  class="table">
-						<thead>
-
-							<tr  style="background-color: rgb(59, 63, 81); color: white">
-								<th style="text-align:center;" scope="col">Room No. ${roomid.idroom}
-									${roomid.room_name}</th>
-
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="list" items="${AllMeetperDay}">
-								<fmt:formatDate type="date" value="${list.time_end}"
-									pattern="HH:mm" var="end" />
-								<fmt:formatDate type="date" value="${list.time_start}"
-									pattern="HH:mm" var="start" />
-								<c:if test="${list.idroom==roomid.idroom}">
-									<tr>
-										<td id="count">${start}น.-${end}น.</td>
-
-									</tr>
-								</c:if>
-							</c:forEach>
-						</tbody>
-					</table>
 
 				</div>
-			</div>
-			
-			<div class="col-md-2 ">
-				<select class="bs-select form-control select2me  " id="user"
-					name="inviting" id="inviting" onchange="s(this);">
-					<optgroup label="Enable">
+
+				<div class="col-xs-8 col-md-4" style="margin: 5px 0px 5px 0px; ">
+					<select class="bs-select form-control select2me  " id="user"
+						name="inviting" id="inviting" onchange="s(this);">
+
 						<c:forEach var="user" items="${userseq}">
 
 							<c:if test="${user.enable == 1 }">
@@ -165,41 +135,130 @@
 								</c:if>
 							</c:if>
 						</c:forEach>
-					</optgroup>
-				</select>
+
+					</select>
+				</div>
+
+				<div class="col-xs-2 col-md-2 " style="margin: 5px 0px 5px 0px; text-align:start;">
+					<button type="button" class="btn btn-primary" onClick="inviting()">Invite</button>
+				</div>
 
 			</div>
-			<div class="col-md-4 ">
-				<button type="button" class="btn btn-primary" onClick="inviting()">Invite</button>
-			</div>
-			</div>
 
 
-			<%-- <select id='custom-headers' multiple='multiple' id="inviting"
-				name="inviting[]">
-				<c:forEach var="user" items="${userseq}">
-					<option value='${user.id }'>${user.id }</option>
 
-				</c:forEach>
-			</select> --%>
 			<hr>
-			
-			
 			<div class="row ">
-			
+
+				<div class="col-xs-12 col-lg-6 col-xl-6">
+					<div class="center card" style="align-items: center;">
+						<table>
+							<thead>
+
+								<tr
+									style="background-color: rgb(59, 63, 81); color: white; height: 35px;">
+									<th style="text-align: center;" scope="col">Room No.
+										${roomid.idroom} ${roomid.room_name}</th>
+
+								</tr>
+							</thead>
+						</table>
+						<div
+							style="height: 200px; overflow-y: auto; backgroud-color: red;">
+							<table id="table2" class="table">
+
+
+								<tbody>
+									<c:forEach var="list" items="${AllMeetperDay}">
+										<fmt:formatDate type="date" value="${list.time_end}"
+											pattern="HH:mm" var="end" />
+										<fmt:formatDate type="date" value="${list.time_start}"
+											pattern="HH:mm" var="start" />
+										<c:if test="${list.idroom==roomid.idroom}">
+											<tr>
+												<c:if test="${list.idmeeting==Mlist[0].idmeeting}">
+													<td class="bg-success owner" style="text-align: center;"
+														id="count"><i class="fa fa-clock-o"
+														aria-hidden="true"></i><b> ${start}น.-${end}น.</b></td>
+												</c:if>
+												<c:if test="${list.idmeeting!=Mlist[0].idmeeting}">
+													<td style="text-align: center;" id="count"><i
+														class="fa fa-clock-o" aria-hidden="true"></i><b>
+															${start}น.-${end}น.</b></td>
+												</c:if>
+											</tr>
+										</c:if>
+									</c:forEach>
+								</tbody>
+
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-xs-12 col-lg-6 col-xl-6">
+					<div class="center card" style="align-items: center;">
+						<table>
+							<thead>
+
+								<tr
+									style="background-color: rgb(59, 63, 81); color: white; height: 35px;">
+									<th style="text-align: center;" scope="col">Invited</th>
+									<th style="text-align: center; width: 20px;" scope="col"></th>
+
+								</tr>
+
+							</thead>
+						</table>
+						<div
+							style="height: 200px; overflow-y: auto; backgroud-color: red;">
+							<table id="table" class="table">
+
+								<tbody>
+									<c:forEach var="invitedList" items="${Mlist}">
+										<tr>
+
+											<td style="text-align: center;">${invitedList.member }</td>
+											<td style="text-align: center;"><a
+												class="btn circle btn-outline btn-sm sbold red"
+												<%-- href="TrainDelete?id=${train.id}" --%>
+										onclick="del(${invitedList.idinvite});"
+												title="delete invited"> <i class="fa fa-trash"></i>
+											</a></td>
+
+										</tr>
+
+
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+				</div>
+
+
+
 			</div>
 			<br>
-			<div>
+
+
+			<hr>
+
+
+			<div class="row "></div>
+			<br>
+			<div style="text-align: center;">
 				<button id="cancel" type="button" class="btn btn-secondary"
-					 onClick="Cancel()">Cancel</button>
+					onClick="Cancel()">Cancel</button>
 				<button id="btnReserve" type="button" class="btn btn-primary"
 					onClick="Edit()">Save</button>
-			</div> 
+			</div>
 		</div>
 
-	
+
 	</div>
-	
+
 
 
 
@@ -454,15 +513,16 @@ $('#custom-headers').multiSelect({
 	  afterDeselect: function(){
 	    this.qs1.cache();
 	    this.qs2.cache();
-	  },
+	  }, keepOrder: true 
 	  /* แสดงค่า */
-	  /* afterSelect: function(values){
+	   /* afterSelect: function(values){
 		   
 		    $('#inviting option[value="'+value+'"]').remove();
 	        $('#inviting').append($("<option></option>").attr("value",value).attr('ms-selected', 'ms-selected'));
-		  } */
+		  }  */
 	  
-	});
+	}
+	  );
 	
 
 </script>
@@ -539,8 +599,119 @@ function Edit() {
 	
 
 
+	 function test(){
+		 var member=[]; 
+		 $('select[name="inviting[]"] option:selected').each(function() {
+			 member.push($(this).val());
+		 }); 
+		 
+		 swal(
+					{
+						title : "Pass",
+						text : "Saved Succcess",
+						type : "success"
+					},
+					 function() {
+						 location.reload();
+					} );
+	} 
+	
+	
 	 
-	 
+	
+</script>
+<script>
+function del(meetingid) {
+	var meetingid = meetingid;
+	
+	swal({
+	      title: "Are you sure!",
+	      text: "You will be deleting this training!",
+	      type: "warning",
+	      showCancelButton: true,
+	      confirmButtonClass: 'btn-danger',
+	      confirmButtonText: 'OK'
+	    }, function (inputValue) {
+	        if (inputValue == false){
+	        	//console.log("canceled");
+	        	return false;
+	        	}
+	        if (inputValue == true) {
+	        	 $.ajax({
+	 				    url : "Invited_Delete.action",
+	 					data : "meetingid="+ meetingid,
+	 					type : "POST",
+	 					success : function(response) {
+	 						window.location.reload(true);
+	 					}
+	 			 });
+	          return false
+	        }
+	      });
+}
+
+
+
 
 </script>
 
+<script>
+$(document).ready(function() {
+
+	var value = "${flag}";
+	
+	if (value == 1) {
+
+		swal('Please Check!', ' Leave type ID  is duplicate', 'warning');
+	}
+});
+$(document).ready(function() {
+
+	var value = "${flag2}";
+	if (value == 1) {
+
+		swal('Please Check!', ' Leave type name  is duplicate', 'warning');
+	}
+});
+
+
+function s(sel) {
+	// alert(sel.value) ;
+	var userId = $('#userId1').val();
+
+	$.ajax({
+		type : 'POST',
+		url : "${pageContext.request.contextPath}/search_select",
+		data : {
+			"userId" : userId
+		},
+	}).done(function(data) {
+		//console.log(data);
+		console.log($('.test').html(data));
+	}).fail(function() {
+		//alert("เกิดข้อผิดพลาด");
+	});
+}
+
+/* $(document).ready(function() {
+    $('#table').DataTable( {
+    	
+    	"searching": false,
+        "scrollY":        "40vh",
+        "scrollCollapse": true,
+        "paging":         false,
+        "info": false
+    } );
+} );
+$(document).ready(function() {
+    $('#table2').DataTable( {
+    	
+    	"searching": false,
+        "scrollY":        "40vh",
+        "scrollCollapse": true,
+        "paging":         false,
+        "info": false,
+        
+    } );
+} ); */
+</script>

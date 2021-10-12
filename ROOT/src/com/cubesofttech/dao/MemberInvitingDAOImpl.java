@@ -41,12 +41,12 @@ public class MemberInvitingDAOImpl implements MemberInvitingDAO {
 		return faqJoin;
 	}
 	@Override
-	public List<Map<String, Object>> findAll2() throws Exception {
+	public List<Map<String, Object>> findAll2(Integer idmeeting) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 
 		List<Map<String, Object>> faqJoin = null;
 		try {
-			String sql = "SELECT inviting.idinvite, inviting.member, meeting.time_start, meeting.time_end FROM inviting INNER JOIN meeting ON inviting.idmeeting = meeting.idmeeting";
+			String sql = "SELECT * FROM member_inviting  idmeeting ='"+idmeeting+"'";
 
 			// System.out.println("SQL: " + sql);
 			SQLQuery query = session.createSQLQuery(sql);
@@ -57,6 +57,39 @@ public class MemberInvitingDAOImpl implements MemberInvitingDAO {
 			e.printStackTrace();
 		}
 		return faqJoin;
+	}
+	@Override
+	public List<Map<String, Object>> findmember(String member) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> Member = null;
+		try {
+			String sql = " SELECT member FROM member_inviting WHERE member = '"+member+"' ";
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("Member",Member);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			Member = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return Member;		
+		
+	}
+	
+	@Override
+	public List<Map<String, Object>> findmemberId(Integer idmeeting) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> idMeeting = null;
+		try {
+			String sql = " SELECT idmeeting FROM member_inviting WHERE  idmeeting = '"+idmeeting+"'";
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("idmeeting",idmeeting);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			idMeeting = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return idMeeting;		
+		
 	}
 	
 	

@@ -242,7 +242,7 @@
 										</tr>
 									</thead>
 									<c:forEach var="list" items="${AllMeetperDay}">
-
+										
 										<c:if test="${list.idroom==amount.idroom}">
 											<c:if test="${list.time_start>a}">
 												<tr class="bg-success owner" height="41">
@@ -536,7 +536,7 @@
 //////////////////////////////////////////////
 	function check(){
 	 var y=0;
-	 var check;
+	 var check= true;
 	 console.log(id.length-1);
 	while(y<=id.length-1){
 		check=true;
