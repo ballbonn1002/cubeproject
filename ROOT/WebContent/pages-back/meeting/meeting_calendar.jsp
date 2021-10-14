@@ -101,7 +101,7 @@ a.fc-day-grid-event .fc-h-event{
 			<a href="javascript:;" class="reload" data-original-title="" title=""></a>
 			<a href="javascript:;" class="remove" data-original-title="" title=""></a>
 		</div>
-		<perm:permission object="training.view">
+		<c:if test="${role=='member'}">
 		<div class="row " style="margin-left: 45px; margin-right: 5px;padding-bottom: 15px; padding-top: 15px; text-align: center;">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 portlet light bordered" id="todaybox" style="margin-right: 50px;">
 				<div class="portlet light">
@@ -167,7 +167,7 @@ a.fc-day-grid-event .fc-h-event{
 			</div>
 		</div> <!-- END row -->
 
-		</perm:permission>
+		</c:if>
 		
 		<div class="portlet-body">
 			<div class="portlet-body">

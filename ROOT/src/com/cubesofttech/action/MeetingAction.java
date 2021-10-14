@@ -56,6 +56,8 @@ public class MeetingAction extends ActionSupport {
 	public String List1() {
 		try {
 			checkFlag = "0";
+			String role = request.getParameter("role");
+			request.setAttribute("role", role);
 			String date = request.getParameter("date");
 			String date2 = request.getParameter("date2");
 			if (date != null) {

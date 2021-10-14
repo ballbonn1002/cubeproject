@@ -118,7 +118,7 @@
 
 				<div class="col-xs-8 col-md-4" style="margin: 5px 0px 5px 0px; ">
 					<select class="bs-select form-control select2me  " id="user"
-						name="inviting" id="inviting" onchange="s(this);">
+						name="inviting" id="inviting" onchange="findPeople(this);">
 
 						<c:forEach var="user" items="${userseq}">
 
@@ -293,6 +293,7 @@ $(document).ready(function () {
 		  } 
 		   else{
 			   time_start=$('#time_start').val();
+			   time_end=$('#time_end').val();
 			   console.log(time_start);
 			   check();
 		   } 
@@ -312,6 +313,7 @@ $(document).ready(function () {
 			   document.getElementById("btnReserve").disabled = true;
 		  } 
 		   else{
+			   time_start=$('#time_start').val();
 			   time_end=$('#time_end').val();
 			   console.log(time_end);
 			   check();
@@ -416,21 +418,26 @@ $(document).ready(function () {
 
 		
 		<c:forEach var="room" items="${checkRoomToday}">
+		if('${room.time_start}'.substring(0,5)!='${time_start}'){
 		  id.push(${room.idroom});
 		  var start='${room.time_start}'.substring(0,5);
 		  s.push(start);
 		  var end='${room.time_end}'.substring(0,5);
 		  e.push(end);
+		  }
 		</c:forEach>
-		
+	
 //////////////////////////////////////////////
 		function check(){
 		 var y=0;
 		 var check;
 		 console.log(id.length-1);
+		 
 		while(y<=id.length-1){
 			check=true;
+			  console.log(s);
 			 if(id[y]==roomSelect){
+				 console.log(time_start+" "+time_end);
 				if(time_start<s[y]&&time_end<=s[y]){
 					check=true;
 					console.log("IF Up "+s[y]);
@@ -677,7 +684,7 @@ $(document).ready(function() {
 });
 
 
-function s(sel) {
+function findPeople(sel) {
 	// alert(sel.value) ;
 	var userId = $('#userId1').val();
 

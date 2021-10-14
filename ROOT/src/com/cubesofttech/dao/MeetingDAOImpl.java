@@ -192,8 +192,8 @@ public class MeetingDAOImpl implements MeetingDAO{
 			    
         	
 			
-			  String sql = "SELECT meeting.idmeeting,meeting.date,meeting.time_start,meeting.time_end,member_inviting.member,member_inviting.idinvite " +
-			  "FROM meeting LEFT JOIN member_inviting ON meeting.idmeeting=member_inviting.idmeeting " +
+			  String sql = "SELECT meeting.idmeeting,meeting.date,meeting.time_start,meeting.time_end,inviting.member,inviting.idinvite " +
+			  "FROM meeting LEFT JOIN inviting ON meeting.idmeeting=inviting.idmeeting " +
 			  "WHERE meeting.idmeeting= '"+idmeeting+"'";
 			 
 
