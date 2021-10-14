@@ -179,7 +179,7 @@
 
 		<div class="caption">
 			<i class="icon-layers font-red"></i> <span id="ss"
-				class="caption-subject font-red sbold uppercase">Room ${date_cal}</span>
+				class="caption-subject font-red sbold uppercase">Room ${date_cal} </span>
 			<c:set var="s" value="<%=new java.util.Date()%>" />
 			<fmt:formatDate var="a" pattern="HH:mm" value="${s}" />
 			<fmt:formatDate var="datetoday" pattern="yyyy-MM-dd" value="${s}" />
@@ -231,7 +231,8 @@
 											<th height="41"><center>Room No.
 													${amount.idroom} ${amount.room_name}</center></th>
 											<c:if test="${date_cal>=datetoday}">
-												<th style="width: 37px;"><a id="icon"
+												<th style="width: 37px;"><c:if test="${date_cal>=datetoday}">
+												<a id="icon"
 													class="btn btn-light" data-toggle="modal"
 													data-target="#Reserve" data-backdrop="static"
 													data-keyboard="false" onClick="Reserve(${amount.idroom})">
@@ -239,7 +240,7 @@
 
 														<i class="fa fa-plus"></i>
 
-												</a></th>
+												</a></c:if></th>
 											</c:if>
 											
 											<c:if test="${date_cal<datetoday}">
@@ -479,8 +480,26 @@
 								id="time_end" name="time_end" style="text-align: center;"
 								readonly />
 							<button type="button" class="btn btn-warning" onClick="Reset()">Reset</button>
+						
+						<c:if test="${onlineUser.roleId=='HR' || onlineUser.roleId=='admin'}">
+							<div style="margin-top:20px;">
+							<label><b>Reserve By</b></label>
+								<select class="bs-select form-control select2me" id="user">
+									
+									 <c:forEach var="user" items="${userseq}">
+									 <option  value="${user.id}"
+									<c:if test="${fn:toLowerCase(user.id) == onlineUser.id}">
+									 selected</c:if>
+									>${user.department_id} - ${user.name}
+									
+									</option>
+									</c:forEach> 
+
+								</select>
+							</div>
+							</c:if>
+							
 							<hr>
-							<div></div>
 						</div>
 						<div class="modal-footer">
 							<button id="cancel" type="button" class="btn btn-secondary"
@@ -574,6 +593,7 @@
 					  } 
 					   else{
 						   time_start=$('#time_start').val();
+						   time_end=$('#time_end').val();
 						   console.log(time_start);
 						   check();
 					   } 
@@ -593,6 +613,7 @@
 						  /*  document.getElementById("btnReserve").disabled = tru */e;
 					  } 
 					   else{
+						   time_start=$('#time_start').val();
 						   time_end=$('#time_end').val();
 						   console.log(time_end);
 						   check();
@@ -813,12 +834,21 @@ function invite(f){
 
 <script>
 function confirm() {
-	
+	var userReserve='${onlineUser.id}';
+	<c:if test="${onlineUser.roleId=='HR' || onlineUser.roleId=='admin'}">
+	if($('#user').val()!=null){
+		userReserve=$('#user').val();
+	}
+	else{
+		userReserve='${onlineUser.id}';
+	}
+	</c:if>
 	var a = time_start;
 	var b = time_end;
 	var c=0;
 	document.getElementById("cancel").click();
 	console.log(a+" "+b);
+	console.log(userReserve);
 	swal({
 	      title: "Are you sure!",
 	      text: "You will be reserve this room!",
@@ -838,7 +868,7 @@ function confirm() {
 	 						"time_start": a,
 	 						"time_end": b,
 	 						"dateData":"${date_cal}",
-	 						"user_reserve":"${onlineUser.id}",
+	 						"user_reserve":userReserve,
 	 						"idroom":roomSelect
 	 					}
 	 			 }
@@ -981,5 +1011,4 @@ $(function(){
 var search = new URLSearchParams(window.location.search);
  var date_cal = search.get('date_cal'); 
 
- alert(date_cal)
 </script>
