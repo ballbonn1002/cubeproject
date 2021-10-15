@@ -10,15 +10,15 @@ import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.cubesofttech.model.MemberInviting;
+import com.cubesofttech.model.Inviting;
 @Repository
-public class MemberInvitingDAOImpl implements MemberInvitingDAO {
+public class InvitingDAOImpl implements InvitingDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 	@Override
-	public MemberInviting findById(Integer idinviting) throws Exception {
+	public Inviting findById(Integer idinviting) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
-		MemberInviting invite = (MemberInviting) session.get(MemberInviting.class, idinviting);
+		Inviting invite = (Inviting) session.get(Inviting.class, idinviting);
 		return invite;
 	}
 
@@ -76,7 +76,7 @@ public class MemberInvitingDAOImpl implements MemberInvitingDAO {
 	}
 	
 	@Override
-	public List<Map<String, Object>> findmemberId(Integer idmeeting) throws Exception {
+	public List<Map<String, Object>> findmemberId(String idmeeting) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Map<String, Object>> idMeeting = null;
 		try {
@@ -95,7 +95,7 @@ public class MemberInvitingDAOImpl implements MemberInvitingDAO {
 	
 
 	@Override
-	public void save(MemberInviting inviting) throws Exception {
+	public void save(Inviting inviting) throws Exception {
 		System.out.println("test");
 		Session session = this.sessionFactory.getCurrentSession();
 		session.save(inviting);
@@ -104,7 +104,7 @@ public class MemberInvitingDAOImpl implements MemberInvitingDAO {
 	}
 
 	@Override
-	public void update(MemberInviting inviting) throws Exception {
+	public void update(Inviting inviting) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.update(inviting);
 		session.flush();
@@ -112,7 +112,7 @@ public class MemberInvitingDAOImpl implements MemberInvitingDAO {
 	}
 
 	@Override
-	public void delete(MemberInviting inviting) throws Exception {
+	public void delete(Inviting inviting) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.delete(inviting);
 		session.flush();

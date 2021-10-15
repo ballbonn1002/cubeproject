@@ -312,10 +312,7 @@
 																	<li><a
 																		href="Edit_Meeting?meetingid=${list.idmeeting}&roomid=${amount.idroom}&date_cal=${date_cal}">Edit
 																			and Invite</a></li>
-																	 <li><a data-toggle="modal" data-target="#Edit"
-																		data-backdrop="static" data-keyboard="false"
-																		onClick="Edit(${amount.idroom},${list.idmeeting},'${time_start}','${time_end}')">
-																			Edit</a></li>
+																	 
 																	<%-- <li><a data-toggle="modal"
 																		data-target="#Inviting-room${amount.idroom}-idmeeting"
 																		data-backdrop="static" data-keyboard="false"
@@ -419,16 +416,10 @@
 																<ul class="dropdown-menu  pull-right  "
 																	aria-labelledby="dropdownMenu${list.idroom}">
 																	<li><a
-																		href="Edit_Room?meetingid=${list.idmeeting}&roomid=${amount.idroom}&date_cal=${date_cal}">Edit
+																		href="Edit_Meeting?meetingid=${list.idmeeting}&roomid=${amount.idroom}&date_cal=${date_cal}">Edit
 																			and Invite</a></li>
-																	 <li><a data-toggle="modal" data-target="#Edit"
-																		data-backdrop="static" data-keyboard="false"
-																		onClick="Edit(${amount.idroom},${list.idmeeting},'${time_start}','${time_end}')">
-																			Edit</a></li>
-																	<%-- <li><a data-toggle="modal"
-																		data-target="#Inviting-room${amount.idroom}-idmeeting"
-																		data-backdrop="static" data-keyboard="false"
-																		onClick="inviting(${amount.idroom},${list.idmeeting},'${time_start}','${time_end}')">Invite</a></li> --%> 
+																	 
+																	
 																	<li><a onclick="del(${list.idmeeting},);">Delete</a></li>
 																	
 
@@ -648,6 +639,7 @@
 		  var end='${room.time_end}'.substring(0,5);
 		  e.push(end);
 		</c:forEach>
+		 console.log(s,e);
 		/*Open Modal Reserve  */
 		 $("#"+x).clone().appendTo('.modal-body');
 		$(".modal-body").find("#icon").remove().end().find("#owner").remove();
@@ -1010,5 +1002,6 @@ $(function(){
 <script>
 var search = new URLSearchParams(window.location.search);
  var date_cal = search.get('date_cal'); 
+
 
 </script>

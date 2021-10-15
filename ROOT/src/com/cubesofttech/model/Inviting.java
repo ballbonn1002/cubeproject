@@ -9,8 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
-@Table(name = "member_inviting")
-public class MemberInviting implements Serializable{
+@Table(name = "inviting")
+public class Inviting implements Serializable{
 	/**
 	 * 
 	 */

@@ -116,7 +116,7 @@
 
 				</div>
 
-				<div class="col-xs-8 col-md-4" style="margin: 5px 0px 5px 0px; ">
+				<div class="col-xs-8 col-md-4" style="margin: 5px 0px 5px 0px;">
 					<select class="bs-select form-control select2me  " id="user"
 						name="inviting" id="inviting" onchange="findPeople(this);">
 
@@ -139,7 +139,8 @@
 					</select>
 				</div>
 
-				<div class="col-xs-2 col-md-2 " style="margin: 5px 0px 5px 0px; text-align:start;">
+				<div class="col-xs-2 col-md-2 "
+					style="margin: 5px 0px 5px 0px; text-align: start;">
 					<button type="button" class="btn btn-primary" onClick="inviting()">Invite</button>
 				</div>
 
@@ -169,7 +170,7 @@
 
 
 								<tbody>
-								
+
 									<c:forEach var="list" items="${AllMeetperDay}">
 										<fmt:formatDate type="date" value="${list.time_end}"
 											pattern="HH:mm" var="end" />
@@ -190,7 +191,7 @@
 											</tr>
 										</c:if>
 									</c:forEach>
-									
+
 								</tbody>
 
 							</table>
@@ -221,11 +222,11 @@
 										<tr>
 											<td style="text-align: center;">${invitedList.member}</td>
 											<c:if test="${invitedList.member!=null}">
-											<td style="text-align: center;">
-												<a class="btn circle btn-outline btn-sm sbold red" onclick="del(${invitedList.idinvite});">
-													<i class="fa fa-trash"></i>
-												</a>
-											</td>
+												<td style="text-align: center;"><a
+													class="btn circle btn-outline btn-sm sbold red"
+													onclick="del(${invitedList.idinvite});"> <i
+														class="fa fa-trash"></i>
+												</a></td>
 											</c:if>
 										</tr>
 
@@ -251,7 +252,7 @@
 			<br>
 			<div style="text-align: center;">
 				<button id="cancel" type="button" class="btn btn-secondary"
-					onClick="Cancel()">Cancel</button>
+					onClick="cancle()">Cancel</button>
 				<button id="btnReserve" type="button" class="btn btn-primary"
 					onClick="Edit()">Save</button>
 			</div>
@@ -266,147 +267,73 @@
 
 
 </div>
-<script>
-
-$(document).ready(function () {
-	var opt={
-			pickDate: false,
-		    minuteStep: 15,
-		    pickerPosition: 'bottom-right',
-		    format: 'hh:ii',
-		    autoclose: true,
-		    showMeridian: false,
-		    startView: 1,
-		    pick12HourFormat: false
-		    };
-	  $('#time_start').datetimepicker(opt).on('change', function(){
-		  
-		  if($('#time_end').val()==""){
-	        time_start=$('#time_start').val();
-	        console.log(time_start);
-		  }
-		    else if($('#time_start').val()>=$('#time_end').val()){
-			   $('#time_start').val("");
-			   $('#time_start').datetimepicker('update');
-			   toast2();
-			   document.getElementById("btnReserve").disabled = true;
-		  } 
-		   else{
-			   time_start=$('#time_start').val();
-			   time_end=$('#time_end').val();
-			   console.log(time_start);
-			   check();
-		   } 
-		  
-		  
-	    });
-	  $('#time_end').datetimepicker(opt).on('change', function(){
-		  if($('#time_start').val()==""){
-	        time_end=$('#time_end').val();
-	        console.log(time_end);
-		  }
-		    else if($('#time_end').val()<=$('#time_start').val()){
-			   $('#time_end').val("");
-			   time_end=$('#time_end').val();
-			   $('#time_end').datetimepicker('update');
-			   toast2();
-			   document.getElementById("btnReserve").disabled = true;
-		  } 
-		   else{
-			   time_start=$('#time_start').val();
-			   time_end=$('#time_end').val();
-			   console.log(time_end);
-			   check();
-			   
-		   } 
-	    });
-	  $(".datetimepicker").find('thead th').remove();
-	  $(".datetimepicker").find('thead').append($('<th class="switch">').text('Select Your Time'));
-	   $('.switch').css('width','190px'); 
-	   $(".datetimepicker").find('thead th').onclick=false;
-	  
-});
-
-	function toast(){
-		Command: toastr["warning"]("Sorry,This time has already been spent!", "Warning")
-
-		toastr.options = {
-		  "closeButton": false,
-		  "debug": false,
-		  "newestOnTop": false,
-		  "progressBar": true,
-		  "positionClass": "toast-top-right",
-		  "preventDuplicates": false,
-		  "onclick": null,
-		  "showDuration": "300",
-		  "hideDuration": "1000",
-		  "timeOut": "3000",
-		  "extendedTimeOut": "1000",
-		  "showEasing": "swing",
-		  "hideEasing": "linear",
-		  "showMethod": "fadeIn",
-		  "hideMethod": "fadeOut"
-		}
-}
-	function toast2(){
-		Command: toastr["error"]("Your Time is Wrong!", "Error")
-
-		toastr.options = {
-		  "closeButton": false,
-		  "debug": false,
-		  "newestOnTop": false,
-		  "progressBar": true,
-		  "positionClass": "toast-top-right",
-		  "preventDuplicates": false,
-		  "onclick": null,
-		  "showDuration": "300",
-		  "hideDuration": "1000",
-		  "timeOut": "3000",
-		  "extendedTimeOut": "1000",
-		  "showEasing": "swing",
-		  "hideEasing": "linear",
-		  "showMethod": "fadeIn",
-		  "hideMethod": "fadeOut"
-		}
-}
-	function toast3(){
-		Command: toastr["success"]("You can use this time.", "Good time")
-
-		toastr.options = {
-		  "closeButton": false,
-		  "debug": false,
-		  "newestOnTop": false,
-		  "progressBar": true,
-		  "positionClass": "toast-top-right",
-		  "preventDuplicates": false,
-		  "onclick": null,
-		  "showDuration": "300",
-		  "hideDuration": "1000",
-		  "timeOut": "3000",
-		  "extendedTimeOut": "1000",
-		  "showEasing": "swing",
-		  "hideEasing": "linear",
-		  "showMethod": "fadeIn",
-		  "hideMethod": "fadeOut"
-		}
-	
-	
-}
-//////////////////////////////////////////////
-
-
+<script> 
+			$(document).ready(function () {
+				///////////////POPOVER//////////////
+				
+				///////////////POPOVER//////////////
+				var opt={
+						pickDate: false,
+					    minuteStep: 15,
+					    pickerPosition: 'bottom-right',
+					    format: 'hh:ii',
+					    autoclose: true,
+					    showMeridian: false,
+					    startView: 1,
+					    pick12HourFormat: false
+					    };
+				  $('#time_start').datetimepicker(opt).on('change', function(){
+					  
+					  if($('#time_end').val()==""){
+				        time_start=$('#time_start').val();
+				        console.log(time_start);
+					  }
+					    else if($('#time_start').val()>=$('#time_end').val()){
+						   $('#time_start').val("");
+						   $('#time_start').datetimepicker('update');
+						   toast2();
+						   document.getElementById("btnReserve").disabled = true;
+					  } 
+					   else{
+						   time_start=$('#time_start').val();
+						   console.log(time_start);
+						   check();
+					   } 
+					  
+					  
+				    });
+				  $('#time_end').datetimepicker(opt).on('change', function(){
+					  if($('#time_start').val()==""){
+				        time_end=$('#time_end').val();
+				        console.log(time_end);
+					  }
+					    else if($('#time_end').val()<=$('#time_start').val()){
+						   $('#time_end').val("");
+						   time_end=$('#time_end').val();
+						   $('#time_end').datetimepicker('update');
+						   toast2();
+						  /*  document.getElementById("btnReserve").disabled = tru */e;
+					  } 
+					   else{
+						   time_end=$('#time_end').val();
+						   console.log(time_end);
+						   check();
+						   
+					   } 
+				    });
+				  $(".datetimepicker").find('thead th').remove();
+				  $(".datetimepicker").find('thead').append($('<th class="switch">').text('Select Your Time'));
+				   $('.switch').css('width','190px'); 
+				   $(".datetimepicker").find('thead th').onclick=false;
+				  
+			});
 </script>
 
 <script>
 
 
 		
-		var count = $("tr #count").length; //5
 		
-		/* $("tr #count").each(function(){
-			alert("in");
-			
-		})  */
 		var time_end;
 		var time_start;
 		var id=[];
@@ -426,6 +353,7 @@ $(document).ready(function () {
 		  e.push(end);
 		  }
 		</c:forEach>
+		 console.log(s,e);
 	
 //////////////////////////////////////////////
 		function check(){
@@ -473,6 +401,72 @@ $(document).ready(function () {
 			
 		}
 		
+		function toast(){
+			Command: toastr["warning"]("Sorry,This time has already been spent!", "Warning")
+
+			toastr.options = {
+			  "closeButton": false,
+			  "debug": false,
+			  "newestOnTop": false,
+			  "progressBar": true,
+			  "positionClass": "toast-top-right",
+			  "preventDuplicates": false,
+			  "onclick": null,
+			  "showDuration": "300",
+			  "hideDuration": "1000",
+			  "timeOut": "3000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+			}
+	}
+		function toast2(){
+			Command: toastr["error"]("Your Time is Wrong!", "Error")
+
+			toastr.options = {
+			  "closeButton": false,
+			  "debug": false,
+			  "newestOnTop": false,
+			  "progressBar": true,
+			  "positionClass": "toast-top-right",
+			  "preventDuplicates": false,
+			  "onclick": null,
+			  "showDuration": "300",
+			  "hideDuration": "1000",
+			  "timeOut": "3000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+			}
+	}
+		function toast3(){
+			Command: toastr["success"]("You can use this time.", "Good time")
+
+			toastr.options = {
+			  "closeButton": false,
+			  "debug": false,
+			  "newestOnTop": false,
+			  "progressBar": true,
+			  "positionClass": "toast-top-right",
+			  "preventDuplicates": false,
+			  "onclick": null,
+			  "showDuration": "300",
+			  "hideDuration": "1000",
+			  "timeOut": "3000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+			}
+		
+		
+	}
+	//////////////////////////////////////////////
 </script>
 
 
@@ -572,57 +566,72 @@ function Edit() {
 			})
 	 }
 	
-	function inviting(){
+	 function inviting(){
+		
+		var invited=[];
+
+		<c:forEach var="invitedList" items="${Mlist}">
+		console.log('${invitedList.member}')
+		console.log('${invitedList.idmeeting}')
+		 var M='${invitedList.member}'.substring(0,5);
+		invited.push(M);
+		 
+		</c:forEach>
+		console.log(invited)
 		
 		var member = $("select[name=inviting]").val();
 		var idmeeting= ${Mlist[0].idmeeting};
 		
-		 /* window.location.href='Invite_member'; */
-		  $.ajax({
-			type : "JSON",
-			method: 'POST',
-		    url : "Invite_member",
-			data : {
-				"member":  member,
-				"idmeeting":idmeeting,
-				},
-				success : function(data) {
+		if(!invited.includes(member)){
+			
+			$.ajax({
+				type : "JSON",
+				method: 'POST',
+			    url : "Invite_member",
+				data : {
+					"member":  member,
+					"idmeeting":idmeeting,
+					},
+					success : function(data) {
+						
+						swal(
+								{
+									title : "Pass",
+									text : "Invite Succcess",
+									type : "success"
+								},
+								 function() {
+									 location.reload();
+								} );
+					}
 					
-					swal(
-							{
-								title : "Pass",
-								text : "Saved Succcess",
-								type : "success"
-							},
-							 function() {
-								 location.reload();
-							} );
-				}
-				
-			}); 
+				}); 
 			
 			
-		
-	}
-	
-
-
-	 function test(){
-		 var member=[]; 
-		 $('select[name="inviting[]"] option:selected').each(function() {
-			 member.push($(this).val());
-		 }); 
-		 
-		 swal(
+		}else{
+			
+			swal(
 					{
-						title : "Pass",
-						text : "Saved Succcess",
-						type : "success"
+						title : "Error",
+						text : "This member was invited",
+						type : "error"
 					},
 					 function() {
 						 location.reload();
 					} );
+			
+		}
+			 
+		 
+		  
+			
+			
+		
 	} 
+	
+
+
+	
 	
 	
 	 
@@ -665,23 +674,6 @@ function del(meetingid) {
 
 <script>
 
-$(document).ready(function() {
-
-	var value = "${flag}";
-	
-	if (value == 1) {
-
-		swal('Please Check!', ' Leave type ID  is duplicate', 'warning');
-	}
-});
-$(document).ready(function() {
-
-	var value = "${flag2}";
-	if (value == 1) {
-
-		swal('Please Check!', ' Leave type name  is duplicate', 'warning');
-	}
-});
 
 
 function findPeople(sel) {
@@ -724,3 +716,10 @@ $(document).ready(function() {
     } );
 } ); */
 </script>
+<script>
+	function cancle() {
+		location.href = "javascript:history.back()";
+	};
+	
+</script>
+

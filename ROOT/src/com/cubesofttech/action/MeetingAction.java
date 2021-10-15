@@ -19,10 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 import com.cubesofttech.dao.MeetingDAO;
-import com.cubesofttech.dao.MemberInvitingDAO;
+import com.cubesofttech.dao.InvitingDAO;
 import com.cubesofttech.dao.RoomDAO;
 import com.cubesofttech.dao.UserDAO;
-import com.cubesofttech.model.MemberInviting;
+import com.cubesofttech.model.Inviting;
 import com.cubesofttech.model.Meeting;
 import com.cubesofttech.model.Room;
 import com.cubesofttech.model.Training;
@@ -50,7 +50,7 @@ public class MeetingAction extends ActionSupport {
 	private UserDAO userDAO;
 	
 	@Autowired
-	private MemberInvitingDAO memberInvitingDAO;
+	private InvitingDAO invitingDAO;
 	
 
 	public String List1() {
@@ -74,7 +74,7 @@ public class MeetingAction extends ActionSupport {
 			request.setAttribute("user1", userlist);
 			List<Map<String, Object>> meetinglist = meetingDAO.findAll_calendar();
 			request.setAttribute("meetinglist", meetinglist);
-			List<Map<String, Object>> invite = memberInvitingDAO.findAll();
+			List<Map<String, Object>> invite = invitingDAO.findAll();
 			request.setAttribute("invite", invite);
 			List<Map<String, Object>> Roomlist = roomDAO.findAll();
 			request.setAttribute("Roomlist", Roomlist);
@@ -368,7 +368,7 @@ public class MeetingAction extends ActionSupport {
 	
 	public String inviting_add() {
 		System.out.println("test inviting");
-		MemberInviting inviting =new MemberInviting(); 
+		Inviting inviting =new Inviting(); 
         try {
 
         String Id = request.getParameter("idmeeting");
@@ -406,7 +406,7 @@ public class MeetingAction extends ActionSupport {
         System.out.println("k1");
         inviting.setIdmeeting(idedit);
         System.out.println("k2");
-        memberInvitingDAO.save(inviting);
+        invitingDAO.save(inviting);
         System.out.println("k3");
         
         
@@ -425,10 +425,10 @@ public class MeetingAction extends ActionSupport {
 			String meetingid = request.getParameter("meetingid");
 			System.out.println(meetingid);
 			Integer idValue = Integer.valueOf(meetingid);
-			MemberInviting invited = memberInvitingDAO.findById(idValue);
+			Inviting invited = invitingDAO.findById(idValue);
 			System.out.println(invited);
 			
-			memberInvitingDAO.delete(invited);
+			invitingDAO.delete(invited);
 			return SUCCESS;
 
 		} catch (Exception e) {
