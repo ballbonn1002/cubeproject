@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" session="true" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
@@ -52,13 +52,47 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" />
-<link href="../assets/global/css/line-login.css" rel="stylesheet"
-	type="text/css" />
+		<link href="../assets/global/css/line-login.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
          </head>
     <!-- END HEAD -->
 
     <body class=" login">
-    <fmt:setLocale value="en_US" scope="session" />
+    <%
+    	/*Collect Value Cookies*/
+	    Cookie[] cookies=request.getCookies();
+	    String userlogin = "", password = "", md5Password = "", rememberVal="";
+	    if (cookies != null) {
+	         for (Cookie cookie : cookies) {
+	           if(cookie.getName().equals("cookuser")) {
+	             userlogin = cookie.getValue();
+	           }
+	           /*if(cookie.getName().equals("cookpass")){
+	             password = cookie.getValue();
+	           }*/
+	           if(cookie.getName().equals("cookmd5")){
+		         md5Password = cookie.getValue();
+		       }
+	           if(cookie.getName().equals("cookrem")){
+	             rememberVal = cookie.getValue();
+	           }
+	        }
+	    } 
+	%>
+	<%
+		/*AutoLogin*/
+		/*if (request.getSession().getAttribute("username") != null) {
+			response.sendRedirect("check_in.action?userId=");
+		}*/
+		if(!rememberVal.isEmpty()){
+			response.sendRedirect("check_in.action?userId=");
+		}
+		/*AutoLogout after cookies expiration*/
+		if (rememberVal.isEmpty()) {
+			request.getSession().removeAttribute("username");
+		}
+	%>
+	<fmt:setLocale value="en_US" scope="session" />
         <!-- BEGIN : LOGIN PAGE 5-1 -->
         <div class="user-login-5">
             <div class="row bs-reset">
@@ -85,16 +119,17 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <span>Enter username and password. </span>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <input class="form-control form-control-solid placeholder-no-fix form-group" type="text" autocomplete="off" placeholder="Username" name="username" autofocus required/> </div>
-                                <div class="col-md-6">
-                                    <input class="form-control form-control-solid placeholder-no-fix form-group" type="password" autocomplete="off" placeholder="Password" name="password" required/> </div>
+                                <div class="col-md-5">
+                                    <input class="form-control form-control-solid placeholder-no-fix form-group" type="password" autocomplete="off" placeholder="Password" name="password" id="password-field" required/> </div>
+                                	<span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password" id="togglePassword"></span>          
                             </div>
 						<div class="row">
 							<div class="col-md-6">
 								<div class="rem-password">
 									<label class="rememberme mt-checkbox mt-checkbox-outline">
-										<input type="checkbox" name="remember" value="1" /> Remember
+										<input type="checkbox" name="remember-me" value="1" /> Remember
 										me <span></span>
 									</label>
 								</div>
@@ -281,12 +316,33 @@ License: You must have a valid license purchased only from themeforest(the above
 </c:if>
 
 <script>
-var input = document.getElementById("myInput");
-input.addEventListener("keyup", function(event) {
-  if (event.keyCode === 13) {
-   event.preventDefault();
-   document.getElementById("myBtn").click();
-  }
-});
+	var input = document.getElementById("myInput");
+	input.addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			document.getElementById("myBtn").click();
+		}
+	});
+</script>
+<script type="text/javascript">
+	//Show and Hide Password
+	/*function myFunction() {
+		var x = document.getElementById("myInput");
+		if (x.type === "password") {
+			x.type = "text";
+		} else {
+			x.type = "password";
+		}
+	}*/
+	$(".toggle-password").click(function() {
+
+		  $(this).toggleClass("fa-eye fa-eye-slash");
+		  var input = $($(this).attr("toggle"));
+		  if (input.attr("type") == "password") {
+		    input.attr("type", "text");
+		  } else {
+		    input.attr("type", "password");
+		  }
+		});
 </script>
 </html>

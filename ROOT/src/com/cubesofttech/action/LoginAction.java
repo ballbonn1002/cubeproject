@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -36,6 +38,7 @@ import com.cubesofttech.util.DateUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.opensymphony.xwork2.ActionSupport;
+import com.sun.glass.ui.Window;
 
 public class LoginAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
@@ -92,7 +95,7 @@ public class LoginAction extends ActionSupport {
 			if(id != null) {
 				User userFblogin = userDAO.findByFbId(id);
 				String xxxx = userFblogin.toString();
-				String[] vx = xxxx.split("=");	
+				String[] vx = xxxx.split("=");
 				String[] userloginDB = vx[1].split("}]");
 				if(userFblogin != null) {
 					log.debug(userloginDB[0]);
@@ -118,7 +121,53 @@ public class LoginAction extends ActionSupport {
 			return ERROR;
 		}
 	}
-
+	
+	public String autologin() {
+		try {
+			String userlogin = request.getParameter("username");
+			String md5Password = loginService.generateMD5(password);
+			if(request.getParameter("remember-me") != null) {
+				String remember = request.getParameter("remember-me");
+				Cookie cUserlogin = new Cookie("cookuser", userlogin);
+				
+				Cookie cMd5Password = new Cookie("cookmd5", md5Password);
+				Cookie cRemember = new Cookie("cookrem", remember);
+				cUserlogin.setMaxAge(60 * 60 * 24 * 15);
+				
+				cMd5Password.setMaxAge(60 * 60 * 24 * 15);
+				cRemember.setMaxAge(60 * 60 * 24 * 15);
+				response.addCookie(cUserlogin);
+				
+				response.addCookie(cRemember);
+				response.addCookie(cMd5Password);
+				/*if(request.isRequestedSessionIdFromCookie() == true) {
+					String userName=request.getParameter("username");
+					request.getSession().setAttribute("username",userName);
+				}*/
+				
+				
+			} else {
+				Cookie cUserlogin = new Cookie("cookuser", null);
+				
+				Cookie cMd5Password = new Cookie("cookmd5", null);
+				Cookie cRemember = new Cookie("cookrem", null);
+				cUserlogin.setMaxAge(0);
+				
+				cMd5Password.setMaxAge(0);
+				cRemember.setMaxAge(0);
+				response.addCookie(cUserlogin);
+				
+				response.addCookie(cMd5Password);
+				response.addCookie(cRemember);
+			}
+			login();
+			return SUCCESS;
+		} catch (Exception e) {
+			log.debug(e);
+			return ERROR;
+		}		
+	}
+	
 	public String login() {
 		try {
 			String userlogin = request.getParameter("username");
@@ -126,7 +175,36 @@ public class LoginAction extends ActionSupport {
 			HttpSession session = request.getSession();
 			User user = userDAO.findById(username);
 			String md5Password = loginService.generateMD5(password);
-
+			/*if(request.getParameter("remember-me") != null) {
+				String remember = request.getParameter("remember-me");
+				Cookie cUserlogin = new Cookie("cookuser", userlogin);
+				Cookie cPassword = new Cookie("cookpass", password);
+				Cookie cMd5Password = new Cookie("cookmd5", md5Password);
+				Cookie cRemember = new Cookie("cookrem", remember);
+				cUserlogin.setMaxAge(60);
+				cPassword.setMaxAge(60);
+				cMd5Password.setMaxAge(60);
+				cRemember.setMaxAge(60);
+				response.addCookie(cUserlogin);
+				response.addCookie(cPassword);
+				response.addCookie(cRemember);
+				response.addCookie(cMd5Password);
+				String userName=request.getParameter("username");
+				request.getSession().setAttribute("username",userName);
+			} else {
+				Cookie cUserlogin = new Cookie("cookuser", null);
+				Cookie cPassword = new Cookie("cookpass", null);
+				Cookie cMd5Password = new Cookie("cookmd5", null);
+				Cookie cRemember = new Cookie("cookrem", null);
+				cUserlogin.setMaxAge(0);
+				cPassword.setMaxAge(0);
+				cMd5Password.setMaxAge(0);
+				cRemember.setMaxAge(0);
+				response.addCookie(cUserlogin);
+				response.addCookie(cPassword);
+				response.addCookie(cMd5Password);
+				response.addCookie(cRemember);
+			}*/
 			if (user != null && md5Password.equals(user.getPassword())) {
 				Set<String> userAuthority = new HashSet<>();
 				Constant.onlineUserList.add(user.getId());
@@ -513,7 +591,7 @@ public class LoginAction extends ActionSupport {
 				String userEmail = (String) findEmail.get(0).get("email");
 				String userId = (String) findEmail.get(0).get("id");
 				
-				String ranpassword =loginService.randomPassword(4);
+				String ranpassword =loginService.randomPassword(6);
 				
 				User find = userDAO.findById(userId);
 				find.setPassword(loginService.generateMD5(ranpassword));
@@ -544,6 +622,19 @@ public class LoginAction extends ActionSupport {
 
 	public String logout() {
 		try {
+			Cookie cUserlogin = new Cookie("cookuser", null);
+			
+			Cookie cMd5Password = new Cookie("cookmd5", null);
+			Cookie cRemember = new Cookie("cookrem", null);
+			cUserlogin.setMaxAge(0);
+			
+			cMd5Password.setMaxAge(0);
+			cRemember.setMaxAge(0);
+			response.addCookie(cUserlogin);
+			
+			response.addCookie(cMd5Password);
+			response.addCookie(cRemember);
+			//request.getSession().removeAttribute("username");
 			request.getSession().invalidate();
 			System.out.println(Constant.onlineUserList);
 			return SUCCESS;
