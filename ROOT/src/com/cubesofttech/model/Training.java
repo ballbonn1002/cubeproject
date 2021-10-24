@@ -1,6 +1,7 @@
 package com.cubesofttech.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Date;
 
 import javax.persistence.Column;
@@ -20,7 +21,7 @@ public class Training implements Serializable {
 	@Column(name = "trainingid")
 	private int trainingid;
 	@Column(name = "hours")
-	private Integer hours;
+	private Double hours;
 	@Column(name = "user_id")
 	private String user_id;
 	@Column(name = "title")
@@ -43,6 +44,7 @@ public class Training implements Serializable {
 	private Timestamp time_update;
 	@Column(name = "time_create")
 	private Timestamp time_create;
+	
 
 	public Timestamp getTime_update() {
 		return time_update;
@@ -84,11 +86,11 @@ public class Training implements Serializable {
 		this.trainingid = trainingid;
 	}
 
-	public Integer getHours() {
+	public Double getHours() {
 		return hours;
 	}
 
-	public void setHours(Integer hours) {
+	public void setHours(Double hours) {
 		this.hours = hours;
 	}
 
@@ -147,12 +149,12 @@ public class Training implements Serializable {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
-
 	
-
 	public Training() {
 		// TODO Auto-generated constructor stub
 	}
+
+
 
 //	public Training(int id, String user_id, String title, int hours,
 //			Date start_date, java.util.Date end_date, String user_update,

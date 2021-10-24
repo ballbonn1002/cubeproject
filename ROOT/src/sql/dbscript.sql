@@ -563,7 +563,7 @@ CREATE TABLE `training` (
   `trainingid` bigint(20) NOT NULL,
   `user_id` varchar(32) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
-  `hours` int(3) DEFAULT NULL,
+  `hours` double(8,2) DEFAULT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
   `user_update` varchar(32) DEFAULT NULL,

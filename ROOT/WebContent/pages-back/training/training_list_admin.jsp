@@ -215,7 +215,38 @@
 								</td>
 								<td style="vertical-align: middle;"><fmt:formatDate value="${train.end_date}"
 										pattern="dd-MM-yyyy"></fmt:formatDate></td>								<!-- training end date -->
-								<td style="vertical-align: middle;">${train.hours}</td>							<!-- training hour -->
+								<td style="vertical-align: middle;">
+									<c:set var = "string1" value = "${train.hours}" />
+									<c:set var = "h" value = "${fn:substringBefore(string1, '.')}" />
+									<c:set var = "m" value = "${fn:substringAfter(string1, '.')}"/>
+									<c:if test="${h == 0 }">
+										<c:if test="${fn:length(m) == 1}">
+											<c:set var = "minute" value = "${(m/10)*60/100}"/>
+											<c:set var = "sum" value = "${h+minute}"/>
+											<c:out value = "${sum}"/>0
+										</c:if>
+										<c:if test="${fn:length(m) > 1}">
+											<c:set var = "minute" value = "${(m/100)*60/100}"/>
+											<c:set var = "sum" value = "${h+minute}"/>
+											<c:out value = "${sum}"/>
+										</c:if>
+									</c:if>
+									<c:if test="${h > 0 }">
+										<c:if test="${fn:length(m) == 1}">
+											<c:set var = "minute" value = "${(m/10)*60/100}"/>
+											<c:set var = "sum" value = "${h+minute}"/>
+											<c:set var = "result" value = "${fn:replace(sum, '.', ':')}"/>
+											<c:out value = "${result}"/>0
+										</c:if>
+										<c:if test="${fn:length(m) > 1}">
+											<c:set var = "minute" value = "${(m/100)*60/100}"/>
+											<c:set var = "sum" value = "${h+minute}"/>
+											<c:set var = "result" value = "${fn:replace(sum, '.', ':')}"/>
+											<c:out value = "${result}"/>
+										</c:if>
+									</c:if>
+									
+								</td>							<!-- training hour -->
 								<td style="vertical-align: middle;"><fmt:formatDate value="${train.time_create}"
 										pattern="dd-MM-yyyy HH:mm"></fmt:formatDate>							<!-- training submit date -->
 								</td>

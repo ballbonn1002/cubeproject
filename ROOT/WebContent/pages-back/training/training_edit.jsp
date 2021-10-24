@@ -11,37 +11,23 @@
 <fmt:formatDate type="date" value="${now}" pattern="31-03-yyyy"
 	var="lastday" />
 <script src="../assets/global/plugins/fancybox/lib/jquery-1.10.1.min.js"></script>
-
 <script src="../assets/global/plugins/bootstrap/js/bootstrap.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="../assets/global/plugins/moment.min.js" type="text/javascript"></script>
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="../assets/global/plugins/moment.min.js"
-	type="text/javascript"></script>
-
-
-<script src="sweetalert2.all.min.js"></script>
+<!-- <script src="sweetalert2.all.min.js"></script> -->
 <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
 <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
 <script src="sweetalert2.min.js"></script>
 <link rel="stylesheet" href="sweetalert2.min.css">
-<link
-	href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css"
-	rel="stylesheet" type="text/css" />
-<script src="../assets/global/plugins/jquery.min.js"
-	type="text/javascript"></script>
-<script
-	src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"
-	type="text/javascript"></script>
+<link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+<script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script
-	src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js"
-	type="text/javascript"></script>
-<script src="../assets/pages/scripts/ui-sweetalert.min.js"
-	type="text/javascript"></script>
-<link
-	href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
-	rel="stylesheet" type="text/css" />
+<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
+<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+
 <style>
 .end {
 	text-align-last: right;
@@ -49,25 +35,25 @@
 }
 </style>
 
-	<div class="portlet light">
-		<div class="portlet-title">
-			<div class="caption">
+<div class="portlet light">
+	<div class="portlet-title">
+		<div class="caption">
 			<perm:permission object="training.view">
 				<i class="fa fa-paperclip font-red"></i> <span id="title"
 					class="caption-subject font-red sbold uppercase">Edit My Training</span> <input type="hidden" name="actionpage" id="actionpage"
 					value="${action}">
-					</perm:permission>
-					<perm:permission object="trainingAdmin.view">
+			</perm:permission>
+			<perm:permission object="trainingAdmin.view">
 				<i class="fa fa-paperclip font-red"></i> <span id="title"
 					class="caption-subject font-red sbold uppercase">Edit Training Manager</span> <input type="hidden" name="actionpage" id="actionpage"
 					value="${action}">
-					</perm:permission>
-			</div>
-			<div class="actions">
-				<a class="btn  btn-icon-only btn-default fullscreen"
-					href="javascript:;" data-original-title="" title=""> </a>
-			</div>
+			</perm:permission>
 		</div>
+		<div class="actions">
+			<a class="btn  btn-icon-only btn-default fullscreen"
+					href="javascript:;" data-original-title="" title=""> </a>
+		</div>
+	</div>
 		<div class="portlet-body form">
 			<!-- BEGIN FORM-->
 			<form method="post" class="form-horizontal">
@@ -128,8 +114,6 @@
 										pattern="dd-MM-yyyy"/>"
 										placeholder="End date" class="form-control cannot">
 						</div>
-
-
 					</div>
 				</div>
 				<!-- End Duration -->
@@ -137,27 +121,42 @@
 				<!-- Hour Training -->
 				<div class="form-group">
 					<label class="col-md-3 control-label">Hour Training :</label>
-					<div class="col-md-3">
+					<div class="col-md-2">
 						<input type="number" class="form-control length" id="t_Hour" data-id="3"
-						oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-    					maxlength = "3" value="${Traininglist.hours}">
+							oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+    						min="1" maxlength = "3" onkeypress="return event.charCode >= 48" value="${num_hours}">
     					<div class="end" id="count3" >
 							<span class="form-text text-muted" id="current_count_3" >0</span>
 							<span class="form-text text-muted" id="maximum_count_3">/ 3</span>
 						</div>
 					</div>
+					
+					<!-- End Hour Training -->
+					<label class="col-md-1 control-label">Minute :</label>
+					<div class="col-md-2">
+						<select class="bs-select form-control length" id="t_Min" value="${num_mins}">
+							<option value="0.00"
+								<c:if test="${num_mins == 0.00}"> selected </c:if>>0</option>
+							<option value="0.25"
+								<c:if test="${num_mins == 0.25}"> selected </c:if>>15</option>
+							<option value="0.50"
+								<c:if test="${num_mins == 0.50}"> selected </c:if>>30</option>
+							<option value="0.75"
+								<c:if test="${num_mins == 0.75}"> selected </c:if>>45</option>
+						</select>
+					</div>
 				</div>
-				<!-- End Hour Training -->
+				
 
 				<!-- Location -->
 				<div class="form-group">
 					<label class="col-md-3 control-label">Location :</label>
 					<div class="col-md-6">
-						<input type="text" id="location" class="form-control length" data-id="4" 
+						<input type="text" id="location" class="form-control length" data-id="5" 
 							maxlength="255" value="${Traininglist.location}">
 							<div class="end" id="count4" >
-							    <span class="form-text text-muted" id="current_count_4" >0</span>
-							    <span class="form-text text-muted" id="maximum_count_4">/ 255</span>
+							    <span class="form-text text-muted" id="current_count_5" >0</span>
+							    <span class="form-text text-muted" id="maximum_count_5">/ 255</span>
 							</div>
 					</div>
 				</div>
@@ -167,11 +166,11 @@
 					<label class="col-md-3 control-label">Description :</label>
 					<div class="col-md-6">
 						<textarea style="word-break: break-all; white-space: normal;"
-							maxlength="1024" class="form-control length" rows="6" name="description" data-id="5"
-							id="description" onkeyup='check_char(this)'>${Traininglist.detail}</textarea>
+							maxlength="1024" class="form-control length" rows="6" name="description" data-id="6"
+							id="description" >${Traininglist.detail}</textarea>
 							<div class="end" id="count5" >
-							    <span class="form-text text-muted" id="current_count_5" >0</span>
-							    <span class="form-text text-muted" id="maximum_count_5">/ 1024</span>
+							    <span class="form-text text-muted" id="current_count_6" >0</span>
+							    <span class="form-text text-muted" id="maximum_count_6">/ 1024</span>
 							</div>
 						<div class="form-control-focus"></div>
 					</div>
@@ -198,109 +197,128 @@
 
 		</form>
 		<!-- END FORM-->
-	</div>
+</div>
 	
 
-
-<script src="../assets/global/plugins/jquery.min.js"
-	type="text/javascript"></script>
 <script>
 $( document ).ready(function() {
-	var a = $('#lecturer').val().length;
 	for(var i=1; i<=10; i++){
 		var x = document.getElementsByClassName('length');
+
 		if(x.length > 0){
 			document.getElementById('current_count_'+i).innerHTML =  x[i-1].value.length;
 		}
 	}
-});
-</script>
-<script>
-
 	
-	function save() {	
+
+});
+
+$('.length').keyup(function(){
+	var id = $(this).data('id');
+	var check = $(this).val().length;
+	document.getElementById('current_count_'+id).innerHTML = check ;
+
+});
+
+</script>
+
+<script>
+function save() {	
 		
-		/* var name = document.getElementById('user').value; */
+	/* var name = document.getElementById('user').value; */
+	
+	var lecturer = document.getElementById('lecturer').value;
 		
-		var lecturer = document.getElementById('lecturer').value;
+	var t_tile = document.getElementById('t_title').value;
 		
-		var t_tile = document.getElementById('t_title').value;
+	var t_hour = document.getElementById('t_Hour').value;
+	
+	var t_min = document.getElementById('t_Min').value;
 		
-		var t_hour = document.getElementById('t_Hour').value;
+	var start_date = document.getElementById('date_from').value;
 		
-		var start_date = document.getElementById('date_from').value;
+	var end_date = document.getElementById('date_to').value;
 		
-		var end_date = document.getElementById('date_to').value;
+	var location = document.getElementById('location').value;
 		
-		var location = document.getElementById('location').value;
+	var description = document.getElementById('description').value;
 		
-		var description = document.getElementById('description').value;
-		
-		console.log(name);
-		console.log(lecturer);
-		console.log(t_title);
+	console.log(name);
+	console.log(lecturer);
+	console.log(t_title);
+	console.log(t_hour);
+	console.log(t_min);
+	console.log(date_from);
+	console.log(date_to);
+	console.log(location);
+	console.log(description);
+	
+	if(t_hour != "" && t_min != 0){
+		t_hour = Number(parseFloat(t_hour).toFixed(2));
+		t_min = Number(parseFloat(t_min).toFixed(2));
+		t_hour = t_hour + t_min;
+		console.log(t_hour); 
+	}
+	else if(t_hour != "" && t_min == 0){
+		t_hour = Number(parseFloat(t_hour).toFixed(2));
+		t_min = Number(parseFloat(t_min).toFixed(2));
+		t_hour = t_hour + t_min;
 		console.log(t_hour);
-		console.log(date_from);
-		console.log(date_to);
-		console.log(location);
-		console.log(description);
-		
- 		$.ajax({
-						url : "Training_EditSave",
-						method : "POST",
-						type : "JSON",
-						data : {
-							"trainingid" : ${Traininglist.trainingid},
-							/* "name" : name, */
-							"lecturer" : lecturer,
-							"title" : t_tile,
-							"hours" : t_hour,
-							"start_date" : start_date,
-							"end_date" : end_date,
-							"location" : location,
-							"detail" : description,
-							"user_update" : "${onlineUser.id}",
-							
-							
-						},
-						success : function(data) {
-							
-							swal(
-									{
+	}
+	else if(t_hour == "" && t_min != 0){
+		t_hour = t_hour + t_min;
+		console.log(t_hour);
+	}
+	
+ 	$.ajax ({
+			url : "Training_EditSave",
+			method : "POST",
+			type : "JSON",
+			data : {
+						"trainingid" : ${Traininglist.trainingid},
+						/* "name" : name, */
+						"lecturer" : lecturer,
+						"title" : t_tile,
+						"hours" : t_hour,
+						"mins" : t_min,
+						"start_date" : start_date,
+						"end_date" : end_date,
+						"location" : location,
+						"detail" : description,
+						"user_update" : "${onlineUser.id}",
+
+					},
+					success : function(data) {
+								swal ({
 										title : "Pass",
 										text : "Saved Succcess",
 										type : "success"
 									},
 									function(){
 										window.location=document.referrer;
-										} );
-						}
+									});
+					}
+			}) 
+}
+function s(sel) {
+	// alert(sel.value) ;
+	var userId = $('#userId1').val();
 
-					}) 
-		}
-	
-	function s(sel) {
-		// alert(sel.value) ;
-		var userId = $('#userId1').val();
-
-		$.ajax({
+	$.ajax({
 			type : 'POST',
 			url : "${pageContext.request.contextPath}/search_select",
 			data : {
 				"userId" : userId
 			},
-		}).done(function(data) {
+	}).done(function(data) {
 			//console.log(data);
 			console.log($('.test').html(data));
 		}).fail(function() {
 			//alert("เกิดข้อผิดพลาด");
 		});
-	}
-	
-</script>
-<script>
-	function cancle() {
+}
+
+function cancle() {
 		location.href = "javascript:history.back()";
-	};
-	
+};
 </script>

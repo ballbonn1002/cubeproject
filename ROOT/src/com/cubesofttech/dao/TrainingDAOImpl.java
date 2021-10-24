@@ -69,7 +69,7 @@ public class TrainingDAOImpl implements TrainingDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.save(train);
 		session.flush();
-
+		
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class TrainingDAOImpl implements TrainingDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.update(train);
 		session.flush();
-
+		
 	}
 
 	@Override

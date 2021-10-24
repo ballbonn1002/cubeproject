@@ -12,37 +12,18 @@
 <fmt:formatDate type="date" value="${now}" pattern="31-03-yyyy"
 	var="lastday" />
 <script src="../assets/global/plugins/fancybox/lib/jquery-1.10.1.min.js"></script>
-
 <script src="../assets/global/plugins/bootstrap/js/bootstrap.js"></script>
-
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="../assets/global/plugins/moment.min.js"
-	type="text/javascript"></script>
-
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="../assets/global/plugins/moment.min.js" type="text/javascript"></script>
 <script src="sweetalert2.all.min.js"></script>
 <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
 <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
 <script src="sweetalert2.min.js"></script>
 <link rel="stylesheet" href="sweetalert2.min.css">
-<link
-	href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css"
-	rel="stylesheet" type="text/css" />
-<script src="../assets/global/plugins/jquery.min.js"
-	type="text/javascript"></script>
-<script
-	src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"
-	type="text/javascript"></script>
-<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script
-	src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js"
-	type="text/javascript"></script>
-<script src="../assets/pages/scripts/ui-sweetalert.min.js"
-	type="text/javascript"></script>
-<link
-	href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
-	rel="stylesheet" type="text/css" />
+<script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
+<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 <style>
 .end {
 	text-align-last: right;
@@ -148,7 +129,7 @@
 				<!-- End Name -->
 				<!-- Lecturer: -->
 				<div class="form-group">
-					<label class="col-md-3 control-label">Lecturer :</label>
+					<label class="col-md-3 control-label"><label style="color:red; margin-right: 5px;">*</label>Lecturer :</label>
 					<div class="col-md-6">
 						<input id="lecturer" type="text" class="form-control length" data-id="1"
 							placeholder=" " maxlength="255">
@@ -162,7 +143,7 @@
 				<!-- End Lecturer: -->
 				<!-- Training Title -->
 				<div class="form-group">
-					<label class="col-md-3 control-label">Training Title :</label>
+					<label class="col-md-3 control-label"><label style="color:red; margin-right: 5px;">*</label>Training Title :</label>
 					<div class="col-md-6">
 						<input id="t_title" type="text" class="form-control length" data-id="2"
 							placeholder=" " maxlength="255">
@@ -177,7 +158,7 @@
 			</div>
 			<!-- Duration -->
 			<div class="form-group">
-				<label class="col-md-3 control-label">Duration :</label>
+				<label class="col-md-3 control-label"><label style="color:red; margin-right: 5px;">*</label>Duration :</label>
 				<div class="col-md-6">
 					<div class="input-group input-large date-picker input-daterange"
 						data-date-format="dd-mm-yyyy">
@@ -193,8 +174,8 @@
 
 			<!-- Hour Training -->
 			<div class="form-group">
-				<label class="col-md-3 control-label">Hour Training :</label>
-				<div class="col-md-3">
+				<label class="col-md-3 control-label"><label id="req_h" style="color:red; margin-right: 5px;">*</label>Hour :</label>
+				<div class="col-md-2">
 					<input type="number" class="form-control length" id="t_Hour" data-id="3" 
 						oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
     					maxlength = "3" onkeypress="return event.charCode >= 48" min="1" >
@@ -202,16 +183,26 @@
 							<span class="form-text text-muted" id="current_count_3" >0</span>
 							<span class="form-text text-muted" id="maximum_count_3">/ 3</span>
 						</div>
-						
+				</div>
+				<!-- End Hour Training -->
+				<label class="col-md-1 control-label"><label id="req_m" style="color:red; margin-right: 5px;">*</label>Minute :</label>
+				<div class="col-md-2">
+					<select class="bs-select form-control length" id="t_Min">
+						<option id="v1" value="0.00" selected>0</option>
+						<option id="v2" value="0.25">15</option>
+						<option id="v3" value="0.50">30</option>
+						<option id="v4" value="0.75">45</option>
+					</select>
 				</div>
 			</div>
-			<!-- End Hour Training -->
+			<!-- End Minute Training -->
+			
 
 			<!-- Location -->
 			<div class="form-group">
 				<label class="col-md-3 control-label">Location :</label>
 				<div class="col-md-6">
-					<input type="text" id="location" class="form-control length" data-id="4"
+					<input type="text" id="location" class="form-control length" data-id="4" name="defaultconfig"
 						placeholder=" " maxlength="255">
 						<div class="end" id="count4" style="display: none;">
 						    <span class="form-text text-muted" id="current_count_4" >0</span>
@@ -226,9 +217,9 @@
 				<div class="col-md-6">
 					<textarea style="word-break: break-all; white-space: normal;"
 						maxlength="1024" class="form-control length" rows="6" name="description" data-id="5"
-						id="description" onkeyup='check_char(this)'></textarea>
+						id="description"></textarea>
 						<div class="end" id="count5" style="display: none;">
-							<span class="form-text text-muted" id="current_count_5" >0</span>
+							<span class="form-text text-muted6" id="current_count_5" >0</span>
 							<span class="form-text text-muted" id="maximum_count_5">/ 1024</span>
 						</div>
 					<div class="form-control-focus"></div>
@@ -239,7 +230,6 @@
 	<div class="form-actions">
 		<div class="row">
 			<div class="col-xs-12" style="text-align: center;">
-
 				<div class="btn btn-sm blue-soft" onclick="save()">
 					<i class="fa fa-send-o"></i> Submit
 				</div>
@@ -258,230 +248,54 @@
 </div>
 
 
-<script src="../assets/global/plugins/jquery.min.js"
-	type="text/javascript"></script>
 <script>
 $(document).ready(function() {
 	$('.end').hide();
-	
 	$('.select2me').select2();
+	
+	$("#t_Hour").keyup(function(){
+		$('#req_m').hide();
 
-		/*     var date1 = new Date("06/22/2017");
-		 var date2 = new Date("06/23/2017"); 
-		 var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-		 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-		 alert(diffDays);  */
 	});
-</script>
-<script>
-	$('.length').keyup(function(){
-		var id = $(this).data('id');
-		var check = $(this).val().length;
+	$('#t_Min').change(function(){ $('#req_h').hide(); });
+
+});
+	
+$('.length').keyup(function(){
+	var id = $(this).data('id');
+	var check = $(this).val().length;
 		
-		console.log(id);
-		console.log(check);
-		
-		if(check > 0){
-			document.getElementById('count'+id).style.display = "block";
-		
-		}else{
-			document.getElementById('count'+id).style.display = "none";
-		}
-		
+	if(check > 0){
+		document.getElementById('count'+id).style.display = "block";
+	} else {
+		document.getElementById('count'+id).style.display = "none";
+	}
 		document.getElementById('current_count_'+id).innerHTML = check ;
-	});
+});
 
 </script>
-<script>
+<!-- <script>
 function check_char(elm){
-	
-	if(elm.value.match(/[&quat]/) && elm.value.length>0){
-		swal(
-				{
+	if(elm.value.match(/^[!@#$%^&*()_+\-=\[\]{};:\\|,.<>\/?]*$/) && (elm.value.length > 0)){
+		swal({
 					title : "ERROR",
-					text : "ห้ามใส่อักขระพิเศษ",
+					text : "ห้ามใส่อักขระพิเศษ"  + "\n (ex. / ^ [ ] ! @ # $ % & * ( ) _ + \ - = {  } ; : , < > . ?)",
 					type : "error"
-				},
-				function() {
+			},
+			function() {
 					
-				});
-	
+			});
+		elm.value = "";
 	}
 }
-</script>
+</script> -->
 <script>
-	var toISODate = (date) => {
-		return date.substring(6,10)+"-"+date.substring(3,5)+"-"+date.substring(0,2);
-	}
-	var toTimestamp = (date) => {
-		return Date.parse(toISODate(date));
-	}
-	var toDisplayDate = (date) => {
-		return date.toLocaleDateString('en-GB').replace('/','-').replace("/",'-');
-	}
-</script>
-
-
-
-<c:if test="${leave == null}">
-	<c:set var="leave" value="''" />
-</c:if>
-<script>
-    $(()=>{
-        var userList = ${userList};
-        var action = '${action}';
-        var user;
-        var manager;
-        if(action == 'Edit'){
-            var leave = ${leave};
-            user = leave.userId;
-            manager = leave.apprUserId;
-            $('form').attr('action','LeaveEdit_Do');
-        } else {
-            user = "${onlineUser.id}";
-            manager = "${onlineUser.managerId}";
-            $('form').attr('action','LeaveAdd_Do');
-        }
-        user = user.toLowerCase();
-        manager = manager.toLowerCase();
-
-        /* Date from leave calendar */
-        if('${date}' != '' && action=='Add'){
-            $('#date_from').val('${date}');
-			$('#date_to').val('${date}');
-            $('#amount').val(1);
-        }
-
-        /* Start Applicant/Approver List */
-        for(let i=0; i<userList.length; i++){
-            let id = userList[i].id.toLowerCase();
-            let name = userList[i].name;
-            let status = userList[i].enable;
-            let option = '<option value="'+id+'">'+name+'</option>';
-
-            if(status == '1'){
-                $('#u_enable').append(option);
-                $('#approver').append(option);
-            }
-            else{
-                $('#u_disable').append(option);
-            }
-        }
-        $('#user').val(user);
-        $('#user').trigger('change');
-        $('#approver').val(manager);
-        $('#approver').trigger('change');
-        $('#user').change(()=>{
-            let val = $('#user').val();
-            for(let i=0; i<userList.length; i++){
-                let user = userList[i].id.toLowerCase();
-                let mng = userList[i].manager;
-                if( user == val ){
-                    $('#approver').val(mng.toLowerCase());
-                    $('#approver').trigger('change');
-                }
-            }
-        })
-        /* End Applicant/Approver List */
-
-        /* Start Leave Edit init */
-        if(leave != null){
-			var noDay = leave.noDay.toString().split(".");
-			var amount = noDay[0];
-			var amount_sub = '0.'+noDay[1];
-			if(isNaN(amount_sub)){ amount_sub = 0;}
-			$('#date_from').val(toDisplayDate(new Date(leave.startDate)));
-			$('#date_to').val(toDisplayDate(new Date(leave.endDate)));
-			$('#amount').val(amount);
-			$('#amount_sub').val(amount_sub);
-			$('#description').html(leave.description);
-			$('#status').val(leave.leaveStatusId);
-			$('#reason').html(leave.reason);
-			$('#lt_'+leave.leaveTypeId).prop('checked','checked');
-			if(leave.halfDay != 0) { $('#hd_'+leave.halfDay).prop('checked','checked'); }
-        }
-        /* End Leave Edit init */
-    })
-</script>
-
-
-<!-- Start datepicker -->
-<c:if test="${holiday!=null}">
-	<script>
-		$(function(){
-			var holiday;
-			var holidays = [];
-			holiday = JSON.parse('${holiday}');
-
-			for(let i=0;i<holiday.length;i++){
-				let start = new Date(holiday[i].start);
-				let end = new Date(holiday[i].end);
-				for(let j=start; j<=end; j.setDate(j.getDate()+1)){
-					holidays.push(toDisplayDate(j));
-				}
-			}
-		
-			$('#date_from').datepicker({
-				format: 'dd-mm-yyyy',
-				daysOfWeekDisabled: [0,6],
-				datesDisabled: holidays ,
-				autoclose: true, 
-			});
-			$('#date_to').datepicker({
-				format: 'dd-mm-yyyy',
-				daysOfWeekDisabled: [0,6],
-				datesDisabled: holidays ,
-				autoclose: true, 
-			});
-
-			$('.input-daterange').change(function(){
-				let amount = 0;
-				let holiday_count = 0;
-				let from = new Date( toISODate( $('#date_from').val() ) );
-				let to = new Date( toISODate( $('#date_to').val() ) );
-				if(from == to){
-					amount = 1;
-				}
-				if(from < to){
-					amount = ((to-from)/86400000)+1;
-					for(let i=from; i<to; i.setDate(i.getDate()+1)){
-						for(let j=0; j<holidays.length; j++){
-							let holiday_ts = toTimestamp(holidays[j]);
-							if(i.getTime() == holiday_ts){
-								holiday_count++;
-							}
-						}
-						if(i.getDay() == '0' || i.getDay() == '6'){
-							holiday_count++;
-						}
-					}
-					amount -= holiday_count;
-				}
-				else{
-					amount = 1;
-				}
-				$('#amount').val(amount);
-			});
-		});
-	</script>
-</c:if>
-<!-- End datepicker -->
-
-<!--  alert leave type -->
-<script>
-function checkamount() {
-	if (document.getElementById('amount').value == "0"){
-		alert("Amount of day going to change to 1 day \n'Please Check Amount of Day Again'");
-	}
-}
-</script>
-<script>
-
 function save() {	
 	var name = document.getElementById('user').value;
 	var lecturer = document.getElementById('lecturer').value;
-	var t_tile = document.getElementById('t_title').value;
+	var t_title = document.getElementById('t_title').value;
 	var t_hour = document.getElementById('t_Hour').value;
+	var t_min = document.getElementById('t_Min').value;
 	var start_date = document.getElementById('date_from').value;
 	var end_date = document.getElementById('date_to').value;
 	var location = document.getElementById('location').value;
@@ -491,50 +305,64 @@ function save() {
 	console.log(lecturer);
 	console.log(t_title);
 	console.log(t_hour);
+	console.log(t_min);
 	console.log(date_from);
 	console.log(date_to);
 	console.log(location);
 	console.log(description);
-	if (name == null || name == "" || start_date == null || start_date == "" || end_date == null || end_date == "") {
-	swal("Error!", "Required! Duration", "error");
-}
-	else{	
-		$
-				.ajax({
-					url : "Training_Save",
-					method : "POST",
-					type : "JSON",
-					data : {
-						"name" : name,
-						"lecturer" : lecturer,
-						"title" : t_tile,
-						"hours" : t_hour,
-						"start_date" : start_date,
-						"end_date" : end_date,
-						"location" : location,
-						"detail" : description,
-						"user_update" : "${onlineUser.id}",
-						"user_create":	"${onlineUser.id}",
-						
-						
-					},
-					success : function(data) {
-						
-						swal(
-								{
-									title : "Pass",
-									text : "Saved Succcess",
-									type : "success"
-								},
-								 function() {
-									window.location=document.referrer;
-								} );
-					}
+	
+	if(t_hour != "" && t_min != 0){
+		t_hour = Number(parseFloat(t_hour).toFixed(2));
+		t_min = Number(parseFloat(t_min).toFixed(2));
+		t_hour = t_hour + t_min ;
+		console.log(t_hour);
+	}
+	else if(t_hour != "" && t_min == 0){
+		t_hour = Number(parseFloat(t_hour).toFixed(2));
+		t_min = Number(parseFloat(t_min).toFixed(2));
+		t_hour = t_hour + t_min ;
+		console.log(t_hour);
+	}
+	else if((t_hour == "" || t_hour == 0) && t_min !=0){
+		t_hour = t_hour + t_min;
+		console.log(t_hour);
+	}
 
-				}) 
+	if ((name == "" || lecturer == "" || t_title == "" || start_date == "" || end_date == "") || (t_hour == "" && t_min == 0.00)){
+		swal("Error!", "Required! fields must be filled in.", "error");
+	}
+	else {	
+		$.ajax({
+				url : "Training_Save",
+				method : "POST",
+				type : "JSON",
+				data : {
+					"name" : name,
+					"lecturer" : lecturer,
+					"title" : t_title,
+					"hours" : t_hour,
+					"mins" : t_min,
+					"start_date" : start_date,
+					"end_date" : end_date,
+					"location" : location,
+					"detail" : description,
+					"user_update" : "${onlineUser.id}",
+					"user_create":	"${onlineUser.id}",			
+				},
+				success : function(data) {
+					swal(
+							{
+								title : "Pass",
+								text : "Saved Succcess",
+								type : "success"
+							},
+							function() {
+								window.location=document.referrer;
+							});
+				}
+		}); 
 	}
 }
-
 	function s(sel) {
 		// alert(sel.value) ;
 		var userId = $('#userId1').val();

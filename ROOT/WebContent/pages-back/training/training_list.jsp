@@ -5,47 +5,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-		<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js"
-	type="text/javascript"></script>
-<script src="../assets/pages/scripts/ui-sweetalert.min.js"
-	type="text/javascript"></script>
-<link
-	href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
-	rel="stylesheet" type="text/css" />
+<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
+<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 
 <link rel="shortcut icon" href="favicon.ico" />
-<script
-	src="${pageContext.request.contextPath}/assets/global/plugins/fancybox/lib/jquery-1.10.1.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/assets/global/plugins/jquery-ui/jquery-ui.min.js"></script>
-<!--
-<script type="text/javascript"
-	src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
-<script type="text/javascript"
-	src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script> 
-<script type="text/javascript"
-	src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript"
-	src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js"></script>
-<script type="text/javascript"
-	src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<!-- <script type="text/javascript"
-	src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js"></script> -->
-<!-- <script type="text/javascript"
-	src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js"></script> -->
-<script type="text/javascript"
-	src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
-<script type="text/javascript"
-	src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init();
-</script>
+<script src="${pageContext.request.contextPath}/assets/global/plugins/fancybox/lib/jquery-1.10.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/global/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js"></script>
+
 <c:set var="now" value="<%=new java.util.Date()%>" />
 <style>
 @media only screen and (max-width: 1200px) {
@@ -224,8 +201,39 @@
 										pattern="dd-MM-yyyy"></fmt:formatDate>									<!-- training start date -->
 								</td>
 								<td style="vertical-align: middle;"><fmt:formatDate value="${train.end_date}"
-										pattern="dd-MM-yyyy"></fmt:formatDate></td>								<!-- training end date -->
-								<td style="vertical-align: middle;">${train.hours}</td>							<!-- training hour -->
+										pattern="dd-MM-yyyy"></fmt:formatDate></td>								<!-- training end date -->		
+								<td style="vertical-align: middle;">
+									<c:set var = "string1" value = "${train.hours}" />
+									<c:set var = "h" value = "${fn:substringBefore(string1, '.')}" />
+									<c:set var = "m" value = "${fn:substringAfter(string1, '.')}"/>
+									<c:if test="${h == 0 }">
+										<c:if test="${fn:length(m) == 1}">
+											<c:set var = "minute" value = "${(m/10)*60/100}"/>
+											<c:set var = "sum" value = "${h+minute}"/>
+											<c:out value = "${sum}"/>0
+										</c:if>
+										<c:if test="${fn:length(m) > 1}">
+											<c:set var = "minute" value = "${(m/100)*60/100}"/>
+											<c:set var = "sum" value = "${h+minute}"/>
+											<c:out value = "${sum}"/>
+										</c:if>
+									</c:if>
+									<c:if test="${h > 0 }">
+										<c:if test="${fn:length(m) == 1}">
+											<c:set var = "minute" value = "${(m/10)*60/100}"/>
+											<c:set var = "sum" value = "${h+minute}"/>
+											<c:set var = "result" value = "${fn:replace(sum, '.', ':')}"/>
+											<c:out value = "${result}"/>0
+										</c:if>
+										<c:if test="${fn:length(m) > 1}">
+											<c:set var = "minute" value = "${(m/100)*60/100}"/>
+											<c:set var = "sum" value = "${h+minute}"/>
+											<c:set var = "result" value = "${fn:replace(sum, '.', ':')}"/>
+											<c:out value = "${result}"/>
+										</c:if>
+									</c:if>
+									
+								</td>	<!-- training hour -->
 								<td style="vertical-align: middle;"><fmt:formatDate value="${train.time_create}"
 										pattern="dd-MM-yyyy HH:mm"></fmt:formatDate>							<!-- training submit date -->
 								</td>
@@ -250,13 +258,11 @@
 				</table>
 			</div>
 			</div>
-			<script> 
-			
- $(function () { 
+<script>
+$(function () { 
  	$('[data-toggle="popover"]').popover(); 
  }); 
-</script> 
-			<script>
+ 
 	$('.cannot').keydown(function(e) {
 		// trap the return key being pressed
 		if (e.keyCode === 13 || e.keyCode === 8) {
@@ -266,29 +272,23 @@
 </script>
 
 <script>
-
 $(document).ready( function () {
-    $('#myTable').DataTable(
-    {
+    $('#myTable').DataTable({
         "aLengthMenu": [[20, 40, 60, -1], [20, 40, 60, "All"]],
         "iDisplayLength": 20,
-    }		
-    );
-} );
+    });
+    
+    sessionStorage.clear(); 
+
+});
 </script>
 <script>
-	
-
 	function add() {
 		document.location = "Training_Add";
 	}
 </script>
-<script
-		src="../assets/global/plugins/counterup/jquery.waypoints.min.js"
-		type="text/javascript"></script>
-	<script src="../assets/global/plugins/counterup/jquery.counterup.min.js"
-		type="text/javascript"></script>
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="../assets/global/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/counterup/jquery.counterup.min.js"type="text/javascript"></script>
 <script>
 function del(trainingid) {
 	console.log(trainingid);

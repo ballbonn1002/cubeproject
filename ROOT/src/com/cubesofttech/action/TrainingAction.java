@@ -1,12 +1,12 @@
 package com.cubesofttech.action;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -40,7 +40,8 @@ public class TrainingAction extends ActionSupport {
 	private TrainingDAO trainingDAO;
 	@Autowired
 	private UserDAO userDAO;
-
+	
+	
 	public String training_add() {
 		try {
 			List<Map<String, Object>> userseq = userDAO.sequense();
@@ -69,7 +70,7 @@ public class TrainingAction extends ActionSupport {
 			train.setTitle(title);
 			System.out.println("title " + title);
 
-			Integer hours = Integer.parseInt(request.getParameter("hours"));
+			Double hours = new Double(request.getParameter("hours"));
 			train.setHours(hours);
 			System.out.println("hours " + hours);
 
@@ -107,7 +108,7 @@ public class TrainingAction extends ActionSupport {
 			String detail = request.getParameter("detail");
 			train.setDetail(detail);
 			System.out.println("detail " + detail);
-
+			
 			trainingDAO.save(train);
 			return SUCCESS;
 
@@ -152,6 +153,7 @@ public class TrainingAction extends ActionSupport {
 			Training train = trainingDAO.findById(idedit);
 
 			String title = request.getParameter("title");
+			Double hours = new Double(request.getParameter("hours"));
 			String location = request.getParameter("location");
 			String lecturer = request.getParameter("lecturer");
 			String detail = request.getParameter("detail");
@@ -170,6 +172,7 @@ public class TrainingAction extends ActionSupport {
 
 			train.setTrainingid(idedit);
 			train.setTitle(title);
+			train.setHours(hours);
 			train.setLocation(location);
 			train.setLecturer(lecturer);
 			train.setDetail(detail);
@@ -186,11 +189,22 @@ public class TrainingAction extends ActionSupport {
 
 	public String training_view() {
 		try {
+			
 			int x = Integer.parseInt(request.getParameter("trainingid"));
 			System.out.println(x);
 			Training Traininglist = trainingDAO.findById(x);
 			request.setAttribute("Traininglist", Traininglist);
 
+			Double hours = Traininglist.getHours();
+			
+			BigDecimal bigDecimal = new BigDecimal(String.valueOf(hours));
+			int intValue = bigDecimal.intValue();
+			String strValue = bigDecimal.subtract(new BigDecimal(intValue)).toPlainString();
+			System.out.println(intValue);
+			System.out.println(strValue);
+			request.setAttribute("num_hours", intValue);
+			request.setAttribute("num_mins", strValue);
+			
 			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
@@ -204,6 +218,7 @@ public class TrainingAction extends ActionSupport {
 			List<Map<String, Object>> Traininglist = trainingDAO.findAllById(x);
 			request.setAttribute("Traininglist", Traininglist);
 			System.out.println(Traininglist);
+			
 			return SUCCESS;
 		} catch (Exception e) {
 			log.error(e);
@@ -300,4 +315,6 @@ public class TrainingAction extends ActionSupport {
 			return ERROR;
 		}
 	}
+	
+
 }
