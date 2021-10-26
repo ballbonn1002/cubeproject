@@ -618,5 +618,7 @@ ALTER TABLE `training`
 
 /PROD UAT 2021-10-05
 
+ALTER TABLE `training` CHANGE `hours` `hours` DOUBLE NULL DEFAULT NULL;
+
 
 
