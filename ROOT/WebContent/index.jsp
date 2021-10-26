@@ -178,7 +178,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             </div>
                             <div class="col-xs-8 bs-reset">
                                 <div class="login-copyright text-right">
-                                    <p>2021 &copy; Cube SoftTech Co., Ltd. TS Management System v.20210904</p>
+                                    <p>2021 &copy; Cube SoftTech Co., Ltd. TS Management System v.20211025</p>
                                 </div>
                             </div>
                         </div>
