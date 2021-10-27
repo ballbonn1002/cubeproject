@@ -45,7 +45,7 @@ public class Leaves implements Serializable {
 	}
 
 	@Id
-
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "leave_id")
 	private Integer leaveId;
 	@Column(name = "leave_type_id")

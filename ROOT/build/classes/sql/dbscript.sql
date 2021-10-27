@@ -558,12 +558,11 @@ CREATE TABLE `room` ( `idroom` INT(64) NOT NULL AUTO_INCREMENT , `room_name` VAR
 CREATE TABLE `meeting` ( `idmeeting` INT(64) NOT NULL AUTO_INCREMENT , `idroom` INT(64) NOT NULL , `time_start` TIME NULL , `time_end` TIME NULL , `date` TIMESTAMP NULL , `user_reserve` VARCHAR(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL , PRIMARY KEY (`idmeeting`)) ENGINE = InnoDB;
 
 -- PROD/UAT
-
 CREATE TABLE `training` (
   `trainingid` bigint(20) NOT NULL,
   `user_id` varchar(32) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
-  `hours` double(8,2) DEFAULT NULL,
+  `hours` int(3) DEFAULT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
   `user_update` varchar(32) DEFAULT NULL,
@@ -575,6 +574,25 @@ CREATE TABLE `training` (
   `detail` varchar(1024) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+<<<<<<< Updated upstream
+CREATE TABLE `training` (
+  `trainingid` bigint(20) NOT NULL,
+  `user_id` varchar(32) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `hours` int(3) DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `user_update` varchar(32) DEFAULT NULL,
+  `time_update` timestamp NULL DEFAULT NULL,
+  `user_create` varchar(32) DEFAULT NULL,
+  `time_create` timestamp NULL DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `lecturer` varchar(255) DEFAULT NULL,
+  `detail` varchar(1024) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+=======
+>>>>>>> Stashed changes
 INSERT INTO `training` (`trainingid`, `user_id`, `title`, `hours`, `start_date`, `end_date`, `user_update`, `time_update`, `user_create`, `time_create`, `location`, `lecturer`, `detail`) VALUES
 (1, 'thanet.s', 'Java', 8, '2021-06-01', '2021-06-30', 'thanet.s', '2021-08-11 08:28:54', 'thanet.s', '2021-07-01 03:00:10', 'homeee', 'aum', 'hutsss5555hutsss5555hutsss5555hutsss5555hutsss5555hutsss5555hutsss5555hutsss5555hutsss5555hutsss5555hutsss5555'),
 (2, 'thanet.s', 'JSP', 4, '2021-07-02', '2021-07-02', 'thanet.s', '2021-07-02 03:00:10', 'thanet.s', '2021-07-02 03:00:10', NULL, NULL, NULL),
@@ -609,6 +627,7 @@ INSERT INTO `authorized_object` (`authorized_object_id`,`name`,`description`,`ti
 ('training.view','training.view','My Training','2021-08-03 14:44:55','2021-08-03 14:44:55','1'),
 ('trainingAdmin.view','trainingAdmin.view','Training for Admin','2021-08-03 14:44:55','2021-08-03 14:44:55','1');
 
+<<<<<<< Updated upstream
 
 ALTER TABLE `training`
   ADD PRIMARY KEY (`trainingid`);
@@ -618,10 +637,27 @@ ALTER TABLE `training`
 
 /PROD UAT 2021-10-05
 
-ALTER TABLE `training` CHANGE `hours` `hours` DOUBLE NULL DEFAULT NULL;
-
-/PROD UAT 2021-10-25
 
 
+=======
+--
+-- Indexes for dumped tables
+--
 
+--
+-- Indexes for table `training`
+--
+ALTER TABLE `training`
+  ADD PRIMARY KEY (`trainingid`);
 
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `training`
+--
+ALTER TABLE `training`
+  MODIFY `trainingid` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+COMMIT;
+>>>>>>> Stashed changes

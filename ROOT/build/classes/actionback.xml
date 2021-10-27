@@ -14,7 +14,7 @@
 			<result name="error">/index.jsp</result>
 		</action>
 		<action name="authorization"
-			class="com.cubesofttech.action.LoginAction" method="autologin">
+			class="com.cubesofttech.action.LoginAction" method="login">
 			<result name="success" type="redirectAction">check_in?userId=${onlineUser.id}
 			</result>
 			<result name="error">/index.jsp</result>
