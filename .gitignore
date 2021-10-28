@@ -1,7 +1,3 @@
 /.metadata/
+ROOT/build/*
 *.class
-*.class
-ROOT/build/classes/com/cubesofttech/service/LeaveService.class
-ROOT/build/classes/com/cubesofttech/model/Leaves.class
-ROOT/build/classes/com/cubesofttech/action/NewsAction.class
-ROOT/build/classes/com/cubesofttech/action/LoginAction.class
