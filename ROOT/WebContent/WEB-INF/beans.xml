@@ -25,6 +25,7 @@
     <bean id="constant" class="com.cubesofttech.system.Constant">
         <property name="googleApiKey" value="${google.api.key}" />
         <property name="webPath" value="${web.path}" />
+        <property name="webContext" value="${web.context}" />
     </bean>
     
     <!-- DEV-FSC : ROOT DATA SOURCE [BEGIN]-->

@@ -622,6 +622,11 @@ ALTER TABLE `training` CHANGE `hours` `hours` DOUBLE NULL DEFAULT NULL;
 
 /PROD UAT 2021-10-25
 
-
+CREATE TABLE `user_rpw` (
+  `user_rpw_id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(32) NOT NULL,
+  `user_key` varchar(32) NOT NULL,
+  `expired` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 

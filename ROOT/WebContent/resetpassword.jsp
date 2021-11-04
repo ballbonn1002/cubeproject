@@ -26,7 +26,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <head>
         <meta charset="utf-8" />
-        <title>Cube SoftTech : Login</title>
+        <title>Cube SoftTech : Reset Password</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="Preview page of Metronic Admin Theme #5 for " name="description" />
@@ -53,46 +53,11 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" />
 		<link href="../assets/global/css/line-login.css" rel="stylesheet" type="text/css" />
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
          </head>
     <!-- END HEAD -->
 
     <body class=" login">
-    <%
-    	/*Collect Value Cookies*/
-	    Cookie[] cookies=request.getCookies();
-	    String userlogin = "", password = "", md5Password = "", rememberVal="";
-	    if (cookies != null) {
-	         for (Cookie cookie : cookies) {
-	           if(cookie.getName().equals("cookuser")) {
-	             userlogin = cookie.getValue();
-	           }
-	           /*if(cookie.getName().equals("cookpass")){
-	             password = cookie.getValue();
-	           }*/
-	           if(cookie.getName().equals("cookmd5")){
-		         md5Password = cookie.getValue();
-		       }
-	           if(cookie.getName().equals("cookrem")){
-	             rememberVal = cookie.getValue();
-	           }
-	        }
-	    } 
-	%>
-	<%
-		/*AutoLogin*/
-		/*if (request.getSession().getAttribute("username") != null) {
-			response.sendRedirect("check_in.action?userId=");
-		}*/
-		if(!rememberVal.isEmpty()){
-			response.sendRedirect("check_in.action?userId=");
-		}
-		/*AutoLogout after cookies expiration*/
-		if (rememberVal.isEmpty()) {
-			request.getSession().removeAttribute("username");
-		}
-	%>
-	<fmt:setLocale value="en_US" scope="session" />
+		<fmt:setLocale value="en_US" scope="session" />
         <!-- BEGIN : LOGIN PAGE 5-1 -->
         <div class="user-login-5">
             <div class="row bs-reset">
@@ -109,57 +74,35 @@ License: You must have a valid license purchased only from themeforest(the above
 								</div>
 							</div>
 						 --%>
+					    <h1 style="font-weight:bold;">RESET YOUR PASSWORD</h1>
 					    
-                        <h1 id="hlogin">Login to your account</h1>
-                       
-							
-                         <form id="form" class="login-form" action="authorization" method="post">
-                            <div class="alert alert-danger display-hide">
-                                <button class="close" data-close="alert"></button>
-                                <span>Enter username and password. </span>
-                            </div>
-                            ${result}
+                         <form id="form" class="login-form" name="form" action="resetPassword" method="post">
+                            <input class="form-control placeholder-no-fix form-group" type="hidden" autocomplete="off" name="key"/>
+                            <span id='message'></span>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input class="form-control form-control-solid placeholder-no-fix form-group" type="text" autocomplete="off" placeholder="Username" name="username" autofocus required/> </div>
-                                <div class="col-md-6">
-                                    <input class="form-control form-control-solid placeholder-no-fix form-group" type="password" autocomplete="off" placeholder="Password" name="password" id="password-field" required/> </div>
-                                	<span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password" id="togglePassword"></span>          
+                                    <input class="form-control form-control-solid placeholder-no-fix form-group" type="password" autocomplete="off" placeholder="New Password" name="newpassword" id="password-field1" required/> </div>
+                            		<span toggle="#password-field1" class="fa fa-fw fa-eye field-icon toggle-password" id="togglePassword"></span>
                             </div>
+                            <div class="row">    
+                                <div class="col-md-6">
+                                    <input class="form-control form-control-solid placeholder-no-fix form-group" type="password" autocomplete="off" placeholder="Confirm Password" name="repassword" id="password-field2" required/> </div>
+                            		<span toggle="#password-field2" class="fa fa-fw fa-eye field-icon toggle-password" id="togglePassword"></span>
+                            		
+                            </div> 
 						<div class="row">
-							<div class="col-md-6">
-								<div class="rem-password">
-									<label class="rememberme mt-checkbox mt-checkbox-outline">
-										<input type="checkbox" name="remember-me" value="1" /> Remember
-										me <span></span>
-									</label>
-								</div>
-							</div>
-							<div class="col-md-4 col-xs-6">
-								<div class="forgot-password">
-									<a href="javascript:;" id="forget-password"
-										class="forget-password">Forgot Password?</a>
-								</div>
-							</div>
-							<div class="col-md-2">
+							<div class="col-md-4">
 								<button id='submit myBtn' type="submit"
-									class="btn dark pull-right"><i class="icon-lock"></i> Login</button>
+									class="btn dark "><i class=""></i> Change My Password</button>
+							</div>
+						</div>
+						<br/>
+						<div class="row">
+							<div class="col-md-4">
+								<a href="/index.jsp" ><i class="arrow left"></i> Back to login</a>
 							</div>
 						</div>
 					</form>
-                        <!-- BEGIN FORGOT PASSWORD FORM -->
-                        <form id="form" class="forget-form" action="forgetPassword" method="post">
-                            <h2 class="font-black">Forgot Password ?</h2>
-                            <p> Enter your e-mail address below to reset your password. </p>
-                            <div class="form-group">
-                                <input class="form-control placeholder-no-fix form-group" type="email" autocomplete="off" placeholder="Email" name="email" id="email" required/> </div>
-                            <div class="form-actions">
-                                <button type="button" id="back-btn" class="btn green btn-outline">Back</button>
-                                <button type="submit" id="submit myBtn fpBtn" class="btn btn-dark uppercase pull-right">Submit</button>
-                            </div>
-                        </form>
-                      
-                        <!-- END FORGOT PASSWORD FORM -->
                     </div>
                     <div class="login-footer">
                         <div class="row bs-reset">
@@ -179,7 +122,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             </div>
                             <div class="col-xs-8 bs-reset">
                                 <div class="login-copyright text-right">
-                                    <p>2021 &copy; Cube SoftTech Co., Ltd. TS Management System v.20211025</p>
+                                    <p>2021 &copy; Cube SoftTech Co., Ltd. TS Management System v.20210904</p>
                                 </div>
                             </div>
                         </div>
@@ -215,119 +158,11 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <!-- END THEME LAYOUT SCRIPTS -->
-    </body>
-<script type="text/javascript">
-
-	function ajaxCall() {
-		var user = $('#checkemail').val();
-			$.ajax({
-					url : "check_email",
-					method : "POST",
-					type : "JSON",
-					data : {
-						"email" : user
-					},
-					success : function(data) {
-						if (data.toString().indexOf("success") == -1) {
-							swal('Email mistake!',
-									'Please enter your email again.', 'error');
-						} else {
-							swal(
-									'Email has been sent to your email please check your email.',
-									'', 'success');
-							$('#back-btn').click();
-						}
-
-					}
-				})
-
-	};
-</script>
-<script>
-
-  function checkLoginState() {
-    FB.getLoginStatus(function(response) {
-    	if (response.status === 'connected') {
-    	      // Logged into your app and Facebook.
-    	      testAPI();
-    	    }
-    });
-  }
-
-  window.fbAsyncInit = function() {
-    FB.init({
-      //appId      : '485719551832428',
-      appId      : '297618090925895',
-      cookie     : true,  // enable cookies to allow the server to access 
-                          // the session
-      xfbml      : true,  // parse social plugins on this page
-      version    : 'v3.2' // The Graph API version to use for the call
-    });
-
- 
-    FB.getLoginStatus(function(response) {
-      statusChangeCallback(response);
-    });
-
-  };
-
-  // Load the SDK asynchronously
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "https://connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-
-  // Here we run a very simple test of the Graph API after login is
-  // successful.  See statusChangeCallback() for when this call is made.
-  function testAPI() {
-    console.log('Welcome!  Fetching your information.... ');
-    FB.api('/me', function(response) {
-  
-    	$.ajax({
-    		url:'facebooklogin',
-    		data:{id:response.id },
-    		method : "POST",
-			type : "JSON",
-			success : function(data){
-				setTimeout(document.location = "check_in", 500);
-				
-    		},
-    	});
-    	
-      //console.log('Successful login for: ' + response.name);
-      //console.log(response);
-      /*document.getElementById('status').innerHTML =
-        'Thanks for logging in, ' + response.name + '!';*/
-    });
-  }
-
-</script>
-<c:if test="${status == 'lineLink'}">
-	<script>
-		swal("Next", "Login to your account to link to your Line account",
-				"info");
-		$('#submit').click(function() {
-			$('#form').attr('action', 'lineLink');
-			console.log("hello world");
-		});
-	</script>
-</c:if>
-
-<script>
-	var input = document.getElementById("myInput");
-	input.addEventListener("keyup", function(event) {
-		if (event.keyCode === 13) {
-			event.preventDefault();
-			document.getElementById("myBtn").click();
-		}
-	});
-</script>
+	</body>
 <script type="text/javascript">
 	//Show and Hide Password
 	$(".toggle-password").click(function() {
+
 		  $(this).toggleClass("fa-eye fa-eye-slash");
 		  var input = $($(this).attr("toggle"));
 		  if (input.attr("type") == "password") {
@@ -335,14 +170,22 @@ License: You must have a valid license purchased only from themeforest(the above
 		  } else {
 		    input.attr("type", "password");
 		  }
-	});
+		});
 </script>
 <script type="text/javascript">
-	$('#forget-password').click(function() {
-		$('#hlogin').addClass("display-hide");
-	});
-	$('#back-btn').click(function() {
-		$('#hlogin').removeClass("display-hide");
+	//get email from parameter in url
+	var url_string = window.location.href;
+	var url = new URL(url_string);
+	var key = url.searchParams.get('token');
+	document.forms['form']['key'].value = key;
+	//console.log(key);
+</script>
+<script>
+	$('#password-field1, #password-field2').on('keyup', function() {
+		if ($('#password-field1').val() == $('#password-field2').val()) {
+			$('#message').html('Matching').css('color', 'green');
+		} else
+			$('#message').html('Not Matching').css('color', 'red');
 	});
 </script>
 </html>

@@ -68,8 +68,13 @@
 		<action name="forgetPassword"
 			class="com.cubesofttech.action.LoginAction" method="forgetPassword">
 			<result name="success">/index.jsp</result>
-			<result name="error">/index.jsp</result>
+			<result name="error">index.jsp</result>
 			<result name="input">/index.jsp</result>
+		</action>
+		<action name="resetPassword"
+			class="com.cubesofttech.action.LoginAction" method="resetPassword">
+			<result name="success">/index.jsp</result>
+			<result name="error">/resetpassword.jsp?email=${email}</result>
 		</action>
 	</package>
 

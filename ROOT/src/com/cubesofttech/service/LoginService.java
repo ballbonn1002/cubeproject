@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.cubesofttech.dao.RoleAuthorizedObjectDAO;
 import com.cubesofttech.model.RoleAuthorizedObject;
 import com.cubesofttech.model.UserRole;
+import com.cubesofttech.system.Constant;
 import com.cubesofttech.util.MD5;
 
 @Service
@@ -60,13 +61,21 @@ public class LoginService {
 		return userAuthority;
 	}
 
-	public void sendmail(String ranpassword, String emails){
+	public void sendmail(String key, String emails){
 		
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom("no-reply@cubesofttech.com");
 		message.setTo(emails);
-		message.setSubject("Password");
-		message.setText("Your new password is " + ranpassword);
+		message.setSubject("Password Reset");
+		message.setText("Hello,\r\n"
+				+ " \r\n"
+				+ "You recently requested to reset your password. Click on the link below to change your password.\r\n"
+				+ " \r\n"
+				+ Constant.getWebContext() +"/resetpassword.jsp?token=" + key + "\r\n"
+				+ " \r\n"
+				+ "If you did not make the request to reset your password or if you are in need of further assistance, please contact our HR Team.\r\n"
+				+ " \r\n"
+				+ "Thanks!");
 		mailSender.send(message);
 	}
 

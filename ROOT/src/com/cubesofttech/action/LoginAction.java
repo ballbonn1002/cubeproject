@@ -1,8 +1,8 @@
 
 package com.cubesofttech.action;
 
-import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,17 +27,20 @@ import com.cubesofttech.dao.NewsDAO;
 import com.cubesofttech.dao.RoleAuthorizedObjectDAO;
 import com.cubesofttech.dao.UserDAO;
 import com.cubesofttech.dao.UserRoleDAO;
+import com.cubesofttech.dao.UserRpwDAO;
 import com.cubesofttech.dao.WorkHoursDAO;
 import com.cubesofttech.model.RoleAuthorizedObject;
 import com.cubesofttech.model.User;
 import com.cubesofttech.model.UserRole;
+import com.cubesofttech.model.UserRpw;
 import com.cubesofttech.service.LoginService;
 import com.cubesofttech.system.Constant;
 import com.cubesofttech.util.DateUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.opensymphony.xwork2.ActionSupport;
-import com.sun.glass.ui.Window;
+
+import antlr.Token;
 
 public class LoginAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
@@ -59,6 +61,9 @@ public class LoginAction extends ActionSupport {
 
 	@Autowired
 	private UserDAO userDAO;
+	
+	@Autowired
+	private UserRpwDAO userRpwDAO;
 
 	@Autowired
 	private RoleAuthorizedObjectDAO roleAuthorizedObjectDAO;
@@ -140,23 +145,14 @@ public class LoginAction extends ActionSupport {
 				
 				response.addCookie(cRemember);
 				response.addCookie(cMd5Password);
-				/*if(request.isRequestedSessionIdFromCookie() == true) {
-					String userName=request.getParameter("username");
-					request.getSession().setAttribute("username",userName);
-				}*/
-				
-				
 			} else {
-				Cookie cUserlogin = new Cookie("cookuser", null);
-				
+				Cookie cUserlogin = new Cookie("cookuser", null);				
 				Cookie cMd5Password = new Cookie("cookmd5", null);
 				Cookie cRemember = new Cookie("cookrem", null);
-				cUserlogin.setMaxAge(0);
-				
+				cUserlogin.setMaxAge(0);				
 				cMd5Password.setMaxAge(0);
 				cRemember.setMaxAge(0);
-				response.addCookie(cUserlogin);
-				
+				response.addCookie(cUserlogin);				
 				response.addCookie(cMd5Password);
 				response.addCookie(cRemember);
 			}
@@ -175,36 +171,7 @@ public class LoginAction extends ActionSupport {
 			HttpSession session = request.getSession();
 			User user = userDAO.findById(username);
 			String md5Password = loginService.generateMD5(password);
-			/*if(request.getParameter("remember-me") != null) {
-				String remember = request.getParameter("remember-me");
-				Cookie cUserlogin = new Cookie("cookuser", userlogin);
-				Cookie cPassword = new Cookie("cookpass", password);
-				Cookie cMd5Password = new Cookie("cookmd5", md5Password);
-				Cookie cRemember = new Cookie("cookrem", remember);
-				cUserlogin.setMaxAge(60);
-				cPassword.setMaxAge(60);
-				cMd5Password.setMaxAge(60);
-				cRemember.setMaxAge(60);
-				response.addCookie(cUserlogin);
-				response.addCookie(cPassword);
-				response.addCookie(cRemember);
-				response.addCookie(cMd5Password);
-				String userName=request.getParameter("username");
-				request.getSession().setAttribute("username",userName);
-			} else {
-				Cookie cUserlogin = new Cookie("cookuser", null);
-				Cookie cPassword = new Cookie("cookpass", null);
-				Cookie cMd5Password = new Cookie("cookmd5", null);
-				Cookie cRemember = new Cookie("cookrem", null);
-				cUserlogin.setMaxAge(0);
-				cPassword.setMaxAge(0);
-				cMd5Password.setMaxAge(0);
-				cRemember.setMaxAge(0);
-				response.addCookie(cUserlogin);
-				response.addCookie(cPassword);
-				response.addCookie(cMd5Password);
-				response.addCookie(cRemember);
-			}*/
+			
 			if (user != null && md5Password.equals(user.getPassword())) {
 				Set<String> userAuthority = new HashSet<>();
 				Constant.onlineUserList.add(user.getId());
@@ -580,7 +547,7 @@ public class LoginAction extends ActionSupport {
 		}
 	}
 	
-	public void forgetPassword() {
+	public String forgetPassword() {
 
 		try {
 			String email = request.getParameter(EMAIL);
@@ -590,36 +557,86 @@ public class LoginAction extends ActionSupport {
 			if (!findEmail.isEmpty()) {
 				String userEmail = (String) findEmail.get(0).get("email");
 				String userId = (String) findEmail.get(0).get("id");
+				String userKey = (String) loginService.generateMD5(DateUtil.getTimeNow());
+				Timestamp initTime = DateUtil.getCurrentTime();
+				Timestamp expired = new Timestamp(initTime.getTime() + (1000 * 60 * 60 * 24));
 				
-				String ranpassword =loginService.randomPassword(6);
+				UserRpw find = userRpwDAO.findByUserId(userId);
+				
+				if(find == null) {
+					UserRpw u = new UserRpw();
+					u.setUserId(userId);
+					u.setUserKey(userKey);
+					u.setExpried(expired);
+					userRpwDAO.save(u); 
+				} else {
+					find.setUserKey(userKey);
+					find.setExpried(expired);
+					userRpwDAO.update(find);;
+				}
+				
+				// Function RandomPassword 6 number
+				/*String ranpassword =loginService.randomPassword(6);
 				
 				User find = userDAO.findById(userId);
 				find.setPassword(loginService.generateMD5(ranpassword));
-				userDAO.update(find);
-				loginService.sendmail(ranpassword, userEmail);
+				userDAO.update(find);*/
+				
+				loginService.sendmail(userKey, userEmail);
+				request.setAttribute("result", "<div class=\"alert alert-success\" style=\"color:green \"><button class=\"close\" data-close=\"alert\"></button>&#x1F6C8; Please check your e-mail and click on the provided link to reset your password.</div>");
 		
-				obj.put("flag", SUCCESS);
+				/*obj.put("flag", SUCCESS);
 				Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm:ss").create();
 				String jsonObjStr = gson.toJson(obj);
 				PrintWriter out = response.getWriter();
 				out.print(jsonObjStr);
 				out.flush();
-				out.close();
+				out.close();*/
+				return SUCCESS;
 			} else {
-				obj.put("flag", ERROR);
+				/*obj.put("flag", ERROR);
 				Gson gson = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm:ss").create();
 				String jsonObjStr = gson.toJson(obj);
 				PrintWriter out = response.getWriter();
 				out.print(jsonObjStr);
 				out.flush();
-				out.close();
+				out.close();*/
+				request.setAttribute("result", "<div class=\"alert alert-danger\" style=\"color:red \"><button class=\"close\" data-close=\"alert\"></button>&#x1F6C8; Unable to reset password due to an unknown error. Please try again.</div>");
+				return ERROR;
 			}
 
 		} catch (Exception e) {
 			log.debug(e);
+			return ERROR;
 		}
 	}
 
+	public String resetPassword() {
+		try {
+			Timestamp current_time = DateUtil.getCurrentTime();
+			String newpass = request.getParameter("newpassword");
+			String repass = request.getParameter("repassword");
+			String userkey = request.getParameter("key");
+			UserRpw userrpw = userRpwDAO.findByUserKey(userkey);
+			
+			Map<String, String> obj = new HashMap<>();
+			if (userrpw != null && userkey.equals(userrpw.getUserKey()) && newpass.equals(repass) && current_time.before(userrpw.getExpried())) {
+				String user_id = userrpw.getUserId();
+				
+				User find = userDAO.findById(user_id);
+				find.setPassword(loginService.generateMD5(newpass));
+				userDAO.update(find);
+				return SUCCESS;
+			} else {
+				
+				return ERROR;
+			}
+		} catch (Exception e) {
+			log.debug(e);
+			return ERROR;
+		}
+	}
+	
 	public String logout() {
 		try {
 			Cookie cUserlogin = new Cookie("cookuser", null);
@@ -634,7 +651,6 @@ public class LoginAction extends ActionSupport {
 			
 			response.addCookie(cMd5Password);
 			response.addCookie(cRemember);
-			//request.getSession().removeAttribute("username");
 			request.getSession().invalidate();
 			System.out.println(Constant.onlineUserList);
 			return SUCCESS;

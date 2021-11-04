@@ -18,6 +18,7 @@ public class Constant {
     private String test;
     private String googleApiKey;
     private String webPath;
+    private static String webContext;
 
 	public String getGoogleApiKey() {
 		return googleApiKey;
@@ -42,7 +43,13 @@ public class Constant {
 	public void setWebPath(String webPath) {
 		this.webPath = webPath;
 	}
-	
-	
+
+	public static String getWebContext() {
+		return webContext;
+	}
+
+	public void setWebContext(String webContext) {
+		Constant.webContext = webContext;
+	}
 
 }
