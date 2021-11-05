@@ -134,15 +134,12 @@ public class LoginAction extends ActionSupport {
 			if(request.getParameter("remember-me") != null) {
 				String remember = request.getParameter("remember-me");
 				Cookie cUserlogin = new Cookie("cookuser", userlogin);
-				
 				Cookie cMd5Password = new Cookie("cookmd5", md5Password);
 				Cookie cRemember = new Cookie("cookrem", remember);
 				cUserlogin.setMaxAge(60 * 60 * 24 * 15);
-				
 				cMd5Password.setMaxAge(60 * 60 * 24 * 15);
 				cRemember.setMaxAge(60 * 60 * 24 * 15);
 				response.addCookie(cUserlogin);
-				
 				response.addCookie(cRemember);
 				response.addCookie(cMd5Password);
 			} else {
@@ -173,6 +170,10 @@ public class LoginAction extends ActionSupport {
 			String md5Password = loginService.generateMD5(password);
 			
 			if (user != null && md5Password.equals(user.getPassword())) {
+				String chkLogin = "sc";
+				Cookie cSuccess = new Cookie("cooksc", chkLogin);
+				cSuccess.setMaxAge(60 * 60 * 24 * 15);
+				response.addCookie(cSuccess);
 				Set<String> userAuthority = new HashSet<>();
 				Constant.onlineUserList.add(user.getId());
 
@@ -335,6 +336,9 @@ public class LoginAction extends ActionSupport {
 				System.out.println(Constant.onlineUserList);
 				return SUCCESS;
 			} else {
+				Cookie cSuccess = new Cookie("cooksc", null);
+				cSuccess.setMaxAge(0);
+				response.addCookie(cSuccess);
 				return ERROR;
 			}
 
@@ -640,17 +644,17 @@ public class LoginAction extends ActionSupport {
 	public String logout() {
 		try {
 			Cookie cUserlogin = new Cookie("cookuser", null);
-			
 			Cookie cMd5Password = new Cookie("cookmd5", null);
 			Cookie cRemember = new Cookie("cookrem", null);
+			Cookie cSuccess = new Cookie("cooksc", null);
 			cUserlogin.setMaxAge(0);
-			
 			cMd5Password.setMaxAge(0);
 			cRemember.setMaxAge(0);
+			cSuccess.setMaxAge(0);
 			response.addCookie(cUserlogin);
-			
 			response.addCookie(cMd5Password);
 			response.addCookie(cRemember);
+			response.addCookie(cSuccess);
 			request.getSession().invalidate();
 			System.out.println(Constant.onlineUserList);
 			return SUCCESS;

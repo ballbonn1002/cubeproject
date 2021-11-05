@@ -61,20 +61,20 @@ License: You must have a valid license purchased only from themeforest(the above
     <%
     	/*Collect Value Cookies*/
 	    Cookie[] cookies=request.getCookies();
-	    String userlogin = "", password = "", md5Password = "", rememberVal="";
+	    String userlogin = "", md5Password = "", rememberVal="", chkLogin="";
 	    if (cookies != null) {
 	         for (Cookie cookie : cookies) {
 	           if(cookie.getName().equals("cookuser")) {
 	             userlogin = cookie.getValue();
 	           }
-	           /*if(cookie.getName().equals("cookpass")){
-	             password = cookie.getValue();
-	           }*/
 	           if(cookie.getName().equals("cookmd5")){
 		         md5Password = cookie.getValue();
 		       }
 	           if(cookie.getName().equals("cookrem")){
 	             rememberVal = cookie.getValue();
+	           }
+	           if(cookie.getName().equals("cooksc")){
+	        	 chkLogin = cookie.getValue();
 	           }
 	        }
 	    } 
@@ -84,12 +84,12 @@ License: You must have a valid license purchased only from themeforest(the above
 		/*if (request.getSession().getAttribute("username") != null) {
 			response.sendRedirect("check_in.action?userId=");
 		}*/
-		if(!rememberVal.isEmpty()){
-			response.sendRedirect("check_in.action?userId=");
-		}
-		/*AutoLogout after cookies expiration*/
+		/*AutoLogout after cookies expiration
 		if (rememberVal.isEmpty()) {
 			request.getSession().removeAttribute("username");
+		}*/ 
+		if(!rememberVal.isEmpty() && chkLogin.equals("sc")){
+			response.sendRedirect("check_in.action?userId=");
 		}
 	%>
 	<fmt:setLocale value="en_US" scope="session" />
