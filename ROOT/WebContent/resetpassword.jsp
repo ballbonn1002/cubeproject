@@ -53,6 +53,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" />
 		<link href="../assets/global/css/line-login.css" rel="stylesheet" type="text/css" />
+		<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
          </head>
     <!-- END HEAD -->
 
@@ -99,7 +100,7 @@ License: You must have a valid license purchased only from themeforest(the above
 						<br/>
 						<div class="row">
 							<div class="col-md-4">
-								<a href="/index.jsp" ><i class="arrow left"></i> Back to login</a>
+								<a href="/index.jsp" ><i class="fas fa-arrow-left"></i> Back to login</a>
 							</div>
 						</div>
 					</form>
