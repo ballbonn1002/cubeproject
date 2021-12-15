@@ -52,4 +52,7 @@ public interface NewsDAO {
 	public List<Map<String, Object>> leves(String logonUsers,String monthnow,String yearnow) throws Exception;
 	public List<Map<String, Object>> timelinesearch(String user,String month,String year) throws Exception;
 	public List<Map<String, Object>> tilmelinefirstsearch(String user,String month,String year) throws Exception;
+	
+	public List<Map<String, Object>> lastcheck(String user) throws Exception;
+	public List<Map<String, Object>> borrow(String user) throws Exception;
 }

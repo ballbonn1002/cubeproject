@@ -1,0 +1,41 @@
+.area {
+  	width: 33%;
+}
+
+.area-func {
+	width: 33%;
+	height: 300px;
+	margin: 0 6px 0 0;
+}
+
+.area-lfunc {
+	width: 33%;
+	height: 300px;
+}
+
+.rounded-10 {
+  border-radius: 10px !important; }
+
+.info {
+	padding: 20px 0 0 20px;
+}
+
+.btnfunc {
+	width: 120px;
+	height: 35px;
+	border:none;
+	color:white;
+	position:absolute;
+	bottom:30px;
+	right:50px;
+	font-size:16px;
+	font-weight:bold;
+}
+
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}

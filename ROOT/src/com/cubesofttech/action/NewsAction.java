@@ -3,9 +3,11 @@ package com.cubesofttech.action;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -26,11 +28,16 @@ import com.cubesofttech.dao.FeedDAO;
 import com.cubesofttech.dao.FileUploadDAO;
 import com.cubesofttech.dao.HolidayDAO;
 import com.cubesofttech.dao.LeaveDAO;
+import com.cubesofttech.dao.LeaveTypeDAO;
+import com.cubesofttech.dao.LeaveUserDAO;
 import com.cubesofttech.dao.NewsDAO;
 import com.cubesofttech.dao.TimesheetDAO;
 import com.cubesofttech.dao.UserDAO;
 import com.cubesofttech.dao.WorkHoursDAO;
 import com.cubesofttech.model.FileUpload;
+import com.cubesofttech.model.Holiday;
+import com.cubesofttech.model.LeaveType;
+import com.cubesofttech.model.Leaves;
 import com.cubesofttech.model.News;
 import com.cubesofttech.model.User;
 import com.cubesofttech.util.DateUtil;
@@ -47,6 +54,12 @@ public class NewsAction extends ActionSupport {
 	@Autowired
 	private NewsDAO newsDAO;
 
+	@Autowired
+	private LeaveTypeDAO leavetypeDAO;
+
+	@Autowired
+	private LeaveUserDAO leaveuserDAO;
+	
 	@Autowired
 	private FeedDAO feedDAO;
 
@@ -580,7 +593,7 @@ if(leves.size() == 0) {
 		map.put("user_create", (String) leves.get(i).get("user_create"));
 		map.put("checkin", null);
 		map.put("checkout", null);
-		map.put("leave", "วันลา");
+		map.put("leave", "เธงเธฑเธ�เธฅเธฒ");
 		timeline.add(map);
 	}
 }
@@ -831,6 +844,7 @@ if(timeline.size() == 0 ) {
 			int hours = (int) longVal / 60;
 			int remainder = (int) longVal - hours * 60;
 			int mins = remainder / 1;
+			
 
 			int[] ints = { hours, mins };
 
@@ -843,6 +857,110 @@ if(timeline.size() == 0 ) {
 			// ----------------- User WORK Project -----------------
 			List<Map<String, Object>> userWorkProject = timesheetDAO.finduserWorkProject(logonUser, monthnow, yearnow);
 			// ----------------- END User WORK Project -----------------
+			
+			
+			///// ----------------- Dash Board WORK Project -----------------
+
+			// ----------------- Dash Board Event Calendar Project -----------------
+			List<Holiday> allholiday = holidayDAO.findAllHoliday();
+			request.setAttribute("allholiday", allholiday);
+			
+			request.setAttribute("num_month", month);
+			request.setAttribute("num_year", yearnow);
+			// ----------------- END Dash Board Event Calendar Project -----------------
+			
+			// ----------------- Dash Board Event Month Project -----------------
+			List<Holiday> holidaymonth = holidayDAO.findMonth();
+			request.setAttribute("holidaymonth", holidaymonth);
+			// ----------------- END Dash Board Event Month Project -----------------
+			
+			// ----------------- Dash Board Check IN/OUT Project -----------------
+			List<Map<String, Object>> lastchk = newsDAO.lastcheck(logonUser);
+			request.setAttribute("lastchk", lastchk);
+			// ----------------- END Dash Board Check IN/OUT Project -----------------
+
+			// ----------------- Dash Board Leave Project -----------------
+			User urL = new User();
+			String userLogin = null;
+			String type = request.getParameter("type");
+			if (type == null) {
+				urL = (User) request.getSession().getAttribute("onlineUser");
+				userLogin = urL.getId();
+			} else {
+				userLogin = request.getParameter("name1");
+			}
+
+			DateTimeFormatter datefm = DateTimeFormatter.ofPattern("01-01-yyyy");
+			LocalDate localDate = LocalDate.now();
+			String s = "00:00:00.0";
+
+			Timestamp start_date;
+			Timestamp end_date;
+			start_date = DateUtil.dateToTimestamp(datefm.format(localDate), s);
+			end_date = DateUtil.changetoEndYear(datefm.format(localDate));
+
+			String status = "1";
+			List LeaveID = leaveDAO.findLeaveId(userLogin, start_date, end_date, status);
+			Double leave_1 = 0.000, leave_3 = 0.000, leave_6 = 0.000;
+
+			int x = 0;
+
+			while (x <= LeaveID.size() - 1) {
+				//log.debug("inLoopWhile");
+
+				String a[] = LeaveID.get(x).toString().split("[={}]");
+				//log.debug("Split Success");
+				/*for (int b = 0; b <= a.length - 1; b++) {
+					log.debug("a[" + b + "]= " + a[b]);
+				}*/
+				int id = 0;
+				for (int b = 0; b <= a.length - 1; b++) {
+					//log.debug("inLoopFor");
+					if (tryParseInt(a[b])) {
+						//log.debug("inIf");
+						id = Integer.parseInt(a[b]);
+						//log.debug("This is Array No: " + b + " =" + a[b]);
+						Leaves leaveDashboard = leaveDAO.findByLeaveId(id);
+						//log.debug("Ref Success");
+						Double noday = leaveDashboard.getNoDay().doubleValue();
+						//log.debug("This NoDay : " + noday);
+						if (leaveDashboard.getLeaveTypeId().contains("1")) {
+							leave_1 = leave_1 + noday;
+						}
+						if (leaveDashboard.getLeaveTypeId().contains("3")) {
+							leave_3 = leave_3 + noday;
+						}
+						if (leaveDashboard.getLeaveTypeId().contains("6")) {
+							leave_6 = leave_6 + noday;
+						}
+					}
+
+				}
+				x++;
+			}
+
+			request.setAttribute("leave_1", leave_1);
+			request.setAttribute("leave_3", leave_3);
+			request.setAttribute("leave_6", leave_6);
+			Date day = new Date();
+			LocalDate localdate = day.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			Double quotaLastYear = leaveDAO.LastYearQuota(userLogin, localdate.getYear());
+			Double quotaThisYear = leaveDAO.ThisYearQuota(userLogin);
+			request.setAttribute("quotaThisYear", quotaThisYear);
+			request.setAttribute("quotaLastYear", quotaLastYear);
+
+			List<LeaveType> type_leave = leavetypeDAO.findAll();
+			request.setAttribute("type_1", type_leave.get(0).getLeaveTypeName());
+			request.setAttribute("type_3", type_leave.get(2).getLeaveTypeName());
+			request.setAttribute("type_7", type_leave.get(6).getLeaveTypeName());
+			// ----------------- END Dash Board Leave Project -----------------
+
+			// ----------------- Dash Board Borrow Project -----------------
+			List<Map<String, Object>> borrow = newsDAO.borrow(logonUser);
+			request.setAttribute("borrow", borrow);
+			// ----------------- END Dash Board Borrow Project -----------------
+
+			///// ----------------- END Dash Board WORK Project -----------------
 
 			request.setAttribute("Leavesum", Leavesum);
 
@@ -864,6 +982,15 @@ if(timeline.size() == 0 ) {
 			log.error(e);
 			return ERROR;
 		}
+	}
+
+	private boolean tryParseInt(String value) {
+		try {
+	        int x= Integer.parseInt(value);
+	        return true;
+	    } catch (NumberFormatException e) {
+	        return false;
+	    }
 	}
 
 	private Object removeTheElement(List<Map<String, Object>> tilmeline, int i) {

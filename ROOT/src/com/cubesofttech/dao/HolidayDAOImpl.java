@@ -2,7 +2,6 @@ package com.cubesofttech.dao;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.cubesofttech.model.Holiday;
-import com.cubesofttech.model.Leaves;
 import com.cubesofttech.util.DateUtil;
 import com.google.gson.Gson;
+import com.ibm.icu.text.SimpleDateFormat;
 
 @Repository
 public class HolidayDAOImpl implements HolidayDAO {
@@ -51,9 +50,64 @@ public class HolidayDAOImpl implements HolidayDAO {
 		 Calendar cal = Calendar.getInstance(); // Use Calendar .Year
 		 int year = cal.get(Calendar.YEAR);
 		 
-			
+		 
 		  try {
 		   String sql = "SELECT * FROM holiday WHERE start_date LIKE '%"+year+"%' order by start_date ASC; ";
+		   SQLQuery query = session.createSQLQuery(sql);
+		   query.addEntity(Holiday.class);
+		  
+		   HolidayList = query.list();
+		  } catch (Exception e) {
+		   e.printStackTrace();
+		  } finally {
+		   // session.close();
+		  }
+		  return HolidayList;
+	}
+	
+	@Override
+	public List<Holiday> findMonth() throws Exception {
+		// TODO Auto-generated method stub
+/*		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Holiday");
+		List<Holiday> holiday = (List<Holiday>) query.list();
+		return holiday; */
+		Session session = this.sessionFactory.getCurrentSession();
+		 List<Holiday> HolidayList = null;
+		 Timestamp now = DateUtil.getCurrentTime(); // Not Working error getYear() 
+		 Calendar cal = Calendar.getInstance(); // Use Calendar .Year
+		 int year = cal.get(Calendar.YEAR);
+			
+		  try {
+		   String sql = "SELECT DATE_FORMAT(start_date, '%a, %e') as hday,DATE_FORMAT(start_date, '%c') as month,DATE_FORMAT(start_date, '%Y') as year,head FROM holiday WHERE start_date order by start_date ASC; ";
+		   SQLQuery query = session.createSQLQuery(sql);
+		   query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+		  
+		   HolidayList = query.list();
+		  } catch (Exception e) {
+		   e.printStackTrace();
+		  } finally {
+		   // session.close();
+		  }
+		  return HolidayList;
+	}
+	
+	@Override
+	public List<Holiday> findAllHoliday() throws Exception {
+		// TODO Auto-generated method stub
+/*		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Holiday");
+		List<Holiday> holiday = (List<Holiday>) query.list();
+		return holiday; */
+		Session session = this.sessionFactory.getCurrentSession();
+		 List<Holiday> HolidayList = null;
+		 Timestamp now = DateUtil.getCurrentTime(); // Not Working error getYear() 
+		 Calendar cal = Calendar.getInstance(); // Use Calendar .Year
+		 int year = cal.get(Calendar.YEAR);
+		 
+			
+		  try {
+		   String sql = "SELECT * FROM holiday order by start_date ASC; ";
 		   SQLQuery query = session.createSQLQuery(sql);
 		   query.addEntity(Holiday.class);
 		  

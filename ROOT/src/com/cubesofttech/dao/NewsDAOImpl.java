@@ -487,4 +487,42 @@ public class NewsDAOImpl implements NewsDAO {
 		}
 		return userlate;
 	}
+	@Override
+	public List<Map<String, Object>> lastcheck(String user) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> work_status = null;
+		try {
+
+			String sql = "SELECT work_hours_type as status,MAX(DATE_FORMAT(work_hours_time_work, '%d %b %Y %H:%m')) as lastcheck" + " FROM work_hours "
+					+ " WHERE user_create =:user ";
+
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("user", user);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			work_status = query.list();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return work_status;
+	}
+	@Override
+	public List<Map<String, Object>> borrow(String user) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> work_status = null;
+		try {
+
+			String sql = "SELECT SUM(borrow_amout) as amount" + " FROM borrow "
+					+ " WHERE user_borrowid =:user ";
+
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("user", user);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			work_status = query.list();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return work_status;
+	}
 }
