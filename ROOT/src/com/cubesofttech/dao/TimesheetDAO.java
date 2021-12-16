@@ -27,6 +27,7 @@ public interface TimesheetDAO {
 	List<Map<String, Object>> findHoliday() throws Exception;
 	List<Map<String, Object>> findHoliday2() throws Exception;
 	public List<Map<String, Object>> listtimesheet(String userid, java.sql.Timestamp Datenow, java.sql.Timestamp DateBefore  ,String month, String year) throws Exception;
+	public List<Map<String, Object>> listtimesheet1(String userid, java.sql.Timestamp Datenow, java.sql.Timestamp DateBefore  ,String month, String year) throws Exception;
 	public List<Map<String, Object>> listtimesheet2(String userid, String dateStartSearch, String dateEndSearch) throws Exception;
 	public List<Map<String, Object>> timesheetapproved(String timesheetid, String status) throws Exception;
 	public Timesheet latestTimesheet(String id);

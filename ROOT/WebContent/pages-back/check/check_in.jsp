@@ -1,17 +1,17 @@
-<link href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"
-	rel="stylesheet" />
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <link rel="stylesheet" href="js/jquery.datetimepicker.css">
+<link href="../assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css">
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="../assets/global/plugins/bootstrap-toastr/toastr.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/ui-toastr.min.js" type="text/javascript"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 	AOS.init();
@@ -47,6 +47,35 @@ body {
 
 .birthday-card img {
 	width: 100%;
+}
+
+#ourtime {
+	border: none;
+}
+
+.btn default {
+	border: none;
+	background-color: #ffffff;
+}
+
+#ourtime_label {
+	color: #5C9BD1;
+	font-weight: bold;
+	font-size: 47px;
+	border: none;
+	text-align: center;
+	height: fit-content;
+	width: 200px;
+	margin-left: 160px;
+}
+
+#mydate{
+	color: #5C9BD1;
+	font-weight: bold;
+	font-size: 20px;
+	border: none;
+	text-align: center;
+	width: fit-content;
 }
 
 .source-link {
@@ -176,7 +205,7 @@ body {
 	<div class="portlet-title">
 		<div class="caption">
 			<span class="caption-subject font-red sbold uppercase"><i
-				class="fa fa-plug"></i> Welcome</span>
+				class="fa fa-clock-o"></i> Check-In Check-OUT</span>
 			<!-- <p id="asd">asddd</p> -->
 		</div>
 		<div class="actions">
@@ -186,43 +215,10 @@ body {
 	</div>
 	<div class="row">
 		<div class="col-lg-12 col-xs-12 col-sm-12">
-			<div class="portlet light bordered">
-				<div class="portlet-title">
-					<div class="caption">
-						<span class="caption-subject font-red sbold uppercase"> <i
-							class="fa fa-mail-forward"></i> Check-In Check-OUT
-						</span>
-					</div>
-
-				</div>
 
 				<div class="row">
 					<div class="portlet-body" style="margin-bottom: 25%;">
 						<div class="col-lg-6">
-							<c:choose>
-								<c:when test="${timecheck < 12}">
-									<c:forEach var="lusci" items="${lastusercheckin}"
-										varStatus="Count">
-										<div class="alert alert-success alert-dismissable"
-											data-aos="flip-up">
-											<button type="button" class="close" data-dismiss="alert"
-												aria-hidden="true"></button>
-											<strong>Last user check-in ! : </strong>&emsp; ${lusci.name}
-										</div>
-									</c:forEach>
-								</c:when>
-								<c:otherwise>
-									<c:forEach var="lusco" items="${lastusercheckout}"
-										varStatus="Count">
-										<div class="alert alert-danger alert-dismissable"
-											data-aos="flip-up">
-											<button type="button" class="close" data-dismiss="alert"
-												aria-hidden="true"></button>
-											<strong>Last user check-out ! : </strong>&emsp; ${lusco.name}
-										</div>
-									</c:forEach>
-								</c:otherwise>
-							</c:choose>
 
 							<div class="alert alert-warning " data-aos="flip-up"
 								id="messagebox">
@@ -276,109 +272,89 @@ body {
 							</script>
 
 							<form action="save-check" class="form-horizontal" method="POST">
-								<div class="form-group form-lg-line-input"
-									style="margin-left: -5%;">
-									<label class="col-md-3 control-label" for="form_control_1">Check
-										:</label>
-									<div class="col-md-9">
+								<div class="form-group form-lg-line-input" style="text-align:center;">
+									<div class="col-md-12" style="text-align:center;">
+										<div class="input-group" style="text-align:center;">
+											<input class="form-control timepicker timepicker-24 test" id="ourtime_label" name="work_hours_time_work" 
+													value="${time}"  onkeypress='return false' style="text-align:center;">
+											<span class="input-group-btn" style="text-align:center;">
+												<button class="btn btn-default " type="button" id="ourtime" style="margin-left: -40px;color:#67809F;"
+														data-time-format="HH:mm" value="${time}" onclick="timechange()" >
+												<i class="fa fa-clock-o"></i></button>
+											</span>
+										</div>
+									</div>
+								</div> <!-- TIME -->
+								
+								<div class="form-group form-lg-line-input" style="text-align:center;">
+									<div class="col-md-12" style="text-align:center;">
+										<div class="input-group date date-picker test" data-date-format="dd-mm-yyyy" style="margin-left:70px;text-align:center;">
+											<input class="form-control" id="mydate" name="work_hours_date_work" value="${fulldate}"  style="width:160px;margin-left:102px;"
+												onchange="datechange()" onkeypress='return false' >
+										<!-- <span class="input-group-btn" style="float:left;"> -->
+											<button class="btn default test" type="button" 
+													style="background-color:white;border:none;margin-left:-11px;">
+											<i class="fa fa-calendar" style="color:#67809F;"></i></button>
+										<!-- </span> -->
+										</div>
+									</div>
+								</div>	<!-- DATE -->
+
+								<div style="text-align:center;">
+									<font color="gray"><c:forEach var="lastcheckin"
+											items="${lastcheckin}" varStatus="status">
+										<div>
+											<sub>( Last Check-In : </sub> <sub id="demo"></sub> <sub>)</sub>
+										</div>
+									</c:forEach></font>
+									<script>
+										var str = '${lastcheckin}';
+										var str1 = /\d{4}-\d{2}-\d{2}/g;
+										var str2 = /\d{2}:\d{2}/g;
+										var date1 = /\d{2}/g
+										var result = str.match(date1);
+										var result1 = str.match(str1);
+										var result2 = str.match(str2);
+										var today = new Date();
+										var check = result[3] + '/'
+													+ result[2] + '/'
+													+ +result[0]
+													+ result[1] + ' '
+													+ result2;
+										if (today.getFullYear() == (result[0] + result[1])
+												&& (today.getMonth() + 1) == result[2]
+												&& today.getDate() == result[3]) {
+											check = 'TO DAY ' + result2;
+										}
+										document.getElementById("demo").innerHTML = check;
+									</script>
+								</div> <!-- LAST CHECK-IN -->
+								<div class="form-group form-lg-line-input" style="text-align:center;margin-top:20px;">
+									<div class="col-md-12">
 										<div class="md-radio-inline">
 											<div class="md-radio">
-												<input type="radio" id="checkbox1_1" name="work_hours_type"
+											<input type="radio" id="checkbox1_1" name="work_hours_type"
 													value="1" class="md-radiobtn"
 													onclick="show_text(this.value);"> <label
 													for="checkbox1_1" style="color: #32c5d2;"> <span></span>
 													<span class="check"></span> <span class="box"></span>
 													Check-IN
-												</label>
+											</label>
 											</div>
 											<div class="md-radio">
-												<input type="radio" id="checkbox1_2" name="work_hours_type"
+											<input type="radio" id="checkbox1_2" name="work_hours_type"
 													value="2" class="md-radiobtn"
 													onclick="show_text(this.value);"> <label
 													for="checkbox1_2" style="color: red-intense;"> <span></span>
 													<span class="check" style="background: #ff2524;"></span> <span
 													class="box"></span> Check-OUT
-												</label>
+											</label>
 											</div>
 										</div>
-										<div>
-											<font color="gray"><c:forEach var="lastcheckin"
-													items="${lastcheckin}" varStatus="status">
-													<div>
-														<sub>( Last Check-In : </sub> <sub id="demo"></sub> <sub>)</sub>
-													</div>
-
-												</c:forEach></font>
-											<script>
-												var str = '${lastcheckin}';
-												var str1 = /\d{4}-\d{2}-\d{2}/g;
-												var str2 = /\d{2}:\d{2}/g;
-												var date1 = /\d{2}/g
-												var result = str.match(date1);
-												var result1 = str.match(str1);
-												var result2 = str.match(str2);
-												var today = new Date();
-
-												var check = result[3] + '/'
-														+ result[2] + '/'
-														+ +result[0]
-														+ result[1] + ' '
-														+ result2;
-												if (today.getFullYear() == (result[0] + result[1])
-														&& (today.getMonth() + 1) == result[2]
-														&& today.getDate() == result[3]) {
-													check = 'TO DAY ' + result2;
-												}
-												document.getElementById("demo").innerHTML = check;
-											</script>
-										</div>
 									</div>
-								</div>
-								<div class="form-group form-lg-line-input"
-									style="margin-left: -5%;">
-									<label class="control-label col-md-3">Date :</label>
-									<div class="col-md-9">
+								</div>	<!-- CHECK-IN & CHECK-OUT -->
+								
 
-										<!--  <input name="work_hours_date_work" id="mydate"
-									value="${fulldate}" onchange="datechenge()"
-									style="text-align: center;"
-									class="form-control form-control-inline input-medium date-picker test"
-									size="9" type="text" data-date-format="dd-mm-yyyy"
-									onkeypress='return false'> -->
-
-										<input type="text" id="mydate" name="work_hours_date_work"
-											value="${fulldate}" onchange="datechenge()"
-											style="text-align: center;"
-											class="form-control form-control-inline  date-picker test"
-											size="9" type="text" data-date-format="dd-mm-yyyy"
-											onkeypress='return false'>
-									</div>
-
-								</div>
-
-								<div class="form-group form-lg-line-input"
-									style="margin-left: -5%;">
-									<label class="control-label col-md-3">Time :</label>
-									<div class="col-md-9">
-										<div class="input-group">
-
-
-											<input type="text" name="work_hours_time_work" id="ourtime"
-												class="form-control  timepicker timepicker-24 test"
-												value="${time}" data-time-format="HH:mm"
-												style="text-align: center;" onchange="timechenge()"
-												onkeypress='return false'> <span
-												class="input-group-btn">
-
-
-												<button class="btn btn-default" type="button"
-													onclick="timechenge()">
-													<i class="fa fa-clock-o"></i>
-												</button>
-											</span>
-										</div>
-									</div>
-								</div>
 
 								<div class="form-group form-lg-line-input"
 									style="margin-left: -5%;">
@@ -397,7 +373,7 @@ body {
 
 									<button class="btn btn-primary blue-soft"
 										style="font-size: 24px" type="submit" id="checktime"
-										name="savebtn" onclick="checkINcheck">
+										name="savebtn" ><!-- onclick="checkINcheck" -->
 										<i class="fa fa-save"></i> Accept
 									</button>
 
@@ -587,75 +563,153 @@ body {
 					</form>
 				</div>
 
-			</div>
 
 		</div>
-		<div class="col-lg-12 col-xs-12 col-sm-12">
-			<div class="portlet light portlet-fit bordered">
-				<div class="portlet-title">
-					<div class="caption">
-						<span class="caption-subject font-red sbold uppercase"> <i
-							class="fa fa-commenting-o"></i> Contact
-						</span>
-					</div>
 
+	</div>
+</div>
+<div class="portlet light bordered">
+	<div class="portlet-title">
+		<div class="caption">
+			<span class="caption-subject font-red sbold uppercase">
+				<i class="fa fa-clock-o"></i> Check List
+			</span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="portlet-body">
+			<form action="search-list" method="post" name="form">
+				<div class="input-group input-medium date date-picker" data-date-viewmode="month" style="float:right;margin-bottom:19px;">
+					<input class="form-control" id="searchmonth" onchange="searchlistmonth">
+					<span class="input-group-btn">
+						<button class="btn default" type="button">
+						<i class="fa fa-calendar-o"></i></button>
+					</span>
 				</div>
-				<div class="portlet-body">
-
-					<div class="row">
-						<div class="col-md-4">
-							<div class="mt-widget-3">
-								<div class="mt-head bg-blue">
-									<div class="mt-head-icon">
-										<i class=" fa fa-clock-o"></i>
-									</div>
-									<div class="mt-head-desc">Check List</div>
-									<span class="mt-head-date"> </span>
-									<div class="mt-head-button">
-										<button type="button"
-											class="btn btn-circle btn-outline white btn-lg"
-											onclick="nextStep()">Go</button>
-									</div>
-								</div>
-
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="mt-widget-3">
-								<div class="mt-head bg-green">
-									<div class="mt-head-icon">
-										<i class=" fa fa-taxi "></i>
-									</div>
-									<div class="mt-head-desc">Reimbursement</div>
-									<span class="mt-head-date"> </span>
-									<div class="mt-head-button">
-										<button type="button"
-											class="btn btn-circle btn-outline white btn-lg"
-											onclick="travel()">Go</button>
-									</div>
-								</div>
-
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="mt-widget-3">
-								<div class="mt-head bg-red">
-									<div class="mt-head-icon">
-										<i class="fa fa-bed "></i>
-									</div>
-									<div class="mt-head-desc">Send Leave</div>
-									<span class="mt-head-date"> </span>
-									<div class="mt-head-button">
-										<button type="button"
-											class="btn btn-circle btn-outline white btn-lg"
-											onclick="leave()">Go</button>
-									</div>
-								</div>
-
-							</div>
-						</div>
-					</div>
-				</div>
+			</form>
+			
+			<div class="portlet-body flip-scroll" style="">
+				<table class="table table-striped table-condensed table-hover order-column compact">
+					<thead>
+						<tr style="background-color:#E9EDEF;color:#67809F">
+							<th height="41">Date</th>
+							<th height="41">Check-in</th>
+							<th height="41">Check-out</th>
+							<th height="41">Actual</th>
+							<th height="41">Status</th>
+							<!-- <th height="41">Test</th> -->
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="lts" items="${listtimes}" varStatus="Status">
+							<tr>
+								<c:set var="workinghours" value="${lts.workinghours}"/>
+								<c:set var="text1" value="${workinghours/60}"/>
+								<c:set var="hour" value="${fn:substringBefore(text1, '.')}"/>
+								<c:set var="min" value="${workinghours%60}"/>
+								
+								<c:set var="text2" value="${lts.time_check_in.toString().substring(11, 16)}"/>
+								<c:set var="hour_checkin" value="${fn:substringBefore(text2, ':')}"/>
+								<fmt:parseNumber var="h_checkin" integerOnly = "true" type = "number" value="${hour_checkin}"/>
+								<c:set var="min_checkin" value="${fn:substringAfter(text2, ':')}"/>
+								<fmt:parseNumber var="m_checkin" integerOnly = "true" type = "number" value="${min_checkin}"/>
+								<c:set var="hour_checkout" value="${fn:substringBefore(lts.time_check_out, ':')}"/>
+								
+								<td><fmt:formatDate value="${lts.time_check_in}" pattern="EE, dd MMM yyyy" /></td>
+								<!-- END DATE -->
+								<td>
+									<c:set var="text3" value="${stime.toString().substring(0, 4)}"/>
+									<c:set var="stime_h" value="${fn:substringBefore(text3, ':')}"/>
+									<c:set var="stime_m" value="${fn:substringAfter(text3, ':')}"/>
+									<c:choose>
+									<c:when test="${stime == null}">
+										<fmt:formatDate value="${lts.time_check_in}" pattern="HH:mm"/>
+									</c:when>
+									<c:when test="${stime != null}">
+										<c:choose>
+											<c:when test="${h_checkin < stime_h}">
+												<span>${lts.time_check_in.toString().substring(11, 16)}</span>
+											</c:when>
+											<c:when test="${h_checkin > stime_h}">
+												<span class="text-danger">${lts.time_check_in.toString().substring(11, 16)}</span>
+											</c:when>
+											<c:when test="${h_checkin == stime_h}">
+												<c:if test="${m_checkin == stime_m}">${lts.time_check_in.toString().substring(11, 16)}</c:if>
+												<c:if test="${m_checkin > stime_m}"><span class="text-danger">${lts.time_check_in.toString().substring(11, 16)}</span></c:if>
+			
+											</c:when>
+										</c:choose>
+									</c:when>
+									</c:choose>
+								</td>
+								<!-- END CHECK-IN -->
+								<td><fmt:formatDate value="${lts.time_check_out}" pattern="HH:mm"/></td>
+								<!-- END CHECK-OUT -->
+								<td>
+								<c:choose>
+									<c:when test="${(hour == '0' || hour == '00') && (min == '0' || min == '00')}">N\A</c:when>
+									<c:when test="${hour < '9' && min > '0'}">
+										<c:if test="${hour == '0'}">
+											<c:if test="${fn:length(min.toString()) == 1}"><span class="text-danger">${hour}:${min}0 h</span></c:if>
+											<c:if test="${fn:length(min.toString()) > 1}"><span class="text-danger">${hour}:${min} h</span></c:if>
+										</c:if>
+										<c:if test="${hour != '0'}">
+											<c:if test="${hour >= '4'}">
+												<c:if test="${fn:length(min.toString()) == 1}">${hour-1}:${min}0 h</c:if>
+												<c:if test="${fn:length(min.toString()) > 1}">${hour-1}:${min} h</c:if>
+											</c:if>
+											<c:if test="${hour < '4'}">
+												<c:if test="${fn:length(min.toString()) == 1}">${hour}:${min}0 h</c:if>
+												<c:if test="${fn:length(min.toString()) > 1}">${hour}:${min} h</c:if>
+											</c:if>
+										</c:if>
+									</c:when>
+									<c:when test="${hour >= '9' && min <= '59'}">
+										<c:if test="${fn:length(min.toString()) == 1}">${hour-1}:${min}0 h</c:if>
+										<c:if test="${fn:length(min.toString()) > 1}">${hour-1}:${min} h</c:if>
+									</c:when>
+								</c:choose>
+								</td>
+								<!-- END ACTUAL -->
+								<td>
+									<c:choose>
+									<c:when test="${stime == null}">N\A</c:when>
+									<c:when test="${stime != null}">
+										<c:choose>
+										<c:when test="${h_checkin < stime.toString().substring(0, 1)}">
+											<c:if test="${hour >= 9 && min >= 0}"><span class="text-success sbold">On Time</span></c:if>
+											<c:if test="${hour < 9 && min <= 59}"><span class="text-danger sbold">Unfinished Work</span></c:if>
+										</c:when>
+										<c:when test="${h_checkin == stime.toString().substring(0, 1)}">
+											<c:choose>
+											<c:when test="${m_checkin <= stime.toString().substring(2, 4)}">
+												<c:if test="${hour >= 9 && min >= 0}"><span class="text-success sbold">On Time</span></c:if>
+											</c:when>
+											<c:otherwise>
+												<c:if test="${hour >= 9 && min >= 0}"><span class="text-danger sbold">Late</span></c:if>
+												<c:if test="${(hour < 9 && min <= 59) && workinghours != null}"><span class="text-danger sbold">Unfinished Work</span></c:if>
+											</c:otherwise>
+											</c:choose>
+										</c:when>
+										<c:when test="${h_checkin > stime.toString().substring(0, 1)}">
+											<c:choose>
+											<c:when test="${hour >= 9 && min >= 0}">
+												<span class="text-danger sbold">Late</span>
+											</c:when>
+											<c:when test="${(hour < 9 && min <= 59) && workinghours != null}">
+												<span class="text-danger sbold">Unfinished Work</span>
+											</c:when>
+											</c:choose>
+										</c:when>
+										</c:choose>
+									</c:when>
+									</c:choose>
+								</td>
+								<!-- END STATUS -->
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
@@ -749,7 +803,7 @@ body {
 	function nextStep() {
 		document.location = "check_list?userId=${onlineUser.id}";
 	}
-	function timechenge() {
+	function timechange() {
 		var mytime = $("#ourtime").val();//เวลาที่เลือก
 		var timeNow = "${time}".trim();//เวลาปัจจุบัน
 		var timeNowlength = "${time}".trim().length;//ความยาวเวลาปัจจุบัน
@@ -760,6 +814,9 @@ body {
 		var minmytime = null; //นาทีที่เลือก
 		var fullmytime = null; //คำนวณชั่วโมงที่เลือก
 		var fulltimenow = null; //คำนวณชั่วโมงปัจจุบัน
+		
+		document.getElementById("ourtime_label").innerHTML = mytime;
+		
 		if (mytimelength == '4') { //เวลาที่เลือกก่อนเที่ยง = 4 
 			hourmytime = mytime.substring(0, 1);
 			minmytime = mytime.substring(2, 4);
@@ -784,7 +841,7 @@ body {
 			$("#labeldetail").hide();
 		}
 	}
-	function datechenge() {
+	function datechange() {
 		var fulldate = "${fulldate}".trim();//วันที่ปัจจุบัน
 		var Userdate = $("#mydate").val();//วันที่เลือก
 		if (fulldate != Userdate) {
@@ -953,27 +1010,31 @@ body {
 								if (fulltimecheck < 0) { //เวลาที่เลือกเทียบเวลาปัจจุบัน   (<0 คือเลือกเวลาย้อนหลังเกิน 24 ชั่วโมง)
 									swal("Here's a message!",
 											"Can't Check-Out Greater than 24 Hr.")
+									toast_checkout();
 									document.getElementById("checktime").type = "button";
-								} else if (fulltimecheck > 0 && mydetail < 10) { //เช็ค Detail (กรณีCheck-out เลือกเวลาย้อนหลังเกิน24ชั่วโมงจากเวลาปัจจุบัน)
-									swal("Here's a message!",
-											"กรุณาระบุเหตุผลการลงเวลาย้อนหลังมากกว่า 10 ตัวอักษร") // check-out ย้อนหลัง
-									document.getElementById("checktime").type = "button";
-								} else {
-									document.getElementById("checktime").type = "submit";
-								}
+								} 
+//								else if (fulltimecheck > 0 && mydetail < 10) { //เช็ค Detail (กรณีCheck-out เลือกเวลาย้อนหลังเกิน24ชั่วโมงจากเวลาปัจจุบัน)
+//									swal("Here's a message!",
+//											"กรุณาระบุเหตุผลการลงเวลาย้อนหลังมากกว่า 10 ตัวอักษร") // check-out ย้อนหลัง
+//									document.getElementById("checktime").type = "button";
+//								} else {
+//									document.getElementById("checktime").type = "submit";
+//								}
 
 							} else if (checkfulldate > 1) { //(กรณี Check-out ย้อนหลังเกิน 1 วัน) 
 								swal("Here's a message!",
 										"Can't Check-out In Last.") //ย้อนหลังเกิน  1 วัน
+								toast_checkout();
 								document.getElementById("checktime").type = "button";
 
-							} else if (mydetail < 10) {
-								swal("Here's a message!",
-										"กรุณาระบุเหตุผลการลงเวลาย้อนหลังมากกว่า 10 ตัวอักษร") //
-								document.getElementById("checktime").type = "button";
-							} else {
-								document.getElementById("checktime").type = "submit";
-							}
+							} 
+//							else if (mydetail < 10) {
+//								swal("Here's a message!",
+//										"กรุณาระบุเหตุผลการลงเวลาย้อนหลังมากกว่า 10 ตัวอักษร") //
+//								document.getElementById("checktime").type = "button";
+//							} else {
+//								document.getElementById("checktime").type = "submit";
+//							}
 
 						}
 
@@ -984,6 +1045,49 @@ body {
 			return false;
 		}
 	});
+	
+	function toast_checkin(){
+		var mytime = $("#ourtime");
+		Command: toastr["success"]("Check in " + mytime , "Success")
+		toastr.option = {
+				"closeButton": false,
+				"debug": false,
+				"newestOnTop": false,
+				"progressBar": true,
+				"positionClass": "toast-top-right",
+				"preventDuplicates": false,
+				"onclick": null,
+				"showDuration": "300",
+				"hideDuration": "1000",
+				"timeOut": "3000",
+				"extendedTimeOut": "1000",
+				"showEasing": "swing",
+				"hideEasing": "linear",
+				"showMethod": "fadeIn",
+				"hideMethod": "fadeOut"
+		}
+	}
+	
+	function toast_checkout(){
+		Command: toastr["error"]("Can't check-out more than 24 hours later.", "Error")
+		toastr.option = {
+				"closeButton": false,
+				"debug": false,
+				"newestOnTop": false,
+				"progressBar": true,
+				"positionClass": "toast-top-right",
+				"preventDuplicates": false,
+				"onclick": null,
+				"showDuration": "300",
+				"hideDuration": "1000",
+				"timeOut": "3000",
+				"extendedTimeOut": "1000",
+				"showEasing": "swing",
+				"hideEasing": "linear",
+				"showMethod": "fadeIn",
+				"hideMethod": "fadeOut"
+		}
+	}
 </script>
 
 <link

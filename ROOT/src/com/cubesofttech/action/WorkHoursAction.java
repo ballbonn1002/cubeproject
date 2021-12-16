@@ -59,6 +59,7 @@ import com.cubesofttech.dao.DepartmentDAO;
 import com.cubesofttech.dao.HolidayDAO;
 import com.cubesofttech.dao.LeaveDAO;
 import com.cubesofttech.dao.LeaveTypeDAO;
+import com.cubesofttech.dao.TimesheetDAO;
 //import com.cubesofttech.dao.QRCodeDAO;
 import com.cubesofttech.dao.UserDAO;
 import com.cubesofttech.dao.WorkHoursDAO;
@@ -69,6 +70,7 @@ import com.cubesofttech.model.Expense;
 import com.cubesofttech.model.Holiday;
 import com.cubesofttech.model.LeaveType;
 import com.cubesofttech.model.Leaves;
+import com.cubesofttech.model.Timesheet;
 import com.cubesofttech.model.User;
 import com.cubesofttech.model.WorkHours;
 import com.cubesofttech.service.LoginService;
@@ -131,7 +133,10 @@ public class WorkHoursAction extends ActionSupport {
 
 	@Autowired
 	private WorkHoursDAO workHoursDAO;
-
+	
+	@Autowired
+	private TimesheetDAO timesheetDAO;
+	
 //	@Autowired
 //	private Constant constant;
 
@@ -379,7 +384,7 @@ public class WorkHoursAction extends ActionSupport {
 					}
 			}
 			
-			System.out.print(mday);
+			System.out.println(mday);
 			String spl[] = ytd.split("-");
 			String date1 = (spl[0]);
 			String month2 = (spl[1]);
@@ -485,6 +490,33 @@ public class WorkHoursAction extends ActionSupport {
 			int timecheck = d.getHours();
 
 			request.setAttribute("timecheck", timecheck);
+			
+			Timestamp tstamp = new Timestamp(date.getTime());
+			Date Longday = DateUtil.periodMinus(date, 8);
+			Timestamp tstampbefore = new Timestamp(Longday.getTime());
+			
+			Date date0;
+			date0 = tstamp;
+			String datenow = dateFormat.format(date0);
+			String month = datenow.substring(3, 5);
+			String year = datenow.substring(6, 10);
+			
+			String userid = request.getParameter("userseq");
+			List<Map<String, Object>> listtimes = timesheetDAO.listtimesheet1(logonUser, tstamp, tstampbefore, month, year);
+			
+			User user = userDAO.findById(logonUser);
+			String stime = user.getWorkTimeStart() + ":00";
+			
+			request.setAttribute("stime", stime);
+			request.setAttribute("listtimes", listtimes);
+			log.debug(stime);
+			log.debug(listtimes);
+			
+			List<Map<String, Object>> descheckin = workHoursDAO.descheckin(logonUser, tstamp, tstampbefore, month, year);
+			request.setAttribute("descheckin", descheckin);
+			System.out.println(descheckin);
+			
+			
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1392,14 +1424,16 @@ public class WorkHoursAction extends ActionSupport {
 
 			for (Map<String, Object> map : checktimehours) {
 				for (Map.Entry<String, Object> entry : map.entrySet()) {
-					BigInteger x = (BigInteger) entry.getValue();
+					//BigInteger x = (BigInteger) entry.getValue();
+					Integer x = (Integer) entry.getValue();
 					inhour = x.intValue();
 				}
 			}
 
 			for (Map<String, Object> maps : checktimemin) {
 				for (Map.Entry<String, Object> entry : maps.entrySet()) {
-					BigInteger a = (BigInteger) entry.getValue();
+					//BigInteger a = (BigInteger) entry.getValue();
+					Integer a = (Integer) entry.getValue();
 					inmin = a.intValue();
 
 					fullmin = (outmins - inmin);
@@ -1456,7 +1490,8 @@ public class WorkHoursAction extends ActionSupport {
 			int checkoutnotcheckout = ((outhours * 60) + outmins);
 			for (Map<String, Object> maps : check_in) {
 				for (Map.Entry<String, Object> entry : maps.entrySet()) {
-					BigInteger x = (BigInteger) entry.getValue();
+					//BigInteger x = (BigInteger) entry.getValue();
+					Integer x = (Integer) entry.getValue();
 					datecheck_in = Integer.valueOf(x.toString());
 				}
 			}
@@ -5020,9 +5055,9 @@ public class WorkHoursAction extends ActionSupport {
 			request.setAttribute("year", year);
 			request.setAttribute("month", month);
 			if (name.equals("All")) {
-				// ª×èÍ All
+				// ï¿½ï¿½ï¿½ï¿½ All
 				if (month.equals("13")) {
-					// ª×èÍ All à´×Í¹ All
+					// ï¿½ï¿½ï¿½ï¿½ All ï¿½ï¿½Í¹ All
 
 					List<Map<String, Object>> userAll = userDAO.findAllUserYear(year);
 					int r = 0;
@@ -5091,7 +5126,7 @@ public class WorkHoursAction extends ActionSupport {
 					request.setAttribute("list", list);
 
 				} else {
-					// ª×èÍ All à´×Í¹áÅéÇáµè
+					// ï¿½ï¿½ï¿½ï¿½ All ï¿½ï¿½Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 					List<Map<String, Object>> userAll = userDAO.findAllUser(month, year);
 					int r = 0;
@@ -5163,9 +5198,9 @@ public class WorkHoursAction extends ActionSupport {
 				}
 
 			} else {
-				// ª×èÍáÅéÇáµè
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				if (month.equals("13")) {
-					// ª×èÍáÅéÇáµè à´×Í¹ All
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Í¹ All
 
 					List<Map<String, Object>> userworkIN = workHoursDAO.UserworkAllMonth(name, year);
 					List<Map<String, Object>> userworkOUT = workHoursDAO.UserworkAllMonthOUT(name, year);
@@ -5216,7 +5251,7 @@ public class WorkHoursAction extends ActionSupport {
 					request.setAttribute("list", list);
 
 				} else {
-					// ª×èÍáÅéÇáµè à´×Í¹áÅéÇáµè
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 					List<Map<String, Object>> userworkIN = workHoursDAO.Userwork(name, month, year);
 					List<Map<String, Object>> userworkOUT = workHoursDAO.UserworkOUT(name, month, year);

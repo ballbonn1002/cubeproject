@@ -2602,6 +2602,29 @@ public List<Map<String , Object>> Duplicate_Workhour(String daylist,String id,St
 }
 
 @Override
+public List<Map<String, Object>> descheckin(String currentUserlist, java.sql.Timestamp Datenow,
+		java.sql.Timestamp DateBefore, String month, String year) throws Exception {
+	Session session = this.sessionFactory.getCurrentSession();
+	List<Map<String, Object>> descheckin = null;
+	try {
+		String sql = "SELECT work_hours_time_work, work_hours_type, description "
+				+ "FROM work_hours "
+				+ "WHERE user_create =:currentUserlist AND YEAR(work_hours_time_work)=:year AND MONTH(work_hours_time_work)=:month "
+				+ "ORDER BY work_hours_time_work ASC";
+		
+		SQLQuery query = session.createSQLQuery(sql);
+		query.setParameter("currentUserlist", currentUserlist);
+		query.setParameter("month", month);
+		query.setParameter("year", year);
+		query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+		descheckin = query.list();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return descheckin;
+}
+
+@Override
 public List<Map<String, Object>> Count_checkList(String user,String start_mouth, String today) {
 	Session session = this.sessionFactory.getCurrentSession();
 	List<Map<String, Object>> count_checklist = null;

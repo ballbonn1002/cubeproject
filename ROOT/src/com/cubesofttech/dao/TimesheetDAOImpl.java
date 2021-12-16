@@ -341,6 +341,28 @@ public class TimesheetDAOImpl implements TimesheetDAO {
 		}
 		return timesheetlist;
 	}
+	
+	@Override
+	public List<Map<String, Object>> listtimesheet1(String userid, java.sql.Timestamp Datenow,
+			java.sql.Timestamp DateBefore, String month, String year) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> timesheetlist = null;
+		try {
+			String sql = "SELECT timesheet.*, work_hours.workinghours FROM timesheet LEFT JOIN work_hours ON timesheet.time_check_out = work_hours.work_hours_time_work "
+					+ "WHERE timesheet.user_create =  :userid AND YEAR(timesheet.time_check_in)=:year AND MONTH(timesheet.time_check_in)=:month "
+					+ "ORDER BY timesheet.time_check_in ASC";
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("userid", userid);
+			query.setParameter("month", month);
+			query.setParameter("year", year);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			timesheetlist = query.list();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return timesheetlist;
+	}
 
 	@Override
 	public List<Map<String, Object>> listtimesheet2(String userid, String dateStartSearch, String dateEndSearch)
