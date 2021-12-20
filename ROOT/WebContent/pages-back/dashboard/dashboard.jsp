@@ -95,7 +95,7 @@
 							<c:forEach var="hm" items="${holidaymonth}" varStatus="status">
 								<div <c:choose><c:when test="${hm.month != month}">hidden</c:when><c:when test="${hm.year != year}">hidden</c:when></c:choose>
 								 name="${hm.month-1}-${hm.year}" class="row" style="margin-bottom: 15px;">
-									<label style="position: absolute;left: 20px;">
+									<label style="position: absolute;left: 5px;">
 									 	<font color="red" style="font-weight:bold;font-size:16px;">${hm.hday}</font>
 									</label>
 									<label style="position: relative;left: 90px;color: grey;">
