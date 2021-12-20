@@ -276,10 +276,10 @@ body {
 									<div class="col-md-12" style="text-align:center;">
 										<div class="input-group" style="text-align:center;">
 											<input class="form-control timepicker timepicker-24 test" id="ourtime_label" name="work_hours_time_work" 
-													value="${time}"  onkeypress='return false' style="text-align:center;">
+													value="${time}" onclick="timechange()" onkeypress='return false' style="text-align:center;">
 											<span class="input-group-btn" style="text-align:center;">
 												<button class="btn btn-default " type="button" id="ourtime" style="margin-left: -40px;color:#67809F;"
-														data-time-format="HH:mm" value="${time}" onclick="timechange()" >
+														data-time-format="HH:mm" onclick="timechange()" >
 												<i class="fa fa-clock-o"></i></button>
 											</span>
 										</div>
@@ -335,7 +335,7 @@ body {
 											<div class="md-radio">
 											<input type="radio" id="checkbox1_1" name="work_hours_type"
 													value="1" class="md-radiobtn"
-													onclick="show_text(this.value);"> <label
+													onclick="show_text(this.value);"><label
 													for="checkbox1_1" style="color: #32c5d2;"> <span></span>
 													<span class="check"></span> <span class="box"></span>
 													Check-IN
@@ -344,7 +344,7 @@ body {
 											<div class="md-radio">
 											<input type="radio" id="checkbox1_2" name="work_hours_type"
 													value="2" class="md-radiobtn"
-													onclick="show_text(this.value);"> <label
+													onclick="show_text(this.value);"><label
 													for="checkbox1_2" style="color: red-intense;"> <span></span>
 													<span class="check" style="background: #ff2524;"></span> <span
 													class="box"></span> Check-OUT
@@ -982,6 +982,7 @@ body {
 								document.getElementById("checktime").type = "button";
 							} else {
 								document.getElementById("checktime").type = "submit";
+								toast_checkin();
 							}
 						}
 
@@ -1047,8 +1048,8 @@ body {
 	});
 	
 	function toast_checkin(){
-		var mytime = $("#ourtime");
-		Command: toastr["success"]("Check in " + mytime , "Success")
+		var checkin_time = $("#ourtime_label").val();
+		Command: toastr["success"]("Check in " + checkin_time , "Success")
 		toastr.option = {
 				"closeButton": false,
 				"debug": false,
