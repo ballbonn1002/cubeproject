@@ -66,32 +66,48 @@
 			<div class="form-group form-lg-line-input">
 				<div class="row">
 					<div class="col-md-4 area">
-						<img src="/images/logo2.png" style="width: 50%;"> <img
-							src="/images/Team.png" style="width: 100%;">
+						<!--<img src="/images/logo2.png" style="width: 50%;"> <img
+							src="/images/Team.png" style="width: 100%;">-->
+						<div >
+							<fmt:formatDate var="date" value="${now}" pattern="EEEE, d MMM y" />
+							<div style="font-size:28px;text-align:center;padding-bottom:20px;">${date}</div>
+							<div style="text-align:center;padding-bottom:20px">
+								<iframe src="https://free.timeanddate.com/clock/i84bjfqu/n28/tlth39/fs42/th1" frameborder="0" width="166" height="51"></iframe>
+							</div>
+
+						</div>
+						<div >
+							<a class="weatherwidget-io" href="https://forecast7.com/en/13d76100d50/bangkok/" data-label_1="BANGKOK" data-label_2="WEATHER" data-theme="pure" >BANGKOK WEATHER</a>
+							<script>
+								!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+							</script>
+						</div>
 					</div>
 					<div class="col-md-4 area">
 						<div id="calendar" ></div>
 					</div>
 					<div class="col-md-4 area">
-						<p><font color="red" style="font-weight:bold;font-size:42px;">Hi,  </font><font style="font-weight:normal;font-size:32px;">${user.id}</font></p>
-						<p><font color="grey" style="font-weight:bold;font-size:18px;">Holiday</font></p>						
-						<fmt:formatDate var="month" value="${now}" pattern="M" />
-						<fmt:formatDate var="year" value="${now}" pattern="y"/>
-						<c:forEach var="hm" items="${holidaymonth}" varStatus="status">
-							<div <c:choose><c:when test="${hm.month != month}">hidden</c:when><c:when test="${hm.year != year}">hidden</c:when></c:choose>
-							 name="${hm.month-1}-${hm.year}" class="row" style="margin-bottom: 15px;">
-								<label style="position: absolute;left: 20px;">
-								 	<font color="red" style="font-weight:bold;font-size:16px;">${hm.hday}</font>
-								</label>
-								<label style="position: relative;left: 90px;color: grey;">
-									&bull;
-								</label>
-								<label style="position: relative;left: 100px;">
-								 	<font style="font-weight:normal;font-size:16px;">${hm.head} </font><br>
-								</label>
-							</div>
-						</c:forEach>
-						<img src="/images/tree.png" style="width:20%;position: absolute;left:300px;top:200px">
+						<div style="position:relative;">
+							<p><font color="red" style="font-weight:bold;font-size:42px;">Hi,  </font><font style="font-weight:normal;font-size:32px;">${user.id}</font></p>
+							<p><font color="grey" style="font-weight:bold;font-size:18px;">Holiday</font></p>						
+							<fmt:formatDate var="month" value="${now}" pattern="M" />
+							<fmt:formatDate var="year" value="${now}" pattern="y"/>
+							<c:forEach var="hm" items="${holidaymonth}" varStatus="status">
+								<div <c:choose><c:when test="${hm.month != month}">hidden</c:when><c:when test="${hm.year != year}">hidden</c:when></c:choose>
+								 name="${hm.month-1}-${hm.year}" class="row" style="margin-bottom: 15px;">
+									<label style="position: absolute;left: 20px;">
+									 	<font color="red" style="font-weight:bold;font-size:16px;">${hm.hday}</font>
+									</label>
+									<label style="position: relative;left: 90px;color: grey;">
+										&bull;
+									</label>
+									<label style="position: relative;left: 100px;">
+									 	<font style="font-weight:normal;font-size:16px;">${hm.head} </font><br>
+									</label>
+								</div>
+							</c:forEach>
+							<img src="/images/tree.png" style="width:25%;position:absolute;top:150px;right:-10px;">
+						</div>
 					</div>
 				</div>
 			</div>
