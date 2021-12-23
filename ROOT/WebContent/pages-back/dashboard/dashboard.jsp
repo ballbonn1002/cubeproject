@@ -65,10 +65,10 @@
 		<div class="portlet-body">
 			<div class="form-group form-lg-line-input">
 				<div class="row">
-					<div class="col-md-4 area">
+					<div class="col-md-4">
 						<!--<img src="/images/logo2.png" style="width: 50%;"> <img
 							src="/images/Team.png" style="width: 100%;">-->
-						<div >
+						<div>
 							<fmt:formatDate var="date" value="${now}" pattern="EEEE, d MMM y" />
 							<div style="font-size:28px;text-align:center;padding-bottom:20px;">${date}</div>
 							<div style="text-align:center;padding-bottom:20px">
@@ -83,11 +83,11 @@
 							</script>
 						</div>
 					</div>
-					<div class="col-md-4 area">
+					<div class="col-md-4">
 						<div id="calendar" ></div>
 					</div>
-					<div class="col-md-4 area">
-						<div style="position:relative;">
+					<div class="col-md-4">
+						<div style="position:relative;height:400px;">
 							<p><font color="red" style="font-weight:bold;font-size:42px;">Hi,  </font><font style="font-weight:normal;font-size:32px;">${user.id}</font></p>
 							<p><font color="grey" style="font-weight:bold;font-size:18px;">Holiday</font></p>						
 							<fmt:formatDate var="month" value="${now}" pattern="M" />
@@ -106,14 +106,14 @@
 									</label>
 								</div>
 							</c:forEach>
-							<img src="/images/tree.png" style="width:25%;position:absolute;top:150px;right:-10px;">
+							<img src="/images/tree.png" style="position:absolute;top:150px;right:-10px;">
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="portlet light bordered rounded-10 area-func col-md-4" style="background-color: #AECDE8;">
+	<div class="portlet light bordered rounded-10 col-xs-12 col-sm-4 col-md-4" style="background-color: #AECDE8;height:40vh;">
 		<div class="portlet-body">
 			<div>
 				<img src="/images/Check-in.png" style="width: 90%;display: block;margin-left: auto;margin-right: auto;">
@@ -144,7 +144,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="portlet light bordered rounded-10 area-func col-md-4" style="background-color: #F7D6A7;">
+	<div class="portlet light bordered rounded-10 col-xs-12 col-sm-4 col-md-4" style="background-color: #F7D6A7;height:40vh;">
 		<div class="portlet-body">
 			<div>
 				<img src="/images/Leave.png" style="width: 60%;position: relative;">
@@ -160,7 +160,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="portlet light bordered rounded-10 area-lfunc col-md-4" style="background-color: #93E0C0;">
+	<div class="portlet light bordered rounded-10 col-xs-12 col-sm-4 col-md-4" style="background-color: #93E0C0;height:40vh;">
 		<div class="portlet-body">
 			<div>
 				<img src="/images/Borrow.png" style="width: 65%;display: block;margin-left: auto;margin-right: auto;">
