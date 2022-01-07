@@ -669,3 +669,9 @@ INSERT INTO `project` (`project_id`, `project_name`, `description`, `user_create
 (144, 'aaa', '', 'thanet.s', '2022-01-04 08:34:31', NULL, NULL),
 (145, 'newproject', '', 'thanet.s', '2022-01-06 02:21:55', NULL, NULL),
 (146, 'testuniqueResult', '', 'thanet.s', '2022-01-07 02:35:52', NULL, NULL);
+
+--add `status` to TABLE `project`
+ALTER TABLE `project` ADD `status` VARCHAR(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `description`;
+
+--add all value of status = 'ACTIVE'
+UPDATE `project` SET `status` = 'ACTIVE';
