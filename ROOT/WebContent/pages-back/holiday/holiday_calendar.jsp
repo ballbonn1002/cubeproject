@@ -446,7 +446,7 @@ jQuery(document).ready(function() {
   
    var a = parseInt(count_year);
    var b = parseInt(count_month);
-   
+   console.log(b);
    var events2 = [];
    $('.fc-next-button').click(function(){
 	   b ++;

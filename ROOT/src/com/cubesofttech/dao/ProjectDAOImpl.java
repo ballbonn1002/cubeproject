@@ -129,7 +129,7 @@ public class ProjectDAOImpl implements ProjectDAO{
 	public boolean checkExistByName(String projectName) {
 		Project project = null;
 		project = (Project) sessionFactory.getCurrentSession()
-				.createQuery("from Project where project_name = :projectName").setString("projectName", projectName)
+				.createQuery("from Project where project_name = :projectName").setString("projectName", projectName).setMaxResults(1)
 				.uniqueResult();
 		return project != null;
 	}

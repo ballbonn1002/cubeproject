@@ -10,6 +10,8 @@ import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.cubesofttech.model.Holiday;
+import com.cubesofttech.model.Project;
 import com.cubesofttech.model.ProjectFunction;
 
 @Repository
@@ -77,8 +79,8 @@ public class ProjectFunctionDAOImpl implements ProjectFunctionDAO {
 	public boolean checkExistByName(String function_name) throws Exception {
 		ProjectFunction projectFunction = null;
 		projectFunction = (ProjectFunction) sessionFactory.getCurrentSession()
-				.createQuery("from project_function where function_name = :function_name")
-				.setString("function_name", function_name).uniqueResult();
+				.createQuery("from ProjectFunction where function_name = :function_name").setString("function_name", function_name).setMaxResults(1)
+				.uniqueResult();
 		return projectFunction != null;
 
 	}
@@ -96,5 +98,29 @@ public class ProjectFunctionDAOImpl implements ProjectFunctionDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public List<ProjectFunction> findFunction(Integer findpfunc) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<ProjectFunction> functions = null;
+		try {
+			String sql = "SELECT * from project_function WHERE project_id = " + findpfunc;
+			SQLQuery query = session.createSQLQuery(sql);
+			query.addEntity(ProjectFunction.class);
+			
+			functions = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return functions;
+	}
 
+	@Override
+	public ProjectFunction findByName(String functionName) throws Exception {
+		ProjectFunction projectFunction = null;
+		projectFunction = (ProjectFunction) sessionFactory.getCurrentSession()
+				.createQuery("from ProjectFunction where function_name = :functionName").setString("functionName", functionName)
+				.uniqueResult();
+		return projectFunction;
+	}
 }

@@ -3,6 +3,7 @@ package com.cubesofttech.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.cubesofttech.model.Project;
 import com.cubesofttech.model.ProjectFunction;
 
 
@@ -23,4 +24,7 @@ public interface ProjectFunctionDAO {
 	
 	public boolean checkExistByName(String function_name) throws Exception;
 	
+	public List<ProjectFunction> findFunction(Integer findpfunc) throws Exception;
+	
+	public ProjectFunction findByName(String functionName) throws Exception;
 }

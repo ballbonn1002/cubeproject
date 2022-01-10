@@ -45,7 +45,7 @@ b {
 		</div>
 	</div>
 	<div class="portlet-body">
-		<form action="timesheet_add" method="post">
+		<form action="timesheet_add" method="post" autocomplete="off">
 			<input type="hidden" value="${user.id}" id="user" name="user_create"
 				class="user">
 			<div class="form-group form-md-line-input">
@@ -99,9 +99,18 @@ b {
 				<label class="col-md-2 control-label" for="form_control_1">Project
 					:</label>
 				<div class="col-md-3">
-					<input class="form-control" type="text" name="projectf"
-						id="project_id" value="${projectf.project_name}">
-
+					<input class="form-control" type="text" name="projectf" id="project_id" data-value="${projectid }" value="${projectf.project_name }" list="pname">
+					<datalist id="pname">
+						<c:forEach var="project" items="${projectA}">
+							<option data-value="${project.project_id }" value="${project.project_name }"/>
+						</c:forEach>
+					</datalist>
+					<!--<input class="form-control" type="text" name="projectf"
+						id="project_id">
+					<select class="bs-select form-control select2me" name="projectf"
+						id="project_id">
+						<option value=" ">Select a Project</option>
+					</select>-->
 				</div>
 
 				<div class="col-md-2 form-group" style="text-align: left;">
@@ -114,11 +123,13 @@ b {
 				</div>
 			</div>
 
-			<%-- <div class="form-group form-md-line-input">
+			<div class="form-group form-md-line-input">
 				<label class="col-md-2 control-label" for="form_control_1">Function
 					:</label>
 				<div class="col-md-8">
-					<select class="bs-select form-control select2me" name="functionf"
+					<input class="form-control" type="text" name="functionf" id="projectF_id" data-value="${functionid }" value="${functionf.function_name }" list="fname">
+					<datalist id="fname"></datalist>
+					<!--<select class="bs-select form-control select2me" name="functionf"
 						id="projectF_id">
 						<c:forEach items="${functionList}" var="functionp">
 							<option value="${functionp.function_id}"
@@ -129,10 +140,9 @@ b {
 
 								${functionp.function_name}</option>
 						</c:forEach>
-					</select>
-
+					</select>-->
 				</div>
-			</div> --%>
+			</div>
 			<br>
 
 			<div class="row form-group form-md-line-input"
@@ -231,7 +241,7 @@ b {
 			</div>
 
 			<!-- end form Ot -->
-			</div>
+			
 			<div style="margin-top: 2cm;">
 				<div class="form-group form-md-line-input" align="center">
 					<button type="button" id="demo" class="btn sbold blue-soft"
@@ -266,9 +276,13 @@ b {
 		var endtime = datenew + " " + end;
 		var user = '${user.id}';
 		var useradd = '${useradd}';
-		var project = document.getElementById('project_id').value;
-		var functionf = 0;
-		//var functionf = document.getElementById('projectF_id').value;
+		var projectf = document.getElementById('project_id').value;
+		var valuepid = $('#project_id').val();
+		var projectid = $('#pname [value="'+ valuepid + '"]').data('value');
+		//var functionf = 0;
+		var functionf = document.getElementById('projectF_id').value;
+		var valuefid = $('#projectF_id').val();
+		var functionid = $('#fname [value="'+ valuefid + '"]').data('value');
 		
 		var desot = document.getElementById('textarea1ot').value;
 		var startot = document.getElementById('startTimeot').value + ':00';
@@ -296,8 +310,10 @@ b {
 							"description" : des,
 							"timestart" : timestart,
 							"endtime" : endtime,
-							"projectf" : project,
+							"projectf" : projectf,
+							"projectid" : projectid,
 							"functionf" : functionf,
+							"functionid" : functionid,
 							"descriptionot" : desot,
 							"timestartot" : timestartot,
 							"endtimeot" : endtimeot,
@@ -424,7 +440,38 @@ b {
 		});
 	});
 </script>
-
+<script>
+	$(document).ready(function () {
+		$('#project_id').on('change click', function() {
+			var value = $('#project_id').val();
+			var projectID = $('#pname [value="'+ value + '"]').data('value');
+			//console.log(projectID);
+			if(projectID==null){
+				$('#fname').empty();
+			}
+			$.ajax({
+				url: "timesheet_findpfunc",
+				method : "POST",
+				data : "project_id=" + projectID,
+				dataType : "text",
+				success : function(data) {				
+					var obj = JSON.parse(data);
+					var i=0;
+					$('#fname').empty();
+					for(i in obj.name){
+						var option = document.createElement('option');
+						//option.value = obj.name[i];
+						option.setAttribute("value", "");
+						option.setAttribute("value", obj.name[i]);
+						option.setAttribute("data-value", obj.id[i]);
+						$('#fname').append(option);
+						
+					}
+				}
+			})
+		});
+	});
+</script>
 <script
 	src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js"
 	type="text/javascript"></script>

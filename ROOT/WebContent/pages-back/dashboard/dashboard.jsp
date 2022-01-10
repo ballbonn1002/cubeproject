@@ -139,7 +139,7 @@
 					<br><font style="font-weight:normal">${last.lastcheck}</font>
 					</font>
 				</c:forEach>
-				<button onclick="location.href = 'http://localhost:8080/check_in?userId=';" type="button" id="chkBtn" 
+				<button onclick="location.href = 'check_in?userId=';" type="button" id="chkBtn" 
 				class="btnfunc rounded-4" style="background-color: #5C9BD1"><c:out value = "${chkBtn}"/></button>
 			</div>
 		</div>
@@ -154,7 +154,7 @@
 					<div><font style="font-size:18px;font-weight:bold;">${leave_6}/${quotaLastYear}</font><br>${type_7}</div>
 				</div>
 				
-				<button onclick="location.href = 'http://localhost:8080/LeaveAdd';"
+				<button onclick="location.href = 'LeaveAdd';"
 					type="button" class="btnfunc rounded-4"
 					style="background-color: #F0AD4E;">Add Leave</button>
 			</div>
@@ -170,7 +170,7 @@
 					<br><font style="font-weight:normal">${br.amount} items</font>
 					</font>
 				</c:forEach>
-				<button onclick="location.href = 'http://localhost:8080/myBorrow';" type="button" class="btnfunc rounded-4" style="background-color: #26C281;">Borrow</button>
+				<button onclick="location.href = 'myBorrow';" type="button" class="btnfunc rounded-4" style="background-color: #26C281;">Borrow</button>
 			</div>
 		</div>
 	</div>

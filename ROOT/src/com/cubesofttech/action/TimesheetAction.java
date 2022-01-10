@@ -1,5 +1,6 @@
 package com.cubesofttech.action;
 
+import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -19,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.dao.ExpTravelTypeDAO;
@@ -39,6 +42,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ibm.icu.util.GregorianCalendar;
 import com.opensymphony.xwork2.ActionSupport;
+
+import sun.util.logging.resources.logging;
 
 public class TimesheetAction extends ActionSupport {
 
@@ -417,12 +422,20 @@ public class TimesheetAction extends ActionSupport {
 				request.setAttribute("lastTimesheet", lastTimesheet);
 				if (lastTimesheet.getProject_id() != null) {
 					int lastTimesheetProj = lastTimesheet.getProject_id();
+					int lastTimesheetFunc = lastTimesheet.getFunction_id();
 					Project project = new Project();
 					project = projectDAO.findById(lastTimesheetProj);
 					request.setAttribute("projectf", project);
-				
+					request.setAttribute("projectid", lastTimesheetProj);
+					ProjectFunction function = new ProjectFunction();
+					function = projectFunctionDAO.findById(lastTimesheetFunc);
+					request.setAttribute("functionf", function);
+					request.setAttribute("functionid", lastTimesheetFunc);
+					
 					// get last time project and function
 					functionList = projectFunctionDAO.findByProject(lastTimesheetProj);
+					
+					
 				}
 			}
 
@@ -494,7 +507,9 @@ public class TimesheetAction extends ActionSupport {
 
 			
 			String project = request.getParameter("projectf");
-			//int function = Integer.valueOf(request.getParameter("functionf"));
+			
+			String function = request.getParameter("functionf");
+			
 			Integer l = timesheetDAO.getMaxId() + 1;
 			Timesheet timesheet = new Timesheet();
 			timesheet.setId(l);
@@ -518,12 +533,26 @@ public class TimesheetAction extends ActionSupport {
 				
 				projectIdAdd = projectDAO.findByName(projectAdd.getProject_name()).getProject_id();
 				timesheet.setProject_id(projectIdAdd);
+				if(!projectFunctionDAO.checkExistByName(function)) {
+					int projectFunctionIdAdd = 0;
+					ProjectFunction projectFunctionAdd = new ProjectFunction();
+					projectFunctionAdd.setFunction_name(function);
+					projectFunctionAdd.setStatus("ACTIVE");
+					projectFunctionAdd.setProject_id(projectIdAdd);
+					projectFunctionAdd.setUser_create(name);
+					projectFunctionAdd.setTime_create(DateUtil.getCurrentTime());
+					projectFunctionDAO.save(projectFunctionAdd);
+					
+					projectFunctionIdAdd = projectFunctionDAO.findByName(projectFunctionAdd.getFunction_name()).getFunction_id();
+					timesheet.setFunction_id(projectFunctionIdAdd);
+				}
 			} else {
-				Project projectOld = projectDAO.findByName(project);
-				timesheet.setProject_id(projectOld.getProject_id());
+				int projectid = Integer.parseInt(request.getParameter("projectid"));
+				int functionid = Integer.parseInt(request.getParameter("functionid"));
+				//Project projectOld = projectDAO.findByName(project);
+				timesheet.setProject_id(projectid);
+				timesheet.setFunction_id(functionid);
 			}
-			
-			//timesheet.setFunction_id(function);
 			timesheet.setStatus("W");
 			Timestamp timestart1 = Timestamp.valueOf(timestart);
 
@@ -640,7 +669,40 @@ public class TimesheetAction extends ActionSupport {
 			return ERROR;
 		}
 	}
-
+	
+	public void find_pfunc() {
+		try {
+			String findpfunc = request.getParameter("project_id");
+			Integer find = Integer.parseInt(findpfunc);
+			//log.debug(findpfunc);
+			List<ProjectFunction> pfunc = projectFunctionDAO.findFunction(find);
+			request.setAttribute("pfunc", pfunc);
+			//log.debug(pfunc);
+			
+			JSONArray arrayObj1 = new JSONArray();
+			JSONArray arrayObj2 = new JSONArray();
+			
+			for(int i = 0 ; i < pfunc.size(); i++ ){
+				arrayObj1.put(pfunc.get(i).getFunction_name());
+				arrayObj2.put(pfunc.get(i).getFunction_id());
+			}
+			//log.debug(arrayObj1);
+			//log.debug(arrayObj2);
+			PrintWriter out = response.getWriter();
+	           JSONObject json = new JSONObject();
+	           
+	        json.put("name", arrayObj1);
+	        json.put("id", arrayObj2);
+	        
+	        out.print(json);
+	    	out.flush();
+	    	out.close();
+		}
+		catch (Exception e) { 
+			e.printStackTrace();
+		}
+	}
+	
 	public String editPage() {
 		if (id != null) {
 			try {
@@ -691,9 +753,9 @@ public class TimesheetAction extends ActionSupport {
 
 					Integer function_id = timesheet.getFunction_id();
 					ProjectFunction projectFunction = new ProjectFunction();
-					//projectFunction = projectFunctionDAO.findById(function_id);
-					//request.setAttribute("functionf", projectFunction);
-					request.setAttribute("functionList", functionList);
+					projectFunction = projectFunctionDAO.findById(function_id);
+					request.setAttribute("functionf", projectFunction);
+					//request.setAttribute("functionList", functionList);
 					request.setAttribute("team", team);
 				}
 
@@ -715,9 +777,11 @@ public class TimesheetAction extends ActionSupport {
 			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 			String datenow = sdf.format(timestamp).toString();
 			Timestamp nowdate = Timestamp.valueOf(datenow);
-
+			
+			String name = request.getParameter("name");
 			String project = request.getParameter("projectf");
-			int function = Integer.valueOf(request.getParameter("functionf"));
+			String function = request.getParameter("functionf");
+			//int function = Integer.valueOf(request.getParameter("functionf"));
 			String userupdate = request.getParameter("useradd");
 			String newtimestart = request.getParameter("timestart");
 			String newtimeend = request.getParameter("endtime");
@@ -850,9 +914,25 @@ public class TimesheetAction extends ActionSupport {
 				
 				projectIdAdd = projectDAO.findByName(projectAdd.getProject_name()).getProject_id();
 				timesheet.setProject_id(projectIdAdd);
+				if(!projectFunctionDAO.checkExistByName(function)) {
+					int projectFunctionIdAdd = 0;
+					ProjectFunction projectFunctionAdd = new ProjectFunction();
+					projectFunctionAdd.setFunction_name(function);
+					projectFunctionAdd.setStatus("ACTIVE");
+					projectFunctionAdd.setProject_id(projectIdAdd);
+					projectFunctionAdd.setUser_create(name);
+					projectFunctionAdd.setTime_create(DateUtil.getCurrentTime());
+					projectFunctionDAO.save(projectFunctionAdd);
+					
+					projectFunctionIdAdd = projectFunctionDAO.findByName(projectFunctionAdd.getFunction_name()).getFunction_id();
+					timesheet.setFunction_id(projectFunctionIdAdd);
+				}
 			} else {
-				Project projectOld = projectDAO.findByName(project);
-				timesheet.setProject_id(projectOld.getProject_id());
+				int projectid = Integer.parseInt(request.getParameter("projectid"));
+				int functionid = Integer.parseInt(request.getParameter("functionid"));
+				//Project projectOld = projectDAO.findByName(project);
+				timesheet.setProject_id(projectid);
+				timesheet.setFunction_id(functionid);
 			}
 			//timesheet.setProject_id(project);
 			//timesheet.setFunction_id(function);

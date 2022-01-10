@@ -71,6 +71,11 @@
 			<result name="error">/index.jsp</result>
 			<result name="input">/index.jsp</result>
 		</action>
+		<action name="resetPassword"
+			class="com.cubesofttech.action.LoginAction" method="resetPassword">
+			<result name="success">/index.jsp</result>
+			<result name="error">/resetpassword.jsp?email=${email}</result>
+		</action>
 	</package>
 
 	<package name="UserAction" namespace="/"
@@ -100,7 +105,7 @@
 			<result name="success" type="tiles">dashboard</result><!-- name from tiles -->
 			<result name="error">/index.jsp</result>
 		</action>
-
+		
 		<action name="new_s" class="com.cubesofttech.action.NewsAction"
 			method="feedList">
 			<result name="success" type="tiles">new_s</result>
@@ -1204,6 +1209,11 @@
 		<action name="timesheet_add"
 			class="com.cubesofttech.action.TimesheetAction" method="addTimesheet">
 			<result name="success" type="tiles">timesheet_list</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="timesheet_findpfunc"
+			class="com.cubesofttech.action.TimesheetAction" method="find_pfunc">
+			<result name="success" type="tiles">timesheet_form</result>
 			<result name="error">/index.jsp</result>
 		</action>
 

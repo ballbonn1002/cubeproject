@@ -1,15 +1,26 @@
+/***
+Responsive Utils
+***/
+@media (min-width: 992px) {
+  .wd-992 {
+    height:80vh; } }
+
 .area {
   	width: 33%;
 }
 
 .area-func {
 	width: 33%;
-	height: 300px;
 	margin: 0 6px 0 0;
+	height: 300px;
 }
 
 .area-lfunc {
 	width: 33%;
+	height: 300px;
+}
+
+.height-300{
 	height: 300px;
 }
 

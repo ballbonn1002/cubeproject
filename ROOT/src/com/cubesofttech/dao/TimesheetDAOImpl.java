@@ -16,6 +16,8 @@ import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.cubesofttech.model.Holiday;
+import com.cubesofttech.model.Project;
 import com.cubesofttech.model.Timesheet;
 
 @Repository

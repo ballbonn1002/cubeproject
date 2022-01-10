@@ -379,8 +379,8 @@
 							</c:choose>
 							<td><fmt:formatDate value="${lts.time_check_in}"
 									pattern="EE dd-MM-yyyy" /></td>
-							<td class="text-left">${lts.project_name}</td>
-							<%-- <td class="text-center">${lts.function_name}</td> --%>
+							<td class="text-left">${lts.project_name}<br>&nbsp;&nbsp;<font style="font-size:14px;">${lts.function_name}</font></td>
+							<%--<td class="text-center">${lts.function_name}</td> --%>
 							<td class="text-left">${lts.description}</td>
 							<td class="text-center">${lts.team}</td>
 							<td class="text-center"><div>

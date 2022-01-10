@@ -46,7 +46,7 @@ b {
 	</div>
 	<div class="portlet-body">
 
-		<form action="timesheet_edit" method="post">
+		<form action="timesheet_edit" method="post" autocomplete="off">
 			<input type="hidden" value="${user.id}" id="user" name="user_create"
 				class="user"> <input type="hidden" value="${exist}"
 				id="exist" name="exist" class="user"> <input name="id"
@@ -103,8 +103,12 @@ b {
 					:</label>
 				<div class="col-md-3">
 					<input class="form-control" type="text" name="projectf"
-						id="project_id" value="${projectf.project_name}">
-
+						id="project_id" data-value="${projectf.project_id }" value="${projectf.project_name}" list="pname">
+					<datalist id="pname">
+						<c:forEach var="project" items="${projectA}">
+							<option data-value="${project.project_id }" value="${project.project_name }"/>
+						</c:forEach>
+					</datalist>
 				</div>
 
 				<div class="col-md-2 form-group" style="text-align: left;">
@@ -114,6 +118,15 @@ b {
 						value="${timesheet.getTeam() }"
 						style="text-align: left; padding-left: 10px">
 					<div class="form-control-focus"></div>
+				</div>
+			</div>
+			
+			<div class="form-group form-md-line-input">
+				<label class="col-md-2 control-label" for="form_control_1">Function
+					:</label>
+				<div class="col-md-8">
+					<input class="form-control" type="text" name="functionf" id="projectF_id" data-value="${functionf.function_id }" value="${functionf.function_name }" list="fname">
+					<datalist id="fname"></datalist>
 				</div>
 			</div>
 
@@ -254,21 +267,22 @@ b {
 			</div>
 
 			<!-- end form Ot -->
+	
+			<div style="margin-top: 2cm;">
+				<div class="form-group form-md-line-input" align="center">
+					<button type="button" id="demo" class="btn sbold blue-soft"
+						onclick="check()">
+						<i class="fa fa-save"></i>&nbsp;Save Timesheet
+					</button>
+					<button type="reset" class="btn red-intense">
+						<i class="fa fa-times-circle"></i>&nbsp;Cancel
+					</button>
+				</div>
+			</div>
+		</form>
 	</div>
-	<div style="margin-top: 2cm;">
-		<div class="form-group form-md-line-input" align="center">
-			<button type="button" id="demo" class="btn sbold blue-soft"
-				onclick="check()">
-				<i class="fa fa-save"></i>&nbsp;Save Timesheet
-			</button>
-			<button type="reset" class="btn red-intense">
-				<i class="fa fa-times-circle"></i>&nbsp;Cancel
-			</button>
-		</div>
-	</div>
-	</form>
 </div>
-</div>
+
 <script src="../assets/global/plugins/jquery.min.js"
 	type="text/javascript"></script>
 <script>
@@ -298,8 +312,12 @@ b {
 		var user = '${user.id}';
 		var useradd = '${user.id}';
 		var project = document.getElementById('project_id').value;
-		//var functionf = document.getElementById('projectF_id').value;
-		var functionf = 0;
+		var valuepid = $('#project_id').val();
+		var projectid = $('#pname [value="'+ valuepid + '"]').data('value');
+		var functionf = document.getElementById('projectF_id').value;
+		var valuefid = $('#projectF_id').val();
+		var functionid = $('#fname [value="'+ valuefid + '"]').data('value');
+		//var functionf = 0;
 		var exist = document.getElementById('exist').value;
 		var team = document.getElementById('team').value;
 
@@ -318,7 +336,9 @@ b {
 				"timestart" : timestart,
 				"endtime" : endtime,
 				"projectf" : project,
+				"projectid" : projectid,
 				"functionf" : functionf,
+				"functionid" : functionid,
 				"team" : team,
 				"timestartot" : timestartot,
 				"endtimeot" : endtimeot,
@@ -442,7 +462,38 @@ b {
 		});
 	});
 </script>
-
+<script>
+	$(document).ready(function () {
+		$('#project_id').on('change click', function() {
+			var value = $('#project_id').val();
+			var projectID = $('#pname [value="'+ value + '"]').data('value');
+			//console.log(projectID);
+			if(projectID==null){
+				$('#fname').empty();
+			}
+			$.ajax({
+				url: "timesheet_findpfunc",
+				method : "POST",
+				data : "project_id=" + projectID,
+				dataType : "text",
+				success : function(data) {				
+					var obj = JSON.parse(data);
+					var i=0;
+					$('#fname').empty();
+					for(i in obj.name){
+						var option = document.createElement('option');
+						//option.value = obj.name[i];
+						option.setAttribute("value", "");
+						option.setAttribute("value", obj.name[i]);
+						option.setAttribute("data-value", obj.id[i]);
+						$('#fname').append(option);
+						
+					}
+				}
+			})
+		});
+	});
+</script>
 <script
 	src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js"
 	type="text/javascript"></script>
