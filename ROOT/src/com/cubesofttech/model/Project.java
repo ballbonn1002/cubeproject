@@ -25,6 +25,9 @@ public class Project implements Serializable {
 
 	@Column(name = "description")
 	private String description;
+	
+	@Column(name = "status")
+	private String status;
 
 	@Column(name = "user_create")
 	private String user_create;
@@ -77,6 +80,14 @@ public class Project implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getUser_create() {
