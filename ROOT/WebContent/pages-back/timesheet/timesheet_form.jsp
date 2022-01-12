@@ -99,7 +99,7 @@ b {
 				<label class="col-md-2 control-label" for="form_control_1">Project
 					:</label>
 				<div class="col-md-3">
-					<input class="form-control" type="text" name="projectf" id="project_id" data-value="${projectid }" value="${projectf.project_name }" list="pname">
+					<input class="form-control" type="text" name="projectf" id="project_id" data-value="${projectid }" value="${projectf.project_name }" list="pname" required>
 					<datalist id="pname">
 						<c:forEach var="project" items="${projectA}">
 							<option data-value="${project.project_id }" value="${project.project_name }"/>
@@ -127,7 +127,7 @@ b {
 				<label class="col-md-2 control-label" for="form_control_1">Function
 					:</label>
 				<div class="col-md-8">
-					<input class="form-control" type="text" name="functionf" id="projectF_id" data-value="${functionid }" value="${functionf.function_name }" list="fname">
+					<input class="form-control" type="text" name="functionf" id="projectF_id" data-value="${functionid }" value="${functionf.function_name }" list="fname" required>
 					<datalist id="fname"></datalist>
 					<!--<select class="bs-select form-control select2me" name="functionf"
 						id="projectF_id">
@@ -294,13 +294,17 @@ b {
 		
 		console.log(desot + "" + startot+ "" +endot);
 	
-
-		if (des == null || des == "") {
+		if (projectf == null || projectf == "") {
+			swal("Error!", "Required! Project", "error");
+		}
+		else if (functionf == null || functionf == "") {
+			swal("Error!", "Required! Function", "error");
+		}
+		else if (des == null || des == "") {
 			swal("Error!", "Required! Description", "error");
 		}
 		else {
-			$
-					.ajax({
+			$.ajax({
 						url : "timesheet_add",
 						method : "POST",
 						type : "JSON",
@@ -445,7 +449,7 @@ b {
 		$('#project_id').on('change click', function() {
 			var value = $('#project_id').val();
 			var projectID = $('#pname [value="'+ value + '"]').data('value');
-			//console.log(projectID);
+			//console.log(value);
 			if(projectID==null){
 				$('#fname').empty();
 			}
