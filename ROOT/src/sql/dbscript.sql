@@ -670,13 +670,11 @@ INSERT INTO `project` (`project_id`, `project_name`, `description`, `user_create
 (145, 'newproject', '', 'thanet.s', '2022-01-06 02:21:55', NULL, NULL),
 (146, 'testuniqueResult', '', 'thanet.s', '2022-01-07 02:35:52', NULL, NULL);
 
---add `status` to TABLE `project`
-ALTER TABLE `project` ADD `status` VARCHAR(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `description`;
 
---add all value of status = 'ACTIVE'
-UPDATE `project` SET `status` = 'ACTIVE';
-
-
-ALTER TABLE `project` CHANGE `status` `status` VARCHAR(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 --update all value of status from ACTIVE -> 1
 UPDATE `project` SET `status` = '1';
+ALTER TABLE `project` CHANGE `status` `status` CHAR(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
+
+--update all value of status from ACTIVE -> 1
+UPDATE `project_function` SET `status` = '1';
+ALTER TABLE `project_function` CHANGE `status` `status` CHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
