@@ -675,3 +675,8 @@ ALTER TABLE `project` ADD `status` VARCHAR(32) CHARACTER SET utf8mb4 COLLATE utf
 
 --add all value of status = 'ACTIVE'
 UPDATE `project` SET `status` = 'ACTIVE';
+
+
+ALTER TABLE `project` CHANGE `status` `status` VARCHAR(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
+--update all value of status from ACTIVE -> 1
+UPDATE `project` SET `status` = '1';
