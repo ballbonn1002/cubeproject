@@ -1,5 +1,6 @@
 <link href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" rel="stylesheet" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -7,7 +8,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
-<link rel="stylesheet" href="js/jquery.datetimepicker.css">
+<!-- <link rel="stylesheet" href="js/jquery.datetimepicker.css"> -->
 <link href="../assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css">
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="../assets/global/plugins/bootstrap-toastr/toastr.min.js" type="text/javascript"></script>
@@ -16,8 +17,7 @@
 <script>
 	AOS.init();
 </script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
 <style>
 
 /* Always set the map height explicitly to define the size of the div
@@ -63,10 +63,12 @@ body {
 	font-weight: bold;
 	font-size: 47px;
 	border: none;
-	text-align: center;
+/*  	text-align: center;  */
 	height: fit-content;
 	width: 200px;
-	margin-left: 160px;
+/*   	margin-left: 180px;  */ 
+/*  	display:flex;
+	justify-content:center; */
 }
 
 #mydate{
@@ -76,6 +78,10 @@ body {
 	border: none;
 	text-align: center;
 	width: fit-content;
+	width:160px;
+/*  	margin-left:130px;  */
+/* 	display:flex;
+	justify-content:center; */
 }
 
 .source-link {
@@ -274,7 +280,7 @@ body {
 							<form action="save-check" class="form-horizontal" method="POST">
 								<div class="form-group form-lg-line-input" style="text-align:center;">
 									<div class="col-md-12" style="text-align:center;">
-										<div class="input-group" style="text-align:center;">
+										<div class="input-group" style="display:flex;justify-content:center;">
 											<input class="form-control timepicker timepicker-24 test" id="ourtime_label" name="work_hours_time_work" 
 													value="${time}" onclick="timechange()" onkeypress='return false' style="text-align:center;">
 											<span class="input-group-btn" style="text-align:center;">
@@ -288,14 +294,12 @@ body {
 								
 								<div class="form-group form-lg-line-input" style="text-align:center;">
 									<div class="col-md-12" style="text-align:center;">
-										<div class="input-group date date-picker test" data-date-format="dd-mm-yyyy" style="margin-left:70px;text-align:center;">
-											<input class="form-control" id="mydate" name="work_hours_date_work" value="${fulldate}"  style="width:160px;margin-left:102px;"
+										<div class="input-group date date-picker test" data-date-format="dd-mm-yyyy" style="display:flex;justify-content:center;">
+											<input class="form-control" id="mydate" name="work_hours_date_work" value="${fulldate}"
 												onchange="datechange()" onkeypress='return false' >
-										<!-- <span class="input-group-btn" style="float:left;"> -->
 											<button class="btn default test" type="button" 
 													style="background-color:white;border:none;margin-left:-11px;">
 											<i class="fa fa-calendar" style="color:#67809F;"></i></button>
-										<!-- </span> -->
 										</div>
 									</div>
 								</div>	<!-- DATE -->
@@ -578,18 +582,24 @@ body {
 	</div>
 	<div class="row">
 		<div class="portlet-body">
-			<form action="search-list" method="post" name="form">
-				<div class="input-group input-medium date date-picker" data-date-viewmode="month" style="float:right;margin-bottom:19px;">
-					<input class="form-control" id="searchmonth" onchange="searchlistmonth">
+			<form action="searchmonth-list" method="post">
+				<div class="col-md-4" style="float:right;margin-bottom:19px;display:flex;justify-content:center;">
+				<div class="input-group input-medium" data-date-format="MM yyyy" style="">
+					<input class="form-control" id="searchmonth" name="searchmonth">
 					<span class="input-group-btn">
-						<button class="btn default" type="button">
-						<i class="fa fa-calendar-o"></i></button>
+						<!-- <button class="btn default" type="button" id="searchmonth_btn" 
+								style="border:none;background-color:#ffffff;margin:5px;">
+							<i class="fa fa-calendar-o"></i></button> -->
+						<button type="submit" class="btn btn-sm blue-steel " id="search" onclick="search()" style="margin-left:5px;">
+							<i class="fa fa-search"></i>&nbsp;Search
+						</button> 
 					</span>
 				</div>
+				</div>
 			</form>
-			
-			<div class="portlet-body flip-scroll" style="">
-				<table class="table table-striped table-condensed table-hover order-column compact">
+
+			<div class="portlet-body flip-scroll">
+				<table class="table table-striped table-condensed table-hover order-column compact" >
 					<thead>
 						<tr style="background-color:#E9EDEF;color:#67809F">
 							<th height="41">Date</th>
@@ -615,12 +625,16 @@ body {
 								<fmt:parseNumber var="m_checkin" integerOnly = "true" type = "number" value="${min_checkin}"/>
 								<c:set var="hour_checkout" value="${fn:substringBefore(lts.time_check_out, ':')}"/>
 								
-								<td><fmt:formatDate value="${lts.time_check_in}" pattern="EE, dd MMM yyyy" /></td>
+								<td id="check_date" style="vertical-align: middle;"><fmt:formatDate value="${lts.time_check_in}" pattern="EE, dd MMM yyyy" /></td>
 								<!-- END DATE -->
-								<td>
+								
+								<td id="check_timein">
 									<c:set var="text3" value="${stime.toString().substring(0, 4)}"/>
 									<c:set var="stime_h" value="${fn:substringBefore(text3, ':')}"/>
 									<c:set var="stime_m" value="${fn:substringAfter(text3, ':')}"/>
+									<c:set var="lts_datein" value="${lts.time_check_in.toString().substring(0, 10)}"/>
+									<c:set var="lts_dateout" value="${lts.time_check_out.toString().substring(0, 10)}"/>
+									
 									<c:choose>
 									<c:when test="${stime == null}">
 										<fmt:formatDate value="${lts.time_check_in}" pattern="HH:mm"/>
@@ -636,16 +650,35 @@ body {
 											<c:when test="${h_checkin == stime_h}">
 												<c:if test="${m_checkin == stime_m}">${lts.time_check_in.toString().substring(11, 16)}</c:if>
 												<c:if test="${m_checkin > stime_m}"><span class="text-danger">${lts.time_check_in.toString().substring(11, 16)}</span></c:if>
-			
 											</c:when>
 										</c:choose>
 									</c:when>
 									</c:choose>
+ 									<c:forEach var="des" items="${descheckin}" varStatus="Status">
+ 										<c:if test="${des.description.length() > 0}">
+										<c:choose>
+											<c:when test="${lts_datein == des.work_hours_time_work.toString().substring(0, 10) && des.work_hours_type.toString() == '1'}">
+												<div class="text-muted"><i class="fa fa-commenting-o"></i><small> ${des.description}</small></div>
+											</c:when>
+										</c:choose>
+										</c:if>
+									</c:forEach> 
 								</td>
 								<!-- END CHECK-IN -->
-								<td><fmt:formatDate value="${lts.time_check_out}" pattern="HH:mm"/></td>
+								<td id="check_timeout"><fmt:formatDate value="${lts.time_check_out}" pattern="HH:mm"/>
+									<c:forEach var="des" items="${descheckin}" varStatus="Status">
+										<c:if test="${des.description.length() > 0}">
+										<c:choose>
+											<c:when test="${lts_dateout == des.work_hours_time_work.toString().substring(0, 10) && des.work_hours_type.toString() == '2'}">
+												<div class="text-muted"><i class="fa fa-commenting-o"></i><small> ${des.description}</small></div>
+											</c:when>
+										</c:choose>
+										</c:if>
+									</c:forEach>									
+								</td>
+								
 								<!-- END CHECK-OUT -->
-								<td>
+								<td id="actual" style="vertical-align: middle;">
 								<c:choose>
 									<c:when test="${(hour == '0' || hour == '00') && (min == '0' || min == '00')}">N\A</c:when>
 									<c:when test="${hour < '9' && min > '0'}">
@@ -671,13 +704,18 @@ body {
 								</c:choose>
 								</td>
 								<!-- END ACTUAL -->
-								<td>
+								<td id="status" style="vertical-align: middle;">
+									<c:forEach var="des" items="${descheckin}" varStatus="Status">
+									</c:forEach>
 									<c:choose>
 									<c:when test="${stime == null}">N\A</c:when>
 									<c:when test="${stime != null}">
 										<c:choose>
 										<c:when test="${h_checkin < stime.toString().substring(0, 1)}">
-											<c:if test="${hour >= 9 && min >= 0}"><span class="text-success sbold">On Time</span></c:if>
+											<c:if test="${hour >= 9 && min >= 0}"><span class="text-success sbold">On Time</span>
+												<c:if test="${des.description != null}">
+													<span class="text-warning sbold">Wait For</span></c:if>
+											</c:if> 
 											<c:if test="${hour < 9 && min <= 59}"><span class="text-danger sbold">Unfinished Work</span></c:if>
 										</c:when>
 										<c:when test="${h_checkin == stime.toString().substring(0, 1)}">
@@ -693,7 +731,7 @@ body {
 										</c:when>
 										<c:when test="${h_checkin > stime.toString().substring(0, 1)}">
 											<c:choose>
-											<c:when test="${hour >= 9 && min >= 0}">
+											<c:when test="${hour >= 9 && min >= 0}">	
 												<span class="text-danger sbold">Late</span>
 											</c:when>
 											<c:when test="${(hour < 9 && min <= 59) && workinghours != null}">
@@ -704,6 +742,7 @@ body {
 										</c:choose>
 									</c:when>
 									</c:choose>
+									
 								</td>
 								<!-- END STATUS -->
 							</tr>
@@ -786,18 +825,66 @@ body {
 </c:forEach>
 <script>
 
-	$(document).ready(function() {
+$(document).ready(function() {
 
-		$("#myModal").modal('show');
+	$("#myModal").modal('show');
+
+ 	var selectmonth = null; 
+	var select = null;
+	var date = new Date();
+	var monthnow = new Date(date.getFullYear(), date.getMonth());
+	function formatDate(selectmonth){
+		var d = new Date(selectmonth),
+			month = '' + (d.getMonth() + 1),
+			year = d.getFullYear();
+		if (month.length < 2)
+			month = '0' + month;
+		return [year, month].join('-');
+	}
+	
+	var optSimple = {
+			autoclose: true,
+			minViewMode: 1,
+			format: 'MM yyyy',
+			orientation: 'bottom right'
+	}; 
+	
+ 	$("#searchmonth").datepicker(optSimple); 
+
+  	var x = sessionStorage.getItem("selectmonth");
+	if (x != null) {
+		var y = "${sl_month}";
+		$("#searchmonth").datepicker('setDate', y);
+	}
+	sessionStorage.removeItem("selectmonth");
+	
+	if (x == null) {
+		$("#searchmonth").datepicker('setDate', monthnow);
+		console.log($("#searchmonth").val());
+	}
+	
+	$("#searchmonth").change(function() {
+		var x = $(this).datepicker( 'getDate');
+		select = $("#searchmonth").val();
+		console.log('select month: ' + select);
+		selectmonth = formatDate(select); 
+		console.log(selectmonth);
+		sessionStorage.setItem("selectmonth", selectmonth);
 
 	});
+});
+
+function search() {
+	var selectmonth = $("#searchmonth").val();
+	sessionStorage.setItem("selectmonth", selectmonth);
+}
+
 </script>
 <style>
 .mt-widget-3 {
 	border: 0px;
 }
 </style>
-
 
 <script>
 	function nextStep() {
@@ -853,18 +940,6 @@ body {
 		}
 	}
 
-	function back() {
-		document.location = "check_in";
-	}
-
-	function travel() {
-		document.location = "travelexp_form";
-	}
-
-	function leave() {
-		document.location = "LeaveAdd";
-	}
-
 	function pageload() {
 		var day = new Date();
 		var mytime = day.getHours();
@@ -877,7 +952,6 @@ body {
 			checkbox1_2.checked = true;
 			$("#detail").hide();
 			$("#labeldetail").hide();
-
 		}
 	}
 
@@ -977,9 +1051,11 @@ body {
 								document.getElementById("checktime").type = "button";
 							} else if (calcheckout != fullchecktimenow
 									&& mydetail < 10) { ///////////////////////////// check-in Detail///////////
-								swal("Here's a message!",
-										"กรุณาระบุเหตุผลการลงเวลาย้อนหลังมากกว่า 10 ตัวอักษร") // (กรณี check-in ย้อนหลังใส่เหตุผล)
-								document.getElementById("checktime").type = "button";
+//								swal("Here's a message!",
+//										"กรุณาระบุเหตุผลการลงเวลาย้อนหลังมากกว่า 10 ตัวอักษร") // (กรณี check-in ย้อนหลังใส่เหตุผล)
+//								document.getElementById("checktime").type = "button";
+								document.getElementById("checktime").type = "submit";
+								toast_checkin();
 							} else {
 								document.getElementById("checktime").type = "submit";
 								toast_checkin();
@@ -1027,7 +1103,6 @@ body {
 										"Can't Check-out In Last.") //ย้อนหลังเกิน  1 วัน
 								toast_checkout();
 								document.getElementById("checktime").type = "button";
-
 							} 
 //							else if (mydetail < 10) {
 //								swal("Here's a message!",
@@ -1036,7 +1111,6 @@ body {
 //							} else {
 //								document.getElementById("checktime").type = "submit";
 //							}
-
 						}
 
 					});
@@ -1089,23 +1163,12 @@ body {
 				"hideMethod": "fadeOut"
 		}
 	}
+	
 </script>
 
-<link
-	href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css"
-	rel="stylesheet" type="text/css" />
-<script src="../assets/global/plugins/jquery.min.js"
-	type="text/javascript"></script>
-<script
-	src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"
-	type="text/javascript"></script>
-<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script
-	src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js"
-	type="text/javascript"></script>
-<script src="../assets/pages/scripts/ui-sweetalert.min.js"
-	type="text/javascript"></script>
-<link
-	href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
-	rel="stylesheet" type="text/css" />
+<script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<!-- <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script> -->
+<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
+<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 

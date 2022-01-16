@@ -75,7 +75,7 @@ public class WorkHours implements Serializable {
     @Column(name = "time_update")
     private java.sql.Timestamp timeUpdate;
     @Column(name = "workinghours")
-    private Integer workinghours;
+    public Integer workinghours;
 
 
 
@@ -223,9 +223,9 @@ public class WorkHours implements Serializable {
 }
     return true;
     }
-	private Object getWorkinghours() {
+	public Object getWorkinghours() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.workinghours;
 	}
 
 }

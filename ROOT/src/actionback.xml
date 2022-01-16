@@ -475,6 +475,13 @@
 			<result name="success" type="tiles">check.in</result>
 			<result name="error">/index.jsp</result>
 		</action>
+
+		<action name="searchmonth-list"
+			class="com.cubesofttech.action.WorkHoursAction" method="searchmonth_list">
+			<result name="success" type="tiles">check.in</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
 		<action name="check_edit"
 			class="com.cubesofttech.action.WorkHoursAction" method="checkEdit">
 			<result name="success" type="tiles">check.edit</result>

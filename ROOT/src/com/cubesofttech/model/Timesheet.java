@@ -1,6 +1,7 @@
 package com.cubesofttech.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +18,8 @@ import javax.persistence.Table;
     @NamedQuery(name = "Timesheet.findAll", query = "SELECT t FROM Timesheet t")})
 public class Timesheet implements Serializable {
     
-    /** Creates a new instance of Timesheet */
+
+	/** Creates a new instance of Timesheet */
     public Timesheet() {
     }
     
@@ -106,7 +108,8 @@ public class Timesheet implements Serializable {
     @Column(name = "OT_time_end")
     private java.sql.Timestamp OT_time_end;	
     @Column(name = "OT_time_start")
-    private java.sql.Timestamp OT_time_start;	
+    private java.sql.Timestamp OT_time_start;
+
 
 
 	public Integer getId() {

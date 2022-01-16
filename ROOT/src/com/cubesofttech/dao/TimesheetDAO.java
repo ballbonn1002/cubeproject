@@ -49,5 +49,7 @@ public interface TimesheetDAO {
 	public List<Map<String, Object>> wherefile();
 	public List<Map<String, Object>> whereworkhour(String year,String month,String day,String name);
 	public List<Map<String, Object>> wherefunction(String name);
+	
+	public List<Map<String, Object>> searchbymonth(String userid, String month, String year) throws Exception;
 }
    

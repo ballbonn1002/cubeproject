@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Time;
@@ -133,10 +134,10 @@ public class WorkHoursAction extends ActionSupport {
 
 	@Autowired
 	private WorkHoursDAO workHoursDAO;
-	
+
 	@Autowired
 	private TimesheetDAO timesheetDAO;
-	
+
 //	@Autowired
 //	private Constant constant;
 
@@ -299,8 +300,8 @@ public class WorkHoursAction extends ActionSupport {
 			request.setAttribute("lastcheckout", lastcheckout);
 			request.setAttribute("currentDate", DateUtil.getCurrentTime());
 			Gson gson = new GsonBuilder().create();
-			List<Map<String,Object>> listmap = new ArrayList();
-			Map<String,Object> mapqw = new HashMap();
+			List<Map<String, Object>> listmap = new ArrayList();
+			Map<String, Object> mapqw = new HashMap();
 			mapqw.put("username", logonUser);
 			mapqw.put("pass", logonUser);
 			mapqw.put("login", 1);
@@ -334,13 +335,12 @@ public class WorkHoursAction extends ActionSupport {
 				request.setAttribute("time", time);
 				request.setAttribute("fulldate", fulldate);
 			}
-			long millis=System.currentTimeMillis();  
-			java.util.Date md=new java.util.Date(millis);    
+			long millis = System.currentTimeMillis();
+			java.util.Date md = new java.util.Date(millis);
 			boolean mday = false;
 			Calendar c2 = Calendar.getInstance();
 			c2.setTime(md);
-			if ((c2.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY))
-			{
+			if ((c2.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY)) {
 				Date yesterday = DateUtils.addDays(date, -3);
 				String yday = dateFormat.format(yesterday);
 				String ydaycut = yday.substring(6, 10);
@@ -360,7 +360,7 @@ public class WorkHoursAction extends ActionSupport {
 					ytime = DateUtil.getTimeNow();
 					request.setAttribute("ytime", ytime);
 					request.setAttribute("ytd", ytd);
-						}
+				}
 			} else {
 				Date yesterday = DateUtils.addDays(date, -1);
 				String yday = dateFormat.format(yesterday);
@@ -381,9 +381,9 @@ public class WorkHoursAction extends ActionSupport {
 					ytime = DateUtil.getTimeNow();
 					request.setAttribute("ytime", ytime);
 					request.setAttribute("ytd", ytd);
-					}
+				}
 			}
-			
+
 			System.out.println(mday);
 			String spl[] = ytd.split("-");
 			String date1 = (spl[0]);
@@ -404,7 +404,7 @@ public class WorkHoursAction extends ActionSupport {
 			} else {
 				week = false;
 			}
-	
+
 			List<Map<String, Object>> datecheck = workHoursDAO.checkholiday(ydate);
 			List<Map<String, Object>> checkleave = workHoursDAO.checkleave(ydate);
 			List<Map<String, Object>> alertm = workHoursDAO.alertm(logonUser, ydate);
@@ -464,8 +464,7 @@ public class WorkHoursAction extends ActionSupport {
 			request.setAttribute("lastusercheckin", lastusercheck1);
 			List<Map<String, Object>> lastusercheck2 = workHoursDAO.lastusercheckout();
 			request.setAttribute("lastusercheckout", lastusercheck2);
-			
-			
+
 			Date datehbd = new Date();
 			Timestamp tstamphbd = new Timestamp(datehbd.getTime());
 			Date Longdayhbd = DateUtil.periodMinus(datehbd, 8);
@@ -475,48 +474,45 @@ public class WorkHoursAction extends ActionSupport {
 			date1hbd = tstamphbd;
 			DateFormat dateFormathbd = new SimpleDateFormat("dd-MM-yyyy");
 			String datenowhbd = dateFormat.format(date1hbd);
-		
 
 			String monthhbd = datenowhbd.substring(3, 5);
 			String yearhbd = datenowhbd.substring(6, 10);
 			String dayhbd = datenowhbd.substring(0, 2);
-			
+
 			List<Map<String, Object>> happybirthday = userDAO.HappyBirthday(monthhbd, dayhbd);
 			request.setAttribute("hbd", happybirthday);
-			
+
 			request.setAttribute("useron", logonUser);
 
 			Date d = new Date();
 			int timecheck = d.getHours();
 
 			request.setAttribute("timecheck", timecheck);
-			
+
 			Timestamp tstamp = new Timestamp(date.getTime());
 			Date Longday = DateUtil.periodMinus(date, 8);
 			Timestamp tstampbefore = new Timestamp(Longday.getTime());
-			
+
 			Date date0;
 			date0 = tstamp;
 			String datenow = dateFormat.format(date0);
 			String month = datenow.substring(3, 5);
 			String year = datenow.substring(6, 10);
-			
+			System.out.println(datenow);
 			String userid = request.getParameter("userseq");
-			List<Map<String, Object>> listtimes = timesheetDAO.listtimesheet1(logonUser, tstamp, tstampbefore, month, year);
+
+			List<Map<String, Object>> listtimes = timesheetDAO.listtimesheet1(logonUser, tstamp, tstampbefore, month,year);
+			request.setAttribute("listtimes", listtimes);
+			log.debug(listtimes);
 			
 			User user = userDAO.findById(logonUser);
 			String stime = user.getWorkTimeStart() + ":00";
-			
 			request.setAttribute("stime", stime);
-			request.setAttribute("listtimes", listtimes);
 			log.debug(stime);
-			log.debug(listtimes);
 			
 			List<Map<String, Object>> descheckin = workHoursDAO.descheckin(logonUser, tstamp, tstampbefore, month, year);
 			request.setAttribute("descheckin", descheckin);
-			System.out.println(descheckin);
-			
-			
+
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -526,8 +522,8 @@ public class WorkHoursAction extends ActionSupport {
 
 	public String Angularcheckin() {
 		try {
-			List<Map<String,Object>> checkinjson = new ArrayList();
-			Map<String,Object> m = new HashMap();
+			List<Map<String, Object>> checkinjson = new ArrayList();
+			Map<String, Object> m = new HashMap();
 			log.debug("login");
 			int count_setAttribute = 0;
 			User ur = (User) request.getSession().getAttribute("onlineUser");
@@ -562,11 +558,16 @@ public class WorkHoursAction extends ActionSupport {
 				}
 			}
 
-			request.setAttribute("datecheckin", days);count_setAttribute+=1;
-			request.setAttribute("timecheckin", da);count_setAttribute+=1;
-			request.setAttribute("lastcheckin", lastcheckin);count_setAttribute+=1;
-			request.setAttribute("lastcheckout", lastcheckout);count_setAttribute+=1;
-			request.setAttribute("currentDate", DateUtil.getCurrentTime());count_setAttribute+=1;
+			request.setAttribute("datecheckin", days);
+			count_setAttribute += 1;
+			request.setAttribute("timecheckin", da);
+			count_setAttribute += 1;
+			request.setAttribute("lastcheckin", lastcheckin);
+			count_setAttribute += 1;
+			request.setAttribute("lastcheckout", lastcheckout);
+			count_setAttribute += 1;
+			request.setAttribute("currentDate", DateUtil.getCurrentTime());
+			count_setAttribute += 1;
 			m.put("datecheckin", days);
 			m.put("timecheckin", da);
 			m.put("lastcheckin", lastcheckin);
@@ -575,8 +576,10 @@ public class WorkHoursAction extends ActionSupport {
 			if (!work.isEmpty()) {
 				String beforeType = String.valueOf(work.get(0).get("work_hours_type"));
 				String beforeStamp = String.valueOf(work.get(0).get("time_create"));
-				request.setAttribute("beforeType", beforeType);count_setAttribute+=1;
-				request.setAttribute("beforeStamp", beforeStamp);count_setAttribute+=1;
+				request.setAttribute("beforeType", beforeType);
+				count_setAttribute += 1;
+				request.setAttribute("beforeStamp", beforeStamp);
+				count_setAttribute += 1;
 				m.put("beforeType", beforeType);
 				m.put("beforeStamp", beforeStamp);
 			}
@@ -591,8 +594,10 @@ public class WorkHoursAction extends ActionSupport {
 				String daycut2 = day.substring(0, 6);
 				String fulldate = daycut2 + strI.trim();
 				String time = DateUtil.getTimeNow();
-				request.setAttribute("time", time);count_setAttribute+=1;
-				request.setAttribute("fulldate", fulldate);count_setAttribute+=1;
+				request.setAttribute("time", time);
+				count_setAttribute += 1;
+				request.setAttribute("fulldate", fulldate);
+				count_setAttribute += 1;
 				m.put("time", time);
 				m.put("fulldate", fulldate);
 			} else {
@@ -600,18 +605,19 @@ public class WorkHoursAction extends ActionSupport {
 				String daycut2 = day.substring(0, 6);
 				String fulldate = daycut2 + strI.trim();
 				String time = DateUtil.getTimeNow();
-				request.setAttribute("time", time);count_setAttribute+=1;
-				request.setAttribute("fulldate", fulldate);count_setAttribute+=1;
+				request.setAttribute("time", time);
+				count_setAttribute += 1;
+				request.setAttribute("fulldate", fulldate);
+				count_setAttribute += 1;
 				m.put("time", time);
 				m.put("fulldate", fulldate);
 			}
-			long millis=System.currentTimeMillis();  
-			java.util.Date md=new java.util.Date(millis);    
+			long millis = System.currentTimeMillis();
+			java.util.Date md = new java.util.Date(millis);
 			boolean mday = false;
 			Calendar c2 = Calendar.getInstance();
 			c2.setTime(md);
-			if ((c2.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY))
-			{
+			if ((c2.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY)) {
 				Date yesterday = DateUtils.addDays(date, -3);
 				String yday = dateFormat.format(yesterday);
 				String ydaycut = yday.substring(6, 10);
@@ -622,16 +628,20 @@ public class WorkHoursAction extends ActionSupport {
 					String daycut2 = yday.substring(0, 6);
 					ytd = daycut2 + strI.trim();
 					ytime = DateUtil.getTimeNow();
-					request.setAttribute("ytime", ytime);count_setAttribute+=1;
-					request.setAttribute("ytd", ytd);count_setAttribute+=1;
+					request.setAttribute("ytime", ytime);
+					count_setAttribute += 1;
+					request.setAttribute("ytd", ytd);
+					count_setAttribute += 1;
 				} else {
 					String strI = Integer.toString(yfoo);
 					String daycut2 = yday.substring(0, 6);
 					ytd = daycut2 + strI.trim();
 					ytime = DateUtil.getTimeNow();
-					request.setAttribute("ytime", ytime);count_setAttribute+=1;
-					request.setAttribute("ytd", ytd);count_setAttribute+=1;
-						}
+					request.setAttribute("ytime", ytime);
+					count_setAttribute += 1;
+					request.setAttribute("ytd", ytd);
+					count_setAttribute += 1;
+				}
 			} else {
 				Date yesterday = DateUtils.addDays(date, -1);
 				String yday = dateFormat.format(yesterday);
@@ -643,18 +653,22 @@ public class WorkHoursAction extends ActionSupport {
 					String daycut2 = yday.substring(0, 6);
 					ytd = daycut2 + strI.trim();
 					ytime = DateUtil.getTimeNow();
-					request.setAttribute("ytime", ytime);count_setAttribute+=1;
-					request.setAttribute("ytd", ytd);count_setAttribute+=1;
+					request.setAttribute("ytime", ytime);
+					count_setAttribute += 1;
+					request.setAttribute("ytd", ytd);
+					count_setAttribute += 1;
 				} else {
 					String strI = Integer.toString(yfoo);
 					String daycut2 = yday.substring(0, 6);
 					ytd = daycut2 + strI.trim();
 					ytime = DateUtil.getTimeNow();
-					request.setAttribute("ytime", ytime);count_setAttribute+=1;
-					request.setAttribute("ytd", ytd);count_setAttribute+=1;
-					}
+					request.setAttribute("ytime", ytime);
+					count_setAttribute += 1;
+					request.setAttribute("ytd", ytd);
+					count_setAttribute += 1;
+				}
 			}
-			
+
 			System.out.print(mday);
 			String spl[] = ytd.split("-");
 			String date1 = (spl[0]);
@@ -675,11 +689,12 @@ public class WorkHoursAction extends ActionSupport {
 			} else {
 				week = false;
 			}
-	
+
 			List<Map<String, Object>> datecheck = workHoursDAO.checkholiday(ydate);
 			List<Map<String, Object>> checkleave = workHoursDAO.checkleave(ydate);
 			List<Map<String, Object>> alertm = workHoursDAO.alertm(logonUser, ydate);
-			request.setAttribute(logonUser, ytd);count_setAttribute+=1;
+			request.setAttribute(logonUser, ytd);
+			count_setAttribute += 1;
 			boolean leavecheck = false;
 			boolean holidaycheck = false;
 			boolean yyy = false;
@@ -723,20 +738,27 @@ public class WorkHoursAction extends ActionSupport {
 					break;
 				}
 			}
-			request.setAttribute("leavecheck", leavecheck);count_setAttribute+=1;
-			request.setAttribute("holidaycheck", holidaycheck);count_setAttribute+=1;
-			request.setAttribute("weekcheck", week);count_setAttribute+=1;
-			request.setAttribute("nocheckout", yyy);count_setAttribute+=1;
-			request.setAttribute("nocheckin", chn);count_setAttribute+=1;
+			request.setAttribute("leavecheck", leavecheck);
+			count_setAttribute += 1;
+			request.setAttribute("holidaycheck", holidaycheck);
+			count_setAttribute += 1;
+			request.setAttribute("weekcheck", week);
+			count_setAttribute += 1;
+			request.setAttribute("nocheckout", yyy);
+			count_setAttribute += 1;
+			request.setAttribute("nocheckin", chn);
+			count_setAttribute += 1;
 			// request.setAttribute("GOOGLE_API_KEY", constant.getGoogleApiKey());
 			// PRODUCTION GOOGLE KEY
-			request.setAttribute("GOOGLE_API_KEY", "AIzaSyDQajNmqwu5dl6tJ3nnOoYhnRl2ndchKAg");count_setAttribute+=1;
+			request.setAttribute("GOOGLE_API_KEY", "AIzaSyDQajNmqwu5dl6tJ3nnOoYhnRl2ndchKAg");
+			count_setAttribute += 1;
 			List<Map<String, Object>> lastusercheck1 = workHoursDAO.lastusercheckin();
-			request.setAttribute("lastusercheckin", lastusercheck1);count_setAttribute+=1;
+			request.setAttribute("lastusercheckin", lastusercheck1);
+			count_setAttribute += 1;
 			List<Map<String, Object>> lastusercheck2 = workHoursDAO.lastusercheckout();
-			request.setAttribute("lastusercheckout", lastusercheck2);count_setAttribute+=1;
-			
-			
+			request.setAttribute("lastusercheckout", lastusercheck2);
+			count_setAttribute += 1;
+
 			Date datehbd = new Date();
 			Timestamp tstamphbd = new Timestamp(datehbd.getTime());
 			Date Longdayhbd = DateUtil.periodMinus(datehbd, 8);
@@ -746,22 +768,24 @@ public class WorkHoursAction extends ActionSupport {
 			date1hbd = tstamphbd;
 			DateFormat dateFormathbd = new SimpleDateFormat("dd-MM-yyyy");
 			String datenowhbd = dateFormat.format(date1hbd);
-		
 
 			String monthhbd = datenowhbd.substring(3, 5);
 			String yearhbd = datenowhbd.substring(6, 10);
 			String dayhbd = datenowhbd.substring(0, 2);
-			
+
 			List<Map<String, Object>> happybirthday = userDAO.HappyBirthday(monthhbd, dayhbd);
-			request.setAttribute("hbd", happybirthday);count_setAttribute+=1;
-			
-			request.setAttribute("useron", logonUser);count_setAttribute+=1;
+			request.setAttribute("hbd", happybirthday);
+			count_setAttribute += 1;
+
+			request.setAttribute("useron", logonUser);
+			count_setAttribute += 1;
 
 			Date d = new Date();
 			int timecheck = d.getHours();
 
-			request.setAttribute("timecheck", timecheck);count_setAttribute+=1;
-			
+			request.setAttribute("timecheck", timecheck);
+			count_setAttribute += 1;
+
 			m.put("timecheck", timecheck);
 			m.put("useron", logonUser);
 			m.put("hbd", happybirthday);
@@ -780,14 +804,14 @@ public class WorkHoursAction extends ActionSupport {
 			Gson gson = new GsonBuilder().create();
 			String responseJSON = gson.toJson(checkinjson);
 			request.setAttribute("json", responseJSON);
-			
+
 			return SUCCESS;
 		} catch (Exception e) {
-			
+
 			return ERROR;
 		}
 	}
-	
+
 	public String searchlist() {
 		try {
 
@@ -1424,7 +1448,7 @@ public class WorkHoursAction extends ActionSupport {
 
 			for (Map<String, Object> map : checktimehours) {
 				for (Map.Entry<String, Object> entry : map.entrySet()) {
-					//BigInteger x = (BigInteger) entry.getValue();
+					// BigInteger x = (BigInteger) entry.getValue();
 					Integer x = (Integer) entry.getValue();
 					inhour = x.intValue();
 				}
@@ -1432,7 +1456,7 @@ public class WorkHoursAction extends ActionSupport {
 
 			for (Map<String, Object> maps : checktimemin) {
 				for (Map.Entry<String, Object> entry : maps.entrySet()) {
-					//BigInteger a = (BigInteger) entry.getValue();
+					// BigInteger a = (BigInteger) entry.getValue();
 					Integer a = (Integer) entry.getValue();
 					inmin = a.intValue();
 
@@ -1490,7 +1514,7 @@ public class WorkHoursAction extends ActionSupport {
 			int checkoutnotcheckout = ((outhours * 60) + outmins);
 			for (Map<String, Object> maps : check_in) {
 				for (Map.Entry<String, Object> entry : maps.entrySet()) {
-					//BigInteger x = (BigInteger) entry.getValue();
+					// BigInteger x = (BigInteger) entry.getValue();
 					Integer x = (Integer) entry.getValue();
 					datecheck_in = Integer.valueOf(x.toString());
 				}
@@ -3281,7 +3305,7 @@ public class WorkHoursAction extends ActionSupport {
 			DateTimeFormatter dateT = DateTimeFormatter.ofPattern("01-01-yyyy");
 			LocalDate localDate = LocalDate.now();
 			String s = "00:00:00.0";
-			
+
 			Timestamp start_date = DateUtil.dateToTimestamp(dateT.format(localDate), s);
 			Timestamp end_date = DateUtil.changetoEndYear(dateT.format(localDate));
 			List leavelist = leaveDAO.myLeavesList(userId, start_date, end_date);
@@ -3290,25 +3314,25 @@ public class WorkHoursAction extends ActionSupport {
 			List LeaveID = leaveDAO.findLeaveId(userId, start_date, end_date, status);
 			if (leavelist != null) {
 				request.setAttribute("leave", leavelist);
-				int x=0;
-				while (x <= LeaveID.size()-1) {
+				int x = 0;
+				while (x <= LeaveID.size() - 1) {
 					System.out.println("inLoopWhile");
 					String a[] = LeaveID.get(x).toString().split("[={}]");
 					System.out.println("Split Success");
-					for(int b=0;b<=a.length-1;b++) {
-						System.out.println("a["+b+"]= "+a[b]);
+					for (int b = 0; b <= a.length - 1; b++) {
+						System.out.println("a[" + b + "]= " + a[b]);
 					}
-					int id=0;
-					for(int b=0;b<=a.length-1;b++) {
+					int id = 0;
+					for (int b = 0; b <= a.length - 1; b++) {
 						System.out.println("inLoopFor");
-						if(tryParseInt(a[b])) {
+						if (tryParseInt(a[b])) {
 							System.out.println("inIf");
-							id=Integer.parseInt(a[b]);
-							System.out.println("This is Array No: "+b+" ="+a[b]);
-							Leaves leaveDashboard =  leaveDAO.findByLeaveId(id);
+							id = Integer.parseInt(a[b]);
+							System.out.println("This is Array No: " + b + " =" + a[b]);
+							Leaves leaveDashboard = leaveDAO.findByLeaveId(id);
 							System.out.println("Ref Success");
 							Double noday = leaveDashboard.getNoDay().doubleValue();
-							System.out.println("This NoDay : "+noday);
+							System.out.println("This NoDay : " + noday);
 							if (leaveDashboard.getLeaveTypeId().contains("1")) {
 								leave_1 = leave_1 + noday;
 							}
@@ -3325,12 +3349,12 @@ public class WorkHoursAction extends ActionSupport {
 								leave_6 = leave_6 + noday;
 							}
 						}
-						
+
 					}
 					x++;
 				}
-				
-	System.out.println("777");
+
+				System.out.println("777");
 			}
 			request.setAttribute("leave_1", leave_1);
 			request.setAttribute("leave_2", leave_2);
@@ -3343,13 +3367,14 @@ public class WorkHoursAction extends ActionSupport {
 			return ERROR;
 		}
 	}
+
 	public boolean tryParseInt(String value) {
-	    try {
-	        int x= Integer.parseInt(value);
-	        return true;
-	    } catch (NumberFormatException e) {
-	        return false;
-	    }
+		try {
+			int x = Integer.parseInt(value);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
 
 	public String searchAlll_calendar() {
@@ -3363,7 +3388,7 @@ public class WorkHoursAction extends ActionSupport {
 			request.setAttribute("usercalendar", usercalendar);
 			User ur = (User) request.getSession().getAttribute("onlineUser");
 			userLogin = ur.getId();
-			
+
 			String logonUser = request.getParameter("usercalendar");
 
 			String positionusers = null;
@@ -3685,26 +3710,26 @@ public class WorkHoursAction extends ActionSupport {
 				 * (leave.getLeaveTypeId().contains("5")) { leave_5 += noday; } if
 				 * (leave.getLeaveTypeId().contains("6")) { leave_6 += noday; } }
 				 */
-				int x=0;
-				
-				while (x <= LeaveID.size()-1) {
+				int x = 0;
+
+				while (x <= LeaveID.size() - 1) {
 					System.out.println("inLoopWhile");
 					String a[] = LeaveID.get(x).toString().split("[={}]");
 					System.out.println("Split Success");
-					for(int b=0;b<=a.length-1;b++) {
-						System.out.println("a["+b+"]= "+a[b]);
+					for (int b = 0; b <= a.length - 1; b++) {
+						System.out.println("a[" + b + "]= " + a[b]);
 					}
-					int id=0;
-					for(int b=0;b<=a.length-1;b++) {
+					int id = 0;
+					for (int b = 0; b <= a.length - 1; b++) {
 						System.out.println("inLoopFor");
-						if(tryParseInt(a[b])) {
+						if (tryParseInt(a[b])) {
 							System.out.println("inIf");
-							id=Integer.parseInt(a[b]);
-							System.out.println("This is Array No: "+b+" ="+a[b]);
-							Leaves leaveDashboard =  leaveDAO.findByLeaveId(id);
+							id = Integer.parseInt(a[b]);
+							System.out.println("This is Array No: " + b + " =" + a[b]);
+							Leaves leaveDashboard = leaveDAO.findByLeaveId(id);
 							System.out.println("Ref Success");
 							Double noday = leaveDashboard.getNoDay().doubleValue();
-							System.out.println("This NoDay : "+noday);
+							System.out.println("This NoDay : " + noday);
 							if (leaveDashboard.getLeaveTypeId().contains("1")) {
 								leave_1 = leave_1 + noday;
 							}
@@ -3721,11 +3746,11 @@ public class WorkHoursAction extends ActionSupport {
 								leave_6 = leave_6 + noday;
 							}
 						}
-						
+
 					}
 					x++;
 				}
-				
+
 			}
 			request.setAttribute("leave_1", leave_1);
 			request.setAttribute("leave_2", leave_2);
@@ -5815,4 +5840,109 @@ public class WorkHoursAction extends ActionSupport {
 		}
 		return null;
 	}
+	
+	public String searchmonth_list() { //search month in check.in page
+		try {
+			
+			User ur = (User) request.getSession().getAttribute(ONLINEUSER);
+			String logonUser = ur.getId();
+			List<Map<String, Object>> work = workHoursDAO.checkIn(logonUser);
+			List<Map<String, Object>> timecheckin = workHoursDAO.timecheckin(logonUser);
+			List<Map<String, Object>> datecheckin = workHoursDAO.datecheckin(logonUser);
+			List<Map<String, Object>> lastcheckin = workHoursDAO.lastcheckin(logonUser);
+			List<Map<String, Object>> lastcheckout = workHoursDAO.lastcheckout(logonUser);
+			
+			String days = null;
+			String da = null;
+			for (Map<String, Object> maps : datecheckin) {
+				for (Map.Entry<String, Object> entry : maps.entrySet()) {
+					log.debug(entry.getValue());
+					Date date;
+					date = (Date) entry.getValue();
+					DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+					days = dateFormat.format(date);
+
+				}
+			}
+			for (Map<String, Object> maps : timecheckin) {
+				for (Map.Entry<String, Object> entry : maps.entrySet()) {
+					log.debug(entry.getValue());
+					Date date = new Date();
+					date = (Date) entry.getValue();
+					DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+					da = dateFormat.format(date);
+				}
+			}
+			request.setAttribute("datecheckin", days);
+			request.setAttribute("timecheckin", da);
+			request.setAttribute("lastcheckin", lastcheckin);
+			request.setAttribute("lastcheckout", lastcheckout);
+			request.setAttribute("currentDate", DateUtil.getCurrentTime());
+			
+			DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+			Date date = new Date();
+			String day = dateFormat.format(date);
+			String daycut = day.substring(6, 10);
+			int foo = Integer.parseInt(daycut);
+			if (foo > 2500) {
+				int year = foo - 543;
+				String strI = Integer.toString(year);
+				String daycut2 = day.substring(0, 6);
+				String fulldate = daycut2 + strI.trim();
+				String time = DateUtil.getTimeNow();
+				request.setAttribute("time", time);
+				request.setAttribute("fulldate", fulldate);
+			} else {
+				String strI = Integer.toString(foo);
+				String daycut2 = day.substring(0, 6);
+				String fulldate = daycut2 + strI.trim();
+				String time = DateUtil.getTimeNow();
+				request.setAttribute("time", time);
+				request.setAttribute("fulldate", fulldate);
+			}
+			
+			String searchmonth = request.getParameter("searchmonth");
+			log.debug("searchmonth: " + searchmonth); 
+			request.setAttribute("sl_month", searchmonth);
+			
+			String[] splitstr = searchmonth.split("\\s+");
+			String s_month = splitstr[0];
+			String s_year = splitstr[1];
+			log.debug("select month: "+ s_month + " select year: "+s_year);
+			
+			String month = null;
+			String year = s_year;
+
+			switch (s_month) {
+				case "January": month = "01"; break;
+				case "February": month = "02"; break;
+				case "March": month = "03"; break;
+				case "April": month = "04"; break;
+				case "May": month = "05"; break;
+				case "June": month = "06"; break;
+				case "July": month = "07"; break;
+				case "August": month = "08"; break;
+				case "September": month = "09"; break;
+				case "October": month = "10"; break;
+				case "November": month = "11"; break;
+				case "December": month = "12"; break;
+			}
+			
+			System.out.println("month = "+month +" year = "+year);
+			List<Map<String, Object>> listtimes = timesheetDAO.searchbymonth(logonUser, month, year);
+			request.setAttribute("listtimes", listtimes);
+			request.setAttribute("s_month", s_month);
+			request.setAttribute("s_year", s_year);
+			
+			User user = userDAO.findById(logonUser);
+			String stime = user.getWorkTimeStart() + ":00";
+			request.setAttribute("stime", stime);
+			log.debug(stime);
+			
+			return SUCCESS;
+		} catch (Exception e) {
+			return ERROR;
+		}
+	}
+	 
 }
