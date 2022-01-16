@@ -1,51 +1,28 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<script src="../assets/ajax/jquery-1.10.2.js" type="text/javascript"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="../assets/global/plugins/jquery.min.js"
-	type="text/javascript"></script>
-<script
-	src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"
-	type="text/javascript"></script>
-<link
-	href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css"
-	rel="stylesheet" type="text/css" />
-<script src="../assets/global/plugins/jquery.blockui.min.js"
-	type="text/javascript"></script>
-<script src="../assets/layouts/global/scripts/quick-sidebar.min.js"
-	type="text/javascript"></script>
-<script src="../assets/layouts/global/scripts/quick-nav.min.js"
-	type="text/javascript"></script>
-<link href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"
-	rel="stylesheet" />
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!-- <script src="../assets/ajax/jquery-1.10.2.js" type="text/javascript"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+<link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+<script src="../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+<script src="../assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
+<link href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-<script src="../assets/ajax/jquery-1.10.2.js" type="text/javascript"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!-- <script src="../assets/ajax/jquery-1.10.2.js" type="text/javascript"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 <!-- Alert Script-->
-<link
-	href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css"
-	rel="stylesheet" type="text/css" />
-<script src="../assets/global/plugins/jquery.min.js"
-	type="text/javascript"></script>
-<script
-	src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"
-	type="text/javascript"></script>
+<link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+<script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script
-	src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js"
-	type="text/javascript"></script>
-<script src="../assets/pages/scripts/ui-sweetalert.min.js"
-	type="text/javascript"></script>
-<link
-	href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
-	rel="stylesheet" type="text/css" />
+<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
+<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 
 <!-- End of Alert Script -->
 
@@ -108,6 +85,7 @@
 						<th class="text-center">Project name</th>
 						<th class="text-center">User create</th>
 						<th class="text-center">Time create</th>
+						<th class="text-center">Status</th>
 						<th class="text-center">Edit</th>
 						<th class="text-center">Delete</th>
 					</tr>
@@ -116,16 +94,33 @@
 					<c:forEach var="pj" items="${projectList}" varStatus="Count">
 						<tr>
 							<td class="text-center">${Count.count}</td>
-							<td class="text-center">${pj.project_name}</td>
-							<td class="text-center">${pj.user_create}</td>
-							<td class="text-center"><fmt:formatDate
+							<td class="text-left">${pj.project_name}
+								<c:if test="${pj.description != null}"> :	${pj.description}</c:if>
+								<c:forEach var="ft" items="${functionlist}">
+									<c:if test="${(pj.project_id == ft.project_id) && ft.function_name != null }">
+										<div style="margin-left:15px;"><small><i class="fa fa-angle-right"> ${ft.function_name}</i></small></div>
+									</c:if>
+									
+								</c:forEach>
+							</td>
+							<td style="vertical-align: middle;"class="text-center">${pj.user_create}</td>
+							<td style="vertical-align: middle;"class="text-center"><fmt:formatDate
 									value="${pj.time_create}" pattern="dd-MM-yyyy HH:mm" /></td>
-							<td style="text-align: center;"><a
+									
+							<td style="text-align: center;vertical-align: middle;">
+								<div class="md-checkbox-list"><label 
+									class="mt-checkbox mt-checkbox-outline"><input 
+									type="checkbox" class="md-check"
+									onclick="ChangeStatusProfile(${pj.project_id})"><span class=""></span></label>
+								</div>
+							</td>
+							
+							<td style="text-align: center;vertical-align: middle;"><a
 								class="btn btn-outline btn-circle btn-sm blue" title="Edit"
 								onclick="EditProject(${pj.project_id})"><i
 									class="fa fa-pencil"></i></a></td>
 
-							<td style="text-align: center;"><a
+							<td style="text-align: center;vertical-align: middle;"><a
 								class="btn btn-outline btn-circle btn-sm red-intense" title="Delete"
 								onclick="deleteProject(${pj.project_id})"><i
 									class="fa fa-trash"></i></a></td>
@@ -169,6 +164,9 @@
 <script>
 
 	function deleteProject(id){
+		console.log(id);
+//		var timesheetlist = "${timesheetlist}";
+//		console.log(timesheetlist);
 		swal({
 		      title: "Are you sure!",
 		      text: "You will be deleting this project!",
@@ -212,6 +210,10 @@
 // 					location.href='editFAQ?faq_id=' + id;
 // 				}
 // 		 });
+	}
+	function ChangeStatusProfile(id){
+		console.log(id);
+		
 	}
 	
 </script>

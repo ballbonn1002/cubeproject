@@ -124,8 +124,8 @@
 								<label class="control-label">Status</label> <select
 									name="status" class="form-control"
 									data-placeholder="Choose status" tabindex="1">
-									<option value="ACTIVE">ACTIVE</option>
-									<option value="INACTIVE">INACTIVE</option>
+									<option value="1">ACTIVE</option>
+									<option value="0">INACTIVE</option>
 								</select>
 							</div>
 							<div class="col-md-1">
@@ -174,7 +174,7 @@
 										{
 											initEmpty : true,
 											defaultValues: {
-								                'status': 'ACTIVE'
+								                'status': '1'
 								            },
 											show : function() {
 												$(this).slideDown();

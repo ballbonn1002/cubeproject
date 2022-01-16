@@ -143,5 +143,37 @@ public class ProjectDAOImpl implements ProjectDAO{
 		return project;
 	}
 	
+	@Override
+	public List<Map<String, Object>> projectlist() throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> projectlist = null;
+		try {
+			String sql = "SELECT f.function_id, f.function_name, f.status, f.project_id AS f_projectid, f.user_create, f.time_create, "
+						+ "f.user_update, f.time_update, p.project_id AS p_projectid, p.project_name, p.description "
+						+ "FROM `project_function` f LEFT JOIN `project` p ON f.project_id = p.project_id "
+						+ "ORDER BY f.project_id ASC";
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			projectlist = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return projectlist;
+	}
+	
+	@Override
+	public List<Map<String, Object>> functionlist() throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> functionlist = null;
+		try {
+			String sql = "SELECT * FROM `project_function` ";
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			functionlist = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return functionlist;
+	}
 
 }

@@ -14,10 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.dao.ProjectDAO;
 import com.cubesofttech.dao.ProjectFunctionDAO;
+import com.cubesofttech.dao.TimesheetDAO;
 import com.cubesofttech.dao.UserDAO;
 import com.cubesofttech.model.Project;
 import com.cubesofttech.model.ProjectFunction;
 import com.cubesofttech.model.User;
+import com.cubesofttech.model.Timesheet;
 import com.cubesofttech.util.DateUtil;
 import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionSupport;
@@ -41,6 +43,9 @@ public class ProjectAction extends ActionSupport {
 
 	@Autowired
 	private ProjectFunctionDAO projectFunctionDAO;
+	
+	@Autowired
+	private TimesheetDAO timesheetDAO;
 
 	private Integer project_id;
 	private String project_name;
@@ -52,8 +57,16 @@ public class ProjectAction extends ActionSupport {
 		try {
 
 			projectList = projectDAO.findProjectAll();
+			//List<Map<String, Object>>projectList =  projectDAO.projectlist();
 			request.setAttribute("projectList", projectList);
-
+			System.out.println(projectList);
+			
+			List<Map<String, Object>>functionlist =  projectDAO.functionlist();
+			request.setAttribute("functionlist", functionlist);
+			
+			//List<Timesheet>timesheetlist = timesheetDAO.findAll();
+			//request.setAttribute("timesheetlist", timesheetlist);
+			
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,8 +84,9 @@ public class ProjectAction extends ActionSupport {
 
 			}
 
-			projectList = projectDAO.findProjectAll();
-			request.setAttribute("projectList", projectList);
+			//projectList = projectDAO.findProjectAll();
+			//request.setAttribute("projectList", projectList);
+			
 
 			return SUCCESS;
 		} catch (Exception e) {

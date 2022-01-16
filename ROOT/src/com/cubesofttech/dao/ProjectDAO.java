@@ -20,4 +20,7 @@ public interface ProjectDAO {
 	public List<Map<String, Object>> allfunction(String listId) throws Exception;
 	public boolean checkExistByName(String projectName);
 	public Project findByName(String projectName);
+	public List<Map<String, Object>> projectlist() throws Exception;
+	public List<Map<String, Object>> functionlist() throws Exception;
+	
 }
