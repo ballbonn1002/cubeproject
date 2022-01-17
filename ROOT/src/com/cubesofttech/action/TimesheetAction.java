@@ -532,6 +532,7 @@ public class TimesheetAction extends ActionSupport {
 				Project projectAdd = new Project();
 				projectAdd.setProject_name(project);
 				projectAdd.setDescription("");
+				projectAdd.setStatus("1");
 				projectAdd.setUser_create(name);
 				projectAdd.setTime_create(DateUtil.getCurrentTime());
 				projectDAO.save(projectAdd);
@@ -542,7 +543,7 @@ public class TimesheetAction extends ActionSupport {
 					int projectFunctionIdAdd = 0;
 					ProjectFunction projectFunctionAdd = new ProjectFunction();
 					projectFunctionAdd.setFunction_name(function);
-					projectFunctionAdd.setStatus("ACTIVE");
+					projectFunctionAdd.setStatus("1");
 					projectFunctionAdd.setProject_id(projectIdAdd);
 					projectFunctionAdd.setUser_create(name);
 					projectFunctionAdd.setTime_create(DateUtil.getCurrentTime());
@@ -560,7 +561,7 @@ public class TimesheetAction extends ActionSupport {
 					int projectFunctionIdAdd = 0;
 					ProjectFunction projectFunctionAdd = new ProjectFunction();
 					projectFunctionAdd.setFunction_name(function);
-					projectFunctionAdd.setStatus("ACTIVE");
+					projectFunctionAdd.setStatus("1");
 					projectFunctionAdd.setProject_id(projectid);
 					projectFunctionAdd.setUser_create(name);
 					projectFunctionAdd.setTime_create(DateUtil.getCurrentTime());
@@ -935,6 +936,7 @@ public class TimesheetAction extends ActionSupport {
 				Project projectAdd = new Project();
 				projectAdd.setProject_name(project);
 				projectAdd.setDescription("");
+				projectAdd.setStatus("1");
 				projectAdd.setUser_create(userupdate);
 				projectAdd.setTime_create(DateUtil.getCurrentTime());
 				projectDAO.save(projectAdd);
@@ -945,7 +947,7 @@ public class TimesheetAction extends ActionSupport {
 					int projectFunctionIdAdd = 0;
 					ProjectFunction projectFunctionAdd = new ProjectFunction();
 					projectFunctionAdd.setFunction_name(function);
-					projectFunctionAdd.setStatus("ACTIVE");
+					projectFunctionAdd.setStatus("1");
 					projectFunctionAdd.setProject_id(projectIdAdd);
 					projectFunctionAdd.setUser_create(name);
 					projectFunctionAdd.setTime_create(DateUtil.getCurrentTime());
