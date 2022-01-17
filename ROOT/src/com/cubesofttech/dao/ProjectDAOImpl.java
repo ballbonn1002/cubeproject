@@ -96,7 +96,7 @@ public class ProjectDAOImpl implements ProjectDAO{
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Map<String, Object>> projecta = null;
 		try {
-			String sql = "SELECT * from project";
+			String sql = "SELECT * from project WHERE STATUS = '1'";
 			
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);

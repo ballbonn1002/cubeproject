@@ -126,7 +126,11 @@ b {
 					:</label>
 				<div class="col-md-8">
 					<input class="form-control" type="text" name="functionf" id="projectF_id" data-value="${functionf.function_id }" value="${functionf.function_name }" list="fname" required>
-					<datalist id="fname"></datalist>
+					<datalist id="fname">
+						<c:forEach var="func" items="${functionL}">
+							<option data-value="${func.function_id }" value="${func.function_name }"/>
+						</c:forEach>
+					</datalist>
 				</div>
 			</div>
 

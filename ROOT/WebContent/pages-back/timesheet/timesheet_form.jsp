@@ -128,7 +128,11 @@ b {
 					:</label>
 				<div class="col-md-8">
 					<input class="form-control" type="text" name="functionf" id="projectF_id" data-value="${functionid }" value="${functionf.function_name }" list="fname" required>
-					<datalist id="fname"></datalist>
+					<datalist id="fname">
+						<c:forEach var="func" items="${functionL}">
+							<option data-value="${func.function_id }" value="${func.function_name }"/>
+						</c:forEach>
+					</datalist>
 					<!--<select class="bs-select form-control select2me" name="functionf"
 						id="projectF_id">
 						<c:forEach items="${functionList}" var="functionp">
@@ -295,10 +299,10 @@ b {
 		console.log(desot + "" + startot+ "" +endot);
 	
 		if (projectf == null || projectf == "") {
-			swal("Error!", "Required! Project", "error");
+			swal("Error!", "Required! Please, Selected Project", "error");
 		}
 		else if (functionf == null || functionf == "") {
-			swal("Error!", "Required! Function", "error");
+			swal("Error!", "Required! Please, Selected Function", "error");
 		}
 		else if (des == null || des == "") {
 			swal("Error!", "Required! Description", "error");

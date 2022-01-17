@@ -433,9 +433,12 @@ public class TimesheetAction extends ActionSupport {
 						function = projectFunctionDAO.findById(lastTimesheetFunc);
 						request.setAttribute("functionf", function);
 						request.setAttribute("functionid", lastTimesheetFunc);
+						
+						List<ProjectFunction> functionList = projectFunctionDAO.findFunction(lastTimesheetProj);
+						request.setAttribute("functionL", functionList);
 					}
 					// get last time project and function
-					functionList = projectFunctionDAO.findByProject(lastTimesheetProj);
+					//functionList = projectFunctionDAO.findByProject(lastTimesheetProj);
 					
 					
 				}
@@ -773,6 +776,9 @@ public class TimesheetAction extends ActionSupport {
 						ProjectFunction projectFunction = new ProjectFunction();
 						projectFunction = projectFunctionDAO.findById(function_id);
 						request.setAttribute("functionf", projectFunction);
+						
+						List<ProjectFunction> functionList = projectFunctionDAO.findFunction(project_id);
+						request.setAttribute("functionL", functionList);
 					}
 					//functionList = projectFunctionDAO.findByProject(project_id);
 					//request.setAttribute("functionList", functionList);

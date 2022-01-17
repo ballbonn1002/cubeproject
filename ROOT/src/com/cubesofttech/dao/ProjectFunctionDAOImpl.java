@@ -104,7 +104,7 @@ public class ProjectFunctionDAOImpl implements ProjectFunctionDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<ProjectFunction> functions = null;
 		try {
-			String sql = "SELECT * from project_function WHERE project_id = " + findpfunc;
+			String sql = "SELECT * from project_function WHERE STATUS = '1' AND project_id = " + findpfunc;
 			SQLQuery query = session.createSQLQuery(sql);
 			query.addEntity(ProjectFunction.class);
 			
