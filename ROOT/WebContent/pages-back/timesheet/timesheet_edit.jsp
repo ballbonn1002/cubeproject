@@ -315,7 +315,7 @@ b {
 
 		var user = '${user.id}';
 		var useradd = '${user.id}';
-		var project = document.getElementById('project_id').value;
+		var projectf = document.getElementById('project_id').value;
 		var valuepid = $('#project_id').val();
 		var projectid = $('#pname [value="'+ valuepid + '"]').data('value');
 		var functionf = document.getElementById('projectF_id').value;
@@ -349,7 +349,7 @@ b {
 					"description" : des,
 					"timestart" : timestart,
 					"endtime" : endtime,
-					"projectf" : project,
+					"projectf" : projectf,
 					"projectid" : projectid,
 					"functionf" : functionf,
 					"functionid" : functionid,
