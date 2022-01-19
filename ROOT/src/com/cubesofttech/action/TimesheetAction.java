@@ -532,7 +532,7 @@ public class TimesheetAction extends ActionSupport {
 				Project projectAdd = new Project();
 				projectAdd.setProject_name(project);
 				projectAdd.setDescription("");
-				projectAdd.setStatus("1");
+				projectAdd.setStatus_project("1");
 				projectAdd.setUser_create(name);
 				projectAdd.setTime_create(DateUtil.getCurrentTime());
 				projectDAO.save(projectAdd);
@@ -936,7 +936,7 @@ public class TimesheetAction extends ActionSupport {
 				Project projectAdd = new Project();
 				projectAdd.setProject_name(project);
 				projectAdd.setDescription("");
-				projectAdd.setStatus("1");
+				projectAdd.setStatus_project("1");
 				projectAdd.setUser_create(userupdate);
 				projectAdd.setTime_create(DateUtil.getCurrentTime());
 				projectDAO.save(projectAdd);

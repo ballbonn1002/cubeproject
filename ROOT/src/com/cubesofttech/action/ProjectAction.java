@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.dao.ProjectDAO;
@@ -43,13 +44,14 @@ public class ProjectAction extends ActionSupport {
 
 	@Autowired
 	private ProjectFunctionDAO projectFunctionDAO;
-	
+
 	@Autowired
 	private TimesheetDAO timesheetDAO;
 
 	private Integer project_id;
 	private String project_name;
 	private String description;
+	private String status_project;
 	private String userCreate;
 	private String projectFunctionList;
 
@@ -57,16 +59,15 @@ public class ProjectAction extends ActionSupport {
 		try {
 
 			projectList = projectDAO.findProjectAll();
-			//List<Map<String, Object>>projectList =  projectDAO.projectlist();
+			// List<Map<String, Object>>projectList = projectDAO.projectlist();
 			request.setAttribute("projectList", projectList);
-			System.out.println(projectList);
-			
-			List<Map<String, Object>>functionlist =  projectDAO.functionlist();
+
+			List<Map<String, Object>> functionlist = projectDAO.functionlist();
 			request.setAttribute("functionlist", functionlist);
-			
-			//List<Timesheet>timesheetlist = timesheetDAO.findAll();
-			//request.setAttribute("timesheetlist", timesheetlist);
-			
+
+			// List<Timesheet>timesheetlist = timesheetDAO.findAll();
+			// request.setAttribute("timesheetlist", timesheetlist);
+
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -84,9 +85,8 @@ public class ProjectAction extends ActionSupport {
 
 			}
 
-			//projectList = projectDAO.findProjectAll();
-			//request.setAttribute("projectList", projectList);
-			
+			// projectList = projectDAO.findProjectAll();
+			// request.setAttribute("projectList", projectList);
 
 			return SUCCESS;
 		} catch (Exception e) {
@@ -173,9 +173,10 @@ public class ProjectAction extends ActionSupport {
 
 			Project project = new Project();
 			project = projectDAO.findById(project_id);
-
+			
 			project.setProject_name(project_name);
 			project.setDescription(description);
+			project.setStatus_project(status_project); 
 			project.setTime_update(DateUtil.getCurrentTime());
 			project.setUser_update(user.getId());
 
@@ -187,9 +188,10 @@ public class ProjectAction extends ActionSupport {
 				projectFunctionDAO.deleteByProject(project_id);
 				for (int i = 0; i < functionArray.size(); i += 3) {
 					ProjectFunction function = projectFunctionDAO.findById(Integer.parseInt(functionArray.get(i)));
-					
-					//List<ProjectFunction> oldFuncs = projectFunctionDAO.findByProject(project_id);
-					
+
+					// List<ProjectFunction> oldFuncs =
+					// projectFunctionDAO.findByProject(project_id);
+
 					if (function != null) {
 						function.setFunction_name(functionArray.get(i + 1));
 						function.setStatus(functionArray.get(i + 2));
@@ -208,9 +210,25 @@ public class ProjectAction extends ActionSupport {
 					}
 				}
 
-				
 			}
 
+			return SUCCESS;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR;
+		}
+	}
+	
+	public String changestatusProject() {
+		try {
+			
+			User user = (User) request.getSession().getAttribute(ONLINEUSER);
+
+			Project project = new Project();
+			project = projectDAO.findById(project_id);
+			project.setStatus_project(status_project);
+			projectDAO.save(project);
+			
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -240,6 +258,14 @@ public class ProjectAction extends ActionSupport {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getStatus_project() {
+		return status_project;
+	}
+
+	public void setStatus_project(String status_project) {
+		this.status_project = status_project;
 	}
 
 	public String getProjectFunctionList() {

@@ -106,14 +106,28 @@
 							<td style="vertical-align: middle;"class="text-center">${pj.user_create}</td>
 							<td style="vertical-align: middle;"class="text-center"><fmt:formatDate
 									value="${pj.time_create}" pattern="dd-MM-yyyy HH:mm" /></td>
-									
+							
+							<c:if test="${pj.status.toString() == '1'}">	
 							<td style="text-align: center;vertical-align: middle;">
 								<div class="md-checkbox-list"><label 
 									class="mt-checkbox mt-checkbox-outline"><input 
-									type="checkbox" class="md-check"
-									onclick="ChangeStatusProfile(${pj.project_id})"><span class=""></span></label>
+									type="checkbox" id="status" class="md-check" value="${pj.status}"
+									onclick="ChangeStatusProject(${pj.project_id},${pj.status})" checked>
+									<span class="check"></span></label>
 								</div>
 							</td>
+							</c:if>
+							
+							<c:if test="${pj.status.toString() == '0'}">
+							<td style="text-align: center;vertical-align: middle;">
+								<div class="md-checkbox-list"><label 
+									class="mt-checkbox mt-checkbox-outline"><input 
+									type="checkbox" id="status" class="md-check" value="${pj.status}"
+									onclick="ChangeStatusProject(${pj.project_id},${pj.status})">
+									<span class="check"></span></label>
+								</div>
+							</td>
+							</c:if>
 							
 							<td style="text-align: center;vertical-align: middle;"><a
 								class="btn btn-outline btn-circle btn-sm blue" title="Edit"
@@ -210,10 +224,38 @@
 // 					location.href='editFAQ?faq_id=' + id;
 // 				}
 // 		 });
-	}
-	function ChangeStatusProfile(id){
-		console.log(id);
+	};
+	
+  	function ChangeStatusProject(id, status){
+		swal({
+			title: "Are you sure?",
+			text: "Change status",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonClass: 'btn-danger',
+			confirmButtonText: 'OK'
+		}, function(inputValue) {
+			if(inputValue == false) {
+				return false;
+			}
+			if(inputValue == true) {
+				if(status == '1'){status = '0';}
+				else if(status == '0'){status = '1';}
+				$.ajax({
+					url : "changestatusProject.action",
+					type : "POST",
+					data : {
+						"project_id" : id,
+						"status_project" : status,
+					},
+					success : function(response) {
+						window.location.reload(true);
+					}
+				});
+				return false;
+			}
+		});
 		
-	}
+	};  
 	
 </script>

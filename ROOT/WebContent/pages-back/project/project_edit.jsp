@@ -32,10 +32,13 @@
 				href="javascript:;" data-original-title="" title=""> </a>
 		</div>
 	</div>
+
 	<div class="portlet-body">
+
 		<!-- Form Action -->
 		<form name="formProject" id="formProject" method="POST"
 			class="horizontal-form">
+
 			<div class="form-body">
 				<input name="project_id" type="hidden" value="${project.project_id}">
 				<div class="row">
@@ -87,6 +90,7 @@
 									</c:forEach>
 								</optgroup>
 							</select>
+
 						</div>
 					</div>
 				</div>
@@ -94,27 +98,29 @@
 					<label class="control-label">Description</label> <input type="text"
 						name="description" class="form-control"
 						placeholder="Enter Description" value="${project.description}">
-				</div>
-				<div class="row">
-					<div class="col-md-5">
-						<label class="control-label">Status</label><select
-							name="status" class="form-control"
-							data-placeholder="Choose status" tabindex="1">
-							<option value="1">ACTIVE</option>
-							<option value="0">INACTIVE</option>
-						</select>
+					<div class="row">
+						<div class="col-md-5" style="margin-top:8px;">
+							<label class="control-label">Status</label><select
+								name="status_project" class="col-lg-3 col-md-3 form-control"
+								data-placeholder="Choose status" tabindex="1" value="${project.status_project}">
+								<option value="1" 
+									<c:if test="${project.status_project == '1'}"> selected </c:if>>ACTIVE</option>
+								<option value="0"
+									<c:if test="${project.status_project == '0'}"> selected </c:if>>INACTIVE</option>
+							</select>
+						</div>
 					</div>
 				</div>
 			</div>
 		</form>
 	</div>
 </div>
-<div class="portlet light bordered">
-	<div class="portlet-title">
-		<div class="caption">
-			<label class="caption-subject sbold">Function List</label>
+<div class="portlet light bordered">		
+		<div class="portlet-title">
+			<div class="caption">
+				<label class="caption-subject sbold">Function List</label>
+			</div>
 		</div>
-	</div>
 	<div class="portlet-body">
 		<form class="repeater">
 			<div class="form-group mt-repeater">
@@ -123,10 +129,10 @@
 						<div class="row mt-repeater-row">
 							<div class="col-md-5 col-sm-5">
 								<label class="control-label function-name">Function name</label>
-									
+								
 								<input type="hidden" name="function_id" class="form-control"
 									placeholder="Enter Function" value="">
-									
+								
 								<input type="text" name="function_name" class="form-control"
 									placeholder="Enter Function" value="">
 							</div>
@@ -153,20 +159,21 @@
 					class="btn green-meadow mt-repeater-add"> <i class="fa fa-plus"></i>
 					Add More
 				</a>
-	
+
 			</div>
 		</form>
-	</div>
-	<!-- End of portlet-body -->
-	<div class="form-actions">
-		<div class="row ">
-			<div class="col-md-12 text-center">
-				<button class="btn blue-soft" style="width: 90px" onclick="update()">
-					<i class="fa fa-save"></i> Save
-				</button>
-				<button type="reset" class="btn red-intense"  style="width: 90px" onclick="cancel()">
-					<i class="fa fa-close"></i> Cancel
-				</button>
+	
+		<!-- End of portlet-body -->
+		<div class="form-actions">
+			<div class="row ">
+				<div class="col-md-12 text-center">
+					<button class="btn blue-soft" style="width: 90px" onclick="update()">
+						<i class="fa fa-save"></i> Save
+					</button>
+					<button type="reset" class="btn red-intense"  style="width: 90px" onclick="cancel()">
+						<i class="fa fa-close"></i> Cancel
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -180,15 +187,15 @@ $(document).ready(function () {
 	
 	var f_list = [];
 	
-  f_list = JSON.parse('${projectFunctionList}');
+    f_list = JSON.parse('${projectFunctionList}');
 	
-  var $repeater = $(".repeater").repeater(
-  	{
-  		defaultValues: {
-              'status': '1',
-              'function_id' : 0
-          },
-          show : function() {
+    var $repeater = $(".repeater").repeater(
+    	{
+    		defaultValues: {
+                'status': '1',
+                'function_id' : 0
+            },
+            show : function() {
 				$(this).slideDown();
 			},
 			/* hide : function(deleteElement) {
@@ -196,11 +203,11 @@ $(document).ready(function () {
 						.repeaterVal();
 					$(this).slideUp(deleteElement);
 			} */
-  	}
-  );
-  if (f_list != null) {
-  	$repeater.setList(f_list);
-  }
+    	}
+    );
+    if (f_list != null) {
+    	$repeater.setList(f_list);
+    }
 });
 
 function deleteFunction(id) {
@@ -214,6 +221,10 @@ function deleteFunction(id) {
 		}
 	}); 
 }
+
+function cancel(){
+	location.href = "javascript:history.back()";
+};
 
 function update() {
 	var formData = new FormData($("#formProject")[0]);

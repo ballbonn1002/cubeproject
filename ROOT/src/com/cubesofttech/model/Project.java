@@ -27,7 +27,7 @@ public class Project implements Serializable {
 	private String description;
 	
 	@Column(name = "status")
-	private String status;
+	private String status_project;
 
 	@Column(name = "user_create")
 	private String user_create;
@@ -42,12 +42,13 @@ public class Project implements Serializable {
 	private Timestamp time_update;
 	
 
-	public Project(Integer project_id, String project_name, String description, String user_create,
+	public Project(Integer project_id, String project_name, String description, String status_project, String user_create,
 			Timestamp time_create, String user_update, Timestamp time_update) {
 		super();
 		this.project_id = project_id;
 		this.project_name = project_name;
 		this.description = description;
+		this.status_project = status_project;
 		this.user_create = user_create;
 		this.time_create = time_create;
 		this.user_update = user_update;
@@ -82,12 +83,12 @@ public class Project implements Serializable {
 		this.description = description;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getStatus_project() {
+		return status_project;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setStatus_project(String status_project) {
+		this.status_project = status_project;
 	}
 
 	public String getUser_create() {

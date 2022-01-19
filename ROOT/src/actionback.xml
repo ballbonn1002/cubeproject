@@ -2937,6 +2937,13 @@
 			<result name="success" type="tiles">project.list</result>
 			<result name="error">/index.jsp</result>
 		</action>
+		
+		<action name="changestatusProject"
+			class="com.cubesofttech.action.ProjectAction" method="changestatusProject">
+			<result name="success" type="tiles">project.list</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
 		<!-- End of Project -->
 
 		<!-- ProjectFunction -->
