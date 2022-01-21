@@ -557,7 +557,7 @@ public class TimesheetAction extends ActionSupport {
 				//Project projectOld = projectDAO.findByName(project);
 				timesheet.setProject_id(projectid);
 				
-				if(!projectFunctionDAO.checkExistByName(function)) {
+				if(!projectFunctionDAO.checkExistByName(function) || projectFunctionDAO.findByName(function).getProject_id() != projectid) {
 					int projectFunctionIdAdd = 0;
 					ProjectFunction projectFunctionAdd = new ProjectFunction();
 					projectFunctionAdd.setFunction_name(function);
@@ -958,10 +958,26 @@ public class TimesheetAction extends ActionSupport {
 				}
 			} else {
 				int projectid = Integer.parseInt(request.getParameter("projectid"));
-				int functionid = Integer.parseInt(request.getParameter("functionid"));
-				//Project projectOld = projectDAO.findByName(project);
 				timesheet.setProject_id(projectid);
-				timesheet.setFunction_id(functionid);
+				
+				if(!projectFunctionDAO.checkExistByName(function) || projectFunctionDAO.findByName(function).getProject_id() != projectid) {
+					int projectFunctionIdAdd = 0;
+					ProjectFunction projectFunctionAdd = new ProjectFunction();
+					projectFunctionAdd.setFunction_name(function);
+					projectFunctionAdd.setStatus("1");
+					projectFunctionAdd.setProject_id(projectid);
+					projectFunctionAdd.setUser_create(name);
+					projectFunctionAdd.setTime_create(DateUtil.getCurrentTime());
+					projectFunctionDAO.save(projectFunctionAdd);
+					
+					projectFunctionIdAdd = projectFunctionDAO.findByName(projectFunctionAdd.getFunction_name()).getFunction_id();
+					timesheet.setFunction_id(projectFunctionIdAdd);
+				}
+				else {
+					int functionid = Integer.parseInt(request.getParameter("functionid"));
+					timesheet.setFunction_id(functionid);
+				}
+				//Project projectOld = projectDAO.findByName(project);
 			}
 			//timesheet.setProject_id(project);
 			//timesheet.setFunction_id(function);

@@ -119,7 +119,7 @@ public class ProjectFunctionDAOImpl implements ProjectFunctionDAO {
 	public ProjectFunction findByName(String functionName) throws Exception {
 		ProjectFunction projectFunction = null;
 		projectFunction = (ProjectFunction) sessionFactory.getCurrentSession()
-				.createQuery("from ProjectFunction where function_name = :functionName").setString("functionName", functionName)
+				.createQuery("from ProjectFunction where function_name = :functionName").setString("functionName", functionName).setMaxResults(1)
 				.uniqueResult();
 		return projectFunction;
 	}
