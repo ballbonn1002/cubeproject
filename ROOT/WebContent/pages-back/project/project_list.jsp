@@ -95,12 +95,12 @@
 						<tr>
 							<td class="text-center">${Count.count}</td>
 							<td class="text-left">${pj.project_name}
-								<c:if test="${pj.description != null}"> :	${pj.description}</c:if>
+								<c:if test="${pj.description != null}"> : ${pj.description} </c:if>
+
 								<c:forEach var="ft" items="${functionlist}">
 									<c:if test="${(pj.project_id == ft.project_id) && ft.function_name != null }">
 										<div style="margin-left:15px;"><small><i class="fa fa-angle-right"> ${ft.function_name}</i></small></div>
 									</c:if>
-									
 								</c:forEach>
 							</td>
 							<td style="vertical-align: middle;"class="text-center">${pj.user_create}</td>
@@ -177,36 +177,51 @@
 </form>
 <script>
 
-	function deleteProject(id){
-		console.log(id);
-//		var timesheetlist = "${timesheetlist}";
-//		console.log(timesheetlist);
-		swal({
-		      title: "Are you sure!",
-		      text: "You will be deleting this project!",
-		      type: "warning",
-		      showCancelButton: true,
-		      confirmButtonClass: 'btn-danger',
-		      confirmButtonText: 'OK'
-		    }, function (inputValue) {
-		        if (inputValue == false){
-		        	//console.log("canceled");
-		        	return false;
-		        	}
-		        if (inputValue == true) {
-		        	 $.ajax({
-		 				    url : "deleteProject.action",
-		 					data : "project_id="+ id,
-		 					type : "POST",
-		 					success : function(response) {
-		 						window.location.reload(true);
-		 					}
-		 			 });
-		          return false
-		        }
-		      });
-
-	}
+function deleteProject(id){
+	$.ajax({
+		url : "findTimesheetById.action",
+		method : "POST",
+		data : "project_id="+ id,
+		success : function(data) {
+			var obj = JSON.parse(data);
+ 			if(id == obj.project_id[0]){
+ 				console.log("match");
+ 				swal({
+ 					title: "Can't delete this project!",
+ 					text: "This project is been used in Timesheet.",
+ 					type: "error",
+ 					confirmButtonClass: 'btn-danger',
+ 					   confirmButtonText: 'OK'
+ 				});
+ 			} else {
+ 				console.log("not");
+ 				swal({
+ 			      title: "Are you sure!",
+ 			      text: "You will be deleting this project!",
+ 			      type: "warning",
+ 			      showCancelButton: true,
+ 			      confirmButtonClass: 'btn-danger',
+ 			      confirmButtonText: 'OK'
+ 			    }, function (inputValue) {
+ 			        if (inputValue == false){
+ 			        	return false;
+ 			        }
+ 			        if (inputValue == true) {
+ 			        	 $.ajax({
+ 			 				    url : "deleteProject.action",
+ 			 					data : "project_id="+ id,
+ 			 					type : "POST",
+ 			 					success : function(response) {
+ 			 						window.location.reload(true);
+ 			 					}
+ 			 			 });
+ 			          return false
+ 			        }
+ 			      }); 	
+ 			}
+		} 
+	});
+}
 	
 	function addProject() {
 
@@ -228,8 +243,7 @@
 	
   	function ChangeStatusProject(id, status){
 		swal({
-			title: "Are you sure?",
-			text: "Change status",
+			title: "Would you like to change the project status?",
 			type: 'warning',
 			showCancelButton: true,
 			confirmButtonClass: 'btn-danger',

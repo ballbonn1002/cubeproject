@@ -1,5 +1,6 @@
 package com.cubesofttech.action;
 
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.jfree.util.Log;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.dao.ProjectDAO;
@@ -59,14 +62,10 @@ public class ProjectAction extends ActionSupport {
 		try {
 
 			projectList = projectDAO.findProjectAll();
-			// List<Map<String, Object>>projectList = projectDAO.projectlist();
 			request.setAttribute("projectList", projectList);
 
 			List<Map<String, Object>> functionlist = projectDAO.functionlist();
 			request.setAttribute("functionlist", functionlist);
-
-			// List<Timesheet>timesheetlist = timesheetDAO.findAll();
-			// request.setAttribute("timesheetlist", timesheetlist);
 
 			return SUCCESS;
 		} catch (Exception e) {
@@ -82,11 +81,7 @@ public class ProjectAction extends ActionSupport {
 			if (project != null) {
 				projectDAO.delete(project);
 				projectFunctionDAO.deleteByProject(project_id);
-
 			}
-
-			// projectList = projectDAO.findProjectAll();
-			// request.setAttribute("projectList", projectList);
 
 			return SUCCESS;
 		} catch (Exception e) {
@@ -118,10 +113,18 @@ public class ProjectAction extends ActionSupport {
 	public String addProject() {
 		try {
 			User user = (User) request.getSession().getAttribute(ONLINEUSER);
-
+			String description = request.getParameter("description");
+			
 			Project project = new Project();
 			project.setProject_name(project_name);
-			project.setDescription(description);
+			
+			if(description == " ") {
+				project.setDescription(null);
+			} else {
+				project.setDescription(description);
+			}
+			
+			project.setStatus_project("1");
 			project.setUser_create(user.getId());
 			project.setTime_create(DateUtil.getCurrentTime());
 
@@ -221,8 +224,6 @@ public class ProjectAction extends ActionSupport {
 	
 	public String changestatusProject() {
 		try {
-			
-			User user = (User) request.getSession().getAttribute(ONLINEUSER);
 
 			Project project = new Project();
 			project = projectDAO.findById(project_id);
@@ -233,6 +234,34 @@ public class ProjectAction extends ActionSupport {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ERROR;
+		}
+	}
+	
+	public void findTimesheetById() {
+		try {
+			List<Timesheet> timesheet = timesheetDAO.findByProjectId(project_id);
+			request.setAttribute("timesheet", timesheet);
+			
+			JSONArray arrayObj1 = new JSONArray();
+			JSONArray arrayObj2 = new JSONArray();
+			
+			for(int i = 0; i < timesheet.size(); i++) {
+				arrayObj1.put(timesheet.get(i).getId());
+				arrayObj2.put(timesheet.get(i).getProject_id());
+			}
+			
+			PrintWriter out = response.getWriter();
+			JSONObject json = new JSONObject();
+			
+			json.put("timesheet_id", arrayObj1);
+			json.put("project_id", arrayObj2);
+			
+			out.print(json);
+			out.flush();
+			out.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

@@ -51,5 +51,7 @@ public interface TimesheetDAO {
 	public List<Map<String, Object>> wherefunction(String name);
 	
 	public List<Map<String, Object>> searchbymonth(String userid, String month, String year) throws Exception;
+
+	List<Timesheet> findByProjectId(Integer project_id) throws Exception;
 }
    
