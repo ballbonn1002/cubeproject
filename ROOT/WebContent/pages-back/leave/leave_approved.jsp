@@ -1149,8 +1149,12 @@ function myFunction(){
         	"leave_id" : leaveId
          }, 
          
-	 });
-	 location.reload();
+	 })
+	 	.done(function() {
+	 		location.reload();
+	 	});
+	 	
+	 
 	}
 		
 			    
