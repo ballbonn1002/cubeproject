@@ -146,7 +146,10 @@
 									<div class="number">
 										<c:choose>
 											<c:when test="${leave_1 != null}">
-												<span data-counter="counterup" data-value="">${leave_1}/${quotaThisYear}</span>
+												<span data-counter="counterup" data-value="">
+													<fmt:formatNumber type="number" 
+													pattern="###.###" value="${leave_1}"/>/${quotaThisYear}
+												</span>
 												<div class="desc">${type_1}</div>
 											</c:when>
 											<c:when test="${leave_1 == null}">

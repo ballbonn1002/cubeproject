@@ -336,7 +336,7 @@
 												<c:choose>
 													<c:when test="${LeavenumT6 != null}">
 														<span id="leaveType6" data-counter="counterup"
-															data-value="sad">	<fmt:formatNumber pattern="#.#" value="${LeavenumT6}">	</fmt:formatNumber> </span>
+															data-value="sad">	<fmt:formatNumber type="number" pattern="#.###" value="${LeavenumT6}">	</fmt:formatNumber> </span>
 													<span>/ ${LastYear}</span>
 														<div class="desc">${type_6}</div>
 													</c:when>

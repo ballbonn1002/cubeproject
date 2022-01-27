@@ -159,7 +159,7 @@
 	<definition name="leave_list" extends="baseLayout">
 		<put-attribute name="title" value="Leave list" />
 		<put-attribute name="body"
-			value="/pages-back/leave/leave_list.jsp" />
+			value="/pages-back/leave/myleave_list.jsp" />
 	</definition>
 	<definition name="leave_approved" extends="baseLayout">
 		<put-attribute name="title" value="Leave approved" />

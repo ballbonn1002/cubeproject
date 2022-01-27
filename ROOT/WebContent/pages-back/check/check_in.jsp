@@ -1074,6 +1074,8 @@ function search() {
 									swal("Here's a message!",
 											"กรุณาระบุเหตุผลการลงเวลาย้อนหลังมากกว่า 10 ตัวอักษร") //check-out ย้อนหลัง 
 									document.getElementById("checktime").type = "button";
+									$("#detail").show();
+									$("#labeldetail").show();
 								} else {
 									document.getElementById("checktime").type = "submit";
 								}// เหลือ (กรณี Check-out ไม่มี Chec-in , Status = N/A )
