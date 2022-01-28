@@ -582,17 +582,17 @@ body {
 	</div>
 	<div class="row">
 		<div class="portlet-body">
-			<form action="searchmonth-list" method="post">
-				<div class="col-md-4" style="float:right;margin-bottom:19px;display:flex;justify-content:center;">
-				<div class="input-group input-medium" data-date-format="MM yyyy" style="">
-					<input class="form-control" id="searchmonth" name="searchmonth">
+			<form action="searchmonth-list" method="post" id="searchmonth_form">
+				<div class="col-md-3" style="float:right;margin-bottom:19px;display:flex;justify-content:center;">
+				<div class="input-group input-medium">
+					<input class="form-control" id="searchmonth" name="searchmonth" 
+						style="text-align:center;">
 					<span class="input-group-btn">
-						<!-- <button class="btn default" type="button" id="searchmonth_btn" 
-								style="border:none;background-color:#ffffff;margin:5px;">
-							<i class="fa fa-calendar-o"></i></button> -->
-						<button type="submit" class="btn btn-sm blue-steel " id="search" onclick="search()" style="margin-left:5px;">
+						<button class="btn default" type="button" id="searchmonth_btn">
+							<i class="fa fa-calendar-o"></i></button>
+						<!-- <button type="submit" class="btn btn-sm blue-steel " id="search" onclick="search()" style="margin-left:5px;">
 							<i class="fa fa-search"></i>&nbsp;Search
-						</button> 
+						</button> --> 
 					</span>
 				</div>
 				</div>
@@ -849,7 +849,8 @@ $(document).ready(function() {
 			orientation: 'bottom right'
 	}; 
 	
- 	$("#searchmonth").datepicker(optSimple); 
+ 	$("#searchmonth").datepicker(optSimple);
+ 	$("#searchmonth_btn").datepicker(optSimple);
 
   	var x = sessionStorage.getItem("selectmonth");
 	if (x != null) {
@@ -860,24 +861,28 @@ $(document).ready(function() {
 	
 	if (x == null) {
 		$("#searchmonth").datepicker('setDate', monthnow);
-		console.log($("#searchmonth").val());
+		$("#searchmonth_btn").datepicker('setDate', monthnow); 
 	}
+	
+ 	$("#searchmonth_btn").on('changeDate', function(selected){
+		dateselect = new Date(selected.date.valueOf());
+		dateselect.setDate(dateselect.getDate(new Date(selected.date.valueOf())));
+		$("#searchmonth").datepicker('setDate', dateselect);
+	}); 
 	
 	$("#searchmonth").change(function() {
 		var x = $(this).datepicker( 'getDate');
 		select = $("#searchmonth").val();
-		console.log('select month: ' + select);
 		selectmonth = formatDate(select); 
-		console.log(selectmonth);
-		sessionStorage.setItem("selectmonth", selectmonth);
+		$("#searchmonth_form").submit();
 
 	});
 });
 
-function search() {
+/* function search() {
 	var selectmonth = $("#searchmonth").val();
 	sessionStorage.setItem("selectmonth", selectmonth);
-}
+} */
 
 </script>
 <style>
