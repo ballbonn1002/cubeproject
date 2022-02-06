@@ -251,7 +251,7 @@ body {
 																&& (noout == false)) {
 															$("#messagealert")
 																	.text(
-																			"ไม่มีข้อมูล Check-in");
+																			"	ข้อมูล Check-in");
 														}
 														if (noin == false
 																&& noout == true) {
@@ -896,6 +896,7 @@ $(document).ready(function() {
 		document.location = "check_list?userId=${onlineUser.id}";
 	}
 	function timechange() {
+		
 		var mytime = $("#ourtime").val();//เวลาที่เลือก
 		var timeNow = "${time}".trim();//เวลาปัจจุบัน
 		var timeNowlength = "${time}".trim().length;//ความยาวเวลาปัจจุบัน
@@ -964,19 +965,23 @@ $(document).ready(function() {
 	$("#checktime")
 			.click(
 					function() {
+					
+					
 						var timecheckin = "${timecheckin}".trim();//เวลาเช็คอินล่าสุด
 						var timecheckinlength = "${timecheckin}".trim().length;//ความยาวเวลาเช็คอินล่าสุด
 						var datecheckin = "${datecheckin}".trim();//วันที่เช็คอินล่าสุด
 						var fulldate = "${fulldate}".trim();//วันที่ปัจจุบัน
 						var timeNow = "${time}".trim();//เวลาปัจจุบัน
 						var timeNowlength = "${time}".trim().length;//ความยาวเวลาปัจจุบัน
-						var mytime = $("#ourtime").val();//เวลาที่เลือก
-						var mytimelength = $("#ourtime").val().length;//ความยาวเวลาที่เลือก
+						var mytime = $("#ourtime_label").val();//เวลาที่เลือก
+						var mytimelength = $("#ourtime_label").val().length;//ความยาวเวลาที่เลือก
 						var Userdate = $("#mydate").val();//วันที่เลือก
-						var timelength = $("#ourtime").val().length;//เช็ค length เวลา
+						var timelength = $("#ourtime_label").val().length;//เช็ค length เวลา
 						var mydetail = $("#detail").val().length;
 						;//เช็ต ค่าใน detail 
+						
 						var checkourtime = $("#ourtime").val();//เช็ต ค่าใน detail 
+						
 						var radio1 = $('input[id=checkbox1_1]:checked').val();
 						var radio2 = $('input[id=checkbox1_2]:checked').val();
 						//////////////////////// คำนวนเวลา ///////////////////
@@ -989,17 +994,17 @@ $(document).ready(function() {
 						var minfull = null; //นาทีที่เลือก-นาทีปัจจุบัน
 						var fulltimecheck = null; //ชั่วโมง + นาที
 						var fullchecktimenow = null;
-						if (mytimelength == '4') { //เวลาที่เลือกก่อนเที่ยง = 4 
+						if (mytimelength == 4) { //เวลาที่เลือกก่อนเที่ยง = 4 
 							hourmytime = mytime.substring(0, 1);
 							minmytime = mytime.substring(2, 4);
-						} else if (mytimelength == '5') {//เวลาที่เลือกหลังเที่ยง = 5
+						} else if (mytimelength == 5) {//เวลาที่เลือกหลังเที่ยง = 5
 							hourmytime = mytime.substring(0, 2);
 							minmytime = mytime.substring(3, 5);
 						}
-						if (timeNowlength == '4') { // เวลาปัจจุบันก่อนเที่ยง =4
+						if (timeNowlength == 4) { // เวลาปัจจุบันก่อนเที่ยง =4
 							hourtimeNow = timeNow.substring(0, 1);
 							mintimeNow = timeNow.substring(2, 4);
-						} else if (timeNowlength == '5') { //เวลาปัจจุบันหลังเที่ยง  =5
+						} else if (timeNowlength == 5) { //เวลาปัจจุบันหลังเที่ยง  =5
 							hourtimeNow = timeNow.substring(0, 2);
 							mintimeNow = timeNow.substring(3, 5);
 						}
@@ -1013,10 +1018,10 @@ $(document).ready(function() {
 						var mintimelast = null;
 						var calcheckin = null; // คำนวณเวลาแcheck-in ล่าสุด
 						var calcheckout = null; // คำนวณเวลา check-out 
-						if (timecheckinlength == '4') { // เวลา Check-in ล่าสุด =4
+						if (timecheckinlength == 4) { // เวลา Check-in ล่าสุด =4
 							hourtimelast = timecheckin.substring(0, 1);
 							mintimelast = timecheckin.substring(2, 4);
-						} else if (timecheckinlength == '5') { //เวลา check-inล่าสุด  = 5
+						} else if (timecheckinlength == 5) { //เวลา check-inล่าสุด  = 5
 							hourtimelast = timecheckin.substring(0, 2);
 							mintimelast = timecheckin.substring(3, 5);
 						}
@@ -1045,6 +1050,7 @@ $(document).ready(function() {
 
 						if (radio1 > 0) {
 
+						
 							if (fulltimecheck > 0 || Userdate > fulldate) { // เวลาที่เลือก > เวลาปัจจุบัน หรือ วันที่เลือก > วันปัจจุบัน 
 								swal("Here's a message!",
 										"Can't Check-In In Future.") // (กรณี check-in ล่วงหน้า)
@@ -1081,6 +1087,7 @@ $(document).ready(function() {
 									document.getElementById("checktime").type = "button";
 									$("#detail").show();
 									$("#labeldetail").show();
+									 
 								} else {
 									document.getElementById("checktime").type = "submit";
 								}// เหลือ (กรณี Check-out ไม่มี Chec-in , Status = N/A )
@@ -1093,7 +1100,7 @@ $(document).ready(function() {
 							} else if (checkfulldate == 1) { // (กรณีCheck-out เลือกเวลาย้อนหลังเกิน24ชั่วโมงจากเวลาปัจจุบัน)
 								if (fulltimecheck < 0) { //เวลาที่เลือกเทียบเวลาปัจจุบัน   (<0 คือเลือกเวลาย้อนหลังเกิน 24 ชั่วโมง)
 									swal("Here's a message!",
-											"Can't Check-Out Greater than 24 Hr.")
+											"Can't Check-Out more than 24 Hr.")
 									toast_checkout();
 									document.getElementById("checktime").type = "button";
 								} 
@@ -1107,7 +1114,7 @@ $(document).ready(function() {
 
 							} else if (checkfulldate > 1) { //(กรณี Check-out ย้อนหลังเกิน 1 วัน) 
 								swal("Here's a message!",
-										"Can't Check-out In Last.") //ย้อนหลังเกิน  1 วัน
+										"Can't late check-out more than 24hrs.") //ย้อนหลังเกิน  1 วัน
 								toast_checkout();
 								document.getElementById("checktime").type = "button";
 							} 

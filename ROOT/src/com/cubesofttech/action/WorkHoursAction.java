@@ -1448,16 +1448,16 @@ public class WorkHoursAction extends ActionSupport {
 
 			for (Map<String, Object> map : checktimehours) {
 				for (Map.Entry<String, Object> entry : map.entrySet()) {
-					// BigInteger x = (BigInteger) entry.getValue();
-					Integer x = (Integer) entry.getValue();
+					BigInteger x = (BigInteger) entry.getValue();
+					// Integer x = (Integer) entry.getValue();
 					inhour = x.intValue();
 				}
 			}
 
 			for (Map<String, Object> maps : checktimemin) {
 				for (Map.Entry<String, Object> entry : maps.entrySet()) {
-					// BigInteger a = (BigInteger) entry.getValue();
-					Integer a = (Integer) entry.getValue();
+					BigInteger a = (BigInteger) entry.getValue();
+					// Integer a = (Integer) entry.getValue();
 					inmin = a.intValue();
 
 					fullmin = (outmins - inmin);
@@ -1514,8 +1514,8 @@ public class WorkHoursAction extends ActionSupport {
 			int checkoutnotcheckout = ((outhours * 60) + outmins);
 			for (Map<String, Object> maps : check_in) {
 				for (Map.Entry<String, Object> entry : maps.entrySet()) {
-					// BigInteger x = (BigInteger) entry.getValue();
-					Integer x = (Integer) entry.getValue();
+					 BigInteger x = (BigInteger) entry.getValue();
+					//Integer x = (Integer) entry.getValue();
 					datecheck_in = Integer.valueOf(x.toString());
 				}
 			}
