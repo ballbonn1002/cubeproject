@@ -1,4 +1,6 @@
 
+PRODUCTION
+
 
 CREATE TABLE `article` (
   `article_id` int(11) NOT NULL,
@@ -21,13 +23,13 @@ CREATE TABLE `article` (
 
 CREATE TABLE `article_image` (
   `atc_img_id` int(11) NOT NULL,
-  `atc_user_id` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `atc_img_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `atc_img_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `atc_img_size` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `atc_img_path` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `atc_time_upload` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `atc_user_id` varchar(32) DEFAULT NULL,
+  `atc_img_name` varchar(255) DEFAULT NULL,
+  `atc_img_type` varchar(255) DEFAULT NULL,
+  `atc_img_size` varchar(255) DEFAULT NULL,
+  `atc_img_path` varchar(1024) DEFAULT NULL,
+  `atc_time_upload` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -104,7 +106,7 @@ CREATE TABLE `borrow` (
   `contact_addr` varchar(1024) DEFAULT NULL,
   `status` varchar(1) DEFAULT NULL,
   `sum` int(11) DEFAULT NULL,
-  `time_create` timestamp NULL DEFAULT current_timestamp(),
+  `time_create` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `user_create` varchar(32) DEFAULT NULL,
   `time_update` timestamp NULL DEFAULT NULL,
   `user_update` varchar(32) DEFAULT NULL,
@@ -123,16 +125,16 @@ CREATE TABLE `chat_message` (
   `Message_id` int(255) NOT NULL,
   `Sender_id` varchar(32) NOT NULL,
   `Reciever_id` varchar(32) NOT NULL,
-  `Date_time_Message` timestamp NOT NULL DEFAULT current_timestamp(),
+  `Date_time_Message` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Message_text` varchar(1024) DEFAULT NULL,
   `Sender_read_status` char(1) DEFAULT NULL,
   `Reciever_read_status` char(1) DEFAULT NULL,
   `img_path` varchar(1024) DEFAULT NULL,
   `img_message_status` char(1) DEFAULT NULL,
   `like_status` char(1) DEFAULT NULL,
-  `file_name` varchar(1024) DEFAULT NULL,
   `file_path` varchar(1024) DEFAULT NULL,
   `file_message_status` char(1) DEFAULT NULL,
+  `file_name` varchar(1024) DEFAULT NULL,
   `sticker_path` varchar(1024) DEFAULT NULL,
   `sticker_status` char(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -159,7 +161,7 @@ CREATE TABLE `chat_user_setting` (
   `chat_user_setting_id` int(255) NOT NULL,
   `user_id` varchar(1024) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `chat_load_limit` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -221,7 +223,10 @@ CREATE TABLE `equipment` (
   `user_create` varchar(32) DEFAULT NULL,
   `time_update` timestamp NULL DEFAULT NULL,
   `user_update` varchar(32) DEFAULT NULL,
-  `type` varchar(3) DEFAULT NULL
+  `type` varchar(3) DEFAULT NULL,
+  `wifiaddress` varchar(128) DEFAULT NULL,
+  `lanaddress` varchar(128) DEFAULT NULL,
+  `display` varchar(128) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -310,7 +315,7 @@ CREATE TABLE `expense_group` (
 --
 
 CREATE TABLE `exp_travel_type` (
-  `exp_travel_type_id` bigint(20) NOT NULL,
+  `exp_travel_type_id` bigint(1) NOT NULL,
   `name` varchar(32) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `user_create` varchar(32) DEFAULT NULL,
@@ -343,14 +348,14 @@ CREATE TABLE `exp_type` (
 
 CREATE TABLE `faq` (
   `faq_id` int(11) NOT NULL,
-  `topic` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `details` text COLLATE utf8_unicode_ci DEFAULT NULL,
-  `author` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `time_posted` timestamp NULL DEFAULT current_timestamp(),
+  `topic` varchar(100) DEFAULT NULL,
+  `details` text,
+  `author` varchar(32) DEFAULT NULL,
+  `time_posted` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `faq_cat_id` int(11) DEFAULT NULL,
-  `time_updated_post` timestamp NULL DEFAULT current_timestamp(),
+  `time_updated_post` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `faq_status_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -360,10 +365,10 @@ CREATE TABLE `faq` (
 
 CREATE TABLE `faq_category` (
   `faq_cat_id` int(11) NOT NULL,
-  `faq_cat_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `faq_cat_user_id` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `faq_cat_add_time` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `faq_cat_name` varchar(50) DEFAULT NULL,
+  `faq_cat_user_id` varchar(32) DEFAULT NULL,
+  `faq_cat_add_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -373,13 +378,13 @@ CREATE TABLE `faq_category` (
 
 CREATE TABLE `faq_image` (
   `faq_img_id` int(11) NOT NULL,
-  `faq_user_id` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `faq_img_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `faq_img_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `faq_img_size` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `faq_img_path` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `faq_time_upload` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `faq_user_id` varchar(32) DEFAULT NULL,
+  `faq_img_name` varchar(255) DEFAULT NULL,
+  `faq_img_type` varchar(255) DEFAULT NULL,
+  `faq_img_size` varchar(255) DEFAULT NULL,
+  `faq_img_path` varchar(1024) DEFAULT NULL,
+  `faq_time_upload` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -389,8 +394,8 @@ CREATE TABLE `faq_image` (
 
 CREATE TABLE `faq_status` (
   `faq_status_id` int(11) NOT NULL,
-  `faq_status_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `faq_status_name` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -421,7 +426,7 @@ CREATE TABLE `feednews` (
   `feed_id` int(255) NOT NULL,
   `details` varchar(1024) DEFAULT NULL,
   `user_id` varchar(100) NOT NULL,
-  `time_posted` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `time_posted` timestamp NULL DEFAULT NULL,
   `time_updated_post` timestamp NULL DEFAULT NULL,
   `path_url` varchar(1024) DEFAULT NULL,
   `status_post` int(11) DEFAULT NULL,
@@ -452,14 +457,14 @@ CREATE TABLE `feednewslike` (
 CREATE TABLE `feed_post_background` (
   `feed_post_background_id` int(255) NOT NULL,
   `background_img_path` varchar(1024) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `time_create` timestamp NOT NULL DEFAULT current_timestamp(),
+  `time_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `time_update` timestamp NULL DEFAULT NULL,
   `background_img_name` varchar(1024) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `background_img_file_type` varchar(1024) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_upload` varchar(1024) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_update` varchar(1024) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `used_status` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -512,7 +517,7 @@ CREATE TABLE `group_chat` (
   `Group_Description` varchar(1024) DEFAULT NULL,
   `Group_img_path` varchar(1024) DEFAULT NULL,
   `Group_chat_user_create` varchar(1024) DEFAULT NULL,
-  `Group_time_create` timestamp NOT NULL DEFAULT current_timestamp(),
+  `Group_time_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Group_chat_user_update` varchar(250) DEFAULT NULL,
   `Group_chat_time_update` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -528,7 +533,7 @@ CREATE TABLE `group_chat_member` (
   `Group_chat_id` int(255) DEFAULT NULL,
   `member_id` varchar(1024) DEFAULT NULL,
   `inviter_member_id` varchar(1024) DEFAULT NULL,
-  `member_time_create` timestamp NOT NULL DEFAULT current_timestamp(),
+  `member_time_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `favorite_mark` char(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -542,7 +547,7 @@ CREATE TABLE `group_chat_message` (
   `Group_chat_message_id` int(255) NOT NULL,
   `Group_chat_id` int(255) DEFAULT NULL,
   `Sender_id` varchar(1024) DEFAULT NULL,
-  `Date_time_message` timestamp NOT NULL DEFAULT current_timestamp(),
+  `Date_time_message` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `image_message_status` char(1) DEFAULT NULL,
   `image_path` varchar(1024) DEFAULT NULL,
   `file_message_status` char(1) DEFAULT NULL,
@@ -564,6 +569,7 @@ CREATE TABLE `group_chat_message` (
 CREATE TABLE `group_chat_read_like_status` (
   `group_chat_read_like_status_id` int(255) NOT NULL,
   `Group_chat_message_id` int(255) DEFAULT NULL,
+  `Group_chat_id` int(255) DEFAULT NULL,
   `read_status` char(1) DEFAULT NULL,
   `like_status` char(1) DEFAULT NULL,
   `user_id` varchar(1024) DEFAULT NULL
@@ -576,11 +582,11 @@ CREATE TABLE `group_chat_read_like_status` (
 --
 
 CREATE TABLE `holiday` (
-  `id_date` bigint(20) NOT NULL,
+  `id_date` bigint(10) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `head` varchar(45) NOT NULL,
-  `description` text DEFAULT NULL
+  `description` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -608,7 +614,7 @@ CREATE TABLE `inviting` (
   `idinvite` int(64) NOT NULL,
   `idmeeting` int(64) NOT NULL,
   `member` varchar(1024) CHARACTER SET utf8 DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -623,7 +629,7 @@ CREATE TABLE `job_site` (
   `time_update` timestamp NULL DEFAULT NULL,
   `user_create` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_update` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -642,7 +648,7 @@ CREATE TABLE `leaves` (
   `reason` varchar(1024) DEFAULT NULL,
   `start_time` varchar(5) DEFAULT NULL,
   `end_time` varchar(5) DEFAULT NULL,
-  `start_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `start_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `end_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `no_day` decimal(6,3) NOT NULL,
   `leave_file` varchar(255) DEFAULT NULL,
@@ -682,6 +688,23 @@ CREATE TABLE `leave_user` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `location`
+--
+
+CREATE TABLE `location` (
+  `location_id` int(20) NOT NULL,
+  `location_name` varchar(255) NOT NULL,
+  `lat` varchar(50) NOT NULL,
+  `lng` varchar(50) NOT NULL,
+  `radius` int(11) DEFAULT NULL,
+  `frequency` int(20) DEFAULT NULL,
+  `user_create` varchar(200) DEFAULT NULL,
+  `time_creaete` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `meeting`
 --
 
@@ -692,7 +715,7 @@ CREATE TABLE `meeting` (
   `time_end` time DEFAULT NULL,
   `date` timestamp NULL DEFAULT NULL,
   `user_reserve` varchar(1024) CHARACTER SET utf8 DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -736,14 +759,13 @@ CREATE TABLE `position` (
 
 CREATE TABLE `project` (
   `project_id` bigint(20) NOT NULL,
-  `project_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_create` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `time_create` timestamp NULL DEFAULT current_timestamp(),
-  `user_update` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `time_update` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `project_name` varchar(100) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `user_create` varchar(32) DEFAULT NULL,
+  `time_create` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_update` varchar(32) DEFAULT NULL,
+  `time_update` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -753,14 +775,27 @@ CREATE TABLE `project` (
 
 CREATE TABLE `project_function` (
   `function_id` bigint(20) NOT NULL,
-  `function_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `status` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `project_id` bigint(20) DEFAULT NULL,
-  `user_create` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `time_create` timestamp NULL DEFAULT current_timestamp(),
-  `user_update` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `time_update` timestamp NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `function_name` varchar(100) DEFAULT NULL,
+  `status` varchar(32) DEFAULT NULL,
+  `project_id` bigint(50) DEFAULT NULL,
+  `user_create` varchar(32) DEFAULT NULL,
+  `time_create` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_update` varchar(32) DEFAULT NULL,
+  `time_update` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `qrcode_list`
+--
+
+CREATE TABLE `qrcode_list` (
+  `qr_id` int(20) NOT NULL,
+  `status` char(1) DEFAULT NULL,
+  `time_create` timestamp NULL DEFAULT NULL,
+  `time_update` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -802,25 +837,6 @@ CREATE TABLE `room` (
   `user_update` varchar(1024) CHARACTER SET utf8 DEFAULT NULL,
   `time_create` timestamp NULL DEFAULT NULL,
   `time_update` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `salary_user`
---
-
-CREATE TABLE `salary_user` (
-  `id_salary_user` int(100) NOT NULL,
-  `start_date` timestamp NULL DEFAULT NULL,
-  `end_date` timestamp NULL DEFAULT NULL,
-  `user` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `salary` int(200) DEFAULT NULL,
-  `description` varchar(1024) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `user_create` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `user_update` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `time_create` timestamp NULL DEFAULT NULL,
-  `time_update` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -842,44 +858,16 @@ CREATE TABLE `tag` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ticket`
---
-
-CREATE TABLE `ticket` (
-  `ticket_id` int(11) NOT NULL,
-  `ticket_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `user_create` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `time_create` timestamp NULL DEFAULT current_timestamp(),
-  `ticket_url` varchar(120) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `expected_result` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `actual_result` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `file_id` bigint(20) DEFAULT NULL,
-  `ticket_status_id` int(11) DEFAULT NULL,
-  `user_assigned` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `time_assigned` timestamp NULL DEFAULT NULL,
-  `time_success` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ticket_status`
---
-
-CREATE TABLE `ticket_status` (
-  `ticket_status_id` int(11) NOT NULL,
-  `ticket_status_name` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `timesheet`
 --
 
 CREATE TABLE `timesheet` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(1) NOT NULL,
+  `project_id` bigint(20) DEFAULT NULL,
+  `function_id` bigint(20) DEFAULT NULL,
+  `OT_time_start` timestamp NULL DEFAULT NULL,
+  `OT_time_end` timestamp NULL DEFAULT NULL,
+  `OT_description` varchar(1024) DEFAULT NULL,
   `description` varchar(1024) DEFAULT NULL,
   `time_check_in` timestamp NULL DEFAULT NULL,
   `time_check_out` timestamp NULL DEFAULT NULL,
@@ -888,11 +876,6 @@ CREATE TABLE `timesheet` (
   `user_update` varchar(32) DEFAULT NULL,
   `time_create` timestamp NULL DEFAULT NULL,
   `time_update` timestamp NULL DEFAULT NULL,
-  `project_id` bigint(10) DEFAULT NULL,
-  `function_id` bigint(10) DEFAULT NULL,
-  `OT_time_start` timestamp NULL DEFAULT NULL,
-  `OT_time_end` timestamp NULL DEFAULT NULL,
-  `OT_description` varchar(1024) DEFAULT NULL,
   `team` varchar(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -967,7 +950,7 @@ CREATE TABLE `user` (
   `leave_quota_1` decimal(3,1) DEFAULT NULL,
   `leave_quota_2` decimal(3,1) DEFAULT NULL,
   `leave_quota_3` decimal(3,1) DEFAULT NULL,
-  `leave_quota_lastyear` decimal(3,1) DEFAULT 0.0,
+  `leave_quota_lastyear` decimal(3,1) DEFAULT '0.0',
   `time_create` timestamp NULL DEFAULT NULL,
   `time_update` timestamp NULL DEFAULT NULL,
   `email_host` varchar(128) DEFAULT NULL,
@@ -997,19 +980,6 @@ CREATE TABLE `user_role` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_rpw`
---
-
-CREATE TABLE `user_rpw` (
-  `user_rpw_id` int(11) NOT NULL,
-  `user_id` varchar(32) NOT NULL,
-  `user_key` varchar(32) NOT NULL,
-  `expired` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `work_hours`
 --
 
@@ -1020,13 +990,13 @@ CREATE TABLE `work_hours` (
   `latitude` varchar(32) DEFAULT NULL,
   `longitude` varchar(32) DEFAULT NULL,
   `description` varchar(512) DEFAULT NULL,
-  `user_agent` text DEFAULT NULL,
+  `user_agent` text,
   `ip_address` varchar(32) DEFAULT NULL,
   `user_create` varchar(32) DEFAULT NULL,
   `user_update` varchar(32) DEFAULT NULL,
   `time_create` timestamp NULL DEFAULT NULL,
   `time_update` timestamp NULL DEFAULT NULL,
-  `workinghours` int(11) DEFAULT NULL
+  `workinghours` int(32) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -1297,8 +1267,13 @@ ALTER TABLE `project`
 -- Indexes for table `project_function`
 --
 ALTER TABLE `project_function`
-  ADD PRIMARY KEY (`function_id`),
-  ADD KEY `FK_project` (`project_id`);
+  ADD PRIMARY KEY (`function_id`);
+
+--
+-- Indexes for table `qrcode_list`
+--
+ALTER TABLE `qrcode_list`
+  ADD PRIMARY KEY (`qr_id`);
 
 --
 -- Indexes for table `role`
@@ -1319,28 +1294,10 @@ ALTER TABLE `room`
   ADD PRIMARY KEY (`idroom`);
 
 --
--- Indexes for table `salary_user`
---
-ALTER TABLE `salary_user`
-  ADD PRIMARY KEY (`id_salary_user`);
-
---
 -- Indexes for table `tag`
 --
 ALTER TABLE `tag`
   ADD PRIMARY KEY (`tag_id`);
-
---
--- Indexes for table `ticket`
---
-ALTER TABLE `ticket`
-  ADD PRIMARY KEY (`ticket_id`);
-
---
--- Indexes for table `ticket_status`
---
-ALTER TABLE `ticket_status`
-  ADD PRIMARY KEY (`ticket_status_id`);
 
 --
 -- Indexes for table `timesheet`
@@ -1367,12 +1324,6 @@ ALTER TABLE `user_role`
   ADD PRIMARY KEY (`role_id`,`user_id`);
 
 --
--- Indexes for table `user_rpw`
---
-ALTER TABLE `user_rpw`
-  ADD PRIMARY KEY (`user_rpw_id`);
-
---
 -- Indexes for table `work_hours`
 --
 ALTER TABLE `work_hours`
@@ -1387,193 +1338,141 @@ ALTER TABLE `work_hours`
 --
 ALTER TABLE `article_image`
   MODIFY `atc_img_id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `article_type`
 --
 ALTER TABLE `article_type`
-  MODIFY `article_type_id` int(11) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `article_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `chat_message`
 --
 ALTER TABLE `chat_message`
-  MODIFY `Message_id` int(255) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `Message_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 --
 -- AUTO_INCREMENT for table `chat_theme`
 --
 ALTER TABLE `chat_theme`
-  MODIFY `chat_theme_id` int(255) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `chat_theme_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `chat_user_setting`
 --
 ALTER TABLE `chat_user_setting`
-  MODIFY `chat_user_setting_id` int(255) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `chat_user_setting_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `comment_id` int(255) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `comment_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `faq`
 --
 ALTER TABLE `faq`
   MODIFY `faq_id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `faq_category`
 --
 ALTER TABLE `faq_category`
   MODIFY `faq_cat_id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `faq_image`
 --
 ALTER TABLE `faq_image`
   MODIFY `faq_img_id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `faq_status`
 --
 ALTER TABLE `faq_status`
-  MODIFY `faq_status_id` int(11) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `faq_status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `idfeedback` int(11) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `idfeedback` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `feednews`
 --
 ALTER TABLE `feednews`
-  MODIFY `feed_id` int(255) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `feed_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `feednewslike`
 --
 ALTER TABLE `feednewslike`
-  MODIFY `like_id` int(255) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `like_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 --
 -- AUTO_INCREMENT for table `feed_post_background`
 --
 ALTER TABLE `feed_post_background`
   MODIFY `feed_post_background_id` int(255) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `file_feedback`
 --
 ALTER TABLE `file_feedback`
   MODIFY `file_idfb` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `group_chat`
 --
 ALTER TABLE `group_chat`
-  MODIFY `Group_chat_id` int(255) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `Group_chat_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `group_chat_member`
 --
 ALTER TABLE `group_chat_member`
-  MODIFY `Group_chat_member_id` int(255) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `Group_chat_member_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT for table `group_chat_message`
 --
 ALTER TABLE `group_chat_message`
-  MODIFY `Group_chat_message_id` int(255) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `Group_chat_message_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `group_chat_read_like_status`
 --
 ALTER TABLE `group_chat_read_like_status`
-  MODIFY `group_chat_read_like_status_id` int(255) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `group_chat_read_like_status_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
 --
 -- AUTO_INCREMENT for table `holiday`
 --
 ALTER TABLE `holiday`
-  MODIFY `id_date` bigint(20) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `id_date` bigint(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=289;
 --
 -- AUTO_INCREMENT for table `inviting`
 --
 ALTER TABLE `inviting`
   MODIFY `idinvite` int(64) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `job_site`
 --
 ALTER TABLE `job_site`
-  MODIFY `id_sitejob` int(100) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `id_sitejob` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `meeting`
 --
 ALTER TABLE `meeting`
   MODIFY `idmeeting` int(64) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `project_id` bigint(20) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `project_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT for table `project_function`
 --
 ALTER TABLE `project_function`
-  MODIFY `function_id` bigint(20) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `function_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
   MODIFY `idroom` int(64) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `salary_user`
---
-ALTER TABLE `salary_user`
-  MODIFY `id_salary_user` int(100) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `ticket`
---
-ALTER TABLE `ticket`
-  MODIFY `ticket_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `ticket_status`
---
-ALTER TABLE `ticket_status`
-  MODIFY `ticket_status_id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `timesheet`
 --
 ALTER TABLE `timesheet`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `id` bigint(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=806;
 --
 -- AUTO_INCREMENT for table `training`
 --
 ALTER TABLE `training`
   MODIFY `trainingid` bigint(20) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `user_rpw`
---
-ALTER TABLE `user_rpw`
-  MODIFY `user_rpw_id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- Constraints for dumped tables
 --
@@ -1584,7 +1483,6 @@ ALTER TABLE `user_rpw`
 ALTER TABLE `faq`
   ADD CONSTRAINT `faq_ibfk_1` FOREIGN KEY (`faq_cat_id`) REFERENCES `faq_category` (`faq_cat_id`),
   ADD CONSTRAINT `faq_ibfk_2` FOREIGN KEY (`faq_status_id`) REFERENCES `faq_status` (`faq_status_id`) ON DELETE CASCADE;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
