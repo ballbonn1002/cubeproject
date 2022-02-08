@@ -475,6 +475,13 @@
 			<result name="success" type="tiles">check.in</result>
 			<result name="error">/index.jsp</result>
 		</action>
+
+		<action name="searchmonth-list"
+			class="com.cubesofttech.action.WorkHoursAction" method="searchmonth_list">
+			<result name="success" type="tiles">check.in</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
 		<action name="check_edit"
 			class="com.cubesofttech.action.WorkHoursAction" method="checkEdit">
 			<result name="success" type="tiles">check.edit</result>
@@ -2930,6 +2937,19 @@
 			<result name="success" type="tiles">project.list</result>
 			<result name="error">/index.jsp</result>
 		</action>
+		
+		<action name="changestatusProject"
+			class="com.cubesofttech.action.ProjectAction" method="changestatusProject">
+			<result name="success" type="tiles">project.list</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
+		<action name="findTimesheetById"
+			class="com.cubesofttech.action.ProjectAction" method="findTimesheetById">
+			<result name="success" type="tiles">project.list</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
 		<!-- End of Project -->
 
 		<!-- ProjectFunction -->
