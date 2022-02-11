@@ -5934,10 +5934,19 @@ public class WorkHoursAction extends ActionSupport {
 			request.setAttribute("s_month", s_month);
 			request.setAttribute("s_year", s_year);
 			
+			Timestamp tstamp = new Timestamp(date.getTime());
+			Date Longday = DateUtil.periodMinus(date, 8);
+			Timestamp tstampbefore = new Timestamp(Longday.getTime());
+			Date date0;
+			date0 = tstamp;
+			
 			User user = userDAO.findById(logonUser);
 			String stime = user.getWorkTimeStart() + ":00";
 			request.setAttribute("stime", stime);
 			log.debug(stime);
+			
+			List<Map<String, Object>> descheckin = workHoursDAO.descheckin(logonUser, tstamp, tstampbefore, month, year);
+			request.setAttribute("descheckin", descheckin);
 			
 			return SUCCESS;
 		} catch (Exception e) {

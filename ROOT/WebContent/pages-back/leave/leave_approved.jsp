@@ -333,11 +333,15 @@
 									<div class="details">
 										<form action="myleave_list" method="POST">
 											<div class="number">
+												<c:set var="deci" value="${fn:substringAfter(LastYear, '.')}"/>
+												
 												<c:choose>
 													<c:when test="${LeavenumT6 != null}">
 														<span id="leaveType6" data-counter="counterup"
-															data-value="sad">	<fmt:formatNumber type="number" pattern="#.###" value="${LeavenumT6}">	</fmt:formatNumber> </span>
-													<span>/ ${LastYear}</span>
+															data-value="sad"><fmt:formatNumber type="number" pattern="#.##" value="${LeavenumT6}">	</fmt:formatNumber> </span>
+													<span><c:if test="${fn:length(deci) == 1}">
+														/${LastYear}0
+													</c:if></span>
 														<div class="desc">${type_6}</div>
 													</c:when>
 													<c:when test="${leave_1 == null}">

@@ -855,6 +855,7 @@ $(document).ready(function() {
   	var x = sessionStorage.getItem("selectmonth");
 	if (x != null) {
 		var y = "${sl_month}";
+		$("#searchmonth").val(y);
 		$("#searchmonth").datepicker('setDate', y);
 	}
 	sessionStorage.removeItem("selectmonth");
@@ -871,9 +872,11 @@ $(document).ready(function() {
 	}); 
 	
 	$("#searchmonth").change(function() {
-		var x = $(this).datepicker( 'getDate');
+//		var x = $(this).datepicker( 'getDate');
 		select = $("#searchmonth").val();
 		selectmonth = formatDate(select); 
+		sessionStorage.setItem("selectmonth", selectmonth);
+		console.log("fortest - "+selectmonth);
 		$("#searchmonth_form").submit();
 
 	});

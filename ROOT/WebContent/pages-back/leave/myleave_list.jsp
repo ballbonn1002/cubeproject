@@ -148,7 +148,7 @@
 											<c:when test="${leave_1 != null}">
 												<span data-counter="counterup" data-value="">
 													<fmt:formatNumber type="number" 
-													pattern="###.###" value="${leave_1}"/>/${quotaThisYear}
+													pattern="##.###" value="${leave_1}"/>/${quotaThisYear}
 												</span>
 												<div class="desc">${type_1}</div>
 											</c:when>
@@ -173,6 +173,7 @@
 									<div class="number">
 										<c:if test="${tnow >= tend}">  <!-- if now over april -->
 										${leave_6}/${quotaLastYear}
+										<%-- ${leave_6}/${quotaLastYear} --%>
 											<%-- <c:if test="${leave_6l < 0}">
 												<span data-counter="counterup" data-value="">${leave_6l}</span>
 											</c:if>
@@ -182,7 +183,17 @@
 											<div class="desc" style="font-size: 13px;">${type_6}</div>
 										</c:if>
 										<c:if test="${tnow < tend}">
-											<span data-count="${quotaLastYear - leave_6}" class="counter">${quotaLastYear - leave_6}</span>
+											<span data-count="${quotaLastYear - leave_6}" class="counter">
+												<c:set var="result" value="${quotaLastYear - leave_6}"/>
+												<c:choose>
+												<c:when test="${result == '10.0'}">
+													${quotaLastYear - leave_6}
+												</c:when>
+												<c:otherwise>
+													<fmt:formatNumber type="number" pattern="##.###" value="${quotaLastYear - leave_6}"/>
+												</c:otherwise>
+												</c:choose>
+											</span>
 											<div class="desc" style="font-size: 13px;">${type_6} 
 												คงเหลือ
 											</div>
