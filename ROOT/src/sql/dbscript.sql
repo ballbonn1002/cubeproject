@@ -17,3 +17,10 @@ ALTER TABLE `project_function` CHANGE `status` `status` CHAR(1) CHARACTER SET ut
 
 SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 
+CREATE `user_rpw`(
+   `user_rpw_id` INT(11) NOT NULL AUTO_INCREMENT,
+   `user_id` VARCHAR(32) NOT NULL,
+   `user_key` VARCHAR(32) NOT NULL,
+   `expired` timestamp NOT NULL,      
+   PRIMARY KEY (`user_rpw_id`)
+);
