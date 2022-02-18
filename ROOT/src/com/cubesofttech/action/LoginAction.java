@@ -168,8 +168,9 @@ public class LoginAction extends ActionSupport {
 			HttpSession session = request.getSession();
 			User user = userDAO.findById(username);
 			String md5Password = loginService.generateMD5(password);
+			List<Map<String, Object>> userActive = userDAO.UserEnable(userlogin);
 			
-			if (user != null && md5Password.equals(user.getPassword())) {
+			if (user != null && md5Password.equals(user.getPassword()) && !userActive.isEmpty()) {
 				String chkLogin = "sc";
 				Cookie cSuccess = new Cookie("cooksc", chkLogin);
 				cSuccess.setMaxAge(60 * 60 * 24 * 15);

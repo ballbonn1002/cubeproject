@@ -489,7 +489,7 @@ public class UserDAOImpl implements UserDAO {
 		List<Map<String, Object>> UserActive = null;
 
 		try {
-			String sql = "SELECT name,id,department_id FROM user WHERE enable =" + enable + "";
+			String sql = "SELECT name,id,department_id FROM user WHERE enable = '1' AND id LIKE '%"+enable+"%'";
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
 			UserActive = query.list();
