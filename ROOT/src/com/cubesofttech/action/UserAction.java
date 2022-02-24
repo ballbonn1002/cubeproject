@@ -384,7 +384,37 @@ public class UserAction extends ActionSupport {
 			return ERROR;
 		}
 	}
+	public String updateUserStatustest() {
+        try {
 
+            // String enable = request.getParameter("enable");
+            String userid = request.getParameter("userid");
+            User u = userDAO.findById(userid);
+            // toggle
+            String status = "enable";
+            if ("1".equals(u.getEnable())) {
+                u.setEnable("0");
+                status = "disable";
+            } else {
+            
+            }
+
+            userDAO.update(u);
+
+            Gson gson = new GsonBuilder().create();
+            String responseJSON = gson.toJson(u);
+            log.debug(responseJSON);
+
+            request.setAttribute("json", responseJSON);
+
+            String JSON = "json";
+
+            return JSON;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ERROR;
+        }
+    }
 	public String openEdit() {
 		try {
 			User selectUser = userDAO.findById(userId);

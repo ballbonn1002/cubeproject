@@ -35,18 +35,36 @@
 				href="javascript:;" data-original-title="" title="">&nbsp;</a>&nbsp;
 			&nbsp;
 			<button class="btn btn-danger"
-				style="float: left; border-radius: 8px !important;"
-				onclick="deleteFunc()"><i class="fa fa-trash"></i> Delete User</button>
-				
-			<script type="text/javascript">
-				function deleteFunc() {
-					var r=confirm("ยืนยันการลบข้อมูลพนักงาน");
-					if (r==true){
-					document.location = "user-flag?id=${selectUser.id}";
-					}else{
-					}
-				}
-			</script>
+                style="float: left; border-radius: 8px !important;"
+                 var="user" items="${cubesoftUsers}" varStatus="status"
+                 data-order="${user.enable}"
+                onclick="deleteFunc('${selectUser.id}', '<c:if test="${user.enable == 1}">0</c:if>')"><i class="fa fa-trash"></i> Delete User</button>
+                
+            <script type="text/javascript">
+                function deleteFunc(id, enable) {
+                    var r=confirm("ยืนยันการลบข้อมูลพนักงาน");
+                    if (r==true){
+                        
+                         $.ajax({
+                                type: "POST",
+                                url: "${pageContext.request.contextPath}/update-user-statustest",
+                                crossorigin: true,
+                                dataType: "json",
+                                data : {
+                                    "enable" : enable,
+                                    "userid" : id
+                                },
+                                success: function (json) {
+                                	window.location.href = "user-list";
+                                }
+
+                            });
+                        
+                    }else{
+                        
+                    }
+                }
+            </script>
 		</div>
 
 	</div>

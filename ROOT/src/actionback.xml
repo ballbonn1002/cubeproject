@@ -263,6 +263,11 @@
 			<result name="success" type="tiles">change_password</result>
 			<result name="error">/index.jsp</result>
 		</action>
+		<action name="update-user-statustest"
+            class="com.cubesofttech.action.UserAction" method="updateUserStatustest">
+            <result name="json">/pages-back/common/json.jsp</result>
+            <result name="error">/index.jsp</result>
+        </action>
 
 		<action name="user-list"
 			class="com.cubesofttech.action.UserAction" method="list">
