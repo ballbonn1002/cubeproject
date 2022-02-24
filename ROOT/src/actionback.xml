@@ -911,6 +911,12 @@
 			<result name="error">/index.jsp</result>
 		</action>
 
+		<action name="upload_timesheet"
+			class="com.cubesofttech.action.FileUploadAction" 
+			method="uploadexcel">
+			<result name="success" type="tiles">timesheet.edit</result>
+			<result name="error">/index.jsp</result>
+		</action>
 		<action name="searchTimeEdit"
 			class="com.cubesofttech.action.TimeInReportAction"
 			method="SearchTimeinlistReport">
