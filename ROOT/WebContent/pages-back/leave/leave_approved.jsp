@@ -87,6 +87,314 @@
 			</a> <a href="javascript:;" class="remove" data-original-title=""
 				title=""> </a>
 		</div>
+		
+		<div class="row" style="padding-bottom: 15px; padding-top: 15px;">
+				<div class="col-md-1 col-lg-1" style="width: 0;"></div>
+					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="width: 19%; padding: 5px;">
+						<a class="dashboard-stat dashboard-stat-v2 blue">	
+							<div class="visual">		
+								<i class="fa fa-car"></i>
+							</div>
+							<div class="details">
+								<form action="myleave_list" method="POST">
+									<div class="number">
+										<c:choose>
+											<c:when test="${quotaThisYear != 0 }">
+												<c:set var="amoutLeaveDay" value="${fn:substringBefore(leave_1,'.')}" /> 
+												<c:set var="amoutLeaveHour" value="${(leave_1 % 1) * 8}" />
+												<c:set var="amoutLeaveHalfHour" value="${(amoutLeaveHour % 1) * 60}" />
+												<span data-counter="counterup" data-value="">
+												<!--
+													<fmt:formatNumber type="number" pattern="#.#" value="${amoutLeaveDay}" /> d 
+													<fmt:formatNumber type="number" pattern="#.##" value="${amoutLeaveHour}" /> h
+												-->
+													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour != 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
+															<c:if test="${amoutLeaveHalfHour == 0}">
+																<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h/<fmt:formatNumber type="number" pattern="#" value="${quotaThisYear}"/>d
+															</c:if>
+															<c:if test="${amoutLeaveHalfHour != 0}">
+																<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h/<fmt:formatNumber type="number" pattern="#" value="${quotaThisYear}"/>d
+															</c:if>
+													</c:if> <!-- show day and hours -->
+													
+													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour == 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d/<fmt:formatNumber type="number" pattern="#" value="${quotaThisYear}"/>d
+													</c:if> <!-- show day only -->
+													
+													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour != 0}">
+															<c:if test="${amoutLeaveHalfHour == 0}">
+																<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h/<fmt:formatNumber type="number" pattern="#" value="${quotaThisYear}"/>d
+															</c:if>
+															<c:if test="${amoutLeaveHalfHour != 0}">
+																<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h/<fmt:formatNumber type="number" pattern="#" value="${quotaThisYear}"/>d
+															</c:if>
+													</c:if> <!-- show hours -->
+													
+													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour == 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d/<fmt:formatNumber type="number" pattern="#" value="${quotaThisYear}"/>d
+													</c:if> <!-- no leave -->
+												</span>
+												<div class="desc">${type_1}</div>
+											</c:when>
+											<c:when test="${quotaThisYear == 0 }">
+												<span data-counter="counterup" data-value="">
+												0d</span>
+												<div class="desc">${type_1}</div>
+											</c:when>
+										</c:choose>
+									</div>
+								</form>
+							</div>
+						</a>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="width: 19%; padding: 5px;">
+						<a class="dashboard-stat dashboard-stat-v2 yellow-gold">
+							<div class="visual">
+								<i class="fa fa-suitcase"></i>
+							</div>
+							<div class="details">
+								<form action="myleave_list" method="POST">
+									<div class="number">
+										<c:if test="${tnow >= tend}">  <!-- if now over april -->
+										${leave_6}/${quotaLastYear}
+										<%-- ${leave_6}/${quotaLastYear} --%>
+											<%-- <c:if test="${leave_6l < 0}">
+												<span data-counter="counterup" data-value="">${leave_6l}</span>
+											</c:if>
+											<c:if test="${leave_6l >= 0}">
+												<span data-counter="counterup" data-value="">0</span>
+											</c:if> --%>
+											<div class="desc" style="font-size: 13px;">${type_6}</div>
+										</c:if>
+										<c:if test="${tnow < tend}">
+											<span data-count="${quotaLastYear - leave_6}" class="counter">
+												<c:set var="result" value="${quotaLastYear - leave_6}"/>
+												<c:choose>
+												<c:when test="${result == '0'}">
+													<span data-counter="counterup" data-value="">0d</span>
+												</c:when>
+												<c:when test="${result > 0 }">
+												<c:set var="amoutLeaveDay" value="${fn:substringBefore(leave_6,'.')}" /> 
+												<c:set var="amoutLeaveHour" value="${(leave_6 % 1) * 8}" />
+												<c:set var="amoutLeaveHalfHour" value="${(amoutLeaveHour % 1) * 60}" />
+												<span data-counter="counterup" data-value="">
+												<!--
+													<fmt:formatNumber type="number" pattern="#.#" value="${amoutLeaveDay}" /> d 
+													<fmt:formatNumber type="number" pattern="#.##" value="${amoutLeaveHour}" /> h
+												-->
+													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour != 0}">
+														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
+														<c:if test="${amoutLeaveHalfHour == 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h/<fmt:formatNumber type="number" pattern="#" value="${quotaLastYear}"/>d
+														</c:if>
+														<c:if test="${amoutLeaveHalfHour != 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h/<fmt:formatNumber type="number" pattern="#" value="${quotaLastYear}"/>d
+														</c:if>
+													</c:if> <!-- show day and hours -->
+															
+													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour == 0}">
+														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d/<fmt:formatNumber type="number" pattern="#" value="${quotaLastYear}"/>d
+													</c:if> <!-- show day only -->
+															
+													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour != 0}">
+														<c:if test="${amoutLeaveHalfHour == 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h/<fmt:formatNumber type="number" pattern="#" value="${quotaLastYear}"/>d
+														</c:if>
+														<c:if test="${amoutLeaveHalfHour != 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h/<fmt:formatNumber type="number" pattern="#" value="${quotaLastYear}"/>d
+														</c:if>
+													</c:if> <!-- show hours -->
+															
+													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour == 0}">
+														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d/<fmt:formatNumber type="number" pattern="#" value="${quotaLastYear}"/>d
+													</c:if> <!-- no leave -->
+												</span>
+												</c:when>
+												</c:choose>
+											</span>
+											<div class="desc" style="font-size: 13px;">${type_6} 
+											</div>
+										</c:if>
+									</div>
+								</form>
+							</div>
+						</a>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="width: 19%; padding: 5px;">
+						<a class="dashboard-stat dashboard-stat-v2 red">
+							<div class="visual">
+								<i class="fa fa-ambulance"></i>
+							</div>
+							<div class="details">
+								<form action="myleave_list" method="POST">
+									<div class="number">
+										<c:choose>
+											<c:when test="${leave_3 != 0}">
+												<c:set var="amoutLeaveDay" value="${fn:substringBefore(leave_3,'.')}" /> 
+												<c:set var="amoutLeaveHour" value="${(leave_3 % 1) * 8}" />
+												<c:set var="amoutLeaveHalfHour" value="${(amoutLeaveHour % 1) * 60}" />
+												<span data-counter="counterup" data-value="">
+												<!--
+													<fmt:formatNumber type="number" pattern="#.#" value="${amoutLeaveDay}" /> d 
+													<fmt:formatNumber type="number" pattern="#.##" value="${amoutLeaveHour}" /> h
+												-->
+													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour != 0}">
+														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
+														<c:if test="${amoutLeaveHalfHour == 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h
+														</c:if>
+														<c:if test="${amoutLeaveHalfHour != 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h
+														</c:if>
+													</c:if> <!-- show day and hours -->
+															
+													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour == 0}">
+														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
+													</c:if> <!-- show day only -->
+															
+													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour != 0}">
+														<c:if test="${amoutLeaveHalfHour == 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h
+														</c:if>
+														<c:if test="${amoutLeaveHalfHour != 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h
+														</c:if>
+													</c:if> <!-- show hours -->
+															
+													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour == 0}">
+														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
+													</c:if> <!-- no leave -->
+												</span>
+												<div class="desc">${type_3}</div>
+											</c:when>
+											<c:when test="${leave_3 == 0}">
+												<span data-counter="counterup" data-value="">0d</span>
+												<div class="desc">${type_3}</div>
+											</c:when>
+										</c:choose>
+									</div>
+								</form>
+							</div>
+						</a>
+					</div>
+					
+					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="width: 19%; padding: 5px;">
+						<a class="dashboard-stat dashboard-stat-v2 green-jungle">
+							<div class="visual">
+								<i class="fa fa-calendar"></i>
+							</div>
+							<div class="details">
+								<form action="myleave_list" method="POST">
+									<div class="number">
+										<c:choose>
+											<c:when test="${leave_2 != 0}">
+												<c:set var="amoutLeaveDay" value="${fn:substringBefore(leave_2,'.')}" /> 
+												<c:set var="amoutLeaveHour" value="${(leave_2 % 1) * 8}" />
+												<c:set var="amoutLeaveHalfHour" value="${(amoutLeaveHour % 1) * 60}" />
+												<span data-counter="counterup" data-value="">
+												<!--
+													<fmt:formatNumber type="number" pattern="#.#" value="${amoutLeaveDay}" /> d 
+													<fmt:formatNumber type="number" pattern="#.##" value="${amoutLeaveHour}" /> h
+												-->
+													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour != 0}">
+														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
+														<c:if test="${amoutLeaveHalfHour == 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h
+														</c:if>
+														<c:if test="${amoutLeaveHalfHour != 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h
+														</c:if>
+													</c:if> <!-- show day and hours -->
+															
+													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour == 0}">
+														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
+													</c:if> <!-- show day only -->
+															
+													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour != 0}">
+														<c:if test="${amoutLeaveHalfHour == 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h
+														</c:if>
+														<c:if test="${amoutLeaveHalfHour != 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h
+														</c:if>
+													</c:if> <!-- show hours -->
+															
+													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour == 0}">
+														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
+													</c:if> <!-- no leave -->
+												</span>
+												<div class="desc">${type_2}</div>
+											</c:when>
+											<c:when test="${leave_2 == 0}">
+												<span data-counter="counterup" data-value="">0d</span>
+												<div class="desc">${type_2}</div>
+											</c:when>
+										</c:choose>
+									</div>
+								</form>
+							</div>
+						</a>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="width: 19%; padding: 5px;">
+						<a class="dashboard-stat dashboard-stat-v2 green">
+							<div class="visual">
+								<i class="fa fa-battery-quarter"></i>
+							</div>
+							<div class="details">
+								<form action="myleave_list" method="POST">
+									<div class="number">
+										<c:choose>
+											<c:when test="${leave_5 != 0}">
+												<c:set var="amoutLeaveDay" value="${fn:substringBefore(leave_5,'.')}" /> 
+												<c:set var="amoutLeaveHour" value="${(leave_5 % 1) * 8}" />
+												<c:set var="amoutLeaveHalfHour" value="${(amoutLeaveHour % 1) * 60}" />
+												<span data-counter="counterup" data-value="">
+												<!--
+													<fmt:formatNumber type="number" pattern="#.#" value="${amoutLeaveDay}" /> d 
+													<fmt:formatNumber type="number" pattern="#.##" value="${amoutLeaveHour}" /> h
+												-->
+													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour != 0}">
+														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
+														<c:if test="${amoutLeaveHalfHour == 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h
+														</c:if>
+														<c:if test="${amoutLeaveHalfHour != 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h
+														</c:if>
+													</c:if> <!-- show day and hours -->
+															
+													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour == 0}">
+														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
+													</c:if> <!-- show day only -->
+															
+													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour != 0}">
+														<c:if test="${amoutLeaveHalfHour == 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h
+														</c:if>
+														<c:if test="${amoutLeaveHalfHour != 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h
+														</c:if>
+													</c:if> <!-- show hours -->
+															
+													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour == 0}">
+														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
+													</c:if> <!-- no leave -->
+												</span>
+												<div class="desc">${type_5}</div>
+											</c:when>
+											<c:when test="${leave_5 == 0}">
+												<span data-counter="counterup" data-value="">0d</span>
+												<div class="desc">${type_5}</div>
+											</c:when>
+										</c:choose>
+									</div>
+								</form>
+							</div>
+						</a>
+				</div>
+			</div>
+		
 		<!--  search bar in 1 line -->
 		<form action="search_leave_approved" method="post">
 			<div class="portlet-body">
@@ -243,7 +551,9 @@
 
 				</div>
 				<!--${startdate}<br>${enddate}<br>-->
+				
 				<!--  Dashboard  -->
+				<!--  
 				<div id="dashboard">
 					<div class="row">
 						<div class="col-md-12 col-lg-12">
@@ -263,7 +573,7 @@
 
 								</a>
 							</div>
-							<!-- personal leave -->
+							<!-- personal leave 
 							<div class="col-md-3">
 								<a class="dashboard-stat dashboard-stat-v2 blue-steel">
 									<div class="visual">
@@ -295,7 +605,7 @@
 
 								</a>
 							</div>
-							<!-- sick leave -->
+							<!-- sick leave 
 							<div class="col-md-3">
 								<a class="dashboard-stat dashboard-stat-v2 red">
 									<div class="visual">
@@ -324,7 +634,7 @@
 
 								</a>
 							</div>
-							<!-- leave quota from last year -->
+							<!-- leave quota from last year 
 							<div class="col-md-3">
 								<a class="dashboard-stat dashboard-stat-v2 purple">
 									<div class="visual">
@@ -359,41 +669,36 @@
 						</div>
 					</div>
 				</div>
+				 -->
 			</div>
 
 			<br>
 		</form>
-
-
-
-
-
 
 		<!-- start content portlet -->
 
 		<table
 			class="table table-striped table-condensed table-hover" data-aos="fade"  data-aos-duration="2000">
 			<thead>
-				<tr style="background-color:rgb(59, 63, 81);color:white" class="flip-content">
-					<th>
-						<center>#</center>
-					</th>
-					<th height="41"><center>Status Button</center></th>
-					<!-- <th><center>Status</center></th> -->
-					<!--  <th height="41"><center>Leave application form</center></th>  -->
-					<th height="41"><center>Status Button</center></th>
-					<th height="41"><center>Detail</center></th>
-					<th height="41" width="50"><center>Print</center></th>
-					<th height="41"><center>Delete</center></th>
+				<tr style="background-color:#eef1f5;color:#6e869d" class="flip-content">
+					<th height="41"><center>#</center></th>
+					<th height="41"><center>Name</center></th>
+					<th height="41"><center>Type of leave</center></th>
+					<th height="41"><center>Start date (Since)</center></th>
+					<th height="41"><center>End date (Until)</center></th>
+					<th height="41"><center>Amount the day</center></th>
+					<th height="41"><center>Status</center></th>
+					<th height="41"><center></center></th>
 				</tr>
 			</thead>
-
 
 			<form action="myleave_list" method="POST">
 				<c:forEach var="leave" items="${leaveList}" varStatus="status">
 					<tr style="text-align: center;">
-						<td style="vertical-align: middle;"><a class="text-right"
-							href="LeaveEdit?id=${leave.leave_id}">${leave.leave_id} </a></td>
+						<!--<td style="vertical-align: middle;"><a class="text-right"
+							href="LeaveEdit?id=${leave.leave_id}">${leave.leave_id} </a></td>-->
+						<td style="vertical-align: middle; color: #3598dc;">${leave.leave_id}</td>
+						<!-- 
 						<td><span class="btn blue-hoki btn-outline"
 							style="width: 150px"> <i class="fa fa-user"></i> <a
 								class="text-right" href="LeaveEdit?id=${leave.leave_id}">${leave.user_id}</a>
@@ -415,6 +720,54 @@
 								<i class="fa fa-calendar"></i> <fmt:formatDate
 									value="${leave.time_create}" pattern="dd-MMM-yyyy"></fmt:formatDate>
 						</span></td>
+						 -->
+						<td>${leave.user_id}</td>
+						<td style="text-align: left;">${leave.leave_type_name}</td>
+						<td style="vertical-align: middle;">
+							<fmt:formatDate value="${leave.start_date}" 
+								type="date"></fmt:formatDate>
+							<fmt:formatDate value="${leave.start_date}" 
+								type="time" pattern="HH:mm"></fmt:formatDate></td>
+						<td style="vertical-align: middle;">
+							<fmt:formatDate value="${leave.end_date}" 
+								type="date"></fmt:formatDate>
+							<fmt:formatDate value="${leave.end_date}" 
+								type="time" pattern="HH:mm"></fmt:formatDate></td>
+						<td style="vertical-align: middle;">
+									<c:set var="amoutLeaveDay" value="${fn:substringBefore(leave.no_day,'.')}" /> 
+									<c:set var="amoutLeaveHour" value="${(leave.no_day % 1) * 8}" />
+									<c:set var="amoutLeaveHalfHour" value="${(amoutLeaveHour % 1) * 60}" />
+
+									<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour != 0}">
+										<span style="color:white; width:80px; display:inline-block; border: 2px solid #3598dc; background-color: #3598dc;">
+										<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
+										<c:if test="${amoutLeaveHalfHour == 0}">
+											<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h
+										</c:if>
+										<c:if test="${amoutLeaveHalfHour != 0}">
+											<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h
+										</c:if>
+										</span>
+									</c:if> <!-- show day and hours -->
+															
+									<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour == 0}">
+										<span style="color:#3598dc; width:80px; display:inline-block; border: 2px solid #3598dc; background-color: #f2f6f9;">
+										<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/> day
+										</span>
+									</c:if> <!-- show day only -->
+															
+									<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour != 0}">
+										<span style="color:white; width:80px; display:inline-block; border: 2px solid #3598dc; background-color: #3598dc;">
+										<c:if test="${amoutLeaveHalfHour == 0}">
+											<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/> hours
+										</c:if>
+										<c:if test="${amoutLeaveHalfHour != 0}">
+											<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/> h
+										</c:if>
+										</span>
+									</c:if> <!-- show hours -->					
+								</td>
+						
 						<!--  <td><c:if test="${leave.leave_status_id.toString() == '0'}">
 									<div class="wait-${leave.leave_id}">
 										<div class="item-status btn-sm btn-warning">Waiting for
@@ -538,13 +891,13 @@
 									<c:if test="${leave.leave_status_id.toString() == '0'}">
 
 										<div class="wait-${leave.leave_id}">
-											<button class="btn yellow-crusta" type="button"
+											<button class="btn yellow-crusta"  type="button"
 												data-toggle="dropdown" data-hover="dropdown">
 												Waiting for Approving<i class="fa fa-angle-down"></i>
 											</button>
 											<ul class="dropdown-menu pull-right" role="menu">
 												<li><h4 style="color: white; text-align: center;">
-														<a class="btn btn-info"
+														<a class="btn green-jungle"
 															onclick="ajaxLoad(${leave.leave_id})"> Approve </a>
 													</h4></li>
 												<li><h4 style="color: white; text-align: center;">
@@ -556,7 +909,7 @@
 										</div>
 
 										<div hidden class="app-${leave.leave_id}">
-											<button class="btn blue" type="button"
+											<button class="btn green-jungle" type="button"
 												data-toggle="dropdown" data-hover="dropdown">
 												Approved<i class="fa fa-angle-down"></i>
 											</button>
@@ -578,7 +931,7 @@
 											</button>
 											<ul class="dropdown-menu pull-right" role="menu">
 												<li><h4 style="color: white; text-align: center;">
-														<a class="btn circle btn-info"
+														<a class="btn circle green-jungle"
 															onclick="ajaxLoad(${leave.leave_id});"> Approve </a>
 													</h4></li>
 											</ul>
@@ -591,7 +944,7 @@
 											</button>
 											<ul class="dropdown-menu pull-right" role="menu">
 												<li><h4 style="color: white; text-align: center;">
-														<button class="btn btn-danger"
+														<button class="btn green-jungle"
 															onclick="ajaxLoad(${leave.leave_id});">Approve</button>
 													</h4></li>
 												<li><h4 style="color: white; text-align: center;">
@@ -609,7 +962,7 @@
 									<c:if test="${leave.leave_status_id.toString() == '1'}">
 
 										<div class="wait-${leave.leave_id}">
-											<button class="btn blue" type="button"
+											<button class="btn green-jungle" type="button"
 												data-toggle="dropdown" data-hover="dropdown">
 												Approved<i class="fa fa-angle-down"></i>
 											</button>
@@ -625,7 +978,7 @@
 										</div>
 
 										<div hidden class="app-${leave.leave_id}">
-											<button class="btn blue" type="button"
+											<button class="btn green-jungle" type="button"
 												data-toggle="dropdown" data-hover="dropdown">
 												Approved<i class="fa fa-angle-down"></i>
 											</button>
@@ -647,7 +1000,7 @@
 											</button>
 											<ul class="dropdown-menu pull-right" role="menu">
 												<li><h4 style="color: white; text-align: center;">
-														<a class="btn btn-info"
+														<a class="btn green-jungle"
 															onclick="ajaxLoad(${leave.leave_id});"> Approve </a>
 													</h4></li>
 											</ul>
@@ -660,7 +1013,7 @@
 											</button>
 											<ul class="dropdown-menu pull-right" role="menu">
 												<li><h4 style="color: white; text-align: center;">
-														<a class="btn btn-info"
+														<a class="btn green-jungle"
 															onclick="ajaxLoad(${leave.leave_id});"> Approve </a>
 													</h4></li>
 												<li><h4 style="color: white; text-align: center;">
@@ -685,14 +1038,14 @@
 											</button>
 											<ul class="dropdown-menu pull-right" role="menu">
 												<li><h4 style="color: white; text-align: center;">
-														<a class="btn btn-info"
+														<a class="btn green-jungle"
 															onclick="ajaxLoad(${leave.leave_id});"> Approve </a>
 													</h4></li>
 											</ul>
 										</div>
 
 										<div hidden class="app-${leave.leave_id}">
-											<button class="btn blue" type="button"
+											<button class="btn green-jungle" type="button"
 												data-toggle="dropdown" data-hover="dropdown">
 												Approved<i class="fa fa-angle-down"></i>
 											</button>
@@ -714,7 +1067,7 @@
 											</button>
 											<ul class="dropdown-menu pull-right" role="menu">
 												<li><h4 style="color: white; text-align: center;">
-														<a class="btn btn-info"
+														<a class="btn green-jungle"
 															onclick="ajaxLoad(${leave.leave_id});"> Approve </a>
 													</h4></li>
 											</ul>
@@ -727,7 +1080,7 @@
 											</button>
 											<ul class="dropdown-menu pull-right" role="menu">
 												<li><h4 style="color: white; text-align: center;">
-														<button class="btn btn-info"
+														<button class="btn green-jungle"
 															onclick="ajaxLoad(${leave.leave_id});">Approve</button>
 													</h4></li>
 												<li><h4 style="color: white; text-align: center;">
@@ -792,30 +1145,27 @@
 
 							</perm:permission></td>
 
-						<td><perm:permission object="leave.approve">
+						<td>
+						<perm:permission object="leave.approve">
 								<div class="btn-group">
-									<a class="btn circle btn-outline btn-sm blue"
-										href="LeaveEdit?id=${leave.leave_id}"
+									<a class="btn circle btn-outline btn-sm sbold blue"
 										title="information of leave"> <i
 										class="fa fa-clipboard"></i>
 									</a>
 								</div>
-							</perm:permission></td>
-
-						<td><perm:permission object="leave.approve">
+						</perm:permission>
+						<perm:permission object="leave.approve">
 								<div class="btn-group">
-									<a class="btn circle btn-outline btn-sm purple-sharp"
+									<a class="btn circle btn-outline btn-sm sbold purple"
 										href="leaveReport?leaveId=${leave.leave_id}"
 										title="leave information printing">
 										<i class="fa fa-print"></i>
 									</a>
 								</div>
-
-							</perm:permission></td>
-
-						<td><perm:permission object="leave.approve">
+						</perm:permission>
+						<perm:permission object="leave.approve">
 								<div class="btn-group">
-									<a id="delete_leave_link" class="btn circle btn-outline btn-sm red"
+									<a id="delete_leave_link" class="btn circle btn-outline btn-sm sbold red"
 										data-toggle="modal"
 										onclick="delTimesheet(${leave.leave_id});"
 										title="leave deleting"> <i
@@ -823,8 +1173,8 @@
 									</a>
 									<%-- href="delete_leave_id?leave_id=${leave.leave_id}" --%>
 								</div>
-
-							</perm:permission> <!-- for delete leave alert pop up -->
+						</perm:permission> <!-- for delete leave alert pop up -->
+						
 						<script>
 								
 								function delTimesheet(id) {
