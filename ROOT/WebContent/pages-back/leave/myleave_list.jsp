@@ -232,7 +232,7 @@
 														</c:if>
 													</c:if>
 													
-													<c:if test="${amoutquotaLastYearDay == 0 && amoutquotaLastHour == 0}">
+													<c:if test="${amoutquotaLastYearDay == 0 && amoutquotaLastYearHour == 0}">
 															0d
 													</c:if>
 												</span>
