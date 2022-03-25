@@ -22,10 +22,11 @@ public class TimeInDAOimpl implements TimeInDAO {
 		
 		try {
 			String a = yearr+"-"+monthh+"-";
-			String sql = "SELECT timesheet.id as timesheetId, timesheet.user_create,timesheet.time_check_out,timesheet.time_check_in,timesheet.description,"
+			String sql = "SELECT timesheet.id as timesheetId, timesheet.project,timesheet.summary,timesheet.timespent,timesheet.user_create,timesheet.time_check_out,timesheet.time_check_in,timesheet.description,timesheet.started_date,"
 					+ "timesheet.OT_time_start,timesheet.OT_time_end,timesheet.OT_description,timesheet.team,"
 					+ "user.id,user.name,user.work_time_start,user.work_time_end FROM timesheet "
-					+ "LEFT JOIN user ON timesheet.user_create = user.id  WHERE (user.id = '"+Useridd+"') AND (time_check_in LIKE '%"+a+"%') Group BY time_check_in ";
+					+ "LEFT JOIN user ON timesheet.user_create = user.id  WHERE (user.id = '"+Useridd+"') AND (started_date LIKE '%"+a+"%') Group BY started_date"; 
+					//(time_check_in LIKE '%"+a+"%') Group BY time_check_in";
 			SQLQuery query = session.createSQLQuery(sql);
 			//query.setParameter("Userid", Useridd);
 			//query.setParameter("yearmonth", yearr+"-"+monthh+"-");
