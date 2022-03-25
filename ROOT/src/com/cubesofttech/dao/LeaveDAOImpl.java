@@ -76,7 +76,28 @@ public class LeaveDAOImpl implements LeaveDAO {
 		}
 		return leave;
 	}
+	
+	@Override
+	public List<Leaves> findLeaveById(int leaveId) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();		
+		List<Leaves> modalLeaveList = null;
+		try {
+			String sql = "SELECT leave_id, leave_type_id, leave_status_id, half_day, user_id, "
+						+ "appr_user_id, description, reason, start_time, end_time, start_date, "
+						+ "end_date, no_day, leave_file, user_create, user_update, time_create, "
+						+ "time_update FROM leaves WHERE leave_id = " + leaveId;
+			SQLQuery query = session.createSQLQuery(sql);
 
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			modalLeaveList = query.list();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return modalLeaveList;
+		
+	}
+	
 	@Override
 	public void update(Leaves leaves) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();

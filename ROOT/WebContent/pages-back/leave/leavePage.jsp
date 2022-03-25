@@ -32,7 +32,7 @@
 <script
 	src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"
 	type="text/javascript"></script>
-<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script> -->
 <script
 	src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js"
 	type="text/javascript"></script>
@@ -41,6 +41,19 @@
 <link
 	href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
 	rel="stylesheet" type="text/css" />
+<link 
+	href="../assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" 
+	rel="stylesheet" type="text/css"/>
+<link
+	href="../assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+	rel="stylesheet" type="text/css" />
+<script
+	src="../assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"
+	type="text/javascript"></script>
+<script
+	src="../assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
+	type="text/javascript"></script>
+
 <div class="portlet light">
 	<div class="portlet-title">
 		<div class="caption">
@@ -57,21 +70,28 @@
 		<!-- BEGIN FORM-->
 		<form method="post" class="form-horizontal">
 			<div class="form-body">
-
 				<div class="form-group">
-					<label class="col-md-3 control-label">Applicant :</label>
+					<div class="col-md-3 control-label"></div>
+					<label class="col-md-2">Name</label>
+				</div>
+				<div class="form-group">
+					<div class="col-md-3 control-label"></div>
 					<div class="col-md-6">
 						<select id="user" name="user" class="form-control select2 select2me" required>
 							<option></option>
 							<optgroup id='u_enable' label="Enable"></optgroup>
 							<optgroup id='u_disable' label="Disable"></optgroup>
-                        </select>
-                        <input hidden name="user_hidden" id="user_hidden" type="text">
+	                    </select>
+	                    <input hidden name="user_hidden" id="user_hidden" type="text">
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label class="col-md-3 control-label">Type of leave :</label>
+					<div class="col-md-3 control-label"></div>
+					<label class="col-md-2">Type of leave :</label>
+				</div>
+				<div class="form-group">
+					<div class="col-md-3 control-label"></div>
 					<div class="col-md-6">
 						<div id="leaveTypes" class="md-radio-inline">
 						<div id="leaveTypes_hidden" class="md-radio-inline">
@@ -80,8 +100,9 @@
 					</div>
 				</div>
 				
-				<div class="form-group">
-					<label class="col-md-3 control-label"><label style="color:red;">*</label>Duration :</label>
+<!-- 				<div class="form-group">
+					<div class="col-md-3 control-label"></div>
+					<label class="col-md-3"><label style="color:red;">*</label>Duration :</label>
 					<div class="col-md-6">
 						<div class="input-group input-large date-picker input-daterange"
 							data-date-format="dd-mm-yyyy">
@@ -92,17 +113,65 @@
 								<input class="hide" name="to_hidden" id="date_to_hidden" type="text" hidden>
 						</div>
 					</div>
-				</div>
-
+				</div> -->
+				
 				<div class="form-group">
-					<label class="col-md-3 control-label">Amount :</label>
+					<div class="col-md-3 control-label"></div>
+					<label class="col-md-3">Start Date</label>
+					<label class="col-md-3">Start Time</label>
+				</div>
+				<div class="form-group">
+					<div class="col-md-3 control-label"></div>
+					<div class="col-md-3">
+						<div class="input-group date-picker input-daterange"
+							data-date-format="dd-mm-yyyy">
+							<input type="text" class="form-control" id="date_from" name="from" required>
+								<input  class="hide" name="from_hidden" id="date_from_hidden" type="text" hidden>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<!-- <input type="text" class="form-control timepicker timepicker-24" id="time_from" name="time_from"
+							onchange="time()"> -->
+						<input type="text" class="form-control timepicker timepicker-24" id="time_from" name="time_from">
+							<input class="hide" id="time_from_hidden" name="time_from_hidden" hidden>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-md-3 control-label"></div>
+					<label class="col-md-3">End Date</label>
+					<label class="col-md-3">End Time</label>
+				</div>
+				<div class="form-group">
+					<div class="col-md-3"></div>
+					<div class="col-md-3">
+						<div class="input-group date-picker input-daterange"
+							data-date-format="dd-mm-yyyy">
+							<input type="text" class="form-control" id="date_to" name="to" required>
+								<input class="hide" name="to_hidden" id="date_to_hidden" type="text" hidden>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<!-- <input type="text" class="form-control timepicker timepicker-24" id="time_to" name="time_to"
+							onchange="time()"> -->
+						<input type="text" class="form-control timepicker timepicker-24" id="time_to" name="time_to">
+							<input class="hide" id="time_to_hidden" name="time_to_hidden" hidden>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-md-3 control-label"></div>
+					<label class="col-md-2">Day</label>
+					<label class="col-md-2">Hours</label>
+				</div>
+				<div class="form-group">
+					<div class="col-md-3 control-label"></div>
 					<div class="col-md-2">
 						<input type="text" class="form-control" id="amount" name="amount" min="1" max="1000" maxlength="3" required>
 						<input hidden class="hide" name="amount_hidden" id="amount_hidden" type="text">
 					</div>
-					<label class="col-md-1 control-label" style="text-align: left">Day</label>
 					<div class="col-md-2">
-						<select onchange="check()" class="bs-select form-control" name="amount_sub" id="amount_sub">
+<!--  						<select onchange="check()" class="bs-select form-control" name="amount_sub" id="amount_sub">
 							<option value="0" selected>0</option>
 							<option value="0.125">1</option>
 							<option value="0.25">2</option>
@@ -111,29 +180,20 @@
 							<option value="0.625">5</option>
 							<option value="0.75">6</option>
 							<option value="0.875">7</option>
-						</select>
+						</select>  -->
+						<input type="text" class="form-control" id="amount_sub" name="amount_sub" value="0"
+							min="1" max="1000" maxlength="3" onchange="check()" required>
 						<input hidden class="hide" name="amount_sub_hidden" id="amount_sub_hidden" type="text">
 					</div>
-					<label class="col-md-1 control-label" style="text-align: left">Hours</label>
 				</div>
 
 				<div class="form-group">
-				<label class="col-md-3 control-label"> <label id="red">*</label>half day leave :</label>
-				<div class="col-md-6">
-					<div  class="md-radio-inline">
-						<label  class="mt-radio col-md-6"> 
-							<input disabled  type="radio" name="halfDay" id="hd_1" value="1">Morning<span></span>
-								<input hidden class="hide" name="halfDay_hidden" id="hd_1_hidden" type="text">
-						</label> <label class="mt-radio col-md-6"> 
-							<input disabled type="radio" name="halfDay" id="hd_2" value="2">Afternoon<span></span>
-								<input hidden class="hide" name="halfDay_hidden" id="hd_2_hidden" type="text">
-						</label>
-					</div>
+					<div class="col-md-3 control-label"></div>
+					<label class="col-md-3">Description :</label>
 				</div>
-			</div>
-
 				<div class="form-group">
-					<label class="col-md-3 control-label">Description :</label>
+					<!-- <label class="col-md-3 control-label">Description :</label> -->
+					<div class="col-md-3 control-label"></div>
 					<div class="col-md-6">
 						<textarea style="word-break: break-all; white-space: normal;"
 							maxlength="1024" class="form-control" rows="6" name="description" id="description" onkeyup='check_char(this)'></textarea>
@@ -172,6 +232,23 @@
 						<div class="form-control-focus"></div>
 					</div>
 				</div>
+				
+<!--				<div class="form-group">
+					<div class="col-md-3 control-label"></div>
+					<label class="col-md-3">Attachment (image)</label>
+				</div>
+ 				<div class="form-group">
+					<div class="col-md-3 control-label"></div>
+					<div class="col-md-3 fileinput fileinput-new" data-provides="fileinput">
+						<span class="btn green btn-file" id="insert_file">
+							<span class="fileinput-new"> Select file </span>
+							<span class="fileinput-exists"> Change </span>
+							<input type="file" name="fileUpload" onchange="checkFile(this)">
+						</span>
+						<span class="fileinput-filename" id="file"></span>
+						<a href="javascript:;" class="close fileinput-exists" data-dismiss="fileinput"></a>
+					</div>
+				</div> -->
 
 			</div>
 			<div class="form-actions">
@@ -187,11 +264,11 @@
 	</div>
 </div>
 
-<script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<!-- <script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script> -->
 <script>
 function check_char(elm){
 	
-	if(elm.value.match(/['"]/) && elm.value.length>0){
+	if(elm.value.match(/[''""]/) && elm.value.length>0){
 		swal(
 				{
 					title : "ERROR",
@@ -204,6 +281,10 @@ function check_char(elm){
 	
 	}
 }
+/* $(document).ready(function() {
+	
+} */
+
 </script>
 <script>
 	var toISODate = (date) => {
@@ -282,6 +363,16 @@ function check_char(elm){
 			$('#date_to').val('${date}');
             $('#amount').val(1);
             
+            /* Set time format from Add Leave */
+            if('${time}' != null){
+    			$('.timepicker').timepicker({
+    				showMeridian: false
+    			});
+    			
+    			$('.timepicker').timepicker('setTime', "");
+            }
+            
+            
             /* Start amount of day from Add Leave */
             var holiday;
 			var holidays = [];
@@ -324,6 +415,7 @@ function check_char(elm){
 				$('#amount').val(amount);
 			}); 
   			/* End amount of day from Add Leave */
+  			
         }
 
         /* Start Applicant/Approver List */
@@ -362,10 +454,12 @@ function check_char(elm){
         if(leave != null){
 			var noDay = leave.noDay.toString().split(".");
 			var amount = noDay[0];
-			var amount_sub = '0.'+noDay[1];
+			var amount_sub = noDay[1];
 			if(isNaN(amount_sub)){ amount_sub = 0;}
 			$('#date_from').val(toDisplayDate(new Date(leave.startDate)));
 			$('#date_to').val(toDisplayDate(new Date(leave.endDate)));
+			$('#time_from').val(leave.startTime);
+			$('#time_to').val(leave.endTime);
 			$('#amount').val(amount);
 			$('#amount_sub').val(amount_sub);
 			$('#description').html(leave.description);
@@ -373,6 +467,7 @@ function check_char(elm){
 			$('#reason').html(leave.reason);
 			$('#lt_'+leave.leaveTypeId).prop('checked','checked');
 			if(leave.halfDay != 0) { $('#hd_'+leave.halfDay).prop('checked','checked'); }
+			
         }
         /* End Leave Edit init */
     })
@@ -410,6 +505,9 @@ function check_char(elm){
 			    $('#date_to').change(() => {
 				    $('#date_to_hidden').val($('#date_to').val());
 			    });
+			    
+			    $('#time_from').attr('disabled',true);
+			    $('#time_from_hidden').val($('#time_from_hidden').val());
         		
         		$('#amount').attr('disabled',true);
         		$('#amount_hidden').val($('#amount').val());
@@ -633,7 +731,7 @@ function check_char(elm){
  					 amount = 1; 
 				} 
 				$('#amount').val(amount);
-			});  
+			});
 		});
 	</script>
 </c:if>
@@ -650,11 +748,19 @@ function checkamount() {
 </script>
 <script>
 console.log("ee");
+console.log("add page");
+/* 	function checkFile(inputFile) {
+		console.log(inputFile);
+		var file = inputFile.value;
+	} */
+	
 	function send() {	
 		var name = document.getElementById('user').value;
 		var typeleave =  $("input[name='leaveType']:checked").val(); 
 		var from = document.getElementById('date_from').value;
 		var to = document.getElementById('date_to').value;
+		var time_from = document.getElementById('time_from').value;
+		var time_to = document.getElementById('time_to').value;
 		var des = document.getElementById('description').value;
 		var amount = document.getElementById('amount').value;
 		var amount_sub = document.getElementById('amount_sub').value;
@@ -663,14 +769,17 @@ console.log("ee");
 		console.log(typeleave);
 		console.log(from);
 		console.log(to);
+		console.log(time_from);
+		console.log(time_to);
 		console.log(des);
 		console.log(amount);
 		console.log(amount_sub);
 		console.log(actionpage);
+		debugger;
 		var leave_1 = parseFloat(${leave_1}),
 			amountInt = parseFloat(amount),
-			amount_subInt = parseFloat(amount_sub),
-			all =amountInt+amount_subInt, 	
+			amount_subInt = parseFloat(amount_sub), 
+			all =amountInt+(amount_subInt), 	
 			y = ${quotaThisYear},
 			type1 = "${type_1}";
 		/*alert(amount_subInt);
@@ -708,6 +817,8 @@ console.log("ee");
 								"typeleave" : typeleave,
 								"from" : from,
 								"to" : to,
+								"time_from" : time_from,
+								"time_to" : time_to,
 								"des" : des,
 								"amount" : amount,
 								"amount_sub" : amount_sub,
@@ -737,6 +848,8 @@ console.log("ee");
 							"typeleave" : typeleave,
 							"from" : from,
 							"to" : to,
+							"time_from" : time_from,
+							"time_to" : time_to,
 							"des" : des,
 							"amount" : amount,
 							"amount_sub" : amount_sub,
@@ -748,31 +861,77 @@ console.log("ee");
 
 					}) 
 		}
-	
 </script>
 <script>
-
-		
-		function check(){
-		
-		var amount_sub = $("#amount_sub").val();
-		
-		if (amount_sub != 0) {
-			
-			$("#hd_1").prop( "disabled", false );
-			$("#hd_2").prop( "disabled", false );
-			$("#red").css("display", "inline");
-		
+	document.getElementById("user").onchange = function(){
+		var value = document.getElementById("user").value;
+		console.log(value);
+		$.ajax({
+			url : "findValidTime.action",
+			method : "POST",
+			data : "user="+ value,
+ 			success : function(data) {
+				var obj = JSON.parse(data);
+				console.log(obj);
+				localStorage.setItem("stime", obj.stime[0]);
+				localStorage.setItem("etime", obj.etime[0]);
+			} 
+		});
+	};
 	
-		}else{
-			$("#hd_1").attr('checked', false);
-			$("#hd_2").attr('checked', false);
-			$("#hd_1").prop( "disabled", true );
-			$("#hd_2").prop( "disabled", true );
-			$("#red").css("display", "none");
-			
-		}
-	}
+/* 	$('#time_from').focus(function(){
+		var stime = localStorage.getItem("stime");
+	}); */
+
+	var x = 0;
+	$('#time_to').focus(function(){
+		$(document).click((event) => { 
+			if (!$(event.target).closest('#time_to').length) {                                             
+				console.log("out");
+				
+				time_from = $('#time_from').val();
+		 		time_to = $('#time_to').val();
+				console.log("timefrom: "+time_from);
+				console.log("timeto: "+time_to);
+				
+				var timefrom = parseFloat(time_from.replace(":", "."));
+				var timeto = parseFloat(time_to.replace(":", "."));
+				var hourtime = timeto-timefrom;
+				console.log(hourtime);
+				
+				var from_arr = timefrom.toString().split(".");
+				var hour_f = from_arr[0];
+				var min_f = from_arr[1];
+				
+				var amount1 = $('#amount').val();
+				console.log("amount "+amount1);
+				var amountsub1 = $('#amount_sub').val();
+				console.log("amount sub "+amountsub1);
+				var all1 = parseFloat(amount1)+parseFloat(amountsub1/10);
+				console.log(all1);
+			}
+				if(hourtime >= 8){
+					hourtime = 0;
+					/* $('#amount').val(1); */
+					if(x = 0){
+						$('#amount_sub').val(hourtime);
+						x = 1;
+					}
+					console.log("result: "+hourtime);
+				}
+				else if(hourtime < 8){
+					hourtime -= 1;
+					/* $('#amount').val(0); */
+					
+					if(x == 0){
+						$('#amount_sub').val(hourtime);
+						x = 1;
+					}
+					console.log("result -1: "+hourtime);
+				}  
+		 });
+	 });
+
 	
 </script>
 <style>

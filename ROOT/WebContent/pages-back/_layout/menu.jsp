@@ -106,10 +106,10 @@
 				list</span></a></li>
 
 	<!-- Leave-->
-	<perm:permission object="leave.viewall">
+<%-- 	<perm:permission object="leave.viewall">
 		<li class="nav-item"><a href="leave_list" class="nav-link"> <i
 				class="fa fa-medkit"></i> <span class="title">Leave List</span></a></li>
-	</perm:permission>
+	</perm:permission> --%>
 
 	<perm:permission object="leave.viewall">
 		<li class="nav-item"><a href="leave_approved" class="nav-link">

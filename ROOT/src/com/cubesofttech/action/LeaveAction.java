@@ -1,6 +1,7 @@
 package com.cubesofttech.action;
 
 import java.io.Console;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -8,9 +9,11 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,6 +29,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.dao.AuthorizedObjectDAO;
@@ -40,6 +45,7 @@ import com.cubesofttech.mail.EmailService;
 import com.cubesofttech.model.Holiday;
 import com.cubesofttech.model.LeaveType;
 import com.cubesofttech.model.Leaves;
+import com.cubesofttech.model.ProjectFunction;
 import com.cubesofttech.model.Role;
 import com.cubesofttech.model.RoleAuthorizedObject;
 import com.cubesofttech.model.User;
@@ -78,15 +84,19 @@ public class LeaveAction extends ActionSupport {
 
 	@Autowired
 	public TimesheetDAO timesheetDAO;
-	
+
 	@Autowired
 	public EmailService emailservice;
+
+	List<Leaves> modalLeaveList;
 
 	private String roleId;
 
 	private Leaves leave;
 
 	private int leaveId;
+
+	private String leaveTypeId;
 
 	private Role role;
 
@@ -210,8 +220,7 @@ public class LeaveAction extends ActionSupport {
 			Timestamp start_date = DateUtil.dateToTimestamp("01-01-" + DateUtil.getYear(), "00:00");
 			Timestamp end_date = DateUtil.dateToTimestamp("31-12-" + DateUtil.getYear(), "00:00");
 
-		
-			List<Map<String, Object>> userleave = leaveDAO.findUserLeave(userLogin,start_date,end_date);
+			List<Map<String, Object>> userleave = leaveDAO.findUserLeave(userLogin, start_date, end_date);
 			request.setAttribute("userleave", userleave);
 			log.debug(userleave);
 			BigDecimal LeavenumT1 = new BigDecimal(0);
@@ -254,7 +263,7 @@ public class LeaveAction extends ActionSupport {
 				}
 			}
 
-			log.debug(start_date + " userleave "   + end_date);
+			log.debug(start_date + " userleave " + end_date);
 			log.debug("*****************************");
 			log.debug(LeavenumT1);
 			log.debug(LeavenumT2);
@@ -271,8 +280,7 @@ public class LeaveAction extends ActionSupport {
 			request.setAttribute("LeavenumT5", LeavenumT5);
 			request.setAttribute("LeavenumT6", LeavenumT6);
 			request.setAttribute("LeavenumT9", LeavenumT9);
-			
-			
+
 			request.setAttribute("leaveList", leaveDAO.searchtable2(start_date, end_date, userLogin));
 
 			request.setAttribute("leavetypeList", leavetypeDAO.findAll2());
@@ -289,6 +297,7 @@ public class LeaveAction extends ActionSupport {
 			request.setAttribute("type_5", type_leave.get(4).getLeaveTypeName());
 			request.setAttribute("type_6", type_leave.get(5).getLeaveTypeName());
 			myleave();
+			System.out.println("leave for admin");
 			return SUCCESS;
 		} catch (Exception e) {
 
@@ -370,15 +379,17 @@ public class LeaveAction extends ActionSupport {
 
 			String from = request.getParameter("from");
 			String to = request.getParameter("to");
-			
-			
+
+			String time_from = request.getParameter("time_from");
+			String time_to = request.getParameter("time_to");
+			log.debug("time from " + time_from);
+			log.debug("time to " + time_to);
+
 			Timestamp start_date = DateUtil.dateFormatEdit(from);// changeformat
 			Timestamp end_date = DateUtil.dateFormatEdit(to);// changeformat
 			String noDay = request.getParameter("noDay");
 			BigDecimal no_day = new BigDecimal(noDay);
-			
-			
-			
+
 			Integer l = leaveDAO.getMaxId() + 1;
 			Leaves le = new Leaves();
 			le.setLeaveId(l);
@@ -407,9 +418,6 @@ public class LeaveAction extends ActionSupport {
 			le.setUserUpdate(userLogin);
 			le.setTimeCreate(DateUtil.getCurrentTime());
 			le.setTimeUpdate(DateUtil.getCurrentTime());
-			
-			
-			
 
 			List<Map<String, Object>> leavenameList = leaveDAO.findLeave();
 			request.setAttribute("leavenameList", leavenameList);
@@ -530,6 +538,7 @@ public class LeaveAction extends ActionSupport {
 
 	public String approve() { // leave edit
 		try {
+			System.out.println("approve");
 			List<Map<String, Object>> userseq = userDAO.sequense();
 			request.setAttribute("userseq", userseq);
 
@@ -602,6 +611,7 @@ public class LeaveAction extends ActionSupport {
 
 	public String changesapprove() {
 		try {
+			System.out.println("changes approve");
 			String apprUserId = request.getParameter("apprUserId");
 			request.setAttribute("userList", userDAO.findAll());
 
@@ -636,19 +646,19 @@ public class LeaveAction extends ActionSupport {
 			return ERROR;
 		}
 	}
-	
+
 	public String searchleave() {
 		try {
 			String userSelect = request.getParameter("name1");
 			String typeLeaves = request.getParameter("type");
 			String startdate = request.getParameter("startdate");
 			String enddate = request.getParameter("enddate");
-			
+
 			log.debug(userSelect);
 			log.debug(typeLeaves);
 			log.debug(startdate);
 			log.debug(enddate);
-			
+
 			DateTimeFormatter date1 = DateTimeFormatter.ofPattern("01-01-yyyy");
 			LocalDate localDate = LocalDate.now();
 			String s = "00:00:00.0";
@@ -664,21 +674,22 @@ public class LeaveAction extends ActionSupport {
 				start_date = DateUtil.dateFormatEdit(start);
 				end_date = DateUtil.dateFormatEdit(end);
 			}
-			
 
 			if (!"All".equals(userSelect)) {
 				if (typeLeaves.equals("All")) {
 					request.setAttribute("leaveList", leaveDAO.searchapproved(start_date, end_date, userSelect));
 				} else {
-					request.setAttribute("leaveList", leaveDAO.searchtable3(start_date, end_date, userSelect, typeLeaves)); // search
-																														// by
-																														// type
+					request.setAttribute("leaveList",
+							leaveDAO.searchtable3(start_date, end_date, userSelect, typeLeaves)); // search
+					// by
+					// type
 				}
 			} else {
 				if (typeLeaves.equals("All")) {
 					request.setAttribute("leaveList", leaveDAO.searchapprovedall(start_date, end_date, userSelect));
 				} else {
-					request.setAttribute("leaveList", leaveDAO.searchtable4(start_date, end_date, userSelect, typeLeaves));
+					request.setAttribute("leaveList",
+							leaveDAO.searchtable4(start_date, end_date, userSelect, typeLeaves));
 				}
 			}
 			request.setAttribute("flag_search", "1");
@@ -701,7 +712,7 @@ public class LeaveAction extends ActionSupport {
 			List<Map<String, Object>> leavenameList = leaveDAO.findLeave();
 			request.setAttribute("leavenameList", leavenameList);
 			List<LeaveType> type_leave = leavetypeDAO.findAll();
-			
+
 			request.setAttribute("type_1", type_leave.get(0).getLeaveTypeName());
 			request.setAttribute("type_2", type_leave.get(1).getLeaveTypeName());
 			request.setAttribute("type_3", type_leave.get(2).getLeaveTypeName());
@@ -726,12 +737,12 @@ public class LeaveAction extends ActionSupport {
 			String leaveStatus = request.getParameter("appr");
 			String startdate = request.getParameter("startdate");
 			String enddate = request.getParameter("enddate");
-			
+
 			log.debug(userSelect);
 			log.debug(leaveStatus);
 			log.debug(startdate);
 			log.debug(enddate);
-			
+
 			DateTimeFormatter date1 = DateTimeFormatter.ofPattern("01-01-yyyy");
 			LocalDate localDate = LocalDate.now();
 			String s = "00:00:00.0";
@@ -749,19 +760,19 @@ public class LeaveAction extends ActionSupport {
 				start_date = DateUtil.dateFormatEdit(start);
 				end_date = DateUtil.dateFormatEdit(end);
 			}
-			
-	
+
 			if (!"All".equals(userSelect)) {
 				if (leaveStatus.equals("3")) {
 					request.setAttribute("leaveList", leaveDAO.searchtable2(start_date, end_date, userSelect));
 				} else {
-					request.setAttribute("leaveList", leaveDAO.searchtable2(start_date, end_date, userSelect, leaveStatus)); // search
-																														// by
-																														// type
+					request.setAttribute("leaveList",
+							leaveDAO.searchtable2(start_date, end_date, userSelect, leaveStatus)); // search
+					// by
+					// type
 				}
 			} else {
 				if (leaveStatus.equals("3")) {
-			
+
 					List<Map<String, Object>> leaveList = leaveDAO.searchtable(start_date, end_date, userSelect);
 					request.setAttribute("leaveList", leaveList);
 				} else {
@@ -772,17 +783,16 @@ public class LeaveAction extends ActionSupport {
 
 			Date day = new Date();
 			LocalDate localdate = day.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			
+
 			if (!"All".equals(userSelect)) {
 				Double LastYear = leaveDAO.LastYearQuota(userSelect, localdate.getYear());
 				request.setAttribute("LastYear", LastYear);
 				Double ThisYear = leaveDAO.ThisYearQuota(userSelect);
 				request.setAttribute("ThisYear", ThisYear);
 			}
-			
-			
+
 			String user = request.getParameter("name1");
-			List<Map<String, Object>> userleave = leaveDAO.findUserLeave(user,start_date1,end_date1);
+			List<Map<String, Object>> userleave = leaveDAO.findUserLeave(user, start_date1, end_date1);
 			request.setAttribute("userleave", userleave);
 			log.debug(userleave);
 			BigDecimal LeavenumT1 = new BigDecimal(0);
@@ -1076,6 +1086,7 @@ public class LeaveAction extends ActionSupport {
 
 	public String addmy() {
 		try {
+			log.debug("add my");
 			User ur = (User) request.getSession().getAttribute("onlineUser");
 			String userLogin = ur.getId();// online user
 			// getParameter
@@ -1600,38 +1611,39 @@ public class LeaveAction extends ActionSupport {
 				request.setAttribute("type_" + leave.getLeaveTypeId(), leave.getLeaveTypeName());
 			}
 			List<Map<String, Object>> leavelist = leaveDAO.myLeavesList(userLogin, start_date, end_date);
-		
+
 			String status = "1";
-			//List<Map<String, Object>> leaveListDashboard = leaveDAO.myLeavesList(userLogin, start_date, end_date, status);
+			// List<Map<String, Object>> leaveListDashboard =
+			// leaveDAO.myLeavesList(userLogin, start_date, end_date, status);
 			List LeaveID = leaveDAO.findLeaveId(userLogin, start_date, end_date, status);
-		
+
 			request.setAttribute("leavelist", leavelist);
-		
+
 			Double leave_1 = 0.000, leave_2 = 0.000, leave_3 = 0.000, leave_5 = 0.000, leave_6 = 0.000;
 //
 //			for (Iterator iterator = leavelist.iterator(); iterator.hasNext();) {
 //				Leaves leave = (Leaves) iterator.next();
 //			}
-			int x=0;
-			
-			while (x <= LeaveID.size()-1) {
+			int x = 0;
+
+			while (x <= LeaveID.size() - 1) {
 				log.debug("inLoopWhile");
 				String a[] = LeaveID.get(x).toString().split("[={}]");
 				log.debug("Split Success");
-				for(int b=0;b<=a.length-1;b++) {
-					log.debug("a["+b+"]= "+a[b]);
+				for (int b = 0; b <= a.length - 1; b++) {
+					log.debug("a[" + b + "]= " + a[b]);
 				}
-				int id=0;
-				for(int b=0;b<=a.length-1;b++) {
+				int id = 0;
+				for (int b = 0; b <= a.length - 1; b++) {
 					log.debug("inLoopFor");
-					if(tryParseInt(a[b])) {
+					if (tryParseInt(a[b])) {
 						log.debug("inIf");
-						id=Integer.parseInt(a[b]);
-						log.debug("This is Array No: "+b+" ="+a[b]);
-						Leaves leaveDashboard =  leaveDAO.findByLeaveId(id);
+						id = Integer.parseInt(a[b]);
+						log.debug("This is Array No: " + b + " =" + a[b]);
+						Leaves leaveDashboard = leaveDAO.findByLeaveId(id);
 						log.debug("Ref Success");
 						Double noday = leaveDashboard.getNoDay().doubleValue();
-						log.debug("This NoDay : "+noday);
+						log.debug("This NoDay : " + noday);
 						if (leaveDashboard.getLeaveTypeId().contains("1")) {
 							leave_1 = leave_1 + noday;
 						}
@@ -1648,12 +1660,11 @@ public class LeaveAction extends ActionSupport {
 							leave_6 = leave_6 + noday;
 						}
 					}
-					
+
 				}
 				x++;
 			}
-			
-log.debug("666666");
+			log.debug("666666");
 			request.setAttribute("leave_1", leave_1);
 			request.setAttribute("leave_2", leave_2);
 			request.setAttribute("leave_3", leave_3);
@@ -1665,7 +1676,7 @@ log.debug("666666");
 			Double quotaLastYear = leaveDAO.LastYearQuota(userLogin, localdate.getYear());
 			Double quotaThisYear = leaveDAO.ThisYearQuota(userLogin);
 			request.setAttribute("quotaThisYear", quotaThisYear);
-		
+
 			request.setAttribute("quotaLastYear", quotaLastYear);
 			request.setAttribute("leave_6l", quotaLastYear - leave_6);
 
@@ -1682,17 +1693,20 @@ log.debug("666666");
 			return ERROR;
 		}
 	}
-	
+
 	public boolean tryParseInt(String value) {
-	    try {
-	        int x= Integer.parseInt(value);
-	        return true;
-	    } catch (NumberFormatException e) {
-	        return false;
-	    }
+		try {
+			int x = Integer.parseInt(value);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
+
 	public String LeaveAdd() {
+		log.debug("leave add");
 		String date = request.getParameter("date");
+		String time = request.getParameter("time");
 		try {
 			/**/
 			User ur = new User();
@@ -1737,38 +1751,39 @@ log.debug("666666");
 				request.setAttribute("type_" + leave.getLeaveTypeId(), leave.getLeaveTypeName());
 			}
 			List<Map<String, Object>> leavelist = leaveDAO.myLeavesList(userLogin, start_date, end_date);
-		
+
 			String status = "1";
-			//List<Map<String, Object>> leaveListDashboard = leaveDAO.myLeavesList(userLogin, start_date, end_date, status);
+			// List<Map<String, Object>> leaveListDashboard =
+			// leaveDAO.myLeavesList(userLogin, start_date, end_date, status);
 			List LeaveID = leaveDAO.findLeaveId(userLogin, start_date, end_date, status);
-		
+
 			request.setAttribute("leavelist", leavelist);
-		
+
 			Double leave_1 = 0.000, leave_2 = 0.000, leave_3 = 0.000, leave_5 = 0.000, leave_6 = 0.000;
 //
 //			for (Iterator iterator = leavelist.iterator(); iterator.hasNext();) {
 //				Leaves leave = (Leaves) iterator.next();
 //			}
-			int x=0;
-			
-			while (x <= LeaveID.size()-1) {
+			int x = 0;
+
+			while (x <= LeaveID.size() - 1) {
 				log.debug("inLoopWhile");
 				String a[] = LeaveID.get(x).toString().split("[={}]");
 				log.debug("Split Success");
-				for(int b=0;b<=a.length-1;b++) {
-					log.debug("a["+b+"]= "+a[b]);
+				for (int b = 0; b <= a.length - 1; b++) {
+					log.debug("a[" + b + "]= " + a[b]);
 				}
-				int id=0;
-				for(int b=0;b<=a.length-1;b++) {
+				int id = 0;
+				for (int b = 0; b <= a.length - 1; b++) {
 					log.debug("inLoopFor");
-					if(tryParseInt(a[b])) {
+					if (tryParseInt(a[b])) {
 						log.debug("inIf");
-						id=Integer.parseInt(a[b]);
-						log.debug("This is Array No: "+b+" ="+a[b]);
-						Leaves leaveDashboard =  leaveDAO.findByLeaveId(id);
+						id = Integer.parseInt(a[b]);
+						log.debug("This is Array No: " + b + " =" + a[b]);
+						Leaves leaveDashboard = leaveDAO.findByLeaveId(id);
 						log.debug("Ref Success");
 						Double noday = leaveDashboard.getNoDay().doubleValue();
-						log.debug("This NoDay : "+noday);
+						log.debug("This NoDay : " + noday);
 						if (leaveDashboard.getLeaveTypeId().contains("1")) {
 							leave_1 = leave_1 + noday;
 						}
@@ -1785,12 +1800,12 @@ log.debug("666666");
 							leave_6 = leave_6 + noday;
 						}
 					}
-					
+
 				}
 				x++;
 			}
-			
-log.debug("777");
+
+			log.debug("777");
 			request.setAttribute("leave_1", leave_1);
 			request.setAttribute("leave_2", leave_2);
 			request.setAttribute("leave_3", leave_3);
@@ -1802,7 +1817,7 @@ log.debug("777");
 			Double quotaLastYear = leaveDAO.LastYearQuota(userLogin, localdate.getYear());
 			Double quotaThisYear = leaveDAO.ThisYearQuota(userLogin);
 			request.setAttribute("quotaThisYear", quotaThisYear);
-		
+
 			request.setAttribute("quotaLastYear", quotaLastYear);
 			request.setAttribute("leave_6l", quotaLastYear - leave_6);
 
@@ -1817,7 +1832,18 @@ log.debug("777");
 			String holidayJSON = holidayDAO.getallOnlyDateJSON();
 			String userListJSON = userDAO.userListJSON();
 
+			User user = userDAO.findById(userLogin);
+			String starttime = user.getWorkTimeStart();
+			String stime = starttime.replace(':', '.');
+			request.setAttribute("stime", stime);
+
+			String endtime = user.getWorkTimeEnd();
+			String etime = endtime.replace(':', '.');
+			request.setAttribute("etime", etime);
+			log.debug(stime + "/" + etime);
+
 			request.setAttribute("date", date);
+			request.setAttribute("time", time);
 			request.setAttribute("userList", userListJSON);
 			request.setAttribute("leaveType", leaveTypeJSON);
 			request.setAttribute("holiday", holidayJSON);
@@ -1849,6 +1875,7 @@ log.debug("777");
 			request.setAttribute("leave", new Gson().toJson(leave));
 			request.setAttribute("action", "Edit");
 			request.getSession().setAttribute("leaveId", id);
+			log.debug(leave);
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1857,13 +1884,62 @@ log.debug("777");
 	}
 
 	public String LeaveAdd_Do() {
+		log.debug("leave add do");
 		try {
 			User onlineUser = (User) request.getSession().getAttribute("onlineUser");
-
 			String user = request.getParameter("user");
+			log.debug("user "+user);
 			String leaveType = request.getParameter("leaveType");
 			String from = request.getParameter("from");
 			String to = request.getParameter("to");
+			
+			String time_from = "";
+			String[] fromSplit;
+			String tf_hour;
+			String tf_min;
+			String startTime = null;
+			try {
+				time_from = request.getParameter("time_from");
+				log.debug(time_from);
+				if(time_from == "") {
+					User userlist = userDAO.findById(user);
+					time_from = userlist.getWorkTimeStart();
+				}
+				fromSplit = time_from.split(":");
+				tf_hour = fromSplit[0];
+				tf_min = fromSplit[1];
+				
+				if (tf_hour.length() == 1) {
+					startTime = "0" + tf_hour + ":" + tf_min;
+				} else {
+					startTime = time_from;
+					log.debug("startTime "+startTime);
+				}
+			} catch (Exception e) {}
+			
+			String time_to = "";
+			String[] toSplit;
+			String tt_hour;
+			String tt_min;
+			String endTime = null;
+			try {
+				time_to = request.getParameter("time_to");
+				if(time_to == "") {
+					User userlist = userDAO.findById(user);
+					time_to = userlist.getWorkTimeEnd();
+				}
+				toSplit = time_to.split(":");
+				tt_hour = toSplit[0];
+				tt_min = toSplit[1];
+				
+				if (tt_hour.length() == 1) {
+					endTime = "0" + tt_hour + ":" + tt_min;
+				} else {
+					endTime = time_to;
+					log.debug("endTime "+endTime);
+				}
+			} catch (Exception e) {}
+			
 			String amount = request.getParameter("amount");
 			String amount_sub = request.getParameter("amount_sub");
 			String halfDay = request.getParameter("halfDay");
@@ -1880,21 +1956,23 @@ log.debug("777");
 			if (status == null) {
 				status = request.getParameter("status_hidden");
 			}
-
+			log.debug("timefrom " + startTime);
+			log.debug("timeto " + endTime);
 			float amount_n = Float.parseFloat(amount);
 			float amount_sub_n = Float.parseFloat(amount_sub);
-			BigDecimal noDay = BigDecimal.valueOf(amount_n + amount_sub_n);
+			log.debug(amount_sub_n);
+			BigDecimal noDay = BigDecimal.valueOf(amount_n + (amount_sub_n/10));
+			log.debug("no day"+noDay);
 			Timestamp startDate = DateUtil.dateFormatEdit(from);
 			Timestamp endDate = DateUtil.dateFormatEdit(to);
 			Integer id = leaveDAO.getMaxId() + 1;
 
-			
 			// Data send mail
-			//List<Map<String, Object>> leaveType_mail = leavetypeDAO.findByLeaveTypeId(leaveType);
-			
-			//emailservice.sendMail(user,leaveType,description,halfDay,from,to,noDay);
-			
-			
+			// List<Map<String, Object>> leaveType_mail =
+			// leavetypeDAO.findByLeaveTypeId(leaveType);
+
+			// emailservice.sendMail(user,leaveType,description,halfDay,from,to,noDay);
+
 			Leaves leave = new Leaves();
 			leave.setLeaveId(id);
 			leave.setLeaveTypeId(leaveType);
@@ -1906,6 +1984,8 @@ log.debug("777");
 			leave.setReason(reason);
 			leave.setStartDate(startDate);
 			leave.setEndDate(endDate);
+			leave.setStartTime(startTime);
+			leave.setEndTime(endTime);
 			leave.setNoDay(noDay);
 			leave.setUserCreate(onlineUser.getId());
 			leave.setUserUpdate(onlineUser.getId());
@@ -1929,6 +2009,19 @@ log.debug("777");
 			String leaveType = request.getParameter("leaveType");
 			String from = request.getParameter("from");
 			String to = request.getParameter("to");
+			String time_from = request.getParameter("time_from");
+			String[] split = time_from.split(":");
+			String tf_hour = split[0];
+			String tf_min = split[1];
+			String startTime;
+
+			if (tf_hour.length() == 1) {
+				startTime = "0" + tf_hour + ":" + tf_min;
+
+			} else {
+				startTime = time_from;
+			}
+			String endTime = request.getParameter("time_to");
 			String amount = request.getParameter("amount");
 			String amount_sub = request.getParameter("amount_sub");
 			String halfDay = request.getParameter("halfDay");
@@ -1948,7 +2041,7 @@ log.debug("777");
 
 			float amount_n = Float.parseFloat(amount);
 			float amount_sub_n = Float.parseFloat(amount_sub);
-			BigDecimal noDay = BigDecimal.valueOf(amount_n + amount_sub_n);
+			BigDecimal noDay = BigDecimal.valueOf(amount_n + amount_sub_n/10);
 			Timestamp startDate = DateUtil.dateFormatEdit(from);
 			Timestamp endDate = DateUtil.dateFormatEdit(to);
 
@@ -1962,6 +2055,8 @@ log.debug("777");
 			leave.setReason(reason);
 			leave.setStartDate(startDate);
 			leave.setEndDate(endDate);
+			leave.setStartTime(startTime);
+			leave.setEndTime(endTime);
 			leave.setNoDay(noDay);
 			leave.setUserUpdate(onlineUser.getId());
 			leave.setTimeUpdate(DateUtil.getCurrentTime());
@@ -1976,15 +2071,21 @@ log.debug("777");
 
 	public String Leave_inList() {
 		try {
-			System.out.println("Hello");System.out.println("Hello");System.out.println("Hello");
+			log.debug("Hello");
+			log.debug("Hello");
+			log.debug("Hello");
 			User onlineUser = (User) request.getSession().getAttribute("onlineUser");
 			String id_s = request.getParameter("leave_id");
 			int id = Integer.parseInt(id_s);
 			String user = request.getParameter("user");
 			String status = ("1");
+			String reason = request.getParameter("reason");
 			Leaves leave = leaveDAO.findByLeaveId(id);
 			leave.setLeaveStatusId(status);
+			leave.setReason(reason);
+			leave.setTimeUpdate(DateUtil.getCurrentTime());
 			leaveDAO.save(leave);
+			log.debug(leave);
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2027,8 +2128,9 @@ log.debug("777");
 			Leaves leave = leaveDAO.findByLeaveId(id);
 			leave.setLeaveStatusId(status);
 			leave.setReason(reason);
+			leave.setTimeUpdate(DateUtil.getCurrentTime());
 			leaveDAO.save(leave);
-
+			log.debug(leave);
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2322,6 +2424,7 @@ log.debug("777");
 	// find SATURDAY and SUNDAY
 	private ArrayList weekendList = null;
 	private ArrayList weekendList2 = null;
+	private JSONArray jsonArray;
 
 	public void findWeekendsList(int year) {
 		weekendList = new ArrayList();
@@ -2471,6 +2574,7 @@ log.debug("777");
 
 	public String leaveUpdateStatus() {
 		try {
+			log.debug("leave update status");
 			log.debug("leaveUpdateStatus");
 			String user = request.getParameter("user");
 			String leaveId = request.getParameter("leaveId");
@@ -2485,6 +2589,120 @@ log.debug("777");
 
 			e.printStackTrace();
 			return ERROR;
+		}
+	}
+
+	public String modalLeaveStatus() {
+		try {
+			log.debug("leave id " + leaveId);
+
+			Gson gson = new GsonBuilder().setDateFormat("dd MMM yyyy, HH:mm").create();
+			String responseJSON = gson.toJson(leaveDAO.findLeaveById(leaveId));
+			request.setAttribute("json", responseJSON);
+			log.debug(responseJSON);
+
+			JSONArray jsonarray = new JSONArray(responseJSON);
+			JSONObject jsonobj = jsonarray.getJSONObject(0);
+
+			int leaveId = jsonobj.getInt("leave_id");
+			String leaveTypeId = jsonobj.getString("leave_type_id");
+			String leaveStatusId = jsonobj.getString("leave_status_id");
+			String userId = jsonobj.getString("user_id");
+			String startDate = jsonobj.getString("start_date");
+			String endDate = jsonobj.getString("end_date");
+			String apprUserId = jsonobj.getString("appr_user_id");
+			BigDecimal noDay = jsonobj.getBigDecimal("no_day");
+			String description = jsonobj.getString("description");
+			String reason = jsonobj.getString("reason");
+			String timeCreate = jsonobj.getString("time_create");
+
+			// -------- time --------
+			String startTime = "";
+			try {
+				startTime = jsonobj.getString("start_time");
+			} catch (Exception e) {
+			}
+			String endTime = "";
+			try {
+				endTime = jsonobj.getString("end_time");
+			} catch (Exception e) {
+			}
+
+			// -------- time update --------
+			String timeUpdate = "";
+			try {
+				timeUpdate = jsonobj.getString("time_update");
+			} catch (Exception e) {
+			}
+
+			// -------- leave file --------
+			String leaveFile = "";
+			try {
+				leaveFile = jsonobj.getString("leave_file");
+			} catch (Exception e) {
+			}
+
+			PrintWriter out = response.getWriter();
+			JSONObject json = new JSONObject();
+
+			json.put("leave_id", leaveId);
+			json.put("leave_type_id", leaveTypeId);
+			json.put("leave_status_id", leaveStatusId);
+			json.put("user_id", userId);
+			json.put("start_date", startDate);
+			json.put("end_date", endDate);
+			json.put("start_time", startTime);
+			json.put("end_time", endTime);
+			json.put("appr_user_id", apprUserId);
+			json.put("no_day", noDay);
+			json.put("description", description);
+			json.put("reason", reason);
+			json.put("time_create", timeCreate);
+			json.put("time_update", timeUpdate);
+			json.put("leave_file", leaveFile);
+
+			out.print(json);
+			out.flush();
+			out.close();
+
+			return SUCCESS;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR;
+		}
+
+	}
+
+	public void findValidTime() {
+		try {
+			String id = request.getParameter("user");
+			log.debug(id);
+			
+			Gson gson = new GsonBuilder().create();
+			String responseJSON = gson.toJson(userDAO.findById2(id));
+			request.setAttribute("json", responseJSON);
+			log.debug(responseJSON);
+			
+			JSONArray jsonarray = new JSONArray(responseJSON);
+			JSONObject jsonobj = jsonarray.getJSONObject(0);
+			
+			String starttime = jsonobj.getString("work_time_start");
+			String endtime = jsonobj.getString("work_time_end");
+			log.debug(starttime+"-"+endtime);
+			
+			PrintWriter out = response.getWriter();
+			JSONObject json = new JSONObject();
+
+			json.put("stime", starttime);
+			json.put("etime", endtime);
+
+			out.print(json);
+			out.flush();
+			out.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
