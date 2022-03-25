@@ -19,7 +19,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></s
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 <script src="../assets/global/plugins/jquery.min.js"
 	type="text/javascript"></script>
 <script
@@ -46,6 +46,7 @@
 	href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css"
 	rel="stylesheet" type="text/css" />
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link href="../assets/global/css/timesheet.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
   AOS.init();
@@ -97,24 +98,45 @@ tr{
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
-			<i class="fa fa-edit font-red"></i> <span
+			<i class="fa fa-briefcase font-red"></i> <span
 				class="caption-subject font-red sbold uppercase">&nbsp;
-				TIME IN REPORT</span>
+				TIMESHEET</span>
 		</div>
 		
 		<div class="actions right ">
+		<form action="upload_timesheet" class="form-horizontal" id="upload_form" method="post"
+			enctype="multipart/form-data">
+			<input type="hidden" name="userUploadId" value="${userId}">
+			<input type="hidden" name="fileUploadSize" value="${size}" id="size">
+			<input type="hidden" name="userUploadCreate" value="${user.id}" id="uploadCreate">
+			<a class="btn btn-sm" 
+				href="upload/template/Timesheet_Template2022.xlsx"
+				style="width:80px;background-color:#8E44AD;color:white;">
+				Template
+			</a>
+			
+			<label class="btn btn-sm" for="myFile"
+				style="width:80px;background-color:#E7505A;color:white;display:inline-block;cursor:pointer;">
+				Import
+				<input class="fileinput fileinput-new" data-provides="fileinput" type="file" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" name="fileUpload" id="myFile" style="display:none;"/>
+			</label>			
+			
+			<a class="btn btn-sm"
+				href="TimeInReportExcelExport?year=${yearSearch}&month=${monthSearch}&user=${userId}"
+				title="Print" style="width:80px;background-color:#26C281;color: white;">Export</a>
 			<a class="btn btn-circle btn-icon-only btn-default fullscreen"
 				href="javascript:;" data-original-title="" title=""> </a>
+		</form>
 		</div>
-
 	</div>
-		<form action="searchTimeEdit" method="post" name="form">
+	
+		<form action="searchTimeEdit" method="post" name="form" id="searchTimeEdit_form">
 
 		<div class="portlet-body">
 			<div class="form-group form-lg-line-input">
-				<label class="col-md-1 control-label">Name :</label>
-					<div class="col-sm-3">
-						<select class="form-control select2me" name="user.roletId" id="user.roletId">
+            <!-- <label class="col-md-1 control-label">Name :</label> -->
+					<div class="col-sm-6">
+						<select class="form-control select2me" name="user.roletId" id="user.roletId" onchange="updateUploadUser()" disabled>
 							<optgroup label="Enable">
 								<c:forEach var="user" items="${cubeUser}">
 
@@ -146,7 +168,22 @@ tr{
 							</optgroup>
 						</select>
 				</div>
-				<label class="col-md-1 control-label">Month :</label>
+				<div class="actions right ">
+					<div class="col-md-3"
+						style="float: right; margin-bottom: 19px; display: flex; justify-content: center;">
+						<div class="input-group input-medium">
+							<input class="form-control" id="searchmonth" name="searchmonth"
+								style="text-align: center;"> <span
+								class="input-group-btn">
+								<button class="btn default" type="button" id="searchmonth_btn">
+									<i class="fa fa-calendar-o"></i>
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
+				
+				<%-- <label class="col-md-1 control-label">Month :</label>
 					<div class="col-md-2">
 					<select class="form-control select2me" name="monthSearch" id=monthSearch required="required">
 					<!-- qwerqwerqw -->
@@ -228,41 +265,44 @@ tr{
 						</c:otherwise>
 					</c:choose>
 				</select>
-				</div>	
+				</div>	 --%>
 				
-					<div class="col-md-2 text-center">
+				<%-- <div class="col-md-2 text-center">
 					<button type="submit" class="btn btn-sm blue-steel" id="searchbutton"
 						onclick="search()">
 						<i class="fa fa-search"></i>&nbsp;Search
 					</button>
 					<a class="btn btn-sm green-dark"
 						href="TimeInReportExcelExport?year=${yearSearch}&month=${monthSearch}&user=${userId}"
-						title="Print" style="color: white;"><i class="fa fa-print"></i>&nbsp;Excel</a>
-						
-				</div>
-				
+						title="Print" style="color: white;"><i class="fa fa-print"></i>&nbsp;Excel</a>	
+				</div> --%>
+			
 				<br> <br> <br>
 				<div class="portlet-body" style="text-align: center;">
-			<table class="table  table-bordered table-striped table-condensed table-hover">
+			<table class="table  table-bordered table-striped table-condensed table-hover" id="timesheet_table">
 				<thead class="flip-content">
 					<tr class = "text-center" style="background-color:rgb(59, 63, 81); color:white">
 						<th height="41"><center>วันทำงาน</center></th>
-						<th height="41" colspan="4"><center>ช่วงที่1</center></th>
-						<th height="41" colspan="4"><center>ช่วงที่2</center></th>
+						<th height="41" colspan="2"><center>ช่วงที่1</center></th>
+						<th height="41" colspan="2"><center>ช่วงที่2(OT)</center></th>
 						<th height="41" colspan="2"><center>รวมเวลา</center></th>
-						<th height="41"><center>Remark</center></th>
-						<th height="41" colspan="2"><center>Action</center></th>
+						<th height="41"><center>Project</center></th>
+						<th height="41"><center>Description</center></th>
+						<th height="41"><center>Time Spent</center></th>
+						<th height="41" colspan="4"><center>Action</center></th>
 					</tr>
 					<tr style="background-color:#f2f2f2; color:black">
 					<td>วันที่</td>
-					<td colspan="2">เข้า</td>
-					<td colspan="2">ออก</td>
-					<td colspan="2">เข้า</td>
-					<td colspan="2">ออก</td>
+					<td>เข้า</td>
+					<td>ออก</td>
+					<td>เข้า</td>
+					<td>ออก</td>
 					<td>รวม</td>
 					<td>OT</td>
 					<td></td>
 					<td></td>
+					<td></td>
+					<td colspan="4"></td>
 					</tr>
 				</thead>
 				<tbody style="vertical-align: middle;">
@@ -276,7 +316,7 @@ tr{
 					
 					<c:forEach var="TimeInlist" items="${TimeInlist}">
 					
-						<fmt:formatDate var="day_check_in" value="${TimeInlist.time_check_in}" pattern="dd/MM/yyyy" />
+						<fmt:formatDate var="day_check_in" value="${TimeInlist.started_date}" pattern="dd/MM/yyyy" />
 						<fmt:formatDate var="checkin" value="${TimeInlist.time_check_in}" pattern="HH:mm" />
 						<fmt:formatDate var="checkout" value="${TimeInlist.time_check_out}" pattern="HH:mm" />
 						<fmt:formatDate var="otin" value="${TimeInlist.OT_time_start}" pattern="HH:mm" />
@@ -372,7 +412,7 @@ tr{
 										<fmt:formatNumber var="dd" value="${checkin.toString().replace(':', '')}" />
 									<tr>
 										<td style="display:none;">${TimeInlist.timesheetId}</td>
-										<td style="vertical-align: middle;">
+										<td width="10%" style="vertical-align: middle;">
 											<c:choose>
 												<c:when test="${Weekendd == 'Mon'}"> 
 													<i class="fa fa-circle-o font-yellow-crusta icon-xl"></i>
@@ -396,13 +436,14 @@ tr{
 													<i class="fa fa-circle-o font-red-thunderbird icon-xl"></i>
 												</c:when>
 											</c:choose>
-											&nbsp;<fmt:formatDate value="${TimeInlist.time_check_in}" pattern="dd/MM/yyyy" />
+											&nbsp;<fmt:formatDate value="${TimeInlist.started_date}" pattern="dd/MM/yyyy" />
 										</td>
-										<td style="vertical-align: middle;"><span id="2edittimecheckin${TimeInlist.timesheetId}"><fmt:formatDate 
-													value="${TimeInlist.time_check_in}" pattern="HH:mm" /><input type="hidden" value="${TimeInlist.time_check_in}" id="3edittimecheckin${TimeInlist.timesheetId}"></span>						
+										<td width="3%" style="vertical-align: middle;"><span id="2edittimecheckin${TimeInlist.timesheetId}"><fmt:formatDate 
+													value="${TimeInlist.time_check_in}" pattern="HH:mm" /></span><input type="hidden" value="${TimeInlist.time_check_in}" id="3edittimecheckin${TimeInlist.timesheetId}">
+													<input type="hidden" value="${TimeInlist.started_date}" id="4edittimecheckin${TimeInlist.timesheetId}">						
 													<input type="text" class="edtimesht  timepicker timepicker-24 form-control" style="display:none;width:60px" id="edittimecheckin${TimeInlist.timesheetId}">
 													</td>
-										<td style="vertical-align: middle;">
+										<%-- <td style="vertical-align: middle;">
 										<c:choose>
 											<c:when test="${WorkTimeStartHnewformat == 0000 }"> 
 												<i class="fa fa-genderless text-danger icon-xl"></i>
@@ -410,11 +451,11 @@ tr{
 											<c:when test="${WorkTimeStartHnewformat != 0000 && checkinnewformat > WorkTimeStartHnewformat }">
 												<i class="fa fa-arrow-circle-right text-danger icon-xl"></i>
 											</c:when>
-										</c:choose></td>
-										<td style="vertical-align: middle;"><span id="2edittimecheckout${TimeInlist.timesheetId}"><fmt:formatDate 
-													value="${TimeInlist.time_check_out}" pattern="HH:mm" /><input type="hidden" value="${TimeInlist.time_check_out}" id="3edittimecheckout${TimeInlist.timesheetId}"></span>
+										</c:choose></td> --%>
+										<td width="3%" style="vertical-align: middle;"><span id="2edittimecheckout${TimeInlist.timesheetId}"><fmt:formatDate 
+													value="${TimeInlist.time_check_out}" pattern="HH:mm" /></span><input type="hidden" value="${TimeInlist.time_check_out}" id="3edittimecheckout${TimeInlist.timesheetId}">
 										<input type="text" class="edtimesht  timepicker timepicker-24 form-control" style="display:none;width:60px" id="edittimecheckout${TimeInlist.timesheetId}"></td>
-													<td style="vertical-align: middle;">
+										<%-- <td style="vertical-align: middle;">
 										<c:choose>
 										<c:when test="${WorkTimeEndHnewformat == 0000}">
 												<i class="fa fa-genderless text-danger icon-xl"></i>
@@ -422,14 +463,15 @@ tr{
 											<c:when test="${WorkTimeEndHnewformat != 0000 && checkoutnewformat < WorkTimeEndHnewformat }">
 												<i class="fa fa-arrow-circle-left text-danger icon-xl"></i>
 											</c:when>
-										</c:choose></td>
-										<td style="vertical-align: middle;"><span id="2edittimeotstart${TimeInlist.timesheetId}"><fmt:formatDate
-													value="${TimeInlist.OT_time_start}" pattern="HH:mm" /><input type="hidden" value="${TimeInlist.OT_time_start}" id="3edittimeotstart${TimeInlist.timesheetId}"></span><input type="text" class="edtimesht  timepicker timepicker-24 form-control" style="display:none;width:60px" id="edittimeotstart${TimeInlist.timesheetId}"></td>
-										<td style="vertical-align: middle;"><c:choose><c:when test="${OtCompare > 0 }"><i class="fa fa-clock-o text-muted icon-xl"></i></c:when></c:choose></td>
-										<td style="vertical-align: middle;"><span id="2edittimeotend${TimeInlist.timesheetId}"><fmt:formatDate
-													value="${TimeInlist.OT_time_end}" pattern="HH:mm" /><input type="hidden" value="${TimeInlist.OT_time_end}" id="3edittimeotend${TimeInlist.timesheetId}"></span><input type="text" class="edtimesht  timepicker timepicker-24 form-control" style="display:none;width:60px" id="edittimeotend${TimeInlist.timesheetId}"></td>	
-										<td style="vertical-align: middle;"><c:choose><c:when test="${OtCompare > 0 }"><i class="fa fa-clock-o text-muted icon-xl"></i></c:when></c:choose> </td>
-										<td style="vertical-align: middle;">
+										</c:choose>
+										</td> --%>
+										<td width="3%" style="vertical-align: middle;"><span id="2edittimeotstart${TimeInlist.timesheetId}"><fmt:formatDate
+													value="${TimeInlist.OT_time_start}" pattern="HH:mm" /><input type="hidden" value="${TimeInlist.started_date}" id="3edittimeotstart${TimeInlist.timesheetId}"></span><input type="text" class="edtimesht  timepicker timepicker-24 form-control" style="display:none;width:60px" id="edittimeotstart${TimeInlist.timesheetId}"></td>
+										<%-- <td style="vertical-align: middle;"><c:choose><c:when test="${OtCompare > 0 }"><i class="fa fa-clock-o text-muted icon-xl"></i></c:when></c:choose></td> --%>
+										<td width="3%" style="vertical-align: middle;"><span id="2edittimeotend${TimeInlist.timesheetId}"><fmt:formatDate
+													value="${TimeInlist.OT_time_end}" pattern="HH:mm" /><input type="hidden" value="${TimeInlist.started_date}" id="3edittimeotend${TimeInlist.timesheetId}"></span><input type="text" class="edtimesht  timepicker timepicker-24 form-control" style="display:none;width:60px" id="edittimeotend${TimeInlist.timesheetId}"></td>	
+										<%-- <td style="vertical-align: middle;"><c:choose><c:when test="${OtCompare > 0 }"><i class="fa fa-clock-o text-muted icon-xl"></i></c:when></c:choose> </td> --%>
+										<td width="6%" style="vertical-align: middle;">
 										
 										<!-- aa -->
 											<c:choose>
@@ -451,9 +493,9 @@ tr{
 											</c:choose>
 										
 										</td>
-										</td>
+										
 
-									<td style="vertical-align: middle;">
+									<td width="6%" style="vertical-align: middle;">
 									
 									<c:choose>
 												<c:when test="${OtCompare > 0}">
@@ -469,11 +511,18 @@ tr{
 																				
 																			
 									</td>
-										<td width="35%" style="word-break:break-all;text-align: left"><span id="2editdescription${TimeInlist.timesheetId}">${TimeInlist.OT_description}</span>
-										<input type="text" class="edtimesht form-control" style="display:none;" id="editdescription${TimeInlist.timesheetId}" value="${TimeInlist.OT_description}">
+										<td width="20%" style="word-break:break-all;text-align: left"><span id="2editproject${TimeInlist.timesheetId}">${TimeInlist.project}</span><ul style="list-style-type:none;"><li><span id="2editsummary${TimeInlist.timesheetId}">${TimeInlist.summary}</span></li></ul>
+										<input type="text" class="edtimesht form-control" style="display:none;" id="editproject${TimeInlist.timesheetId}" value="${TimeInlist.project}">
+										<input type="text" class="edtimesht form-control" style="display:none;" id="editsummary${TimeInlist.timesheetId}" value="${TimeInlist.summary}">
+										</td>
+										<td width="20%" style="word-break:break-all;text-align: left"><span id="2editdescription${TimeInlist.timesheetId}">${TimeInlist.description}</span>
+										<input type="text" class="edtimesht form-control" style="display:none;" id="editdescription${TimeInlist.timesheetId}" value="${TimeInlist.description}">
+										</td>
+										<td width="5%" style="word-break:break-all;text-align: left"><span id="2edittimespent${TimeInlist.timesheetId}">${TimeInlist.timespent}</span>
+										<input type="text" class="edtimesht form-control" style="display:none;" id="edittimespent${TimeInlist.timesheetId}" value="${TimeInlist.timespent}">
 										</td>
 										
-									<td >
+									<td width="10%" colspan="4">
 									<a 
 						class="btn circle btn-outline blue float-right"
 						onclick="editts('${TimeInlist.timesheetId}')">
@@ -488,8 +537,11 @@ tr{
 									</tr>
 										<script>
 										function save(id) {
-											var datets = document.getElementById('3edittimecheckin'+id).value;
+											var datets = document.getElementById('4edittimecheckin'+id).value;
+											var project = document.getElementById('editproject'+id).value;
+											var summary = document.getElementById('editsummary'+id).value;
 											var description = document.getElementById('editdescription'+id).value;
+											var timespent = document.getElementById('edittimespent'+id).value;
 											var timecheckin = document.getElementById('edittimecheckin'+id).value;
 											var timecheckout = document.getElementById('edittimecheckout'+id).value;
 											var timeotstart = document.getElementById('edittimeotstart'+id).value;
@@ -503,25 +555,29 @@ tr{
 											var datets2 = day+"/"+month+"/"+year; 
 											console.log(datets2);
 											console.log(idts);
+											console.log(project);
+											console.log(summary);
 											console.log(description);
+											console.log(timespent);
 											console.log(timecheckin);
 											console.log(timecheckout);
 											console.log(timeotstart);
 											console.log(timeotend);
-												$
-														.ajax({
+												$.ajax({
 															url : "updateTimesheetReport",
 															method : "POST",
 															type : "JSON",
 															data : {
 																"id" : idts,
+																"project" : project,
+																"summary" : summary,
 																"description" : description,
+																"timespent" : timespent,
 																"timeIn" : timecheckin,
 																"timeOut" : timecheckout,
 																"timeIn2" : timeotstart,
 																"timeOut2" : timeotend,
-																"date" : datets2,
-																
+																"date" : datets2
 															},
 															success : function(data) {
 																swal(
@@ -531,32 +587,81 @@ tr{
 																			type : "success"
 																		},
 																		function() {
-																			location.reload();
+																			//location.reload();
+																			var obj = JSON.parse(data);
+																			console.log(obj);
+																			var H1 = obj.checkin[0].substring(11, 13);
+																			var m1 = obj.checkin[0].substring(14, 16);
+																			var checkin = H1 + ":" + m1;
+																			
+																			
+																			var H2 = obj.checkout[0].substring(11, 13);
+																			var m2 = obj.checkout[0].substring(14, 16);
+																			var checkout = H2 + ":" + m2;
+																			
+																			$("#2edittimecheckin"+id).empty();
+																			$("#2edittimecheckin"+id).append(checkin);
+																			$("#edittimecheckin"+id).val(checkin);
+																			
+																			$("#2edittimecheckout"+id).empty();
+																			$("#2edittimecheckout"+id).append(checkout);
+																			$("#edittimecheckout"+id).val(checkout);
+																			
+																			/*$("#2edittimeotstart"+id).empty();
+																			$("#3edittimeotstart"+id).append(obj.otin);
+																			$("#2edittimeotstart"+id).append(obj.otin);
+																			$("#edittimeotstart"+id).append(obj.otin);
+																			
+																			$("#2edittimeotend"+id).empty();
+																			$("#3edittimeotend"+id).append(obj.otout);
+																			$("#2edittimeotend"+id).append(obj.otout);
+																			$("#edittimeotend"+id).append(obj.otout); */
+																			
+																			$("#2editproject"+id).empty();
+																			$("#2editproject"+id).append(obj.project);
+																			$("#editproject"+id).append(obj.project);
+																			
+																			$("#2editsummary"+id).empty();
+																			$("#2editsummary"+id).append(obj.summary);
+																			$("#editsummary"+id).append(obj.summary);
+																			
+																			$('#2editdescription'+id).empty();
+																			$('#2editdescription'+id).append(obj.desc);
+																			$("#editdescription"+id).append(obj.desc);
 																		});
 															}
 
 														})
-											
-										}
+										};
 										
-										
+					  var count = 0;
 					  function editts(id){
 						  
 					   // $("#edts").css('display','block');
+					    $("#editproject"+id).toggle();
+					    $("#2editproject"+id).toggle();
+					    
+					    $("#editsummary"+id).toggle();
+					    $("#2editsummary"+id).toggle();
+					    
 					    $("#editdescription"+id).toggle();
 					    $("#2editdescription"+id).toggle();
 					    
+					    /* $("#edittimespent"+id).toggle();
+					    $("#2edittimespent"+id).toggle(); */
+					    
 					    $("#edittimecheckin"+id).toggle();
 					    $("#2edittimecheckin"+id).toggle();
-					    var checkin =  $("#3edittimecheckin"+id).val();
-					   	var checkin2 = checkin.substring(11, 16);
-					    $('#edittimecheckin'+id).val(checkin2);	
+					    $("#4edittimecheckin"+id).toggle();
+					    //var checkin =  $("#3edittimecheckin"+id).val();
+					   	//var checkin2 = checkin.substring(11, 16);
+					    //$('#edittimecheckin'+id).val(checkin2);	
 					    
 					    $("#edittimecheckout"+id).toggle();
 					    $("#2edittimecheckout"+id).toggle();  
-					    var checkout =  $("#3edittimecheckout"+id).val();
-					   	var checkout2 = checkout.substring(11, 16);			   
-					    $('#edittimecheckout'+id).val(checkout2);
+					    //var checkout =  $("#3edittimecheckout"+id).val();
+					   	//var checkout2 = checkout.substring(11, 16);			   
+					    //$('#edittimecheckout'+id).val(checkout2);
 					    
 					    $("#edittimeotstart"+id).toggle();
 					    $("#2edittimeotstart"+id).toggle();  
@@ -569,6 +674,13 @@ tr{
 					    var otend =  $("#3edittimeotend"+id).val();
 					   	var otend2 = otend.substring(11, 16);	 
 					    $('#edittimeotend'+id).val(otend2);
+					    
+					    if(count==0){
+					    	count++;
+					    } else if(count==1){
+					    	count--;
+					    	save(id);
+					    }
 					  };
 				
 				</script>
@@ -641,10 +753,10 @@ tr{
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
+										<!-- <td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
+										<td style="vertical-align: middle;"></td> -->
 										
 											<c:choose>
 												<c:when test="${Weekendd == 'Sat'}">
@@ -658,7 +770,9 @@ tr{
 													<td width="35%" style="word-break:break-all; text-align: left">${Holidayls.head}</td>
 												</c:when>
 											</c:choose>
-										
+										<td style="vertical-align: middle;"></td>
+										<td style="vertical-align: middle;"></td>
+										<td colspan="4" style="vertical-align: middle;"></td>
 									</tr>
 									<c:set var="oparators" value="${true}" />
 								</c:when>
@@ -715,10 +829,10 @@ tr{
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
+										<!-- <td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
+										<td style="vertical-align: middle;"></td> -->
 										<c:choose>
 												<c:when test="${Weekendd == 'Sat'}">
 													<td width="35%" style="word-break:break-all"></td>
@@ -731,7 +845,9 @@ tr{
 													<td width="35%" style="word-break:break-all; text-align: left">${Holidayls.head}</td>
 												</c:when>
 											</c:choose>
-											<td></td>
+										<td style="vertical-align: middle;"></td>
+										<td style="vertical-align: middle;"></td>
+										<td colspan="4" style="vertical-align: middle;"></td>
 									</tr>
 									<c:set var="oparators" value="${true}" />
 								</c:when>
@@ -790,10 +906,10 @@ tr{
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
+										<!-- <td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
+										<td style="vertical-align: middle;"></td> -->
 										<c:choose>
 												<c:when test="${Weekendd == 'Sat'}">
 													<td width="35%" style="word-break:break-all"></td>
@@ -806,9 +922,10 @@ tr{
 													<td width="35%" style="word-break:break-all; text-align: left">${Holidayls.head}</td>
 												</c:when>
 											</c:choose>
+										<td style="vertical-align: middle;"></td>
+										<td style="vertical-align: middle;"></td>
 										<td colspan="2">edit</td>
-										<td>delete</td>
-										<td></td>
+										<td colspan="2">delete</td>
 									</tr>
 									<c:set var="oparators" value="${true}" />
 								</c:when>
@@ -880,10 +997,10 @@ tr{
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
+										<!-- <td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
+										<td style="vertical-align: middle;"></td> -->
 										<c:choose>
 												<c:when test="${Weekendd == 'Sat'}">
 													<td width="35%" style="word-break:break-all"></td>
@@ -895,7 +1012,9 @@ tr{
 													<td width="35%" style="word-break:break-all; text-align: left">${leavelistsddd.description}</td>
 												</c:when>
 											</c:choose>
-											<td></td>
+										<td style="vertical-align: middle;"></td>
+										<td style="vertical-align: middle;"></td>
+										<td colspan="4" style="vertical-align: middle;"></td>
 									</tr>
 									<c:set var="oparators" value="${true}" />
 								</c:when>
@@ -955,10 +1074,10 @@ tr{
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
+										<!-- <td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
+										<td style="vertical-align: middle;"></td> -->
 										<c:choose>
 												<c:when test="${Weekendd == 'Sat'}">
 													<td width="35%" style="word-break:break-all"></td>
@@ -970,7 +1089,9 @@ tr{
 													<td width="35%" style="word-break:break-all; text-align: left">${leavelistsddd.description}</td>
 												</c:when>
 											</c:choose>
-										<td></td>
+										<td style="vertical-align: middle;"></td>
+										<td style="vertical-align: middle;"></td>
+										<td colspan="4" style="vertical-align: middle;"></td>
 									</tr>
 									<c:set var="oparators" value="${true}" />
 								</c:when>
@@ -1030,10 +1151,10 @@ tr{
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
+										<!-- <td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
+										<td style="vertical-align: middle;"></td> -->
 										<c:choose>
 												<c:when test="${Weekendd == 'Sat'}">
 													<td width="35%" style="word-break:break-all"></td>
@@ -1045,7 +1166,9 @@ tr{
 													<td width="35%" style="word-break:break-all; text-align: left">${leavelistsddd.description}</td>
 												</c:when>
 											</c:choose>
-										<td></td>
+										<td style="vertical-align: middle;"></td>
+										<td style="vertical-align: middle;"></td>
+										<td colspan="4" style="vertical-align: middle;"></td>
 									</tr>
 									<c:set var="oparators" value="${true}" />
 								</c:when>
@@ -1099,12 +1222,10 @@ tr{
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
+										<td style="word-break:break-all"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
-										<td width="35%" style="word-break:break-all"></td>
-										<td></td>
+										<td colspan="4" style="vertical-align: middle;"></td>
 									</tr>
 								</c:when>
 								<c:otherwise>
@@ -1140,12 +1261,10 @@ tr{
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
+										<td style="word-break:break-all; text-align: left"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
-										<td style="vertical-align: middle;"></td>
-										<td width="35%" style="word-break:break-all; text-align: left"></td>
-										<td></td>
+										<td colspan="4" style="vertical-align: middle;"></td>
 								</tr>
 								</c:otherwise>
 							</c:choose>			
@@ -1202,13 +1321,96 @@ tr{
 				</tbody>
 				</table>
 				</div>
-							
-				<script>
-				
-				$("tr:not(:first)").each(function (index ) {
-					   $(this).css('animation-delay',index *0.01 +'s');
-					});
-				
+			</form>
+</div>			
+<script>	
+	$("tr:not(:first)").each(function (index ) {
+		$(this).css('animation-delay',index *0.01 +'s');
+	});
+</script>
+<script>
+	<perm:permission object="timesheet.edit">
+		document.getElementById('user.roletId').disabled = false;
+	</perm:permission>
+</script>
+<script>
+
+$(document).ready(function() {
+
+ 	var selectmonth = null; 
+	var select = null;
+	var date = new Date();
+	var monthnow = new Date(date.getFullYear(), date.getMonth());
+	function formatDate(selectmonth){
+		var d = new Date(selectmonth),
+			month = '' + (d.getMonth() + 1),
+			year = d.getFullYear();
+		if (month.length < 2)
+			month = '0' + month;
+		return [year, month].join('-');
+	}
+	
+	var optSimple = {
+			autoclose: true,
+			minViewMode: 1,
+			format: 'MM yyyy',
+			orientation: 'bottom right'
+	}; 
+	
+ 	$("#searchmonth").datepicker(optSimple);
+ 	$("#searchmonth_btn").datepicker(optSimple);
+
+  	var x = sessionStorage.getItem("selectmonth");
+	if (x != null) {
+		var y = "${sl_month}";
+		$("#searchmonth").val(y);
+		$("#searchmonth").datepicker('setDate', y);
+	}
+	sessionStorage.removeItem("selectmonth");
+	
+	if (x == null) {
+		$("#searchmonth").datepicker('setDate', monthnow);
+		$("#searchmonth_btn").datepicker('setDate', monthnow); 
+	}
+	
+ 	$("#searchmonth_btn").on('changeDate', function(selected){
+		dateselect = new Date(selected.date.valueOf());
+		dateselect.setDate(dateselect.getDate(new Date(selected.date.valueOf())));
+		$("#searchmonth").datepicker('setDate', dateselect);
+	}); 
+	
+	$("#searchmonth").change(function() {
+		var x = $(this).datepicker( 'getDate');
+		select = $("#searchmonth").val();
+		selectmonth = formatDate(select);
+		sessionStorage.setItem("selectmonth", selectmonth);
+		console.log("fortest - "+selectmonth);
 		
-				</script>
-				
+		$("#searchTimeEdit_form").submit();
+	});
+	
+});
+</script>
+<script>
+	function updateUploadUser() {
+		  $('#user.roletId #uploadCreate').val(this.value);
+		  $("#searchTimeEdit_form").submit();
+		}
+</script>	
+<script>
+	$('#myFile').bind('change', function() {
+		var fSExt = new Array('Bytes', 'KB', 'MB', 'GB');
+		fSize = this.files[0].size;
+		i = 0;
+		while (fSize > 900) {
+			fSize /= 1024;
+			i++;
+		}
+		var size_n = (Math.round(fSize * 100) / 100);
+		var size = size_n + ' ' + fSExt[i];
+		$('#size').val(size);
+		/*  <c:set var="size"  value="size"/> */
+		/*  alert(size);  */
+		$("#upload_form").submit();
+	});
+</script>				

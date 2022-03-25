@@ -2,6 +2,7 @@ package com.cubesofttech.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,8 +51,16 @@ public class Timesheet implements Serializable {
     //@GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;	
+	@Column(name = "project")
+    private String project;
+	@Column(name = "summary")
+    private String summary;
     @Column(name = "description")
     private String description;	
+    @Column(name = "started_date")
+    private Date started_date;
+    @Column(name = "timespent")
+    private String timespent;
     @Column(name = "time_check_in")
     private java.sql.Timestamp timeCheckIn;	
     @Column(name = "time_check_out")
@@ -80,6 +89,46 @@ public class Timesheet implements Serializable {
 
 	public void setOT_description(String oT_description) {
 		OT_description = oT_description;
+	}
+
+
+	public String getProject() {
+		return project;
+	}
+
+
+	public void setProject(String project) {
+		this.project = project;
+	}
+
+
+	public String getSummary() {
+		return summary;
+	}
+
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+	
+
+	public Date getStarted_date() {
+		return started_date;
+	}
+
+
+	public void setStarted_date(Date started_date) {
+		this.started_date = started_date;
+	}
+
+
+	public String getTimespent() {
+		return timespent;
+	}
+
+
+	public void setTimespent(String timespent) {
+		this.timespent = timespent;
 	}
 
 
