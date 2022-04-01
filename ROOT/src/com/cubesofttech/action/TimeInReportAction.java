@@ -149,6 +149,38 @@ public class TimeInReportAction extends ActionSupport {
 
 			}
 
+			List<Map<String, Object>> Timeinlist1 = TimeInDAO.TimeInList(month, year, search_user);
+			for (int t = 0; t < Timeinlist1.size(); t++) {
+				BigInteger findid = (BigInteger)Timeinlist1.get(t).get("timesheetId");
+				int timesheetid = findid.intValue();
+				Timestamp timecheckin = (Timestamp)Timeinlist1.get(t).get("time_check_in");
+				log.debug(timecheckin);
+				Timesheet timesheet = TimesheetDAO.findById(timesheetid);
+				Date started_date = timesheet.getStarted_date();
+				String date = String.valueOf(started_date);
+				String day = date.substring(8, 10);
+				
+				List<Map<String, Object>> whereworkhour = TimesheetDAO.whereworkhour(year,
+						month, day, search_user);
+				if (!whereworkhour.isEmpty() && timecheckin == null) {
+					for (int wwh = 0; wwh < whereworkhour.size(); wwh++) {
+						char work_hours_type = ((char) whereworkhour.get(wwh).get("work_hours_type"));
+						if (work_hours_type == '1') {
+							Timestamp startDate = ((Timestamp) whereworkhour.get(wwh)
+									.get("work_hours_time_work"));
+							timesheet.setTimeCheckIn(startDate);
+							// log.debug(startDate);
+						} else if (work_hours_type == '2') {
+							Timestamp endDate = ((Timestamp) whereworkhour.get(wwh)
+									.get("work_hours_time_work"));
+							timesheet.setTimeCheckOut(endDate);
+							// log.debug(endDate);
+						}
+
+					}
+				}
+				TimesheetDAO.update(timesheet);
+			}
 			List<Map<String, Object>> Timeinlist = TimeInDAO.TimeInList(month, year, search_user);
 			List<Map<String, Object>> Holidaylist = TimeInDAO.HolidayForTimeinList(month, year);
 			List<Map<String, Object>> leavelist = TimeInDAO.LeaveForTimeinList(month, year, search_user);
@@ -231,11 +263,45 @@ public class TimeInReportAction extends ActionSupport {
 				cal.add(Calendar.DAY_OF_MONTH, 1);
 			}
 
+			
+			List<Map<String, Object>> Timeinlist1 = TimeInDAO.TimeInList(month, year, logonUser);
+			for (int t = 0; t < Timeinlist1.size(); t++) {
+				BigInteger findid = (BigInteger)Timeinlist1.get(t).get("timesheetId");
+				int timesheetid = findid.intValue();
+				Timestamp timecheckin = (Timestamp)Timeinlist1.get(t).get("time_check_in");
+				log.debug(timecheckin);
+				Timesheet timesheet = TimesheetDAO.findById(timesheetid);
+				Date started_date = timesheet.getStarted_date();
+				String d = String.valueOf(started_date);
+				String dayt = d.substring(8, 10);
+				
+				List<Map<String, Object>> whereworkhour = TimesheetDAO.whereworkhour(year,
+						month, dayt, logonUser);
+				if (!whereworkhour.isEmpty() && timecheckin == null) {
+					for (int wwh = 0; wwh < whereworkhour.size(); wwh++) {
+						char work_hours_type = ((char) whereworkhour.get(wwh).get("work_hours_type"));
+						if (work_hours_type == '1') {
+							Timestamp startDate = ((Timestamp) whereworkhour.get(wwh)
+									.get("work_hours_time_work"));
+							timesheet.setTimeCheckIn(startDate);
+							// log.debug(startDate);
+						} else if (work_hours_type == '2') {
+							Timestamp endDate = ((Timestamp) whereworkhour.get(wwh)
+									.get("work_hours_time_work"));
+							timesheet.setTimeCheckOut(endDate);
+							// log.debug(endDate);
+						}
+
+					}
+				}
+				TimesheetDAO.update(timesheet);
+			}
 			List<Map<String, Object>> Timeinlist = TimeInDAO.TimeInList(month, year, logonUser);
 			List<Map<String, Object>> Holidaylist = TimeInDAO.HolidayForTimeinList(month, year);
 			List<Map<String, Object>> leavelist = TimeInDAO.LeaveForTimeinList(month, year, logonUser);
 			Map<String, Object> TimeCallist = TimeCalculate(Timeinlist, leavelist, Holidaylist);
 
+			
 			log.debug(Timeinlist);
 			log.debug(daylist);
 			request.setAttribute("daylist", daylist);
@@ -2422,10 +2488,14 @@ public class TimeInReportAction extends ActionSupport {
 
 			Timesheet currentTimesheet = TimesheetDAO.findById(timesheetId);
 			if (currentTimesheet != null) {
+				if (dateTimeIn != null) {
 				Timestamp timeInStamp = new Timestamp(dateTimeIn.getTime());
 				currentTimesheet.setTimeCheckIn(timeInStamp);
+				}
+				if (dateTimeOut != null) {
 				Timestamp timeOutStamp = new Timestamp(dateTimeOut.getTime());
 					currentTimesheet.setTimeCheckOut(timeOutStamp);
+				}
 				if (dateTimeIn2 != null) {
 					Timestamp timeInStamp1 = new Timestamp(dateTimeIn2.getTime());
 					currentTimesheet.setOT_time_start(timeInStamp1);

@@ -305,7 +305,7 @@ tr{
 					<td colspan="4"></td>
 					</tr>
 				</thead>
-				<tbody style="vertical-align: middle;">
+				<tbody style="vertical-align: middle;" id="databody">
 				<c:set var="oparators" value="${false}" />
 				<c:forEach var ="allday" items="${daylist}">
 				<c:set var="alldaynewformat" value="${allday.toString().replace('/', '')}" />
@@ -466,12 +466,12 @@ tr{
 										</c:choose>
 										</td> --%>
 										<td width="3%" style="vertical-align: middle;"><span id="2edittimeotstart${TimeInlist.timesheetId}"><fmt:formatDate
-													value="${TimeInlist.OT_time_start}" pattern="HH:mm" /><input type="hidden" value="${TimeInlist.started_date}" id="3edittimeotstart${TimeInlist.timesheetId}"></span><input type="text" class="edtimesht  timepicker timepicker-24 form-control" style="display:none;width:60px" id="edittimeotstart${TimeInlist.timesheetId}"></td>
+													value="${TimeInlist.OT_time_start}" pattern="HH:mm" /></span><input type="hidden" value="${TimeInlist.OT_time_start}" id="3edittimeotstart${TimeInlist.timesheetId}"><input type="text" class="edtimesht  timepicker timepicker-24 form-control" style="display:none;width:60px" id="edittimeotstart${TimeInlist.timesheetId}"></td>
 										<%-- <td style="vertical-align: middle;"><c:choose><c:when test="${OtCompare > 0 }"><i class="fa fa-clock-o text-muted icon-xl"></i></c:when></c:choose></td> --%>
 										<td width="3%" style="vertical-align: middle;"><span id="2edittimeotend${TimeInlist.timesheetId}"><fmt:formatDate
-													value="${TimeInlist.OT_time_end}" pattern="HH:mm" /><input type="hidden" value="${TimeInlist.started_date}" id="3edittimeotend${TimeInlist.timesheetId}"></span><input type="text" class="edtimesht  timepicker timepicker-24 form-control" style="display:none;width:60px" id="edittimeotend${TimeInlist.timesheetId}"></td>	
+													value="${TimeInlist.OT_time_end}" pattern="HH:mm" /></span><input type="hidden" value="${TimeInlist.OT_time_end}" id="3edittimeotend${TimeInlist.timesheetId}"><input type="text" class="edtimesht  timepicker timepicker-24 form-control" style="display:none;width:60px" id="edittimeotend${TimeInlist.timesheetId}"></td>	
 										<%-- <td style="vertical-align: middle;"><c:choose><c:when test="${OtCompare > 0 }"><i class="fa fa-clock-o text-muted icon-xl"></i></c:when></c:choose> </td> --%>
-										<td width="6%" style="vertical-align: middle;">
+										<td width="6%" style="vertical-align: middle;" id="totalcompare${TimeInlist.timesheetId}">
 										
 										<!-- aa -->
 											<c:choose>
@@ -535,155 +535,6 @@ tr{
 					</a>
 									</td>
 									</tr>
-										<script>
-										function save(id) {
-											var datets = document.getElementById('4edittimecheckin'+id).value;
-											var project = document.getElementById('editproject'+id).value;
-											var summary = document.getElementById('editsummary'+id).value;
-											var description = document.getElementById('editdescription'+id).value;
-											var timespent = document.getElementById('edittimespent'+id).value;
-											var timecheckin = document.getElementById('edittimecheckin'+id).value;
-											var timecheckout = document.getElementById('edittimecheckout'+id).value;
-											var timeotstart = document.getElementById('edittimeotstart'+id).value;
-											var timeotend = document.getElementById('edittimeotend'+id).value;
-											var idts = id;
-											
-											var day = datets.substring(8, 10);
-											var month = datets.substring(5, 7);
-											var year = datets.substring(0, 4);
-											
-											var datets2 = day+"/"+month+"/"+year; 
-											console.log(datets2);
-											console.log(idts);
-											console.log(project);
-											console.log(summary);
-											console.log(description);
-											console.log(timespent);
-											console.log(timecheckin);
-											console.log(timecheckout);
-											console.log(timeotstart);
-											console.log(timeotend);
-												$.ajax({
-															url : "updateTimesheetReport",
-															method : "POST",
-															type : "JSON",
-															data : {
-																"id" : idts,
-																"project" : project,
-																"summary" : summary,
-																"description" : description,
-																"timespent" : timespent,
-																"timeIn" : timecheckin,
-																"timeOut" : timecheckout,
-																"timeIn2" : timeotstart,
-																"timeOut2" : timeotend,
-																"date" : datets2
-															},
-															success : function(data) {
-																swal(
-																		{
-																			title : "Pass",
-																			text : "Saved Succcess",
-																			type : "success"
-																		},
-																		function() {
-																			//location.reload();
-																			var obj = JSON.parse(data);
-																			console.log(obj);
-																			var H1 = obj.checkin[0].substring(11, 13);
-																			var m1 = obj.checkin[0].substring(14, 16);
-																			var checkin = H1 + ":" + m1;
-																			
-																			
-																			var H2 = obj.checkout[0].substring(11, 13);
-																			var m2 = obj.checkout[0].substring(14, 16);
-																			var checkout = H2 + ":" + m2;
-																			
-																			$("#2edittimecheckin"+id).empty();
-																			$("#2edittimecheckin"+id).append(checkin);
-																			$("#edittimecheckin"+id).val(checkin);
-																			
-																			$("#2edittimecheckout"+id).empty();
-																			$("#2edittimecheckout"+id).append(checkout);
-																			$("#edittimecheckout"+id).val(checkout);
-																			
-																			/*$("#2edittimeotstart"+id).empty();
-																			$("#3edittimeotstart"+id).append(obj.otin);
-																			$("#2edittimeotstart"+id).append(obj.otin);
-																			$("#edittimeotstart"+id).append(obj.otin);
-																			
-																			$("#2edittimeotend"+id).empty();
-																			$("#3edittimeotend"+id).append(obj.otout);
-																			$("#2edittimeotend"+id).append(obj.otout);
-																			$("#edittimeotend"+id).append(obj.otout); */
-																			
-																			$("#2editproject"+id).empty();
-																			$("#2editproject"+id).append(obj.project);
-																			$("#editproject"+id).append(obj.project);
-																			
-																			$("#2editsummary"+id).empty();
-																			$("#2editsummary"+id).append(obj.summary);
-																			$("#editsummary"+id).append(obj.summary);
-																			
-																			$('#2editdescription'+id).empty();
-																			$('#2editdescription'+id).append(obj.desc);
-																			$("#editdescription"+id).append(obj.desc);
-																		});
-															}
-
-														})
-										};
-										
-					  var count = 0;
-					  function editts(id){
-						  
-					   // $("#edts").css('display','block');
-					    $("#editproject"+id).toggle();
-					    $("#2editproject"+id).toggle();
-					    
-					    $("#editsummary"+id).toggle();
-					    $("#2editsummary"+id).toggle();
-					    
-					    $("#editdescription"+id).toggle();
-					    $("#2editdescription"+id).toggle();
-					    
-					    /* $("#edittimespent"+id).toggle();
-					    $("#2edittimespent"+id).toggle(); */
-					    
-					    $("#edittimecheckin"+id).toggle();
-					    $("#2edittimecheckin"+id).toggle();
-					    $("#4edittimecheckin"+id).toggle();
-					    //var checkin =  $("#3edittimecheckin"+id).val();
-					   	//var checkin2 = checkin.substring(11, 16);
-					    //$('#edittimecheckin'+id).val(checkin2);	
-					    
-					    $("#edittimecheckout"+id).toggle();
-					    $("#2edittimecheckout"+id).toggle();  
-					    //var checkout =  $("#3edittimecheckout"+id).val();
-					   	//var checkout2 = checkout.substring(11, 16);			   
-					    //$('#edittimecheckout'+id).val(checkout2);
-					    
-					    $("#edittimeotstart"+id).toggle();
-					    $("#2edittimeotstart"+id).toggle();  
-					    var otstart =  $("#3edittimeotstart"+id).val();
-					   	var otstart2 = otstart.substring(11, 16);	
-					    $('#edittimeotstart'+id).val(otstart2);
-					    
-					    $("#edittimeotend"+id).toggle();
-					    $("#2edittimeotend"+id).toggle();  
-					    var otend =  $("#3edittimeotend"+id).val();
-					   	var otend2 = otend.substring(11, 16);	 
-					    $('#edittimeotend'+id).val(otend2);
-					    
-					    if(count==0){
-					    	count++;
-					    } else if(count==1){
-					    	count--;
-					    	save(id);
-					    }
-					  };
-				
-				</script>
 									<c:set var="oparators" value="${true}" />
 								</c:when>
 								
@@ -1413,4 +1264,199 @@ $(document).ready(function() {
 		/*  alert(size);  */
 		$("#upload_form").submit();
 	});
+</script>
+<script>
+function save(id) {
+	var datets = document.getElementById('4edittimecheckin'+id).value;
+	var project = document.getElementById('editproject'+id).value;
+	var summary = document.getElementById('editsummary'+id).value;
+	var description = document.getElementById('editdescription'+id).value;
+	var timespent = document.getElementById('edittimespent'+id).value;
+	var timecheckin = document.getElementById('edittimecheckin'+id).value;
+	var timecheckout = document.getElementById('edittimecheckout'+id).value;
+	var timeotstart = document.getElementById('edittimeotstart'+id).value;
+	var timeotend = document.getElementById('edittimeotend'+id).value;
+	var idts = id;
+	
+	var day = datets.substring(8, 10);
+	var month = datets.substring(5, 7);
+	var year = datets.substring(0, 4);
+	
+	var datets2 = day+"/"+month+"/"+year; 
+	console.log(datets2);
+	console.log(idts);
+	console.log(project);
+	console.log(summary);
+	console.log(description);
+	console.log(timespent);
+	console.log(timecheckin);
+	console.log(timecheckout);
+	console.log(timeotstart);
+	console.log(timeotend);
+		$.ajax({
+					url : "updateTimesheetReport",
+					method : "POST",
+					type : "JSON",
+					data : {
+						"id" : idts,
+						"project" : project,
+						"summary" : summary,
+						"description" : description,
+						"timespent" : timespent,
+						"timeIn" : timecheckin,
+						"timeOut" : timecheckout,
+						"timeIn2" : timeotstart,
+						"timeOut2" : timeotend,
+						"date" : datets2
+					},
+					success : function(data) {
+						swal(
+								{
+									title : "Pass",
+									text : "Saved Succcess",
+									type : "success"
+								},
+								function() {
+									//location.reload();
+									var obj = JSON.parse(data);
+									console.log(obj);
+									if(obj.checkin[0] != null){
+										var H1 = obj.checkin[0].substring(11, 13);
+										var m1 = obj.checkin[0].substring(14, 16);
+										var checkin = H1 + ":" + m1;
+									}
+									
+									if(obj.checkout[0] != null){
+										var H2 = obj.checkout[0].substring(11, 13);
+										var m2 = obj.checkout[0].substring(14, 16);
+										var checkout = H2 + ":" + m2;
+									}
+									
+									if(obj.otin[0] != null){
+										var H3 = obj.otin[0].substring(11, 13);
+										var m3 = obj.otin[0].substring(14, 16);
+										var otin = H3 + ":" + m3;
+									}
+									
+									if(obj.otout[0] != null){
+										var H4 = obj.otout[0].substring(11, 13);
+										var m4 = obj.otout[0].substring(14, 16);
+										var otout = H4 + ":" + m4;
+									}
+									
+									$("#2edittimecheckin"+id).empty();
+									$("#2edittimecheckin"+id).append(checkin);
+									$("#edittimecheckin"+id).val(checkin);
+									$("#3edittimecheckin"+id).empty();
+									$("#3edittimecheckin"+id).val(obj.checkin);
+									
+									$("#2edittimecheckout"+id).empty();
+									$("#2edittimecheckout"+id).append(checkout);
+									$("#edittimecheckout"+id).val(checkout);
+									$("#3edittimecheckout"+id).empty();
+									$("#3edittimecheckout"+id).val(obj.checkout);
+									
+									$("#2edittimeotstart"+id).empty();
+									$("#2edittimeotstart"+id).append(otin);
+									$("#edittimeotstart"+id).val(otin);
+									$("#3edittimeotstart"+id).empty();
+									$("#3edittimeotstart"+id).val(obj.otin);
+									
+									$("#2edittimeotend"+id).empty();
+									$("#2edittimeotend"+id).append(otout);
+									$("#edittimeotend"+id).val(otout);
+									$("#3edittimeotend"+id).empty();
+									$("#3edittimeotend"+id).val(obj.otout);
+									
+									$("#2editproject"+id).empty();
+									$("#2editproject"+id).append(obj.project);
+									$("#editproject"+id).append(obj.project);
+									
+									$("#2editsummary"+id).empty();
+									$("#2editsummary"+id).append(obj.summary);
+									$("#editsummary"+id).append(obj.summary);
+									
+									$('#2editdescription'+id).empty();
+									$('#2editdescription'+id).append(obj.desc);
+									$("#editdescription"+id).append(obj.desc);
+									
+									
+								});
+					}
+
+				})
+};
+
+var count = 0;
+function editts(id){
+console.log(id);
+// $("#edts").css('display','block');
+$("#editproject"+id).toggle();
+$("#2editproject"+id).toggle();
+
+$("#editsummary"+id).toggle();
+$("#2editsummary"+id).toggle();
+
+$("#editdescription"+id).toggle();
+$("#2editdescription"+id).toggle();
+
+/* $("#edittimespent"+id).toggle();
+$("#2edittimespent"+id).toggle(); */
+
+$("#edittimecheckin"+id).toggle();
+$("#2edittimecheckin"+id).toggle();
+
+$("#edittimecheckout"+id).toggle();
+$("#2edittimecheckout"+id).toggle();
+
+$("#edittimeotstart"+id).toggle();
+$("#2edittimeotstart"+id).toggle();
+
+$("#edittimeotend"+id).toggle();
+$("#2edittimeotend"+id).toggle();
+
+if(count==0){
+count++;
+
+var checkin =  $("#3edittimecheckin"+id).val();
+var checkin2 = checkin.substring(11, 16);
+$("#edittimecheckin"+id).val(checkin2);
+
+var checkout =  $("#3edittimecheckout"+id).val();
+var checkout2 = checkout.substring(11, 16);			   
+$('#edittimecheckout'+id).val(checkout2);
+
+var otstart =  $("#3edittimeotstart"+id).val();
+var otstart2 = otstart.substring(11, 16);	
+$('#edittimeotstart'+id).val(otstart2);
+
+var otend =  $("#3edittimeotend"+id).val();
+var otend2 = otend.substring(11, 16);	 
+$('#edittimeotend'+id).val(otend2);
+} else if(count==1){
+count--;
+save(id);
+}
+};
+function mergeCells() {
+	var db = document.getElementById("databody");
+	var dbRows = db.rows;
+	var lastValue = "";
+	var lastCounter = 1;
+	var lastRow = 0;
+	for (var i = 0; i < dbRows.length; i++) {
+		 var thisValue = dbRows[i].cells[1].innerHTML;
+		 if (thisValue == lastValue) {
+		   lastCounter++;
+		   dbRows[lastRow].cells[1].rowSpan = lastCounter;
+		   dbRows[i].cells[1].style.display = "none";
+		 } else {
+		   dbRows[i].cells[1].style.display = "table-cell";
+		   lastValue = thisValue;
+		   lastCounter = 1;
+		   lastRow = i;
+		 }
+	}  
+}
+window.onload = mergeCells;
 </script>				
