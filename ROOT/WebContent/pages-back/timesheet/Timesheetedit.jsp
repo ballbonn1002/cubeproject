@@ -471,7 +471,7 @@ tr{
 										<td width="3%" style="vertical-align: middle;"><span id="2edittimeotend${TimeInlist.timesheetId}"><fmt:formatDate
 													value="${TimeInlist.OT_time_end}" pattern="HH:mm" /></span><input type="hidden" value="${TimeInlist.OT_time_end}" id="3edittimeotend${TimeInlist.timesheetId}"><input type="text" class="edtimesht  timepicker timepicker-24 form-control" style="display:none;width:60px" id="edittimeotend${TimeInlist.timesheetId}"></td>	
 										<%-- <td style="vertical-align: middle;"><c:choose><c:when test="${OtCompare > 0 }"><i class="fa fa-clock-o text-muted icon-xl"></i></c:when></c:choose> </td> --%>
-										<td width="6%" style="vertical-align: middle;" id="totalcompare${TimeInlist.timesheetId}">
+										<td width="6%" style="vertical-align: middle;" id="totalTime${TimeInlist.timesheetId}">
 										
 										<!-- aa -->
 											<c:choose>
@@ -1380,6 +1380,24 @@ function save(id) {
 									$('#2editdescription'+id).append(obj.desc);
 									$("#editdescription"+id).append(obj.desc);
 									
+									$('#totalTime'+id).empty();
+									if(m1 <= m2){
+										var totalTime = H2-H1;
+										var totalTimemFormat = m2-m1;
+									} else if(m1 > m2){
+										var totalTime = (H2-1)-H1;
+										var totalTimemFormat = (m2-m1)+60;
+									}
+									
+									var totalTimem = ('0' + totalTimemFormat).slice(-2);
+									
+									if(totalTime >= 8){
+										$('#totalTime'+id).append('<div  class="btn-sm btn-info" ><i class="fa fa-check"></i>8:00  hrs.</div>');
+									} else if(totalTime < 8){
+										$('#totalTime'+id).append('<div  class="btn-sm btn-danger" ><i class="fa fa-fire"></i>'+ totalTime +':'+ totalTimem +'  hrs.</div>');
+									} else {
+										$('#totalTime'+id).append('<div  class="btn-sm btn-info" ><i class="fa fa-check"></i>0:00  hrs.</div>');
+									}
 									
 								});
 					}
