@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -219,10 +220,11 @@ public class LeaveAction extends ActionSupport {
 			request.setAttribute("LastYear", LastYear);
 			Timestamp start_date = DateUtil.dateToTimestamp("01-01-" + DateUtil.getYear(), "00:00");
 			Timestamp end_date = DateUtil.dateToTimestamp("31-12-" + DateUtil.getYear(), "00:00");
-
+			
 			List<Map<String, Object>> userleave = leaveDAO.findUserLeave(userLogin, start_date, end_date);
+
 			request.setAttribute("userleave", userleave);
-			log.debug(userleave);
+			log.debug("userleave: "+userleave);
 			BigDecimal LeavenumT1 = new BigDecimal(0);
 			BigDecimal LeavenumT2 = new BigDecimal(0);
 			BigDecimal LeavenumT3 = new BigDecimal(0);
@@ -230,13 +232,23 @@ public class LeaveAction extends ActionSupport {
 			BigDecimal LeavenumT5 = new BigDecimal(0);
 			BigDecimal LeavenumT6 = new BigDecimal(0);
 			BigDecimal LeavenumT9 = new BigDecimal(0);
+			
+			BigDecimal LeaveWAnumT1 = new BigDecimal(0);
+			BigDecimal LeaveWAnumT2 = new BigDecimal(0);
+			BigDecimal LeaveWAnumT3 = new BigDecimal(0);
+			BigDecimal LeaveWAnumT4 = new BigDecimal(0);
+			BigDecimal LeaveWAnumT5 = new BigDecimal(0);
+			BigDecimal LeaveWAnumT6 = new BigDecimal(0);
+			BigDecimal LeaveWAnumT9 = new BigDecimal(0);
 
 			for (int i = 0; i < userleave.size(); i++) {
 				Character type = (Character) userleave.get(i).get(TYPELEAVE);
 				BigDecimal num = (BigDecimal) userleave.get(i).get(NODAY);
+				Character status = (Character) userleave.get(i).get(STATUS);
 				log.debug(type + "  " + num);
+				log.debug("status/type/num: "+status+"/"+type+"/"+num);
 
-				switch (type) {
+/*				switch (type) {
 				case '1':
 					LeavenumT1 = num.add(LeavenumT1);
 					break;
@@ -260,6 +272,60 @@ public class LeaveAction extends ActionSupport {
 					break;
 				default:
 					break;
+				}	*/
+				switch (status) {
+				case '0':
+					switch (type) {
+						case '1':
+							LeaveWAnumT1 = num.add(LeaveWAnumT1);
+							break;
+						case '2':
+							LeaveWAnumT2 = num.add(LeaveWAnumT2);
+							break;
+						case '3':
+							LeaveWAnumT3 = num.add(LeaveWAnumT3);
+							break;
+						case '4':
+							LeaveWAnumT4 = num.add(LeaveWAnumT4);
+							break;
+						case '5':
+							LeaveWAnumT5 = num.add(LeaveWAnumT5);
+							break;
+						case '6':
+							LeaveWAnumT6 = num.add(LeaveWAnumT6);
+							break;
+						case '9':
+							LeaveWAnumT9 = num.add(LeaveWAnumT9);
+							break;
+					}
+					break;
+				case '1':
+					switch (type) {
+						case '1':
+							LeavenumT1 = num.add(LeavenumT1);
+							break;
+						case '2':
+							LeavenumT2 = num.add(LeavenumT2);
+							break;
+						case '3':
+							LeavenumT3 = num.add(LeavenumT3);
+							break;
+						case '4':
+							LeavenumT4 = num.add(LeavenumT4);
+							break;
+						case '5':
+							LeavenumT5 = num.add(LeavenumT5);
+							break;
+						case '6':
+							LeavenumT6 = num.add(LeavenumT6);
+							break;
+						case '9':
+							LeavenumT9 = num.add(LeavenumT9);
+							break;
+					}
+					break;
+				default:
+					break;
 				}
 			}
 
@@ -273,14 +339,13 @@ public class LeaveAction extends ActionSupport {
 			log.debug(LeavenumT6);
 			log.debug(LeavenumT9);
 
-			request.setAttribute("LeavenumT1", LeavenumT1);
-			request.setAttribute("LeavenumT2", LeavenumT2);
-			request.setAttribute("LeavenumT3", LeavenumT3);
-			request.setAttribute("LeavenumT4", LeavenumT4);
-			request.setAttribute("LeavenumT5", LeavenumT5);
-			request.setAttribute("LeavenumT6", LeavenumT6);
-			request.setAttribute("LeavenumT9", LeavenumT9);
-
+			request.setAttribute("LeavenumT1", LeavenumT1);		request.setAttribute("LeaveWAnumT1", LeaveWAnumT1);
+			request.setAttribute("LeavenumT2", LeavenumT2);		request.setAttribute("LeaveWAnumT2", LeaveWAnumT2);
+			request.setAttribute("LeavenumT3", LeavenumT3);		request.setAttribute("LeaveWAnumT3", LeaveWAnumT3);
+			request.setAttribute("LeavenumT4", LeavenumT4);		request.setAttribute("LeaveWAnumT4", LeaveWAnumT4);
+			request.setAttribute("LeavenumT5", LeavenumT5);		request.setAttribute("LeaveWAnumT5", LeaveWAnumT5);
+			request.setAttribute("LeavenumT6", LeavenumT6);		request.setAttribute("LeaveWAnumT6", LeaveWAnumT6);
+			request.setAttribute("LeavenumT9", LeavenumT9);		request.setAttribute("LeaveWAnumT9", LeaveWAnumT9);
 			request.setAttribute("leaveList", leaveDAO.searchtable2(start_date, end_date, userLogin));
 
 			request.setAttribute("leavetypeList", leavetypeDAO.findAll2());
@@ -297,7 +362,7 @@ public class LeaveAction extends ActionSupport {
 			request.setAttribute("type_5", type_leave.get(4).getLeaveTypeName());
 			request.setAttribute("type_6", type_leave.get(5).getLeaveTypeName());
 			myleave();
-			System.out.println("leave for admin");
+			log.debug("leave for admin");
 			return SUCCESS;
 		} catch (Exception e) {
 
@@ -327,7 +392,6 @@ public class LeaveAction extends ActionSupport {
 			List<User> leader = userDAO.findBySelect(userId);
 			request.setAttribute("leader", leader);
 			request.setAttribute("userId", userId);
-
 			List<Map<String, Object>> leaveList = leaveDAO.findLeave();
 			request.setAttribute("leaveList", leaveList);
 			request.setAttribute("leavetypeList", leavetypeDAO.findAll_calendar());
@@ -677,6 +741,7 @@ public class LeaveAction extends ActionSupport {
 
 			if (!"All".equals(userSelect)) {
 				if (typeLeaves.equals("All")) {
+					log.debug("search");
 					request.setAttribute("leaveList", leaveDAO.searchapproved(start_date, end_date, userSelect));
 				} else {
 					request.setAttribute("leaveList",
@@ -730,6 +795,7 @@ public class LeaveAction extends ActionSupport {
 
 	public static final String TYPELEAVE = "leave_type_id";
 	public static final String NODAY = "no_day";
+	public static final String STATUS = "leave_status_id";
 
 	public String searchleaveapproved() {
 		try {
@@ -760,9 +826,10 @@ public class LeaveAction extends ActionSupport {
 				start_date = DateUtil.dateFormatEdit(start);
 				end_date = DateUtil.dateFormatEdit(end);
 			}
-
+			log.debug("user select: "+userSelect);
 			if (!"All".equals(userSelect)) {
 				if (leaveStatus.equals("3")) {
+					
 					request.setAttribute("leaveList", leaveDAO.searchtable2(start_date, end_date, userSelect));
 				} else {
 					request.setAttribute("leaveList",
@@ -772,8 +839,9 @@ public class LeaveAction extends ActionSupport {
 				}
 			} else {
 				if (leaveStatus.equals("3")) {
-
-					List<Map<String, Object>> leaveList = leaveDAO.searchtable(start_date, end_date, userSelect);
+					log.debug("'select all'");
+					List<Map<String, Object>> leaveList = leaveDAO.searchtableAll(start_date, end_date);
+				/*	List<Map<String, Object>> leaveList = leaveDAO.searchtable(start_date, end_date, userSelect);	*/
 					request.setAttribute("leaveList", leaveList);
 				} else {
 					request.setAttribute("leaveList",
@@ -783,18 +851,22 @@ public class LeaveAction extends ActionSupport {
 
 			Date day = new Date();
 			LocalDate localdate = day.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
+			List<Map<String, Object>> userleave = null;
 			if (!"All".equals(userSelect)) {
 				Double LastYear = leaveDAO.LastYearQuota(userSelect, localdate.getYear());
 				request.setAttribute("LastYear", LastYear);
 				Double ThisYear = leaveDAO.ThisYearQuota(userSelect);
 				request.setAttribute("ThisYear", ThisYear);
+				log.debug("lastyear: "+LastYear);
+				log.debug("thisyear: "+ThisYear);
+				
+				userleave = leaveDAO.findUserLeave(userSelect, start_date1, end_date1);
+			} else {
+				log.debug("find user all leave");
+				userleave = leaveDAO.findUserAllLeave(start_date1, end_date1);
 			}
-
-			String user = request.getParameter("name1");
-			List<Map<String, Object>> userleave = leaveDAO.findUserLeave(user, start_date1, end_date1);
 			request.setAttribute("userleave", userleave);
-			log.debug(userleave);
+			log.debug("userleave: "+userleave);
 			BigDecimal LeavenumT1 = new BigDecimal(0);
 			BigDecimal LeavenumT2 = new BigDecimal(0);
 			BigDecimal LeavenumT3 = new BigDecimal(0);
@@ -802,46 +874,88 @@ public class LeaveAction extends ActionSupport {
 			BigDecimal LeavenumT5 = new BigDecimal(0);
 			BigDecimal LeavenumT6 = new BigDecimal(0);
 			BigDecimal LeavenumT9 = new BigDecimal(0);
+			
+			BigDecimal LeaveWAnumT1 = null;
+			BigDecimal LeaveWAnumT2 = null;
+			BigDecimal LeaveWAnumT3 = null;
+			BigDecimal LeaveWAnumT4 = null;
+			BigDecimal LeaveWAnumT5 = null;
+			BigDecimal LeaveWAnumT6 = null;
+			BigDecimal LeaveWAnumT9 = null;
 
 			for (int i = 0; i < userleave.size(); i++) {
 				Character type = (Character) userleave.get(i).get(TYPELEAVE);
 				BigDecimal num = (BigDecimal) userleave.get(i).get(NODAY);
+				Character status = (Character) userleave.get(i).get(STATUS);
 				log.debug(type + "  " + num);
 
-				switch (type) {
+				try {
+				switch (status) {
+				case '0':
+					switch (type) {
+					case '1':
+						LeaveWAnumT1 = num.add(LeaveWAnumT1);
+						break;
+					case '2':
+						LeaveWAnumT2 = num.add(LeaveWAnumT2);
+						break;
+					case '3':
+						LeaveWAnumT3 = num.add(LeaveWAnumT3);
+						break;
+					case '4':
+						LeaveWAnumT4 = num.add(LeaveWAnumT4);
+						break;
+					case '5':
+						LeaveWAnumT5 = num.add(LeaveWAnumT5);
+						break;
+					case '6':
+						LeaveWAnumT6 = num.add(LeaveWAnumT6);
+						break;
+					case '9':
+						LeaveWAnumT9 = num.add(LeaveWAnumT9);
+						break;
+					}
+					break;
 				case '1':
-					LeavenumT1 = num.add(LeavenumT1);
-					break;
-				case '2':
-					LeavenumT2 = num.add(LeavenumT2);
-					break;
-				case '3':
-					LeavenumT3 = num.add(LeavenumT3);
-					break;
-				case '4':
-					LeavenumT4 = num.add(LeavenumT4);
-					break;
-				case '5':
-					LeavenumT5 = num.add(LeavenumT5);
-					break;
-				case '6':
-					LeavenumT6 = num.add(LeavenumT6);
-					break;
-				case '9':
-					LeavenumT9 = num.add(LeavenumT9);
+					switch (type) {
+					case '1':
+						LeavenumT1 = num.add(LeavenumT1);
+						break;
+					case '2':
+						LeavenumT2 = num.add(LeavenumT2);
+						break;
+					case '3':
+						LeavenumT3 = num.add(LeavenumT3);
+						break;
+					case '4':
+						LeavenumT4 = num.add(LeavenumT4);
+						break;
+					case '5':
+						LeavenumT5 = num.add(LeavenumT5);
+						break;
+					case '6':
+						LeavenumT6 = num.add(LeavenumT6);
+						break;
+					case '9':
+						LeavenumT9 = num.add(LeavenumT9);
+						break;
+					}
 					break;
 				default:
 					break;
 				}
+				} catch (Exception e){
+					
+				}
 			}
 
-			request.setAttribute("LeavenumT1", LeavenumT1);
-			request.setAttribute("LeavenumT2", LeavenumT2);
-			request.setAttribute("LeavenumT3", LeavenumT3);
-			request.setAttribute("LeavenumT4", LeavenumT4);
-			request.setAttribute("LeavenumT5", LeavenumT5);
-			request.setAttribute("LeavenumT6", LeavenumT6);
-			request.setAttribute("LeavenumT9", LeavenumT9);
+			request.setAttribute("LeavenumT1", LeavenumT1);		request.setAttribute("LeaveWAnumT1", LeaveWAnumT1);
+			request.setAttribute("LeavenumT2", LeavenumT2);		request.setAttribute("LeaveWAnumT2", LeaveWAnumT2);
+			request.setAttribute("LeavenumT3", LeavenumT3);		request.setAttribute("LeaveWAnumT3", LeaveWAnumT3);
+			request.setAttribute("LeavenumT4", LeavenumT4);		request.setAttribute("LeaveWAnumT4", LeaveWAnumT4);
+			request.setAttribute("LeavenumT5", LeavenumT5);		request.setAttribute("LeaveWAnumT5", LeaveWAnumT5);
+			request.setAttribute("LeavenumT6", LeavenumT6);		request.setAttribute("LeaveWAnumT6", LeaveWAnumT6);
+			request.setAttribute("LeavenumT9", LeavenumT9);		request.setAttribute("LeaveWAnumT9", LeaveWAnumT9);
 
 			request.setAttribute("flag_search", "1");
 			request.setAttribute("appr", leaveStatus);
@@ -1016,7 +1130,7 @@ public class LeaveAction extends ActionSupport {
 			List<User> leader = userDAO.findBySelect(userId);
 			request.setAttribute("leader", leader);
 			request.setAttribute("userId", userId);
-
+			System.out.println("this one");
 			List<Map<String, Object>> leaveList = leaveDAO.findLeave();
 			request.setAttribute("leaveList", leaveList);
 
@@ -1352,6 +1466,7 @@ public class LeaveAction extends ActionSupport {
 				session.setAttribute("userAuthority", userAuthority);
 			}
 			request.setAttribute("flag", flag);
+			log.debug("myedit");
 			List<Leaves> leaveList = leaveDAO.findAll();
 			request.setAttribute("leaveList", leaveList);
 			request.setAttribute("leavetypeList", leavetypeDAO.findAll_calendar());
@@ -1615,6 +1730,7 @@ public class LeaveAction extends ActionSupport {
 			String status = "1";
 			// List<Map<String, Object>> leaveListDashboard =
 			// leaveDAO.myLeavesList(userLogin, start_date, end_date, status);
+			log.debug("myleave");
 			List LeaveID = leaveDAO.findLeaveId(userLogin, start_date, end_date, status);
 
 			request.setAttribute("leavelist", leavelist);
@@ -1960,8 +2076,9 @@ public class LeaveAction extends ActionSupport {
 			log.debug("timeto " + endTime);
 			float amount_n = Float.parseFloat(amount);
 			float amount_sub_n = Float.parseFloat(amount_sub);
+			log.debug(amount_n);
 			log.debug(amount_sub_n);
-			BigDecimal noDay = BigDecimal.valueOf(amount_n + (amount_sub_n/10));
+			BigDecimal noDay = BigDecimal.valueOf(amount_n + (amount_sub_n/8));
 			log.debug("no day"+noDay);
 			Timestamp startDate = DateUtil.dateFormatEdit(from);
 			Timestamp endDate = DateUtil.dateFormatEdit(to);
@@ -2041,7 +2158,7 @@ public class LeaveAction extends ActionSupport {
 
 			float amount_n = Float.parseFloat(amount);
 			float amount_sub_n = Float.parseFloat(amount_sub);
-			BigDecimal noDay = BigDecimal.valueOf(amount_n + amount_sub_n/10);
+			BigDecimal noDay = BigDecimal.valueOf(amount_n + amount_sub_n/8);
 			Timestamp startDate = DateUtil.dateFormatEdit(from);
 			Timestamp endDate = DateUtil.dateFormatEdit(to);
 
