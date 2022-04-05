@@ -130,8 +130,6 @@
 						</div>
 					</div>
 					<div class="col-md-3">
-						<!-- <input type="text" class="form-control timepicker timepicker-24" id="time_from" name="time_from"
-							onchange="time()"> -->
 						<input type="text" class="form-control timepicker timepicker-24" id="time_from" name="time_from">
 							<input class="hide" id="time_from_hidden" name="time_from_hidden" hidden>
 					</div>
@@ -152,8 +150,6 @@
 						</div>
 					</div>
 					<div class="col-md-3">
-						<!-- <input type="text" class="form-control timepicker timepicker-24" id="time_to" name="time_to"
-							onchange="time()"> -->
 						<input type="text" class="form-control timepicker timepicker-24" id="time_to" name="time_to">
 							<input class="hide" id="time_to_hidden" name="time_to_hidden" hidden>
 					</div>
@@ -171,16 +167,6 @@
 						<input hidden class="hide" name="amount_hidden" id="amount_hidden" type="text">
 					</div>
 					<div class="col-md-2">
-<!--  						<select onchange="check()" class="bs-select form-control" name="amount_sub" id="amount_sub">
-							<option value="0" selected>0</option>
-							<option value="0.125">1</option>
-							<option value="0.25">2</option>
-							<option value="0.375">3</option>
-							<option value="0.5">4</option>
-							<option value="0.625">5</option>
-							<option value="0.75">6</option>
-							<option value="0.875">7</option>
-						</select>  -->
 						<input type="text" class="form-control" id="amount_sub" name="amount_sub" value="0"
 							min="1" max="1000" maxlength="3" onchange="check()" required>
 						<input hidden class="hide" name="amount_sub_hidden" id="amount_sub_hidden" type="text">
@@ -192,10 +178,9 @@
 					<label class="col-md-3">Description :</label>
 				</div>
 				<div class="form-group">
-					<!-- <label class="col-md-3 control-label">Description :</label> -->
 					<div class="col-md-3 control-label"></div>
 					<div class="col-md-6">
-						<textarea style="word-break: break-all; white-space: normal;"
+						<textarea style="word-break: break-all; white-space: normal;" required
 							maxlength="1024" class="form-control" rows="6" name="description" id="description" onkeyup='check_char(this)'></textarea>
 							<input hidden class="hide" name="description_hidden" id="description_hidden" type="text">
 						<div class="form-control-focus"></div>
@@ -212,7 +197,7 @@
 					</div>
 				</div>
 
-				<div class="form-group">
+ 				<div class="form-group">
 					<label class="col-md-3 control-label">Status :</label>
 					<div class="col-md-6">
 						<select class="form-control" id='status' name='status' required>
@@ -222,7 +207,7 @@
 						</select>
 						<input hidden name="status_hidden" id="status_hidden" type="text">
 					</div>
-				</div>
+				</div> 
 
 				<div class="form-group">
 					<label class="col-md-3 control-label">Reason :</label>
@@ -368,7 +353,6 @@ function check_char(elm){
     			$('.timepicker').timepicker({
     				showMeridian: false
     			});
-    			
     			$('.timepicker').timepicker('setTime', "");
             }
             
@@ -777,17 +761,11 @@ console.log("add page");
 		console.log(actionpage);
 		debugger;
 		var leave_1 = parseFloat(${leave_1}),
-			amountInt = parseFloat(amount),
-			amount_subInt = parseFloat(amount_sub), 
-			all =amountInt+(amount_subInt), 	
+			amountFlo = parseFloat(amount),
+			amount_subFlo = parseFloat(amount_sub/8), 
+			all =amountFlo+(amount_subFlo), 	
 			y = ${quotaThisYear},
 			type1 = "${type_1}";
-		/*alert(amount_subInt);
-		alert(amountInt);
-		alert(leave_1);
-		alert(all);*/
-		
-		/* alert(typeleave); */
 		
 		
 		if( typeleave == "1" && all > y){
@@ -878,59 +856,63 @@ console.log("add page");
 			} 
 		});
 	};
-	
-/* 	$('#time_from').focus(function(){
-		var stime = localStorage.getItem("stime");
-	}); */
 
 	var x = 0;
 	$('#time_to').focus(function(){
 		$(document).click((event) => { 
 			if (!$(event.target).closest('#time_to').length) {                                             
-				console.log("out");
 				
 				time_from = $('#time_from').val();
 		 		time_to = $('#time_to').val();
-				console.log("timefrom: "+time_from);
-				console.log("timeto: "+time_to);
 				
 				var timefrom = parseFloat(time_from.replace(":", "."));
 				var timeto = parseFloat(time_to.replace(":", "."));
 				var hourtime = timeto-timefrom;
-				console.log(hourtime);
 				
 				var from_arr = timefrom.toString().split(".");
 				var hour_f = from_arr[0];
 				var min_f = from_arr[1];
 				
 				var amount1 = $('#amount').val();
-				console.log("amount "+amount1);
 				var amountsub1 = $('#amount_sub').val();
-				console.log("amount sub "+amountsub1);
-				var all1 = parseFloat(amount1)+parseFloat(amountsub1/10);
-				console.log(all1);
+				var all1 = parseFloat(amount1)+parseFloat(amountsub1);
 			}
 				if(hourtime >= 8){
 					hourtime = 0;
-					/* $('#amount').val(1); */
 					if(x = 0){
 						$('#amount_sub').val(hourtime);
 						x = 1;
 					}
-					console.log("result: "+hourtime);
 				}
 				else if(hourtime < 8){
 					hourtime -= 1;
-					/* $('#amount').val(0); */
-					
 					if(x == 0){
 						$('#amount_sub').val(hourtime);
 						x = 1;
 					}
-					console.log("result -1: "+hourtime);
 				}  
 		 });
 	 });
+	function check(){
+		var amount_sub = $('#amount_sub').val();
+		if(amount_sub < 0 || amount_sub > 7){
+			swal({
+				title: "Warning!",
+				text: "You can choose to enter ' Hour ' 0-7 only.",
+				type: "warning",
+				confirmButtonClass: 'btn-warning',
+				confirmButtonText: 'OK'
+			},  function (inputValue) {
+				if (inputValue == true) {
+					$('#amount_sub').val(0);
+					return false;
+				}
+			});
+		}
+		
+	}
+	
+	
 
 	
 </script>
