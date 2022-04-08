@@ -91,25 +91,23 @@
 	<li class="nav-item"><a
 		href="check_history?userId=${onlineUser.id}" class="nav-link"> <i
 			class="fa fa-history"></i> <span class="title">Work history</span></a></li>
-	<li class="nav-item"><a
+	<%-- <li class="nav-item"><a
 		href="timesheet_list?userseq=${onlineUser.id}" class="nav-link"> <i
-			class="fa fa-edit"></i> <span class="title">TimeSheet list</span></a></li>
-	<perm:permission object="timesheet.edit">
-		<li class="nav-item"><a href="openTimesheetEdit" class="nav-link">
-				<i class="fa fa-edit"></i> <span class="title">TimeSheet HR</span>
-		</a></li>
-	</perm:permission>
-	<li class="nav-item"><a href="mytimesheet" class="nav-link"> <i
-			class="fa fa-edit"></i> <span class="title">My TimeSheet</span></a></li>
+			class="fa fa-edit"></i> <span class="title">TimeSheet list</span></a></li> --%>
+	<li class="nav-item"><a href="openTimesheetEdit" class="nav-link">
+			<i class="fa fa-edit"></i> <span class="title">TimeSheet</span>
+	</a></li>
+	<!-- <li class="nav-item"><a href="mytimesheet" class="nav-link"> <i
+			class="fa fa-edit"></i> <span class="title">My TimeSheet</span></a></li> -->
 	<li class="nav-item"><a href="ot_list?userseq=${onlineUser.id}"
 		class="nav-link"> <i class="fa fa-edit"></i> <span class="title">OT
 				list</span></a></li>
 
 	<!-- Leave-->
-	<perm:permission object="leave.viewall">
+<%-- 	<perm:permission object="leave.viewall">
 		<li class="nav-item"><a href="leave_list" class="nav-link"> <i
 				class="fa fa-medkit"></i> <span class="title">Leave List</span></a></li>
-	</perm:permission>
+	</perm:permission> --%>
 
 	<perm:permission object="leave.viewall">
 		<li class="nav-item"><a href="leave_approved" class="nav-link">
