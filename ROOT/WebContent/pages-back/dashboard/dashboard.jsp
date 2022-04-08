@@ -61,7 +61,7 @@
 			request.setAttribute("chk", "Check in");
 		}*/
 	%>
-	<div class="portlet light bordered rounded-10" style="margin-bottom:20px;">
+	<div class="portlet light bordered rounded-10">
 		<div class="portlet-body">
 			<div class="form-group form-lg-line-input">
 				<div class="row">
@@ -113,7 +113,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="portlet light bordered rounded-10 col-xs-12 col-sm-4 col-md-4" style="background-color: #AECDE8;height:40vh;width:32.2%;margin-right:20px;">
+	<div class="portlet light bordered rounded-10 col-xs-12 col-sm-4 col-md-4" style="background-color: #AECDE8;height:40vh;">
 		<div class="portlet-body">
 			<div>
 				<img src="/images/Check-in.png" style="width: 90%;display: block;margin-left: auto;margin-right: auto;">
@@ -144,7 +144,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="portlet light bordered rounded-10 col-xs-12 col-sm-4 col-md-4" style="background-color: #F7D6A7;height:40vh;width:32.2%;margin-right:20px;">
+	<div class="portlet light bordered rounded-10 col-xs-12 col-sm-4 col-md-4" style="background-color: #F7D6A7;height:40vh;">
 		<div class="portlet-body">
 			<div>
 				<img src="/images/Leave.png" style="width: 60%;position: relative;">
@@ -160,7 +160,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="portlet light bordered rounded-10 col-xs-12 col-sm-4 col-md-4" style="background-color: #93E0C0;height:40vh;width:32.2%;">
+	<div class="portlet light bordered rounded-10 col-xs-12 col-sm-4 col-md-4" style="background-color: #93E0C0;height:40vh;">
 		<div class="portlet-body">
 			<div>
 				<img src="/images/Borrow.png" style="width: 65%;display: block;margin-left: auto;margin-right: auto;">

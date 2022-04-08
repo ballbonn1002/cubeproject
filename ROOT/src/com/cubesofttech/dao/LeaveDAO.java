@@ -17,9 +17,7 @@ public interface LeaveDAO {
     public List<Map<String,Object>> findAllList() throws Exception;
     
 	public Leaves findByLeaveId(int leaveId) throws Exception;
-	
-	public List<Leaves> findLeaveById(int leaveId) throws Exception;
-		
+
 	public void update(Leaves leaves) throws Exception;
 
 	public void delete(Leaves leaves) throws Exception;
@@ -37,8 +35,6 @@ public interface LeaveDAO {
 	public List<Map<String, Object>> listwaitperson(String leaveid) throws Exception;
 
 	public List<Map<String, Object>> searchtable(Timestamp startDate, Timestamp endDate, String userId) throws Exception;
-	
-	public List<Map<String, Object>> searchtableAll(Timestamp startDate, Timestamp endDate) throws Exception;
 	
 	public List<Map<String, Object>> searchtable(Timestamp startDate, Timestamp endDate, String userId,String type) throws Exception;
 	
@@ -60,8 +56,6 @@ public interface LeaveDAO {
 	public List<Map<String, Object>> searchtable2(Timestamp start_date, Timestamp end_date, String userSelect,String type) throws Exception;
 	
 	public List<Map<String, Object>> searchtable3(Timestamp start_date, Timestamp end_date, String userSelect,String type) throws Exception;
-	
-//	public List<Map<String, Object>> searchtableAll(Timestamp start_date, Timestamp end_date) throws Exception;
 	
 	public List<Map<String, Object>> searchapproved(Timestamp start_date, Timestamp end_date, String userSelect) throws Exception;
 	
@@ -130,7 +124,6 @@ public interface LeaveDAO {
 	public List<Map<String, Object>> leaveUpdateStatus(String userId, String leave) throws Exception;
 	
 	public List<Map<String, Object>> findUserLeave(String user ,Timestamp start_date1,Timestamp end_date1) throws Exception;
-	public List<Map<String, Object>> findUserAllLeave(Timestamp start_date1,Timestamp end_date1) throws Exception;
 	
 	public List<Map<String, Object>> reportleavemonth(String months, String years) throws Exception;
 	public List<Map<String, Object>> searchreportleavemonth1(String monthsee, String yearsee) throws Exception;

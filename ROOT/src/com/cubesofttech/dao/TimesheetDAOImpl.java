@@ -236,8 +236,8 @@ public class TimesheetDAOImpl implements TimesheetDAO {
 	@Override
 	public Integer getMaxId() throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
-		//List<Timesheet> list = null;
-		Integer maxId = 0;
+		List<Timesheet> list = null;
+		Integer maxId;
 
 		try {
 

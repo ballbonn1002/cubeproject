@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -35,8 +34,6 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cubesofttech.dao.UserDAO;
@@ -91,34 +88,8 @@ public class TimeInReportAction extends ActionSupport {
 	public String SearchTimeinlistReport() {
 		try {
 			String search_user = request.getParameter("user.roletId");
-			String searchmonth = request.getParameter("searchmonth");
-			log.debug("searchmonth: " + searchmonth); 
-			request.setAttribute("sl_month", searchmonth);
-			
-			String[] splitstr = searchmonth.split("\\s+");
-			String s_month = splitstr[0];
-			String s_year = splitstr[1];
-			log.debug("select month: "+ s_month + " select year: "+s_year);
-			
-			String month = null;
-			String year = s_year;
-
-			switch (s_month) {
-				case "January": month = "01"; break;
-				case "February": month = "02"; break;
-				case "March": month = "03"; break;
-				case "April": month = "04"; break;
-				case "May": month = "05"; break;
-				case "June": month = "06"; break;
-				case "July": month = "07"; break;
-				case "August": month = "08"; break;
-				case "September": month = "09"; break;
-				case "October": month = "10"; break;
-				case "November": month = "11"; break;
-				case "December": month = "12"; break;
-			}
-			
-			System.out.println("month = "+month +" year = "+year);
+			String month = request.getParameter("monthSearch");
+			String year = request.getParameter("yearSearch");
 
 			monthGlobal = month;
 			yearGlobal = year;
@@ -149,45 +120,10 @@ public class TimeInReportAction extends ActionSupport {
 
 			}
 
-			List<Map<String, Object>> Timeinlist1 = TimeInDAO.TimeInList(month, year, search_user);
-			for (int t = 0; t < Timeinlist1.size(); t++) {
-				BigInteger findid = (BigInteger)Timeinlist1.get(t).get("timesheetId");
-				int timesheetid = findid.intValue();
-				Timestamp timecheckin = (Timestamp)Timeinlist1.get(t).get("time_check_in");
-				log.debug(timecheckin);
-				Timesheet timesheet = TimesheetDAO.findById(timesheetid);
-				Date started_date = timesheet.getStarted_date();
-				String date = String.valueOf(started_date);
-				String day = date.substring(8, 10);
-				
-				List<Map<String, Object>> whereworkhour = TimesheetDAO.whereworkhour(year,
-						month, day, search_user);
-				if (!whereworkhour.isEmpty() && timecheckin == null) {
-					for (int wwh = 0; wwh < whereworkhour.size(); wwh++) {
-						char work_hours_type = ((char) whereworkhour.get(wwh).get("work_hours_type"));
-						if (work_hours_type == '1') {
-							Timestamp startDate = ((Timestamp) whereworkhour.get(wwh)
-									.get("work_hours_time_work"));
-							timesheet.setTimeCheckIn(startDate);
-							// log.debug(startDate);
-						} else if (work_hours_type == '2') {
-							Timestamp endDate = ((Timestamp) whereworkhour.get(wwh)
-									.get("work_hours_time_work"));
-							timesheet.setTimeCheckOut(endDate);
-							// log.debug(endDate);
-						}
-
-					}
-				}
-				TimesheetDAO.update(timesheet);
-			}
 			List<Map<String, Object>> Timeinlist = TimeInDAO.TimeInList(month, year, search_user);
 			List<Map<String, Object>> Holidaylist = TimeInDAO.HolidayForTimeinList(month, year);
 			List<Map<String, Object>> leavelist = TimeInDAO.LeaveForTimeinList(month, year, search_user);
 			Map<String, Object> TimeCallist = TimeCalculate(Timeinlist, leavelist, Holidaylist);
-			
-			log.debug(Timeinlist);
-			log.debug(daylist);
 			request.setAttribute("daylist", daylist);
 			request.setAttribute("userId", search_user);
 			request.setAttribute("monthSearch", month);
@@ -202,7 +138,7 @@ public class TimeInReportAction extends ActionSupport {
 																// work_day_hour,leave_day_count,leave_hour,absent_day_count,absent_hour,late_early_day_count,
 			// late_early_hour,ot_day_count,ot_hour
 
-			 return "success"; 
+			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "error";
@@ -263,47 +199,11 @@ public class TimeInReportAction extends ActionSupport {
 				cal.add(Calendar.DAY_OF_MONTH, 1);
 			}
 
-			
-			List<Map<String, Object>> Timeinlist1 = TimeInDAO.TimeInList(month, year, logonUser);
-			for (int t = 0; t < Timeinlist1.size(); t++) {
-				BigInteger findid = (BigInteger)Timeinlist1.get(t).get("timesheetId");
-				int timesheetid = findid.intValue();
-				Timestamp timecheckin = (Timestamp)Timeinlist1.get(t).get("time_check_in");
-				log.debug(timecheckin);
-				Timesheet timesheet = TimesheetDAO.findById(timesheetid);
-				Date started_date = timesheet.getStarted_date();
-				String d = String.valueOf(started_date);
-				String dayt = d.substring(8, 10);
-				
-				List<Map<String, Object>> whereworkhour = TimesheetDAO.whereworkhour(year,
-						month, dayt, logonUser);
-				if (!whereworkhour.isEmpty() && timecheckin == null) {
-					for (int wwh = 0; wwh < whereworkhour.size(); wwh++) {
-						char work_hours_type = ((char) whereworkhour.get(wwh).get("work_hours_type"));
-						if (work_hours_type == '1') {
-							Timestamp startDate = ((Timestamp) whereworkhour.get(wwh)
-									.get("work_hours_time_work"));
-							timesheet.setTimeCheckIn(startDate);
-							// log.debug(startDate);
-						} else if (work_hours_type == '2') {
-							Timestamp endDate = ((Timestamp) whereworkhour.get(wwh)
-									.get("work_hours_time_work"));
-							timesheet.setTimeCheckOut(endDate);
-							// log.debug(endDate);
-						}
-
-					}
-				}
-				TimesheetDAO.update(timesheet);
-			}
 			List<Map<String, Object>> Timeinlist = TimeInDAO.TimeInList(month, year, logonUser);
 			List<Map<String, Object>> Holidaylist = TimeInDAO.HolidayForTimeinList(month, year);
 			List<Map<String, Object>> leavelist = TimeInDAO.LeaveForTimeinList(month, year, logonUser);
 			Map<String, Object> TimeCallist = TimeCalculate(Timeinlist, leavelist, Holidaylist);
 
-			
-			log.debug(Timeinlist);
-			log.debug(daylist);
 			request.setAttribute("daylist", daylist);
 			request.setAttribute("userId", logonUser);
 			request.setAttribute("monthSearch", month);
@@ -362,77 +262,30 @@ public class TimeInReportAction extends ActionSupport {
 		int leave_day_min_count = 0;
 		int weekendcount = 0;
 		for (Map<String, Object> map : TimeList) {
-			if(map.get("time_check_in") != null) {
-				String timein = parsers.format(map.get("time_check_in")).toString();
-				String timeout = parsers.format(map.get("time_check_out")).toString();
-				String day_of_work = day_parse.format(map.get("time_check_in")).toString();
-				String Workstart;
-				String Workend;
-				String OTin = "";
-				String OTout = "";
-	
-				if (!day_of_work.equalsIgnoreCase("sat") && !day_of_work.equalsIgnoreCase("sun")) {
-					if (map.get("work_time_start") != null || !map.get("work_time_start").toString().equals("")) {
-						Workstart = map.get("work_time_start").toString();
-						Workend = map.get("work_time_end").toString();
-					} else {
-						Workstart = "";
-						Workend = "";
-					}
-	
-					if (!Workstart.equals("") && !Workend.equals("")) {
-						String work_start_arr[] = Workstart.split(":");
-						String work_end_arr[] = Workend.split(":");
-						workstart_min = Integer.valueOf(work_start_arr[0]) * 60 + Integer.valueOf(work_start_arr[1]);// time
-																														// start
-						workend_min = Integer.valueOf(work_end_arr[0]) * 60 + Integer.valueOf(work_end_arr[1]);// time end
-	
-						if (map.get("OT_time_start") != null) {
-							OTin = parsers.format(map.get("OT_time_start"));
-							OTout = parsers.format(map.get("OT_time_end"));
-						} else if (map.get("OT_time_start") == null) {
-							OTin = "";
-							OTout = "";
-						}
-					}
-	
-					String ot_in_arr[];
-					String ot_out_arr[];
-					String before_midnight[] = ("24:00".split(":"));
-					String after_midnight[] = ("00:00".split(":"));
-					int bmidnight_m = (Integer.valueOf(before_midnight[0]) * 60) + Integer.valueOf(before_midnight[1]);
-					int afmidnight_m = (Integer.valueOf(after_midnight[0]) * 60) + Integer.valueOf(after_midnight[1]);
-	
-					if (!OTin.equals("") && !OTout.equals("")) {
-						ot_in_arr = OTin.split(":");
-						ot_out_arr = OTout.split(":");
-						OT_in_min = Integer.valueOf(ot_in_arr[0]) * 60 + Integer.valueOf(ot_in_arr[1]);
-	
-						OT_out_min = Integer.valueOf(ot_out_arr[0]) * 60 + Integer.valueOf(ot_out_arr[1]);
-	
-						if (OT_out_min >= OT_in_min) {
-							ot_min_count += (OT_out_min - OT_in_min);
-	
-						} else if (OT_out_min < OT_in_min) {
-							int time1 = bmidnight_m - OT_in_min;
-							int time2 = OT_out_min - afmidnight_m;
-							ot_min_count += time1 + time2;
-	
-						}
-					}
-	
+			String timein = parsers.format(map.get("time_check_in")).toString();
+			String timeout = parsers.format(map.get("time_check_out")).toString();
+			String day_of_work = day_parse.format(map.get("time_check_in")).toString();
+			String Workstart;
+			String Workend;
+			String OTin = "";
+			String OTout = "";
+
+			if (!day_of_work.equalsIgnoreCase("sat") && !day_of_work.equalsIgnoreCase("sun")) {
+				if (map.get("work_time_start") != null || !map.get("work_time_start").toString().equals("")) {
+					Workstart = map.get("work_time_start").toString();
+					Workend = map.get("work_time_end").toString();
+				} else {
+					Workstart = "";
+					Workend = "";
 				}
-				// OT Time Calculate for Saturday and Sunday
-				if (day_of_work.equalsIgnoreCase("sat") || day_of_work.equalsIgnoreCase("sun")) {
-	
-					String timein_arr[] = timein.split(":");// 08 25
-					String timeout_arr[] = timeout.split(":"); // 17 36
-					timein_min = Integer.valueOf(timein_arr[0]) * 60 + Integer.valueOf(timein_arr[1]); // time check in 8*60
-																										// +
-																										// 35
-					timeout_min = Integer.valueOf(timeout_arr[0]) * 60 + Integer.valueOf(timeout_arr[1]); // time check out
-					// 17*60 +35
-	
+
+				if (!Workstart.equals("") && !Workend.equals("")) {
+					String work_start_arr[] = Workstart.split(":");
+					String work_end_arr[] = Workend.split(":");
+					workstart_min = Integer.valueOf(work_start_arr[0]) * 60 + Integer.valueOf(work_start_arr[1]);// time
+																													// start
+					workend_min = Integer.valueOf(work_end_arr[0]) * 60 + Integer.valueOf(work_end_arr[1]);// time end
+
 					if (map.get("OT_time_start") != null) {
 						OTin = parsers.format(map.get("OT_time_start"));
 						OTout = parsers.format(map.get("OT_time_end"));
@@ -440,250 +293,294 @@ public class TimeInReportAction extends ActionSupport {
 						OTin = "";
 						OTout = "";
 					}
-	
-					String ot_in_arr[];
-					String ot_out_arr[];
-					String before_midnight[] = ("24:00".split(":"));
-					String after_midnight[] = ("00:00".split(":"));
-					int bmidnight_m = (Integer.valueOf(before_midnight[0]) * 60) + Integer.valueOf(before_midnight[1]);
-					int afmidnight_m = (Integer.valueOf(after_midnight[0]) * 60) + Integer.valueOf(after_midnight[1]);
-	
-					if (!OTin.equals("") && !OTout.equals("")) {
-						ot_in_arr = OTin.split(":");
-						ot_out_arr = OTout.split(":");
-						OT_in_min = Integer.valueOf(ot_in_arr[0]) * 60 + Integer.valueOf(ot_in_arr[1]);
-	
-						OT_out_min = Integer.valueOf(ot_out_arr[0]) * 60 + Integer.valueOf(ot_out_arr[1]);
-	
-						if (OT_out_min >= OT_in_min) {
-							ot_min_count += (OT_out_min - OT_in_min);
-	
-						} else if (OT_out_min < OT_in_min) {
-							int time1 = bmidnight_m - OT_in_min;
-							int time2 = OT_out_min - afmidnight_m;
-							ot_min_count += time1 + time2;
-	
-						}
-					}
-	
-					// OTx3
-					String ot_time1startx3[] = "00:00".split(":");
-					String ot_time1endx3[] = "08:30".split(":");
-					int ot1start = Integer.valueOf(ot_time1startx3[0]) * 60 + Integer.valueOf(ot_time1startx3[1]);
-					int ot1end = Integer.valueOf(ot_time1endx3[0]) * 60 + Integer.valueOf(ot_time1endx3[1]);
-	
-					// OTx1
-					String ot_time2startx1[] = "8:30".split(":");
-					String ot_time2endx1[] = "17:30".split(":");
-					int ot2start = Integer.valueOf(ot_time2startx1[0]) * 60 + Integer.valueOf(ot_time2startx1[1]);
-					int ot2end = Integer.valueOf(ot_time2endx1[0]) * 60 + Integer.valueOf(ot_time2endx1[1]);
-	
-					// OTx3
-					String ot_time3startx3[] = "17:30".split(":");
-					String ot_time3endx3[] = "24:00".split(":");
-					int ot3start = Integer.valueOf(ot_time3startx3[0]) * 60 + Integer.valueOf(ot_time3startx3[1]);
-					int ot3end = Integer.valueOf(ot_time3endx3[0]) * 60 + Integer.valueOf(ot_time3endx3[1]);
-	
-					// OT time section
-					if ((ot1start <= OT_in_min && OT_in_min <= ot1end)
-							&& (ot1start <= OT_out_min && OT_out_min <= ot1end)) {
-						x3_ot_min_count += (OT_out_min - OT_in_min);
-	
-					} else if ((ot1start <= OT_in_min && OT_in_min <= ot1end)
-							&& (ot2start <= OT_out_min && OT_out_min <= ot2end)) {
-						x1_ot_min_count += (OT_out_min - ot2start);
-						x3_ot_min_count += (ot1end - OT_in_min);
-	
-					} else if ((ot1start <= OT_in_min && OT_in_min <= ot1end)
-							&& (ot3start <= OT_out_min && OT_out_min <= ot3end)) {
-						x3_ot_min_count += (ot1end - OT_in_min);
-						x1_ot_min_count += (ot2end - ot2start);
-						x3_ot_min_count += (ot3start - OT_out_min);
-	
-					}
-	
-					if ((ot2start <= OT_in_min && OT_in_min <= ot2end)
-							&& (ot2start <= OT_out_min && OT_out_min <= ot2end)) {
-						x1_ot_min_count += (OT_out_min - OT_in_min);
-	
-					} else if ((ot2start <= OT_in_min && OT_in_min <= ot2end)
-							&& (ot3start <= OT_out_min && OT_out_min <= ot3end)) {
-						x1_ot_min_count += (ot2end - OT_in_min);
-						x3_ot_min_count += (OT_out_min - ot3start);
-	
-					} else if ((ot2start <= OT_in_min && OT_in_min <= ot2end)
-							&& (ot1start <= OT_out_min && OT_out_min <= ot1end)) {
-						x1_ot_min_count += (ot2end - OT_in_min);
-						x3_ot_min_count += (ot3end - ot3start);
-						x3_ot_min_count += (OT_out_min - ot1start);
-	
-					}
-	
-					if ((ot3start <= OT_in_min && OT_in_min <= ot3end)
-							&& (ot3start <= OT_out_min && OT_out_min <= ot3end)) {
-						x3_ot_min_count += (OT_out_min - OT_in_min);
-	
-					} else if ((ot3start <= OT_in_min && OT_in_min <= ot3end)
-							&& (ot1start <= OT_out_min && OT_out_min <= ot1end)) {
-						x3_ot_min_count += (ot3end - OT_in_min);
-						x3_ot_min_count += (OT_out_min - ot1start);
-	
-					} else if ((ot3start <= OT_in_min && OT_in_min <= ot3end)
-							&& (ot2start <= OT_out_min && OT_out_min <= ot2end)) {
-						x3_ot_min_count += (ot3end - OT_in_min);
-						x3_ot_min_count += (ot1end - ot1start);
-						x1_ot_min_count += (OT_out_min - ot2start);
-	
-					}
-	
-					// normal time in weekend section
-					if ((ot1start <= timein_min && timein_min <= ot1end)
-							&& (ot1start <= timeout_min && timeout_min <= ot1end)) {
-						x3_ot_min_count += (timeout_min - timein_min);
-	
-					} else if ((ot1start <= timein_min && timein_min <= ot1end)
-							&& (ot2start <= timeout_min && timeout_min <= ot2end)) {
-						x1_ot_min_count += (timeout_min - ot2start);
-						x3_ot_min_count += (ot1end - timein_min);
-	
-					} else if ((ot1start <= timein_min && timein_min <= ot1end)
-							&& (ot3start <= timeout_min && timeout_min <= ot3end)) {
-						x3_ot_min_count += (ot1end - timein_min);
-						x1_ot_min_count += (ot2end - ot2start);
-						x3_ot_min_count += (ot3start - timeout_min);
-	
-					}
-	
-					if ((ot2start <= timein_min && timein_min <= ot2end)
-							&& (ot2start <= timeout_min && timeout_min <= ot2end)) {
-						x1_ot_min_count += (timeout_min - timein_min);
-	
-					} else if ((ot2start <= timein_min && timein_min <= ot2end)
-							&& (ot3start <= timeout_min && timeout_min <= ot3end)) {
-						x1_ot_min_count += (ot2end - timein_min);
-						x3_ot_min_count += (timeout_min - ot3start);
-	
-					} else if ((ot2start <= timein_min && timein_min <= ot2end)
-							&& (ot1start <= timeout_min && timeout_min <= ot1end)) {
-						x1_ot_min_count += (ot2end - timein_min);
-						x3_ot_min_count += (ot3end - ot3start);
-						x3_ot_min_count += (timeout_min - ot1start);
-	
-					}
-	
-					if ((ot3start <= timein_min && timein_min <= ot3end)
-							&& (ot3start <= timeout_min && timeout_min <= ot3end)) {
-						x3_ot_min_count += (timeout_min - timein_min);
-	
-					} else if ((ot3start <= timein_min && timein_min <= ot3end)
-							&& (ot1start <= timeout_min && timeout_min <= ot1end)) {
-						x3_ot_min_count += (ot3end - timein_min);
-						x1_ot_min_count += (timeout_min - ot1start);
-	
-					} else if ((ot3start <= timein_min && timein_min <= ot3end)
-							&& (ot2start <= timeout_min && timeout_min <= ot2end)) {
-						x3_ot_min_count += (ot3end - timein_min);
-						x3_ot_min_count += (ot1end - ot1start);
-						x1_ot_min_count += (timeout_min - ot2start);
-						// int a [] [] [] [] [] [] [] [] [] []= null;
-					}
-	
-				} else {
-					// OT Calculate for normal day
-					String timein_arr[] = timein.split(":");// 08 25
-					String timeout_arr[] = timeout.split(":"); // 17 36
-					timein_min = Integer.valueOf(timein_arr[0]) * 60 + Integer.valueOf(timein_arr[1]); // time check in 8*60
-																										// +
-																										// 35
-					timeout_min = Integer.valueOf(timeout_arr[0]) * 60 + Integer.valueOf(timeout_arr[1]); // time check out
-					if ((timeout_min - timein_min) > max_work_hour) {
-						worktime += max_work_hour;
-					} else {
-						worktime += timeout_min - timein_min;
-					}
-					String ot_time1startx1_5[] = "00:00".split(":");
-					String ot_time1endx1_5[] = "08:30".split(":");
-					int ot1start = Integer.valueOf(ot_time1startx1_5[0]) * 60 + Integer.valueOf(ot_time1startx1_5[1]);
-					int ot1end = Integer.valueOf(ot_time1endx1_5[0]) * 60 + Integer.valueOf(ot_time1endx1_5[1]);
-	
-					String ot_time2startx1[] = "8:30".split(":");
-					String ot_time2endx1[] = "17:30".split(":");
-					int ot2start = Integer.valueOf(ot_time2startx1[0]) * 60 + Integer.valueOf(ot_time2startx1[1]);
-					int ot2end = Integer.valueOf(ot_time2endx1[0]) * 60 + Integer.valueOf(ot_time2endx1[1]);
-	
-					String ot_time3startx1_5[] = "18:30".split(":");
-					String ot_time3endx1_5[] = "24:00".split(":");
-					int ot3start = Integer.valueOf(ot_time3startx1_5[0]) * 60 + Integer.valueOf(ot_time3startx1_5[1]);
-					int ot3end = Integer.valueOf(ot_time3endx1_5[0]) * 60 + Integer.valueOf(ot_time3endx1_5[1]);
-	
-					if ((ot1start <= OT_in_min && OT_in_min <= ot1end)
-							&& (ot1start <= OT_out_min && OT_out_min <= ot1end)) {
-						x1_5_ot_min_count += (OT_out_min - OT_in_min);
-					} else if ((ot1start <= OT_in_min && OT_in_min <= ot1end)
-							&& (ot2start <= OT_out_min && OT_out_min <= ot2end)) {
-	
-						x1_5_ot_min_count += (ot1end - OT_in_min);
-					} else if ((ot1start <= OT_in_min && OT_in_min <= ot1end)
-							&& (ot3start <= OT_out_min && OT_out_min < ot3end)) {
-						x1_5_ot_min_count += (ot1end - OT_in_min);
-						x1_5_ot_min_count += (ot3start - OT_out_min);
-					}
-	
-					if ((ot2start <= OT_in_min && OT_in_min <= ot2end)
-							&& (ot2start <= OT_out_min && OT_out_min <= ot2end)) {
-					} else if ((ot2start <= OT_in_min && OT_in_min <= ot2end)
-							&& (ot3start <= OT_out_min && OT_out_min < ot3end)) {
-						x1_5_ot_min_count += (OT_out_min - ot3start);
-					} else if ((ot2start <= OT_in_min && OT_in_min <= ot2end)
-							&& (ot1start <= OT_out_min && OT_out_min <= ot1end)) {
-						x1_5_ot_min_count += (ot3end - ot3start);
-						x1_5_ot_min_count += (OT_out_min - ot1start);
-					}
-	
-					if ((ot2end <= OT_in_min && OT_in_min <= ot3start) && (ot3start <= OT_out_min && OT_out_min < ot3end)) {
-						x1_5_ot_min_count += (OT_out_min - OT_in_min) - (ot3start - OT_in_min);
-					} else if ((ot2end <= OT_in_min && OT_in_min <= ot3start)
-							&& (ot1start <= OT_out_min && OT_out_min <= ot1end)) {
-						x1_5_ot_min_count += (ot3end - ot3start) + (OT_out_min - ot1start) - (ot3start - OT_in_min);
-					}
-	
-					if ((ot3start <= OT_in_min && OT_in_min < ot3end) && (ot3start <= OT_out_min && OT_out_min <= ot3end)) {
-						x1_5_ot_min_count += (OT_out_min - OT_in_min);
-					} else if ((ot3start <= OT_in_min && OT_in_min < ot3end)
-							&& (ot1start <= OT_out_min && OT_out_min <= ot1end)) {
-						x1_5_ot_min_count += (ot3end - OT_in_min);
-						x1_5_ot_min_count += (OT_out_min - ot1start);
-	
-					} else if ((ot3start <= OT_in_min && OT_in_min < ot3end)
-							&& (ot2start <= OT_out_min && OT_out_min <= ot2end)) {
-						x1_5_ot_min_count += (ot3end - OT_in_min);
-						x1_5_ot_min_count += (ot1end - ot1start);
-	
-					}
-	
 				}
-	
-				if (day_of_work.equalsIgnoreCase("sat") || day_of_work.equalsIgnoreCase("sun")) {
-					ot_min_count += timeout_min - timein_min;
-				}
-	
-				System.out.println();
-				
-				if (workstart_min != 0 && workend_min != 0) {
-					if (workstart_min < timein_min) {
-						latecount += 1;
-						late_min_count += timein_min - workstart_min;
-					}
-	
-					if (workend_min > timeout_min) {
-						earlycount += 1;
-						early_min_count += workend_min - timeout_min;
-	
+
+				String ot_in_arr[];
+				String ot_out_arr[];
+				String before_midnight[] = ("24:00".split(":"));
+				String after_midnight[] = ("00:00".split(":"));
+				int bmidnight_m = (Integer.valueOf(before_midnight[0]) * 60) + Integer.valueOf(before_midnight[1]);
+				int afmidnight_m = (Integer.valueOf(after_midnight[0]) * 60) + Integer.valueOf(after_midnight[1]);
+
+				if (!OTin.equals("") && !OTout.equals("")) {
+					ot_in_arr = OTin.split(":");
+					ot_out_arr = OTout.split(":");
+					OT_in_min = Integer.valueOf(ot_in_arr[0]) * 60 + Integer.valueOf(ot_in_arr[1]);
+
+					OT_out_min = Integer.valueOf(ot_out_arr[0]) * 60 + Integer.valueOf(ot_out_arr[1]);
+
+					if (OT_out_min >= OT_in_min) {
+						ot_min_count += (OT_out_min - OT_in_min);
+
+					} else if (OT_out_min < OT_in_min) {
+						int time1 = bmidnight_m - OT_in_min;
+						int time2 = OT_out_min - afmidnight_m;
+						ot_min_count += time1 + time2;
+
 					}
 				}
-			} else {
-				
+
 			}
+			// OT Time Calculate for Saturday and Sunday
+			if (day_of_work.equalsIgnoreCase("sat") || day_of_work.equalsIgnoreCase("sun")) {
+
+				String timein_arr[] = timein.split(":");// 08 25
+				String timeout_arr[] = timeout.split(":"); // 17 36
+				timein_min = Integer.valueOf(timein_arr[0]) * 60 + Integer.valueOf(timein_arr[1]); // time check in 8*60
+																									// +
+																									// 35
+				timeout_min = Integer.valueOf(timeout_arr[0]) * 60 + Integer.valueOf(timeout_arr[1]); // time check out
+				// 17*60 +35
+
+				if (map.get("OT_time_start") != null) {
+					OTin = parsers.format(map.get("OT_time_start"));
+					OTout = parsers.format(map.get("OT_time_end"));
+				} else if (map.get("OT_time_start") == null) {
+					OTin = "";
+					OTout = "";
+				}
+
+				String ot_in_arr[];
+				String ot_out_arr[];
+				String before_midnight[] = ("24:00".split(":"));
+				String after_midnight[] = ("00:00".split(":"));
+				int bmidnight_m = (Integer.valueOf(before_midnight[0]) * 60) + Integer.valueOf(before_midnight[1]);
+				int afmidnight_m = (Integer.valueOf(after_midnight[0]) * 60) + Integer.valueOf(after_midnight[1]);
+
+				if (!OTin.equals("") && !OTout.equals("")) {
+					ot_in_arr = OTin.split(":");
+					ot_out_arr = OTout.split(":");
+					OT_in_min = Integer.valueOf(ot_in_arr[0]) * 60 + Integer.valueOf(ot_in_arr[1]);
+
+					OT_out_min = Integer.valueOf(ot_out_arr[0]) * 60 + Integer.valueOf(ot_out_arr[1]);
+
+					if (OT_out_min >= OT_in_min) {
+						ot_min_count += (OT_out_min - OT_in_min);
+
+					} else if (OT_out_min < OT_in_min) {
+						int time1 = bmidnight_m - OT_in_min;
+						int time2 = OT_out_min - afmidnight_m;
+						ot_min_count += time1 + time2;
+
+					}
+				}
+
+				// OTx3
+				String ot_time1startx3[] = "00:00".split(":");
+				String ot_time1endx3[] = "08:30".split(":");
+				int ot1start = Integer.valueOf(ot_time1startx3[0]) * 60 + Integer.valueOf(ot_time1startx3[1]);
+				int ot1end = Integer.valueOf(ot_time1endx3[0]) * 60 + Integer.valueOf(ot_time1endx3[1]);
+
+				// OTx1
+				String ot_time2startx1[] = "8:30".split(":");
+				String ot_time2endx1[] = "17:30".split(":");
+				int ot2start = Integer.valueOf(ot_time2startx1[0]) * 60 + Integer.valueOf(ot_time2startx1[1]);
+				int ot2end = Integer.valueOf(ot_time2endx1[0]) * 60 + Integer.valueOf(ot_time2endx1[1]);
+
+				// OTx3
+				String ot_time3startx3[] = "17:30".split(":");
+				String ot_time3endx3[] = "24:00".split(":");
+				int ot3start = Integer.valueOf(ot_time3startx3[0]) * 60 + Integer.valueOf(ot_time3startx3[1]);
+				int ot3end = Integer.valueOf(ot_time3endx3[0]) * 60 + Integer.valueOf(ot_time3endx3[1]);
+
+				// OT time section
+				if ((ot1start <= OT_in_min && OT_in_min <= ot1end)
+						&& (ot1start <= OT_out_min && OT_out_min <= ot1end)) {
+					x3_ot_min_count += (OT_out_min - OT_in_min);
+
+				} else if ((ot1start <= OT_in_min && OT_in_min <= ot1end)
+						&& (ot2start <= OT_out_min && OT_out_min <= ot2end)) {
+					x1_ot_min_count += (OT_out_min - ot2start);
+					x3_ot_min_count += (ot1end - OT_in_min);
+
+				} else if ((ot1start <= OT_in_min && OT_in_min <= ot1end)
+						&& (ot3start <= OT_out_min && OT_out_min <= ot3end)) {
+					x3_ot_min_count += (ot1end - OT_in_min);
+					x1_ot_min_count += (ot2end - ot2start);
+					x3_ot_min_count += (ot3start - OT_out_min);
+
+				}
+
+				if ((ot2start <= OT_in_min && OT_in_min <= ot2end)
+						&& (ot2start <= OT_out_min && OT_out_min <= ot2end)) {
+					x1_ot_min_count += (OT_out_min - OT_in_min);
+
+				} else if ((ot2start <= OT_in_min && OT_in_min <= ot2end)
+						&& (ot3start <= OT_out_min && OT_out_min <= ot3end)) {
+					x1_ot_min_count += (ot2end - OT_in_min);
+					x3_ot_min_count += (OT_out_min - ot3start);
+
+				} else if ((ot2start <= OT_in_min && OT_in_min <= ot2end)
+						&& (ot1start <= OT_out_min && OT_out_min <= ot1end)) {
+					x1_ot_min_count += (ot2end - OT_in_min);
+					x3_ot_min_count += (ot3end - ot3start);
+					x3_ot_min_count += (OT_out_min - ot1start);
+
+				}
+
+				if ((ot3start <= OT_in_min && OT_in_min <= ot3end)
+						&& (ot3start <= OT_out_min && OT_out_min <= ot3end)) {
+					x3_ot_min_count += (OT_out_min - OT_in_min);
+
+				} else if ((ot3start <= OT_in_min && OT_in_min <= ot3end)
+						&& (ot1start <= OT_out_min && OT_out_min <= ot1end)) {
+					x3_ot_min_count += (ot3end - OT_in_min);
+					x3_ot_min_count += (OT_out_min - ot1start);
+
+				} else if ((ot3start <= OT_in_min && OT_in_min <= ot3end)
+						&& (ot2start <= OT_out_min && OT_out_min <= ot2end)) {
+					x3_ot_min_count += (ot3end - OT_in_min);
+					x3_ot_min_count += (ot1end - ot1start);
+					x1_ot_min_count += (OT_out_min - ot2start);
+
+				}
+
+				// normal time in weekend section
+				if ((ot1start <= timein_min && timein_min <= ot1end)
+						&& (ot1start <= timeout_min && timeout_min <= ot1end)) {
+					x3_ot_min_count += (timeout_min - timein_min);
+
+				} else if ((ot1start <= timein_min && timein_min <= ot1end)
+						&& (ot2start <= timeout_min && timeout_min <= ot2end)) {
+					x1_ot_min_count += (timeout_min - ot2start);
+					x3_ot_min_count += (ot1end - timein_min);
+
+				} else if ((ot1start <= timein_min && timein_min <= ot1end)
+						&& (ot3start <= timeout_min && timeout_min <= ot3end)) {
+					x3_ot_min_count += (ot1end - timein_min);
+					x1_ot_min_count += (ot2end - ot2start);
+					x3_ot_min_count += (ot3start - timeout_min);
+
+				}
+
+				if ((ot2start <= timein_min && timein_min <= ot2end)
+						&& (ot2start <= timeout_min && timeout_min <= ot2end)) {
+					x1_ot_min_count += (timeout_min - timein_min);
+
+				} else if ((ot2start <= timein_min && timein_min <= ot2end)
+						&& (ot3start <= timeout_min && timeout_min <= ot3end)) {
+					x1_ot_min_count += (ot2end - timein_min);
+					x3_ot_min_count += (timeout_min - ot3start);
+
+				} else if ((ot2start <= timein_min && timein_min <= ot2end)
+						&& (ot1start <= timeout_min && timeout_min <= ot1end)) {
+					x1_ot_min_count += (ot2end - timein_min);
+					x3_ot_min_count += (ot3end - ot3start);
+					x3_ot_min_count += (timeout_min - ot1start);
+
+				}
+
+				if ((ot3start <= timein_min && timein_min <= ot3end)
+						&& (ot3start <= timeout_min && timeout_min <= ot3end)) {
+					x3_ot_min_count += (timeout_min - timein_min);
+
+				} else if ((ot3start <= timein_min && timein_min <= ot3end)
+						&& (ot1start <= timeout_min && timeout_min <= ot1end)) {
+					x3_ot_min_count += (ot3end - timein_min);
+					x1_ot_min_count += (timeout_min - ot1start);
+
+				} else if ((ot3start <= timein_min && timein_min <= ot3end)
+						&& (ot2start <= timeout_min && timeout_min <= ot2end)) {
+					x3_ot_min_count += (ot3end - timein_min);
+					x3_ot_min_count += (ot1end - ot1start);
+					x1_ot_min_count += (timeout_min - ot2start);
+					// int a [] [] [] [] [] [] [] [] [] []= null;
+				}
+
+			} else {
+				// OT Calculate for normal day
+				String timein_arr[] = timein.split(":");// 08 25
+				String timeout_arr[] = timeout.split(":"); // 17 36
+				timein_min = Integer.valueOf(timein_arr[0]) * 60 + Integer.valueOf(timein_arr[1]); // time check in 8*60
+																									// +
+																									// 35
+				timeout_min = Integer.valueOf(timeout_arr[0]) * 60 + Integer.valueOf(timeout_arr[1]); // time check out
+				if ((timeout_min - timein_min) > max_work_hour) {
+					worktime += max_work_hour;
+				} else {
+					worktime += timeout_min - timein_min;
+				}
+				String ot_time1startx1_5[] = "00:00".split(":");
+				String ot_time1endx1_5[] = "08:30".split(":");
+				int ot1start = Integer.valueOf(ot_time1startx1_5[0]) * 60 + Integer.valueOf(ot_time1startx1_5[1]);
+				int ot1end = Integer.valueOf(ot_time1endx1_5[0]) * 60 + Integer.valueOf(ot_time1endx1_5[1]);
+
+				String ot_time2startx1[] = "8:30".split(":");
+				String ot_time2endx1[] = "17:30".split(":");
+				int ot2start = Integer.valueOf(ot_time2startx1[0]) * 60 + Integer.valueOf(ot_time2startx1[1]);
+				int ot2end = Integer.valueOf(ot_time2endx1[0]) * 60 + Integer.valueOf(ot_time2endx1[1]);
+
+				String ot_time3startx1_5[] = "18:30".split(":");
+				String ot_time3endx1_5[] = "24:00".split(":");
+				int ot3start = Integer.valueOf(ot_time3startx1_5[0]) * 60 + Integer.valueOf(ot_time3startx1_5[1]);
+				int ot3end = Integer.valueOf(ot_time3endx1_5[0]) * 60 + Integer.valueOf(ot_time3endx1_5[1]);
+
+				if ((ot1start <= OT_in_min && OT_in_min <= ot1end)
+						&& (ot1start <= OT_out_min && OT_out_min <= ot1end)) {
+					x1_5_ot_min_count += (OT_out_min - OT_in_min);
+				} else if ((ot1start <= OT_in_min && OT_in_min <= ot1end)
+						&& (ot2start <= OT_out_min && OT_out_min <= ot2end)) {
+
+					x1_5_ot_min_count += (ot1end - OT_in_min);
+				} else if ((ot1start <= OT_in_min && OT_in_min <= ot1end)
+						&& (ot3start <= OT_out_min && OT_out_min < ot3end)) {
+					x1_5_ot_min_count += (ot1end - OT_in_min);
+					x1_5_ot_min_count += (ot3start - OT_out_min);
+				}
+
+				if ((ot2start <= OT_in_min && OT_in_min <= ot2end)
+						&& (ot2start <= OT_out_min && OT_out_min <= ot2end)) {
+				} else if ((ot2start <= OT_in_min && OT_in_min <= ot2end)
+						&& (ot3start <= OT_out_min && OT_out_min < ot3end)) {
+					x1_5_ot_min_count += (OT_out_min - ot3start);
+				} else if ((ot2start <= OT_in_min && OT_in_min <= ot2end)
+						&& (ot1start <= OT_out_min && OT_out_min <= ot1end)) {
+					x1_5_ot_min_count += (ot3end - ot3start);
+					x1_5_ot_min_count += (OT_out_min - ot1start);
+				}
+
+				if ((ot2end <= OT_in_min && OT_in_min <= ot3start) && (ot3start <= OT_out_min && OT_out_min < ot3end)) {
+					x1_5_ot_min_count += (OT_out_min - OT_in_min) - (ot3start - OT_in_min);
+				} else if ((ot2end <= OT_in_min && OT_in_min <= ot3start)
+						&& (ot1start <= OT_out_min && OT_out_min <= ot1end)) {
+					x1_5_ot_min_count += (ot3end - ot3start) + (OT_out_min - ot1start) - (ot3start - OT_in_min);
+				}
+
+				if ((ot3start <= OT_in_min && OT_in_min < ot3end) && (ot3start <= OT_out_min && OT_out_min <= ot3end)) {
+					x1_5_ot_min_count += (OT_out_min - OT_in_min);
+				} else if ((ot3start <= OT_in_min && OT_in_min < ot3end)
+						&& (ot1start <= OT_out_min && OT_out_min <= ot1end)) {
+					x1_5_ot_min_count += (ot3end - OT_in_min);
+					x1_5_ot_min_count += (OT_out_min - ot1start);
+
+				} else if ((ot3start <= OT_in_min && OT_in_min < ot3end)
+						&& (ot2start <= OT_out_min && OT_out_min <= ot2end)) {
+					x1_5_ot_min_count += (ot3end - OT_in_min);
+					x1_5_ot_min_count += (ot1end - ot1start);
+
+				}
+
+			}
+
+			if (day_of_work.equalsIgnoreCase("sat") || day_of_work.equalsIgnoreCase("sun")) {
+				ot_min_count += timeout_min - timein_min;
+			}
+
+			System.out.println();
+			
+			if (workstart_min != 0 && workend_min != 0) {
+				if (workstart_min < timein_min) {
+					latecount += 1;
+					late_min_count += timein_min - workstart_min;
+				}
+
+				if (workend_min > timeout_min) {
+					earlycount += 1;
+					early_min_count += workend_min - timeout_min;
+
+				}
+			}
+
 		}
 
 		for (Map<String, Object> map : leavelist) {
@@ -2481,33 +2378,27 @@ public class TimeInReportAction extends ActionSupport {
 				timeOut2 = timeOut2 + ":00";
 				dateTimeOut2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(date + " " + timeOut2);
 			}
-			String project = request.getParameter("project");
-			String summary = request.getParameter("summary");
 			String description = request.getParameter("description");
-			//String timespent = request.getParameter("timespent");
 
 			Timesheet currentTimesheet = TimesheetDAO.findById(timesheetId);
 			if (currentTimesheet != null) {
 				if (dateTimeIn != null) {
-				Timestamp timeInStamp = new Timestamp(dateTimeIn.getTime());
-				currentTimesheet.setTimeCheckIn(timeInStamp);
+					Timestamp timeInStamp = new Timestamp(dateTimeIn.getTime());
+					currentTimesheet.setTimeCheckIn(timeInStamp);
+					if (dateTimeIn2 != null) {
+						Timestamp timeInStamp1 = new Timestamp(dateTimeIn2.getTime());
+						currentTimesheet.setOT_time_start(timeInStamp1);
+					}
 				}
 				if (dateTimeOut != null) {
-				Timestamp timeOutStamp = new Timestamp(dateTimeOut.getTime());
+					Timestamp timeOutStamp = new Timestamp(dateTimeOut.getTime());
 					currentTimesheet.setTimeCheckOut(timeOutStamp);
+					if (dateTimeOut2 != null) {
+						Timestamp timeOutStamp1 = new Timestamp(dateTimeOut2.getTime());
+						currentTimesheet.setOT_time_end(timeOutStamp1);
+					}
+					currentTimesheet.setOT_description(description);
 				}
-				if (dateTimeIn2 != null) {
-					Timestamp timeInStamp1 = new Timestamp(dateTimeIn2.getTime());
-					currentTimesheet.setOT_time_start(timeInStamp1);
-				}
-				if (dateTimeOut2 != null) {
-					Timestamp timeOutStamp1 = new Timestamp(dateTimeOut2.getTime());
-					currentTimesheet.setOT_time_end(timeOutStamp1);
-				}
-				currentTimesheet.setProject(project);
-				currentTimesheet.setSummary(summary);
-				currentTimesheet.setDescription(description);
-				//currentTimesheet.setTimespent(timespent);
 				TimesheetDAO.update(currentTimesheet);
 			} else {
 				System.out.println("Timesheet is null");
@@ -2515,40 +2406,6 @@ public class TimeInReportAction extends ActionSupport {
 
 			}
 
-			String findId = request.getParameter("id");
-			Integer find = Integer.parseInt(findId);
-			Timesheet timesheetlist = TimesheetDAO.findById(find);
-			
-			JSONArray arrayObj1 = new JSONArray();
-			JSONArray arrayObj2 = new JSONArray();
-			JSONArray arrayObj3 = new JSONArray();
-			JSONArray arrayObj4 = new JSONArray();
-			JSONArray arrayObj5 = new JSONArray();
-			JSONArray arrayObj6 = new JSONArray();
-			JSONArray arrayObj7 = new JSONArray();
-			
-			arrayObj1.put(timesheetlist.getTimeCheckIn());
-			arrayObj2.put(timesheetlist.getTimeCheckOut());
-			arrayObj3.put(timesheetlist.getOT_time_start());
-			arrayObj4.put(timesheetlist.getOT_time_end());
-			arrayObj5.put(timesheetlist.getProject());
-			arrayObj6.put(timesheetlist.getSummary());
-			arrayObj7.put(timesheetlist.getDescription());
-			
-			PrintWriter out = response.getWriter();
-	           JSONObject json = new JSONObject();
-	           
-	        json.put("checkin", arrayObj1);
-	        json.put("checkout", arrayObj2);
-	        json.put("otin", arrayObj3);
-	        json.put("otout", arrayObj4);
-	        json.put("project", arrayObj5);
-	        json.put("summary", arrayObj6);
-	        json.put("desc", arrayObj7);
-	        
-	        out.print(json);
-	    	out.flush();
-	    	out.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception

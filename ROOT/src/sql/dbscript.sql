@@ -62,11 +62,10 @@ ALTER TABLE `timesheet` ADD `summary` VARCHAR(32) NULL AFTER `project`;
 
 ALTER TABLE `timesheet` ADD `started_date` DATE NULL AFTER `description`;
 
-
 ALTER TABLE `timesheet` ADD `timespent` VARCHAR(32) NULL AFTER `started_date`;
 
 -- PROD / UAT -- [5 Mar 2022]
 
 
-ALTER TABLE `timesheet` ADD `timespent` VARCHAR(32) NULL AFTER `started_date`;
+
 
