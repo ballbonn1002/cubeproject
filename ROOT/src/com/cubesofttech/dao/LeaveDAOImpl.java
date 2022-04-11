@@ -78,6 +78,27 @@ public class LeaveDAOImpl implements LeaveDAO {
 	}
 
 	@Override
+	public List<Leaves> findLeaveById(int leaveId) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();		
+		List<Leaves> modalLeaveList = null;
+		try {
+			String sql = "SELECT leave_id, leave_type_id, leave_status_id, half_day, user_id, "
+						+ "appr_user_id, description, reason, start_time, end_time, start_date, "
+						+ "end_date, no_day, leave_file, user_create, user_update, time_create, "
+						+ "time_update FROM leaves WHERE leave_id = " + leaveId;
+			SQLQuery query = session.createSQLQuery(sql);
+			
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			modalLeaveList = query.list();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return modalLeaveList;
+		
+	}
+	
+	@Override
 	public void update(Leaves leaves) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.clear();
@@ -371,7 +392,7 @@ public class LeaveDAOImpl implements LeaveDAO {
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
-			// query.setParameter("userId", userId);
+			//query.setParameter("userId", userId);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
 			search = query.list();
 		} catch (
@@ -382,6 +403,29 @@ public class LeaveDAOImpl implements LeaveDAO {
 		return search;
 	}
 
+	
+	// this is override method use for search all leave type and all user
+	public List<Map<String, Object>> searchtableAll(Timestamp startDate, Timestamp endDate) throws Exception { 
+		Session session = this.sessionFactory.getCurrentSession(); 
+		List<Map<String, Object>> search = null; 
+		try {
+			String sql = "SELECT leaves.description, leaves.leave_id,leaves.time_create,leaves.user_id,leaves.start_date, "
+					+ " leaves.end_date, leaves.no_day ,leaves.leave_status_id,leave_type.leave_type_name, user.path "
+					+ " FROM leaves LEFT JOIN leave_type ON leave_type.leave_type_id = leaves.leave_type_id "
+					+ " LEFT JOIN user ON leaves.user_id = user.id "
+					+ " WHERE leaves.start_date BETWEEN :startDate AND :endDate "
+					+ " ORDER BY leaves.start_date DESC ";
+			SQLQuery query = session.createSQLQuery(sql);
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			search = query.list();
+		} catch (Exception e) { 
+			e.printStackTrace(); 
+		} 
+		return search; 
+	}
+	
 	// this is override method use for search leave by type and all user
 	public List<Map<String, Object>> searchtable(Timestamp startDate, Timestamp endDate, String userId, String type)
 			throws Exception {
@@ -561,8 +605,8 @@ public class LeaveDAOImpl implements LeaveDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Map<String, Object>> search = null;
 		try {
-			String sql = "SELECT leaves.description, leaves.leave_id,leaves.time_create,leaves.user_id,leaves.start_date, "
-					+ " leaves.end_date, leaves.no_day ,leaves.leave_status_id,leave_type.leave_type_name, user.path "
+			String sql = "SELECT leaves.description, leaves.leave_id,leaves.time_create,leaves.user_id,leaves.start_date, leaves.end_date,"
+					+ " leaves.start_time, leaves.end_time, leaves.no_day ,leaves.leave_status_id,leave_type.leave_type_name, user.path "
 					+ " FROM leaves " + " LEFT JOIN leave_type ON leave_type.leave_type_id = leaves.leave_type_id "
 					+ " LEFT JOIN user ON leaves.user_id = user.id "
 					+ " WHERE user_id = :userId AND leaves.start_date BETWEEN :startDate AND :endDate "
@@ -1322,7 +1366,7 @@ public class LeaveDAOImpl implements LeaveDAO {
 		List<Map<String, Object>> userleave = null;
 	
 		try {
-			String sql = "SELECT * FROM leaves WHERE leaves.user_id=:user AND leaves.start_date BETWEEN :start_date1 AND :end_date1";
+			String sql = "SELECT * FROM leaves WHERE user_id=:user AND (leaves.start_date BETWEEN :start_date1 AND :end_date1)";
 
 			SQLQuery query = session.createSQLQuery(sql);
 
@@ -1331,13 +1375,30 @@ public class LeaveDAOImpl implements LeaveDAO {
 			query.setParameter("end_date1", end_date1);
 			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
 			userleave = query.list();
-			System.out.print(userleave);
 		} catch (
 
 		Exception e) {
 			e.printStackTrace();
 		}
 		return userleave;
+	}
+	
+	public List<Map<String, Object>> findUserAllLeave(Timestamp start_date1, Timestamp end_date1) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Map<String, Object>> userallleave = null;
+		try {
+			String sql = "SELECT * FROM leaves WHERE leaves.start_date BETWEEN :start_date1 AND :end_date1";
+			SQLQuery query = session.createSQLQuery(sql);
+			
+			query.setParameter("start_date1", start_date1);
+			query.setParameter("end_date1", end_date1);
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			userallleave = query.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return userallleave;
+		
 	}
 	
 	@Override

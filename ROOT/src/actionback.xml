@@ -1088,7 +1088,17 @@
 		<!-- <action name="leave_perform_add" class="com.cubesofttech.action.LeaveAction" 
 			method="add"> <result name="success" type="tiles">leave_list </result> <result 
 			name="input">/index.jsp</result> </action> -->
-
+		<action name="modalLeaveStatus"
+			class="com.cubesofttech.action.LeaveAction" method="modalLeaveStatus">
+			<result name="success" type="tiles">leave_approved</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="findValidTime"
+			class="com.cubesofttech.action.LeaveAction" method="findValidTime">
+			<result name="json">/pages-back/leave/leavePage.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		
 		<!-- Travel -->
 		<action name="travelexp_form"
 			class="com.cubesofttech.action.ExpenseAction" method="list">
@@ -2201,7 +2211,7 @@
 		</action>
 		<action name="LeaveEdit_Do"
 			class="com.cubesofttech.action.LeaveAction" method="LeaveEdit_Do">
-			<result name="success" type="redirect">leave_list</result>
+			<result name="success" type="redirect">leave_approved</result>
 			<result name="error">/index.jsp</result>
 		</action>
 

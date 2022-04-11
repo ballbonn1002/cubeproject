@@ -36,6 +36,7 @@ import com.cubesofttech.model.User;
 import com.cubesofttech.util.DateUtil;
 import com.ibm.icu.text.SimpleDateFormat;
 import com.ibm.icu.util.Calendar;
+import com.opensymphony.xwork2.ActionSupport;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
@@ -46,7 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class TimesheetService {
+public class TimesheetService extends ActionSupport {
 	public static final String SAMPLE_XLSX_FILE_PATH = "./sample-xlsx-file.xlsx";
 	Logger log = Logger.getLogger(getClass());
 	HttpServletRequest request = ServletActionContext.getRequest();
@@ -354,7 +355,7 @@ public class TimesheetService {
 
 									ProjectFunction projectFunction = new ProjectFunction();
 									projectFunction.setFunction_name(fpjsum);
-									projectFunction.setStatus("ACTIVE");
+									projectFunction.setStatus("1");
 
 									List<Map<String, Object>> whereproject1 = timesheetDAO.whereproject(pjsum);
 									for (int z = 0; z < whereproject1.size(); z++) {
@@ -377,7 +378,7 @@ public class TimesheetService {
 									if (wherefunction.isEmpty()) {
 										ProjectFunction projectFunction = new ProjectFunction();
 										projectFunction.setFunction_name(fpjsum);
-										projectFunction.setStatus("ACTIVE");
+										projectFunction.setStatus("1");
 
 										List<Map<String, Object>> whereproject1 = timesheetDAO.whereproject(pjsum);
 										for (int z = 0; z < whereproject1.size(); z++) {
@@ -544,7 +545,7 @@ public class TimesheetService {
 
 									ProjectFunction projectFunction = new ProjectFunction();
 									projectFunction.setFunction_name(fpjsum);
-									projectFunction.setStatus("ACTIVE");
+									projectFunction.setStatus("1");
 
 									List<Map<String, Object>> whereproject1 = timesheetDAO.whereproject(pjsum);
 									for (int z = 0; z < whereproject1.size(); z++) {
@@ -699,7 +700,7 @@ public class TimesheetService {
 //						functionsum = functiondb;
 //						teamsum = teamdb;
 //						usersum = userdb;
-//						System.out.println("date«éÓ¡Ñ¹âÇéÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂÂ");
+//						System.out.println("dateï¿½ï¿½Ó¡Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 //						if (detailsum == null) {
 //							detailsum = detaildb;
 //							System.out.println("detailsum : " + detailsum);
@@ -738,7 +739,7 @@ public class TimesheetService {
 //
 //								ProjectFunction projectFunction = new ProjectFunction();
 //								projectFunction.setFunction_name(functiondb);
-//								projectFunction.setStatus("ACTIVE");
+//								projectFunction.setStatus("1");
 //								
 //								List<Map<String, Object>> whereproject1 = timesheetDAO.whereproject(projectdb);
 //								for (int z = 0; z < whereproject1.size(); z++) {
@@ -856,7 +857,7 @@ public class TimesheetService {
 //
 //							ProjectFunction projectFunction = new ProjectFunction();
 //							projectFunction.setFunction_name(functiondb);
-//							projectFunction.setStatus("ACTIVE");
+//							projectFunction.setStatus("1");
 //							
 //							List<Map<String, Object>> whereproject1 = timesheetDAO.whereproject(projectdb);
 //							for (int z = 0; z < whereproject1.size(); z++) {
