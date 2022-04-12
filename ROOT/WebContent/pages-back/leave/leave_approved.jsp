@@ -41,6 +41,7 @@
 @media only screen and (max-width: 1300px) {
 	.paddinglg {
 		margin-left: 50px !important;
+		height: min-content;
 	}
 }
 
@@ -90,6 +91,7 @@
 		
 		<div class="row" style="padding-bottom: 15px; padding-top: 15px;">
 				<div class="col-md-1 col-lg-1" style="width: 0;"></div>
+					<!-- 	ลากิจ/ลาพักร้อน 		-->
 					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="width: 19%; padding: 5px;">
 						<a class="dashboard-stat dashboard-stat-v2 blue">	
 							<div class="visual">		
@@ -102,23 +104,21 @@
 											<c:when test="${ThisYear != 0 }">
 												<c:set var="amoutLeaveDay" value="${fn:substringBefore(LeavenumT1,'.')}" /> 
 												<c:set var="amoutLeaveHour" value="${(LeavenumT1 % 1) * 8}" />
-												<c:set var="amoutLeaveHalfHour" value="${(amoutLeaveHour % 1) * 60}" />
+												<%-- <c:set var="amoutLeaveHalfHour" value="${(amoutLeaveHour % 1) * 60}" /> --%>
 												<c:set var="amoutThisYearDay" value="${fn:substringBefore(ThisYear,'.')}" /> 
 												<c:set var="amoutThisYearHour" value="${(ThisYear % 1) * 8}" />
-												<c:set var="amoutThisYearHalfHour" value="${(amoutThisYearHour % 1) * 60}" />												
+												<%-- <c:set var="amoutThisYearHalfHour" value="${(amoutThisYearHour % 1) * 60}" /> --%>												
 												<span data-counter="counterup" data-value="">
-												<!--
-													<fmt:formatNumber type="number" pattern="#.#" value="${amoutLeaveDay}" /> d 
-													<fmt:formatNumber type="number" pattern="#.##" value="${amoutLeaveHour}" /> h
-												-->
+												
 													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour != 0}">
 															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
-															<c:if test="${amoutLeaveHalfHour == 0}">
-																<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h/
-															</c:if>
-															<c:if test="${amoutLeaveHalfHour != 0}">
-																<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h/
-															</c:if>
+															<%-- <c:if test="${amoutLeaveHalfHour == 0}"> --%>
+																<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h
+															<%-- </c:if> --%>
+															<%-- <c:if test="${amoutLeaveHalfHour != 0}">
+																<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:
+																<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h/
+															</c:if> --%>
 													</c:if> <!-- show day and hours -->
 													
 													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour == 0}">
@@ -126,12 +126,13 @@
 													</c:if> <!-- show day only -->
 													
 													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour != 0}">
-															<c:if test="${amoutLeaveHalfHour == 0}">
-																<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h/
-															</c:if>
-															<c:if test="${amoutLeaveHalfHour != 0}">
-																<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h/
-															</c:if>
+															<%-- <c:if test="${amoutLeaveHalfHour == 0}"> --%>
+																<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h
+															<%-- </c:if> --%>
+															<%-- <c:if test="${amoutLeaveHalfHour != 0}">
+																<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:
+																<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h/
+															</c:if> --%>
 													</c:if> <!-- show hours -->
 													
 													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour == 0}">
@@ -164,42 +165,27 @@
 													</c:if>
 													
 													<c:if test="${amoutThisYearDay == 0 && amoutThisYearHour == 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${amoutThisDay}"/>d
+														<fmt:formatNumber type="number" pattern="#" value="${amoutThisDay}"/>d
 													</c:if>
 												</span>
-																								<c:if test="${LeaveWAnumT1 != null}">
+												<c:if test="${LeaveWAnumT1 != null}">
 												<div class="desc" style="margin-top:-10px;margin-bottom:-10px;">
 													<c:set var="leaveDayWA" value="${fn:substringBefore(LeaveWAnumT1,'.')}"/>
 													<c:set var="leaveHourWA" value="${(LeaveWAnumT1 % 1) * 8}"/>
-													<c:set var="leaveHalfHourWA" value="${(leaveHourWA % 1) * 60}"/>
 													
 													<c:if test="${leaveDayWA != 0 && leaveHourWA != 0}">
-														<fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
-														<c:if test="${leaveHalfHourWA == 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h/
-														</c:if>
-														<c:if test="${leaveHalfHourWA != 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>:
-															<fmt:formatNumber type="number" pattern="#" value="${leaveHalfHourWA}"/>h/
-														</c:if>
-													</c:if>	<!-- show day and hours -->
-													
+														WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
+															<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
+													</c:if>	
 													<c:if test="${leaveDayWA != 0  && leaveHourWA == 0}">
 														WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
-													</c:if> <!-- show day only -->
-													
+													</c:if> 
 													<c:if test="${leaveDayWA == 0 && leaveHourWA != 0}">
-														<c:if test="${leaveHalfHourWA == 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h/
-														</c:if>
-														<c:if test="${leaveHalfHourWA != 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>:
-															<fmt:formatNumber type="number" pattern="#" value="${leaveHalfHourWA}"/>h/
-														</c:if>
-													</c:if> <!-- show hours -->
+														WA: <fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
+													</c:if> 
 													<c:if test="${leaveDayWA == 0 && leaveHourWA == 0}">
-														0d/
-													</c:if> <!-- no leave -->
+														<span>&nbsp;</span>
+													</c:if> 
 												</div>
 												</c:if>
 												<div class="desc">${type_1}</div>
@@ -215,6 +201,7 @@
 							</div>
 						</a>
 					</div>
+					<!-- 	ลาพักร้อนที่เหลือจากปีก่อน 		-->
 					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="width: 19%; padding: 5px;">
 						<a class="dashboard-stat dashboard-stat-v2 yellow-gold">
 							<div class="visual">
@@ -227,23 +214,21 @@
 											<c:when test="${LastYear != 0 }">
 												<c:set var="amoutLeaveDay" value="${fn:substringBefore(LeavenumT6,'.')}" /> 
 												<c:set var="amoutLeaveHour" value="${(LeavenumT6 % 1) * 8}" />
-												<c:set var="amoutLeaveHalfHour" value="${(amoutLeaveHour % 1) * 60}" />
+												<%-- <c:set var="amoutLeaveHalfHour" value="${(amoutLeaveHour % 1) * 60}" /> --%>
 												<c:set var="amoutLastYearDay" value="${fn:substringBefore(LastYear,'.')}" /> 
 												<c:set var="amoutLastYearHour" value="${(LastYear % 1) * 8}" />
-												<c:set var="amoutLastYearHalfHour" value="${(amoutLastYearHour % 1) * 60}" />
+												<%-- <c:set var="amoutLastYearHalfHour" value="${(amoutLastYearHour % 1) * 60}" /> --%>
 												<span data-counter="counterup" data-value="">
-												<!--
-													<fmt:formatNumber type="number" pattern="#.#" value="${amoutLeaveDay}" /> d 
-													<fmt:formatNumber type="number" pattern="#.##" value="${amoutLeaveHour}" /> h
-												-->
+												
 													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour != 0}">
 														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
-														<c:if test="${amoutLeaveHalfHour == 0}">
+														<%-- <c:if test="${amoutLeaveHalfHour == 0}"> --%>
 															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h/
-														</c:if>
-														<c:if test="${amoutLeaveHalfHour != 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h/
-														</c:if>
+														<%-- </c:if> --%>
+														<%-- <c:if test="${amoutLeaveHalfHour != 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h/
+														</c:if> --%>
 													</c:if> <!-- show day and hours -->
 															
 													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour == 0}">
@@ -251,12 +236,7 @@
 													</c:if> <!-- show day only -->
 															
 													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour != 0}">
-														<c:if test="${amoutLeaveHalfHour == 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h/
-														</c:if>
-														<c:if test="${amoutLeaveHalfHour != 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h/
-														</c:if>
+														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h/
 													</c:if> <!-- show hours -->
 															
 													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour == 0}">
@@ -265,71 +245,56 @@
 													
 													<!-- show quota -->
 													<c:if test="${amoutLastYearDay != 0  && amoutLastYearHour != 0}">
-														<c:if test="${amoutLastYearHalfHour == 0}">
+														<%-- <c:if test="${amoutLastYearHalfHour == 0}"> --%>
 															<fmt:formatNumber type="number" pattern="#" value="${amoutLastYearDay}"/>d
 															<fmt:formatNumber type="number" pattern="#" value="${amoutLastYearHour}"/>h
-														</c:if>
-														<c:if test="${amoutLastYearHalfHour != 0}">
+														<%-- </c:if> --%>
+														<%-- <c:if test="${amoutLastYearHalfHour != 0}">
 															<fmt:formatNumber type="number" pattern="#" value="${amoutLastYearDay}"/>d
-															<fmt:formatNumber type="number" pattern="#" value="${amoutLastYearHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLastYearHalfHour}"/>h
-														</c:if>
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLastYearHour}"/>:
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLastYearHalfHour}"/>h
+														</c:if> --%>
 													</c:if>
 													
 													<c:if test="${amoutLastYearDay != 0  && amoutLastYearHour == 0}">
 														<fmt:formatNumber type="number" pattern="#" value="${amoutLastYearDay}"/>d
 													</c:if>
-													
 													<c:if test="${amoutLastYearDay == 0 && amoutLastYearHour != 0}">
-														<c:if test="${amoutLastYearHalfHour == 0}">
+														<%-- <c:if test="${amoutLastYearHalfHour == 0}"> --%>
 															<fmt:formatNumber type="number" pattern="#" value="${amoutLastYearHour}"/>h
-														</c:if>
-														<c:if test="${amoutLastYearHalfHour != 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${amoutLastYearHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLastYearHalfHour}"/>h
-														</c:if>
+														<%-- </c:if> --%>
+														<%-- <c:if test="${amoutLastYearHalfHour != 0}">
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLastYearHour}"/>:
+															<fmt:formatNumber type="number" pattern="#" value="${amoutLastYearHalfHour}"/>h
+														</c:if> --%>
 													</c:if>
-													
 													<c:if test="${amoutLastYearDay == 0 && amoutLastYearHour == 0}">
 															0d
 													</c:if>
-		
 												</span>
 												<c:if test="${LeaveWAnumT6 != null}">
 													<div class="desc" style="margin-top:-10px;margin-bottom:-10px;">
 														<c:set var="leaveDayWA" value="${fn:substringBefore(LeaveWAnumT6,'.')}"/>
 														<c:set var="leaveHourWA" value="${(LeaveWAnumT6 % 1) * 8}"/>
-														<c:set var="leaveHalfHourWA" value="${(leaveHourWA % 1) * 60}"/>
 														
 														<c:if test="${leaveDayWA != 0  && leaveHourWA != 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
-															<c:if test="${leaveHalfHourWA == 0}">
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h/
-															</c:if>
-															<c:if test="${leaveHalfHourWA != 0}">
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h/
-															</c:if>
-														</c:if> <!-- show day and hours -->
-														
+															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
+																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
+														</c:if>
 														<c:if test="${leaveDayWA != 0  && leaveHourWA == 0}">
 															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
-														</c:if> <!-- show day only -->
-														
+														</c:if>
 														<c:if test="${leaveDayWA == 0 && leaveHourWA != 0}">
-															<c:if test="${leaveHalfHourWA == 0}">
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h/
-															</c:if>
-															<c:if test="${leaveHalfHourWA != 0}">
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>:
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHalfHourWA}"/>h/
-															</c:if>
-														</c:if> <!-- show hours -->
+															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
+														</c:if>
 														<c:if test="${leaveDayWA == 0 && leaveHourWA == 0}">
-															0d/
-														</c:if> <!-- no leave -->
+															<span>&nbsp;</span>
+														</c:if>
 													</div>
 												</c:if>
 													<div class="desc" style="font-size: 13px;">${type_6}</div>
 												</c:when>
-																								<c:when test="${LastYear == 0 }">
+												<c:when test="${LastYear == 0 }">
 													<span data-counter="counterup" data-value="">
 													0d</span>
 													<div class="desc">${type_6}</div>
@@ -340,6 +305,7 @@
 							</div>
 						</a>
 					</div>
+					<!-- 	ลาป่วย 	-->
 					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="width: 19%; padding: 5px;">
 						<a class="dashboard-stat dashboard-stat-v2 red">
 							<div class="visual">
@@ -352,20 +318,11 @@
 											<c:when test="${LeavenumT3 != 0}">
 												<c:set var="amoutLeaveDay" value="${fn:substringBefore(LeavenumT3,'.')}" /> 
 												<c:set var="amoutLeaveHour" value="${(LeavenumT3 % 1) * 8}" />
-												<c:set var="amoutLeaveHalfHour" value="${(amoutLeaveHour % 1) * 60}" />
 												<span data-counter="counterup" data-value="">
-												<!--
-													<fmt:formatNumber type="number" pattern="#.#" value="${amoutLeaveDay}" /> d 
-													<fmt:formatNumber type="number" pattern="#.##" value="${amoutLeaveHour}" /> h
-												-->
+	
 													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour != 0}">
 														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
-														<c:if test="${amoutLeaveHalfHour == 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h
-														</c:if>
-														<c:if test="${amoutLeaveHalfHour != 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h
-														</c:if>
+														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h
 													</c:if> <!-- show day and hours -->
 															
 													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour == 0}">
@@ -373,12 +330,7 @@
 													</c:if> <!-- show day only -->
 															
 													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour != 0}">
-														<c:if test="${amoutLeaveHalfHour == 0}">
 															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h
-														</c:if>
-														<c:if test="${amoutLeaveHalfHour != 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h
-														</c:if>
 													</c:if> <!-- show hours -->
 															
 													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour == 0}">
@@ -386,43 +338,50 @@
 													</c:if> <!-- no leave -->
 												</span>
 												<c:if test="${LeaveWAnumT3 != null}">
-													<div class="desc" style="margin-top:-10px;margin-bottom:-10px;">
+													<div class="desc WAnum" style="margin-top:-10px;margin-bottom:-10px;">
 														<c:set var="leaveDayWA" value="${fn:substringBefore(LeaveWAnumT3,'.')}"/>
 														<c:set var="leaveHourWA" value="${(LeaveWAnumT3 % 1) * 8}"/>
-														<c:set var="leaveHalfHourWA" value="${(leaveHourWA % 1) * 60}"/>
 														
 														<c:if test="${leaveDayWA != 0  && leaveHourWA != 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
-															<c:if test="${leaveHalfHourWA == 0}">
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h/
-															</c:if>
-															<c:if test="${leaveHalfHourWA != 0}">
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>:<fmt:formatNumber type="number" pattern="#" value="${leaveHalfHourWA}"/>h/
-															</c:if>
-														</c:if> <!-- show day and hours -->
-														
+															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
+																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
+														</c:if> 
 														<c:if test="${leaveDayWA != 0  && leaveHourWA == 0}">
-															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d/
-														</c:if> <!-- show day only -->
-														
+															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
+														</c:if>
 														<c:if test="${leaveDayWA == 0 && leaveHourWA != 0}">
-															<c:if test="${leaveHalfHourWA == 0}">
-																WA: <fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
-															</c:if>
-															<c:if test="${leaveHalfHourWA != 0}">
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>:
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHalfHourWA}"/>h/
-															</c:if>
-														</c:if> <!-- show hours -->
+															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
+														</c:if>
 														<c:if test="${leaveDayWA == 0 && leaveHourWA == 0}">
-															0d/
-														</c:if> <!-- no leave -->
+															<span>&nbsp;</span>
+														</c:if>
 													</div>
 												</c:if>
 												<div class="desc">${type_3}</div>
 											</c:when>
 											<c:when test="${LeavenumT3 == 0}">
 												<span data-counter="counterup" data-value="">0d</span>
+												<c:if test="${LeaveWAnumT3 != null}">
+													<div class="desc WAnum" style="margin-top:-10px;margin-bottom:-10px;">
+														<c:set var="leaveDayWA" value="${fn:substringBefore(LeaveWAnumT3,'.')}"/>
+														<c:set var="leaveHourWA" value="${(LeaveWAnumT3 % 1) * 8}"/>
+														
+														<c:if test="${leaveDayWA != 0  && leaveHourWA != 0}">
+															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
+																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
+														</c:if> 
+														<c:if test="${leaveDayWA != 0  && leaveHourWA == 0}">
+															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
+														</c:if>
+														<c:if test="${leaveDayWA == 0 && leaveHourWA != 0}">
+															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
+														</c:if>
+														<c:if test="${leaveDayWA == 0 && leaveHourWA == 0}">
+															<span>&nbsp;</span>
+														</c:if>
+													</div>
+													
+												</c:if>
 												<div class="desc">${type_3}</div>
 											</c:when>
 										</c:choose>
@@ -431,7 +390,7 @@
 							</div>
 						</a>
 					</div>
-					
+					<!-- 	ลาอื่นๆ 	-->
 					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="width: 19%; padding: 5px;">
 						<a class="dashboard-stat dashboard-stat-v2 green-jungle">
 							<div class="visual">
@@ -444,12 +403,8 @@
 											<c:when test="${LeavenumT2 != 0}">
 												<c:set var="amoutLeaveDay" value="${fn:substringBefore(LeavenumT2,'.')}" /> 
 												<c:set var="amoutLeaveHour" value="${(LeavenumT2 % 1) * 8}" />
-												<c:set var="amoutLeaveHalfHour" value="${(amoutLeaveHour % 1) * 60}" />
 												<span data-counter="counterup" data-value="">
-												<!--
-													<fmt:formatNumber type="number" pattern="#.#" value="${amoutLeaveDay}" /> d 
-													<fmt:formatNumber type="number" pattern="#.##" value="${amoutLeaveHour}" /> h
-												-->
+
 													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour != 0}">
 														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
 														<c:if test="${amoutLeaveHalfHour == 0}">
@@ -481,36 +436,20 @@
 													<div class="desc" style="margin-top:-10px;margin-bottom:-10px;">
 													<c:set var="leaveDayWA" value="${fn:substringBefore(LeaveWAnumT2,'.')}"/>
 													<c:set var="leaveHourWA" value="${(LeaveWAnumT2 % 1) * 8}"/>
-													<%-- <c:set var="leaveHalfHourWA" value="${(leaveHourWA % 1) * 60}"/> --%>
 													
 													<c:if test="${leaveDayWA != 0  && leaveHourWA != 0}">
 														WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
-															<%-- <c:if test="${leaveHalfHourWA == 0}"> --%>
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
-															<%-- </c:if> --%>
-															<%-- <c:if test="${leaveHalfHourWA != 0}">
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>:
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHalfHourWA}"/>h/
-															</c:if> --%>
-													</c:if>	<!-- show day and hours -->
-													
+															<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
+													</c:if>
 													<c:if test="${leaveDayWA != 0  && leaveHourWA == 0}">
 														WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
-													</c:if> <!-- show day only -->
-													
+													</c:if>
 													<c:if test="${leaveDayWA == 0 && leaveHourWA != 0}">
-														<%-- <c:if test="${leaveHalfHourWA == 0}"> --%>
-															<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
-														<%-- </c:if> --%>
-														<%-- <c:if test="${leaveHalfHourWA != 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>:
-															<fmt:formatNumber type="number" pattern="#" value="${leaveHalfHourWA}"/>h/
-														</c:if> --%>
-													</c:if> <!-- show hours -->
-													
+														WA: <fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
+													</c:if>
 													<c:if test="${leaveDayWA == 0 && leaveHourWA == 0}">
-														0d/
-													</c:if> <!-- no leave -->
+														<span>&nbsp;</span>
+													</c:if>
 													</div>
 												</c:if>
 												<div class="desc">${type_2}</div>
@@ -521,35 +460,20 @@
 													<div class="desc" style="margin-top:-10px;margin-bottom:-10px;">
 													<c:set var="leaveDayWA" value="${fn:substringBefore(LeaveWAnumT2,'.')}" /> 
 													<c:set var="leaveHourWA" value="${(LeaveWAnumT2 % 1) * 8}" />
-													<%-- <c:set var="leaveHalfHourWA" value="${(leaveHourWA % 1) * 60}" /> --%>
 													
 													<c:if test="${leaveDayWA != 0  && leaveHourWA != 0}">
 														WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
-														<%-- <c:if test="${leaveHalfHourWA == 0}"> --%>
 															<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
-														<%-- </c:if> --%>
-														<%-- <c:if test="${leaveHalfHourWA != 0}">
-														<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>:
-															<fmt:formatNumber type="number" pattern="#" value="${leaveHalfHourWA}"/>h/
-														</c:if> --%>
-													</c:if> <!-- show day and hours -->
-													
+													</c:if> 												
 													<c:if test="${leaveDayWA != 0  && leaveHourWA == 0}">
-														<fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
-													</c:if> <!-- show day only -->
-													
-													<c:if test="${leaveDayWA == 0 && amoutLeaveHour != 0}">
-														<%-- <c:if test="${leaveHalfHourWA == 0}"> --%>
-															<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h/
-														<%-- </c:if> --%>
-														<%-- <c:if test="${leaveHalfHourWA != 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>:
-															<fmt:formatNumber type="number" pattern="#" value="${leaveHalfHourWA}"/>h/
-														</c:if> --%>
-													</c:if> <!-- show hours -->
+														WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
+													</c:if> 
+													<c:if test="${leaveDayWA == 0 && leaveHourWA != 0}">
+														WA: <fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
+													</c:if>
 													<c:if test="${leaveDayWA == 0 && leaveHourWA == 0}">
-														0d/
-													</c:if> <!-- no leave -->
+														<span>&nbsp;</span>
+													</c:if>
 													</div>
 												</c:if>
 												<div class="desc">${type_2}</div>
@@ -560,6 +484,7 @@
 							</div>
 						</a>
 					</div>
+					<!-- 	ลาโดยไม่รับค่าจ้าง 	-->
 					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2" style="width: 19%; padding: 5px;">
 						<a class="dashboard-stat dashboard-stat-v2 green">
 							<div class="visual">
@@ -572,20 +497,10 @@
 											<c:when test="${LeavenumT5 != 0}">
 												<c:set var="amoutLeaveDay" value="${fn:substringBefore(LeavenumT5,'.')}" /> 
 												<c:set var="amoutLeaveHour" value="${(LeavenumT5 % 1) * 8}" />
-												<%-- <c:set var="amoutLeaveHalfHour" value="${(amoutLeaveHour % 1) * 60}" /> --%>
 												<span data-counter="counterup" data-value="">
-												<!--
-													<fmt:formatNumber type="number" pattern="#.#" value="${amoutLeaveDay}" /> d 
-													<fmt:formatNumber type="number" pattern="#.##" value="${amoutLeaveHour}" /> h
-												-->
 													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour != 0}">
 														<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
-														<%-- <c:if test="${amoutLeaveHalfHour == 0}"> --%>
 															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h
-														<%-- </c:if> --%>
-														<%-- <c:if test="${amoutLeaveHalfHour != 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h
-														</c:if> --%>
 													</c:if> <!-- show day and hours -->
 															
 													<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour == 0}">
@@ -593,12 +508,7 @@
 													</c:if> <!-- show day only -->
 															
 													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour != 0}">
-														<%-- <c:if test="${amoutLeaveHalfHour == 0}"> --%>
 															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h
-														<%-- </c:if> --%>
-														<%-- <c:if test="${amoutLeaveHalfHour != 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h
-														</c:if> --%>
 													</c:if> <!-- show hours -->
 															
 													<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour == 0}">
@@ -609,35 +519,20 @@
 													<div class="desc" style="margin-top:-10px;margin-bottom:-10px;">
 														<c:set var="leaveDayWA" value="${fn:substringBefore(LeaveWAnumT5,'.')}"/> 
 														<c:set var="leaveHourWA" value="${(LeaveWAnumT5 % 1) * 8}" />
-														<%-- <c:set var="leaveHalfHourWA" value="${(leaveHourWA % 1) * 60}"/> --%>
 														
 														<c:if test="${leaveDayWA != 0  && leaveHourWA != 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
-															<%-- <c:if test="${leaveHalfHourWA == 0}"> --%>
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h/
-															<%-- </c:if> --%>
-															<%-- <c:if test="${leaveHalfHourWA != 0}">
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>:
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHalfHourWA}"/>h/
-															</c:if> --%>
-														</c:if>	<!-- show day and hours -->
-														
+															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
+																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
+														</c:if>
 														<c:if test="${leaveDayWA != 0  && leaveHourWA == 0}">
-															<fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d/
-														</c:if> <!-- show day only -->
-														
+															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
+														</c:if>
 														<c:if test="${leaveDayWA == 0 && leaveHourWA != 0}">
-															<%-- <c:if test="${leaveHalfHourWA == 0}"> --%>
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h/
-															<%-- </c:if> --%>
-															<%-- <c:if test="${leaveHalfHourWA != 0}">
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>:
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHalfHourWA}"/>h/
-															</c:if> --%>
-														</c:if> <!-- show hours -->
+															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
+														</c:if>
 														<c:if test="${leaveDayWA == 0 && leaveHourWA == 0}">
-															0d/
-														</c:if> <!-- no leave -->
+															<span>&nbsp;</span>
+														</c:if>
 													</div>
 												</c:if>
 												<div class="desc">${type_5}</div>
@@ -648,35 +543,20 @@
 													<div class="desc" style="margin-top:-10px;margin-bottom:-10px;">
 														<c:set var="leaveDayWA" value="${fn:substringBefore(LeaveWAnumT5,'.')}"/> 
 														<c:set var="leaveHourWA" value="${(LeaveWAnumT5 % 1) * 8}" />
-														<%-- <c:set var="leaveHalfHourWA" value="${(leaveHourWA % 1) * 60}"/> --%>
 														
 														<c:if test="${leaveDayWA != 0  && leaveHourWA != 0}">
 															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
-															<%-- <c:if test="${leaveHalfHourWA == 0}"> --%>
 																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
-															<%-- </c:if> --%>
-															<%-- <c:if test="${leaveHalfHourWA != 0}">												
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>:
-																<fmt:formatNumber type="number" pattern="#" value="${leaveHalfHourWA}"/>h/
-															</c:if> --%>
-														</c:if> <!-- show day and hours -->
-													
-													<c:if test="${leaveDayWA != 0  && leaveHourWA == 0}">
-														WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
-													</c:if> <!-- show day only -->
-													
-													<c:if test="${leaveDayWA == 0 && leaveHourWA != 0}">
-														<%-- <c:if test="${leaveHalfHourWA == 0}"> --%>
+														</c:if>
+														<c:if test="${leaveDayWA != 0  && leaveHourWA == 0}">
+															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveDayWA}"/>d
+														</c:if>
+														<c:if test="${leaveDayWA == 0 && leaveHourWA != 0}">
 															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>h
-														<%-- </c:if> --%>
-														<%-- <c:if test="${leaveHalfHourWA != 0}">
-															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveHourWA}"/>:
-															WA: <fmt:formatNumber type="number" pattern="#" value="${leaveHalfHourWA}"/>h/
-														</c:if> --%>
-													</c:if> <!-- show hours -->
-													<c:if test="${leaveDayWA == 0 && leaveHourWA == 0}">
-														0d/
-													</c:if> <!-- no leave -->
+														</c:if> 
+														<c:if test="${leaveDayWA == 0 && leaveHourWA == 0}">
+															<span>&nbsp;</span>
+														</c:if> 
 													</div>
 												</c:if>
 												<div class="desc">${type_5}</div>
@@ -844,130 +724,15 @@
 					</div>
 
 				</div>
-				<!--${startdate}<br>${enddate}<br>-->
-				
-				<!--  Dashboard  -->
-				<!--  
-				<div id="dashboard">
-					<div class="row">
-						<div class="col-md-12 col-lg-12">
-							<div class="col-md-3">
-								<a class="dashboard-stat dashboard-stat-v2 yellow-gold">
-									<div class="visual">
-										<i class="fa fa-newspaper-o"></i>
-									</div>
-									<div class="details">
-
-										<form action="myleave_list" method="POST">
-											<div class="number">${userS }</div>
-
-										</form>
-
-									</div>
-
-								</a>
-							</div>
-							<!-- personal leave 
-							<div class="col-md-3">
-								<a class="dashboard-stat dashboard-stat-v2 blue-steel">
-									<div class="visual">
-										<i class="fa fa-photo"></i>
-									</div>
-									<div class="details">
-										<form action="myleave_list" method="POST">
-											<div class="number" >
-												<c:choose>
-										
-													<c:when test="${LeavenumT1 != null}" >
-															
-														<span id="leaveType1" data-counter="counterup"
-															data-value="" >	<fmt:formatNumber pattern="#.###" value="${LeavenumT1}">	</fmt:formatNumber> </span>
-															
-														<span>/ ${ThisYear}</span>
-														<div class="desc">${type_1}</div>
-																
-													</c:when>
-													<c:when test="${LeavenumT1 == null}">
-														<span id="leaveType1" data-counter="counterup"
-															data-value="">0 / ${ThisYear}</span>
-														<div class="desc">${type_1}</div>
-													</c:when>
-												</c:choose>
-											</div>
-										</form>
-									</div>
-
-								</a>
-							</div>
-							<!-- sick leave 
-							<div class="col-md-3">
-								<a class="dashboard-stat dashboard-stat-v2 red">
-									<div class="visual">
-										<i class="fa fa-ambulance"></i>
-									</div>
-									<div class="details">
-
-										<form action="myleave_list" method="POST">
-											<div class="number">
-												<c:choose>
-													<c:when test="${LeavenumT3 != null}">
-														<span id="leaveType3" data-counter="counterup"
-															data-value=""><fmt:formatNumber pattern="#.#" value="${LeavenumT3}">	</fmt:formatNumber></span>
-														<div class="desc">${type_3}</div>
-													</c:when>
-													<c:when test="${LeavenumT3 == null}">
-														<span id="leaveType3" data-counter="counterup"
-															data-value="">0</span>
-														<div class="desc">${type_3}</div>
-													</c:when>
-												</c:choose>
-											</div>
-										</form>
-
-									</div>
-
-								</a>
-							</div>
-							<!-- leave quota from last year 
-							<div class="col-md-3">
-								<a class="dashboard-stat dashboard-stat-v2 purple">
-									<div class="visual">
-										<i class="fa fa-credit-card"></i>
-									</div>
-									<div class="details">
-										<form action="myleave_list" method="POST">
-											<div class="number">
-												<c:set var="deci" value="${fn:substringAfter(LastYear, '.')}"/>
-												
-												<c:choose>
-													<c:when test="${LeavenumT6 != null}">
-														<span id="leaveType6" data-counter="counterup"
-															data-value="sad"><fmt:formatNumber type="number" pattern="#.##" value="${LeavenumT6}">	</fmt:formatNumber> </span>
-													<span><c:if test="${fn:length(deci) == 1}">
-														/${LastYear}0
-													</c:if></span>
-														<div class="desc">${type_6}</div>
-													</c:when>
-													<c:when test="${leave_1 == null}">
-														<span id="leaveType6" data-counter="counterup"
-															data-value="">0 / ${LastYear}</span>
-														<div class="desc">${type_6}</div>
-													</c:when>
-												</c:choose>
-											</div>
-										</form>
-									</div>
-
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				 -->
 			</div>
 
 			<br>
 		</form>
+
+
+
+
+
 
 		<!-- start content portlet -->
 
@@ -986,35 +751,12 @@
 				</tr>
 			</thead>
 
+
 			<form action="myleave_list" method="POST">
 				<c:forEach var="leave" items="${leaveList}" varStatus="status">
 					<tr style="text-align: center;">
-						<!--<td style="vertical-align: middle;"><a class="text-right"
-							href="LeaveEdit?id=${leave.leave_id}">${leave.leave_id} </a></td>-->
-						<td style="vertical-align: middle; color: #3598dc;">${leave.leave_id}</td>
-						<!-- 
-						<td><span class="btn blue-hoki btn-outline"
-							style="width: 150px"> <i class="fa fa-user"></i> <a
-								class="text-right" href="LeaveEdit?id=${leave.leave_id}">${leave.user_id}</a>
-						</span> <span class="btn purple btn-outline text-overflow" style="width: 140px;"title="${leave.leave_type_name}">
-								<i class="fa fa-sign-out"></i> ${leave.leave_type_name}
-						</span> <span class="btn blue btn-outline"> <i
-								class="fa fa-calendar"></i> <fmt:formatDate
-									value="${leave.start_date}" pattern="dd-MMM-yyyy"></fmt:formatDate>
-								~ <fmt:formatDate value="${leave.end_date}"
-									pattern="dd-MMM-yyyy"></fmt:formatDate>
-						</span> 
-						<span class="btn default"> <i class="fa fa-bookmark"></i>
-								<c:set var="amoutLeaveDay" value="${leave.no_day}" /> 
-								<c:set var="aa" value="${fn:substringBefore(leave.no_day,'.')}" /> 
-								<fmt:formatNumber type="number" pattern="#.#" value="${aa}" /> d 
-								<fmt:formatNumber type="number" pattern="#.##" value="${(amoutLeaveDay % 1) * 8}" /> h									
-						</span>
-						<span class="btn green btn-outline" style="width: 120px">
-								<i class="fa fa-calendar"></i> <fmt:formatDate
-									value="${leave.time_create}" pattern="dd-MMM-yyyy"></fmt:formatDate>
-						</span></td>
-						 -->
+						<td style="vertical-align: middle;"><a class="text-right"
+							href="LeaveEdit?id=${leave.leave_id}">${leave.leave_id} </a></td>
 						<td>${leave.user_id}</td>
 						<td style="text-align: left;">${leave.leave_type_name}<br>
 							<small class="text-info">&emsp;Request Date: 
@@ -1032,17 +774,11 @@
 						<td style="vertical-align: middle;">
 									<c:set var="amoutLeaveDay" value="${fn:substringBefore(leave.no_day,'.')}" /> 
 									<c:set var="amoutLeaveHour" value="${(leave.no_day % 1) * 8}" />
-									<%-- <c:set var="amoutLeaveHalfHour" value="${(amoutLeaveHour % 1) * 60}" /> --%>
 
 									<c:if test="${amoutLeaveDay != 0  && amoutLeaveHour != 0}">
 										<span style="color:white; width:80px; display:inline-block; border: 2px solid #3598dc; background-color: #3598dc;">
 										<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveDay}"/>d
-										<%-- <c:if test="${amoutLeaveHalfHour == 0}"> --%>
 											<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>h
-										<%-- </c:if> --%>
-										<%-- <c:if test="${amoutLeaveHalfHour != 0}">
-											<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/>h
-										 </c:if> --%>
 										</span>
 									</c:if> <!-- show day and hours -->
 															
@@ -1244,7 +980,7 @@
 											</button>
 											<ul class="dropdown-menu pull-right" role="menu">
 												<li><h4 style="color: white; text-align: center;">
-														<a class="btn circle green-jungle"
+														<a class="btn circle btn-info"
 															onclick="ajaxLoad(${leave.leave_id});"> Approve </a>
 													</h4></li>
 											</ul>
@@ -1257,7 +993,7 @@
 											</button>
 											<ul class="dropdown-menu pull-right" role="menu">
 												<li><h4 style="color: white; text-align: center;">
-														<button class="btn green-jungle"
+														<button class="btn btn-danger"
 															onclick="ajaxLoad(${leave.leave_id});">Approve</button>
 													</h4></li>
 												<li><h4 style="color: white; text-align: center;">
@@ -1274,7 +1010,7 @@
 
 									<c:if test="${leave.leave_status_id.toString() == '1'}">
 										<div class="wait-${leave.leave_id}">
-											<button class="btn green-jungle" type="button"
+											<button class="btn green-meadow" type="button"
 												data-toggle="dropdown" data-hover="dropdown">
 												Approved
 											</button>											
@@ -1292,8 +1028,7 @@
 								</div>
 							</perm:permission></td>
 
-						<td>
-						<perm:permission object="leave.approve">
+ 						<td><perm:permission object="leave.approve">
 								<div class="btn-group">
 									<a class="btn circle btn-outline btn-sm sbold blue"
 										title="information of leave"
@@ -1301,8 +1036,8 @@
 										class="fa fa-clipboard"></i>
 									</a>
 								</div>
-						</perm:permission>
-						<perm:permission object="leave.approve">
+							</perm:permission>
+							<perm:permission object="leave.approve">
 								<div class="btn-group">
 									<a class="btn circle btn-outline btn-sm sbold green"
 										title="information of leave"
@@ -1319,10 +1054,12 @@
 										<i class="fa fa-print"></i>
 									</a>
 								</div>
-						</perm:permission>
+
+							</perm:permission>
+
 						<perm:permission object="leave.approve">
 								<div class="btn-group">
-									<a id="delete_leave_link" class="btn circle btn-outline btn-sm sbold red"
+									<a id="delete_leave_link" class="btn circle btn-outline btn-sm red"
 										data-toggle="modal"
 										onclick="delTimesheet(${leave.leave_id});"
 										title="leave deleting"> <i
@@ -1330,8 +1067,8 @@
 									</a>
 									<%-- href="delete_leave_id?leave_id=${leave.leave_id}" --%>
 								</div>
-						</perm:permission> <!-- for delete leave alert pop up -->
-						
+
+							</perm:permission> <!-- for delete leave alert pop up -->
 						<script>
 								
 								function delTimesheet(id) {
@@ -1714,8 +1451,20 @@ $('#btn_popover').on("click", function(){
 					$('#stime').append(obj.start_time);
 					$('#etime').append(obj.end_time);
 					$('#desc').append(obj.description);
-					$('#noday').append(obj.no_day + " Day");
+	/* ----------------------- leave no day ----------------------- */
+					var dayleave = (obj.no_day).toString().split(".");
+					var day = dayleave[0];
+					var hour = ((obj.no_day % 1)*8);
 					
+					if(day[0] != '0' && hour != 0){
+						$('#noday').append(day[0] + " Day "+ hour +" Hour");
+					}
+					else if(day[0] != '0' && hour == 0){
+						$('#noday').append(day[0] + " Day");
+					}
+					else if(day[0] == '0' && hour != 0){
+						$('#noday').append(hour + " Hour");
+					}	
 	/* ----------------------- set start date / end date ----------------------- */
 					var sdate = (obj.start_date).split(",");
 					$('#sdate').append(sdate[0] + ",");
@@ -1755,7 +1504,6 @@ $('#btn_popover').on("click", function(){
 					if(obj.leave_type_id == 5){$('#leavetype').append("ลาโดยไม่รับค่าจ้าง");}
 					if(obj.leave_type_id == 6){$('#leavetype').append("ลาพักร้อนที่เหลือจากปีก่อน");}
 					if(obj.leave_type_id == 9){$('#leavetype').append("อื่นๆ");}
-					
 	 		}
  		});
 	}

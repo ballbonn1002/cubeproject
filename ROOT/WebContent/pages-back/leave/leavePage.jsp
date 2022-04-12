@@ -438,7 +438,7 @@ function check_char(elm){
         if(leave != null){
 			var noDay = leave.noDay.toString().split(".");
 			var amount = noDay[0];
-			var amount_sub = noDay[1];
+			var amount_sub = (leave.noDay%1)*8;
 			if(isNaN(amount_sub)){ amount_sub = 0;}
 			$('#date_from').val(toDisplayDate(new Date(leave.startDate)));
 			$('#date_to').val(toDisplayDate(new Date(leave.endDate)));
