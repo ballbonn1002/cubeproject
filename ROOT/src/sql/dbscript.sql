@@ -17,6 +17,8 @@ ALTER TABLE `project_function` CHANGE `status` `status` CHAR(1) CHARACTER SET ut
 
 SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 
+-- PROD / UAT -- [5 Mar 2022]
+
 CREATE TABLE `user_rpw`(
    `user_rpw_id` INT(11) NOT NULL AUTO_INCREMENT,
    `user_id` VARCHAR(32) NOT NULL,
@@ -24,6 +26,7 @@ CREATE TABLE `user_rpw`(
    `expired` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),      
    PRIMARY KEY (`user_rpw_id`)
 );
+
 
 CREATE TABLE `ticket` (
   `ticket_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -64,7 +67,7 @@ ALTER TABLE `timesheet` ADD `started_date` DATE NULL AFTER `description`;
 
 ALTER TABLE `timesheet` ADD `timespent` VARCHAR(32) NULL AFTER `started_date`;
 
--- PROD / UAT -- [5 Mar 2022]
+-- PROD / UAT -- [12 Apr 2022]
 
 
 
