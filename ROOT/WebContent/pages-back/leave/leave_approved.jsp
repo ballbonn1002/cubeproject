@@ -57,6 +57,7 @@
 .item-head {
 	width: width:100% !important;
 }
+
 </style>
 <c:set var="now" value="<%=new java.util.Date()%>" />
 
@@ -682,7 +683,7 @@
 
 							<div class="col-md-4">
 								<div class="input-group input-large date-picker input-daterange"
-									data-date-format="dd-mm-yyyy">
+									data-date-format="dd-mm-yyyy" style="z-index:0">
 									<c:choose>
 										<c:when test="${startdate == null}">
 											<input type="text" class="form-control cannot"
@@ -790,96 +791,11 @@
 															
 									<c:if test="${amoutLeaveDay == 0 && amoutLeaveHour != 0}">
 										<span style="color:white; width:80px; display:inline-block; border: 2px solid #3598dc; background-color: #3598dc;">
-										<%-- <c:if test="${amoutLeaveHalfHour == 0}"> --%>
 											<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/> hours
-										<%-- </c:if> --%>
-										<%-- <c:if test="${amoutLeaveHalfHour != 0}"> 
-											<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHour}"/>:<fmt:formatNumber type="number" pattern="#" value="${amoutLeaveHalfHour}"/> h
-										 </c:if> --%>
 										</span>
 									</c:if> <!-- show hours -->					
 								</td>
 						
-						<!--  <td><c:if test="${leave.leave_status_id.toString() == '0'}">
-									<div class="wait-${leave.leave_id}">
-										<div class="item-status btn-sm btn-warning">Waiting for
-											Approved</div>
-									</div>
-
-
-									<div hidden class="app-${leave.leave_id}">
-										<div class="item-status btn-sm btn-info">Approved</div>
-									</div>
-
-									<div hidden class="app0-${leave.leave_id}">
-										<div class="item-status btn-sm btn-danger">Reject</div>
-									</div>
-
-									<div hidden class="app1-${leave.leave_id}">
-										<div class="item-status btn-sm btn-warning">Waiting for
-											Approved</div>
-									</div>
-
-
-								</c:if> <c:if test="${leave.leave_status_id.toString() == '1'}">
-									<div class="wait-${leave.leave_id}">
-										<div class="item-status btn-sm btn-info">Approved</div>
-									</div>
-
-									<div hidden class="app1-${leave.leave_id}">
-										<div class="item-status btn-sm btn-warning">Waiting for
-											Approved</div>
-									</div>
-
-									<div hidden class="app0-${leave.leave_id}">
-										<div class="item-status btn-sm btn-danger">Reject</div>
-									</div>
-
-									<div hidden class="app-${leave.leave_id}">
-										<div class="item-status btn-sm btn-info">Approved</div>
-									</div>
-
-								</c:if> <c:if test="${leave.leave_status_id.toString() == '2'}">
-									<div class="wait-${leave.leave_id}">
-										<div class="item-status btn-sm btn-danger">Reject</div>
-									</div>
-
-									<div hidden class="app1-${leave.leave_id}">
-										<div class="item-status btn-sm btn-warning">Waiting for
-											Approved</div>
-									</div>
-
-									<div hidden class="app-${leave.leave_id}">
-										<div class="item-status btn-sm btn-info">Approved</div>
-									</div>
-
-									<div hidden class="app0-${leave.leave_id}">
-										<div class="item-status btn-sm btn-danger">Reject</div>
-									</div>
-
-								</c:if></td> 
-							<!--   <td><perm:permission object="leave.approve">
-									<div class="btn-group">
-										<button
-											class="btn btn-circle green btn-outline btn-sm dropdown-toggle"
-											type="button" data-toggle="dropdown" data-hover="dropdown">
-											Actions <i class="fa fa-angle-down"></i>
-										</button>
-										<ul class="dropdown-menu pull-right" role="menu">
-											<li><a class="text-right "
-												onclick="ajaxLoad(${leave.leave_id})">Approve </a></li>
-											<li><a class="text-right"
-												href="LeaveEdit?id=${leave.leave_id}">Detail </a></li>
-											<li><a class="text-right"
-												href="leaveReport?leaveId=${leave.leave_id}">Print </a></li>
-											<li class="divider"></li>
-											<li><a class="text-right"
-												onclick="delete_leave_id?leave_id=${leave.leave_id}"><font
-													color="red">Delete </font></a></li>
-										</ul>
-									</div>
-								</perm:permission></td> -->
-
 						<td><perm:permission object="leave.approve">
 								<div class="btn-group">
 									<!-- <button type="button" class="btn btn-info btn-lg" id="myBtn">
@@ -921,93 +837,26 @@
 										</script> -->
 
 									<c:if test="${leave.leave_status_id.toString() == '0'}">
-										<div class="wait-${leave.leave_id}">
-											<button class="btn yellow-crusta" type="button" id="btn_popover"
-												>Waiting for Approving</button>
-											<div class="popover fade top in" data-toggle="popover" id="status_popover"
-												style="top:538.062 px; left:28 px; display:block; visibility:hidden;">
-												<div class="arrow" style="left:50%;"></div>
-												<h3 class="popover-title">You want to Approval?</h3>
-												<div class="popover-content text-center">
-													<div class="btn-group">
-														<a class="btn green-jungle" onclick="leaveEdit(${leave.leave_id})">
-															<i class="glyphicon glyphicon-ok"></i> Approve </a>
-														<a class="btn btn-danger" onclick="leaveEdit(${leave.leave_id})">
-															<i class="glyphicon glyphicon-remove"></i> Reject </a>
-													</div>
-												</div>
-											</div>
-										</div>
-<%--     									<div class="wait-${leave.leave_id}">
-											<button class="btn yellow-crusta"  type="button"
-												data-toggle="dropdown" data-hover="dropdown">
-												Waiting for Approving<!-- <i class="fa fa-angle-down"></i> -->
-											</button>
-											<ul class="dropdown-menu pull-right" role="menu">
-												<li class="list-group-item"><h5 class="title">You want to Approval?</h5></li>
+     									<div class="wait-${leave.leave_id} btn-group dropup">
+											<button class="btn yellow-crusta">Waiting for Approving</button>
+											<button class="btn yellow-crusta dropdown-toggle" type="button" 
+												data-delay="999" data-toggle="dropdown" data-close-others="true">
+												<i class="fa fa-angle-up"></i></button>
+											<ul class="dropdown-menu" role="menu" style="z-index:1000">
+												<li class="list-group-item" style="background-color:#FAFAFA">
+													<h5 class="title">You want to Approval?</h5></li>
 												<li><h4 style="color: white; text-align: center;">
-														<a class="btn green-jungle"
-															onclick="ajaxLoad1(${leave.leave_id})"> Approve </a>
-													</h4></li>
-												<li><h4 style="color: white; text-align: center;">
-														<a id="reject_leave_call01" class="btn btn-danger"
-															onclick="call_reject1(${leave.leave_id});">
-															Reject </a>
-													</h4></li>
+													<a class="btn green-jungle"
+														onclick="leaveStatus(${leave.leave_id})">
+														<i class="glyphicon glyphicon-ok"></i> Approve </a></h4>
+													<h4 style="color: white; text-align: center;">
+													<a id="reject_leave_call01" class="btn btn-danger"
+														onclick="leaveStatus(${leave.leave_id});">
+														<i class="glyphicon glyphicon-remove"></i> Reject </a></h4>
+												</li>
 											</ul>
-										</div> --%>
-
-<%-- 										<div hidden class="app-${leave.leave_id}">
-											<button class="btn green-jungle" type="button"
-												data-toggle="dropdown" data-hover="dropdown">
-												Approved<i class="fa fa-angle-down"></i>
-											</button>
-											<ul class="dropdown-menu pull-right" role="menu">
-												<li><h4 style="color: white; text-align: center;">
-														<a id="reject_leave_call02" class="btn btn-danger"
-															title="reject_leave_id"
-															onclick="call_reject_popup(${leave.leave_id});">
-															Reject </a>
-													</h4></li>
-
-											</ul>
-										</div> --%>
-
-<%-- 										<div hidden class="app0-${leave.leave_id}">
-											<button class="btn red-mint" type="button"
-												data-toggle="dropdown" data-hover="dropdown">
-												Reject<i class="fa fa-angle-down"></i>
-											</button>
-											<ul class="dropdown-menu pull-right" role="menu">
-												<li><h4 style="color: white; text-align: center;">
-														<a class="btn circle btn-info"
-															onclick="ajaxLoad(${leave.leave_id});"> Approve </a>
-													</h4></li>
-											</ul>
-										</div> --%>
-
-<%-- 										<div hidden class="app1-${leave.leave_id}">
-											<button class="btn yellow-crusta" type="button"
-												data-toggle="dropdown" data-hover="dropdown">
-												Waiting for Approving<i class="fa fa-angle-down"></i>
-											</button>
-											<ul class="dropdown-menu pull-right" role="menu">
-												<li><h4 style="color: white; text-align: center;">
-														<button class="btn btn-danger"
-															onclick="ajaxLoad(${leave.leave_id});">Approve</button>
-													</h4></li>
-												<li><h4 style="color: white; text-align: center;">
-														<a id="reject_leave_call03" class="text-right"
-															onclick="call_reject_popup(${leave.leave_id});">
-															Reject </a>
-													</h4></li>
-											</ul>
-										</div> --%>
-
+										</div> 
 									</c:if>
-
-
-
 									<c:if test="${leave.leave_status_id.toString() == '1'}">
 										<div class="wait-${leave.leave_id}">
 											<button class="btn green-meadow" type="button"
@@ -1065,9 +914,7 @@
 										title="leave deleting"> <i
 										class="fa fa-trash-o"></i>
 									</a>
-									<%-- href="delete_leave_id?leave_id=${leave.leave_id}" --%>
 								</div>
-
 							</perm:permission> <!-- for delete leave alert pop up -->
 						<script>
 								
@@ -1100,36 +947,8 @@
 								
 								</script></td>
 					</tr>
-
 				</c:forEach>
 
-<!-- 				for reject leave alert pop up
-				<div class="modal fade draggable-modal ui-draggable"
-					id="reject_leave" tabindex="-1" role="dialog" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header ui-draggable-handle">
-								<button type="button" class="close" data-dismiss="modal"></button>
-								<h4 class="modal-title">Are your sure?!</h4>
-							</div>
-							<div class="modal-body">You will be rejecting this id</div>
-							<div class="modal-footer">
-								<label>Reasons</label>
-								<textarea class="form-control" rows="3" id="reason"></textarea>
-								<button type="button" class="btn dark btn-outline"
-									data-dismiss="modal">Exit</button>
-								<a class="btn btn-sm sbold red" data-dismiss="modal"
-									onclick="beforeRejectAction();" title="leave rejecting"
-									style="color: white;"> Confirm reject </a>
-
-							</div>
-						</div>
-						/.modal-content
-					</div>
-					/.modal-dialog 
-				</div>
-				/.modal  -->
-				
  					<div class="modal fade" id="change_status"
 						role="dialog" aria-hidden="true">
 						<div class="modal-dialog">
@@ -1213,7 +1032,7 @@
 								</div>
 							</div>
 						</div>
-					</div>																																																				
+					</div>
 			</form>
 		</table>
 
@@ -1390,12 +1209,10 @@
 <script>
 function myFunction(){
 	
-	
 	<c:forEach var="leave" items="${userleave}" varStatus="status">
 
 	document.getElementById("demo").innerHTML = "${leave.user_id}";
 	</c:forEach>
-
 }
 </script>
 
@@ -1564,7 +1381,7 @@ $('#btn_popover').on("click", function(){
 		/* localStorage.setItem("leaveId", leaveId); */
 		var reason = $('#reason').val();
 		if(reason == "" || reason == null){
-			reason = "-";
+			reason = "";
 			console.log(reason);
 		}
  		 $.ajax({
@@ -1580,14 +1397,19 @@ $('#btn_popover').on("click", function(){
 		 		localStorage.removeItem("data");
 		 	});
 	}	
-	
+/* ----------------------- start popover ----------------------- */
 	function ajaxLoad1(id) {
 		var leaveId = id;
+		console.log(leaveId);
+		$("#change_status").modal(); 
 	}
-	
 	function call_reject1(id) {
 		var leaveId = id;
+		console.log(leaveId);
+		$("#change_status").modal(); 
+
 	}
+/* ----------------------- end popover ----------------------- */
 	
 	function call_reject() {
 		var data = localStorage.getItem("data");
