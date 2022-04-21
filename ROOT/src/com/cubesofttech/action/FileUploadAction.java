@@ -313,17 +313,16 @@ public class FileUploadAction extends ActionSupport {
 						
 						if(user[i] != null) {
 							List<Map<String, Object>> chkId = timesheetDAO.wherename(user[i]);
-							log.debug(chkId);
+							//log.debug(chkId);
 							String uploadId = null;
 							String searchyear, searchmonth, searchday;
 							
 							for (int z = 0; z < chkId.size(); z++) {
 								uploadId = ((String) chkId.get(z).get("id"));
-								
-								log.debug(uploadId);
+								//log.debug(uploadId);
 							}
 							
-							if(userUploadId.equals(uploadId) && uploadId != null) {
+							if(userUploadId.equalsIgnoreCase(uploadId) && uploadId != null) {
 								searchyear = date[i].substring(6, 10);
 								searchmonth = date[i].substring(3, 5);
 								searchday = date[i].substring(0, 2);
