@@ -209,14 +209,14 @@
 					</div>
 				</div>
 
-				<div class="form-group">
+<!-- 				<div class="form-group">
 					<label class="col-md-3 control-label">Reason :</label>
 					<div class="col-md-6">
 						<textarea class="form-control" name="reason" id="reason" rows="3" maxlength="1024" onkeyup='check_char(this)'></textarea>
 							<input hidden class="hide" name="reason_hidden" id="reason_hidden" type="text">
 						<div class="form-control-focus"></div>
 					</div>
-				</div>
+				</div> -->
 
 <!--				<div class="form-group">
 					<div class="col-md-3 control-label"></div>
@@ -448,7 +448,7 @@ function check_char(elm){
 			$('#amount_sub').val(amount_sub);
 			$('#description').html(leave.description);
 			$('#status').val(leave.leaveStatusId);
-			$('#reason').html(leave.reason);
+		/* 	$('#reason').html(leave.reason); */
 			$('#lt_'+leave.leaveTypeId).prop('checked','checked');
 			if(leave.halfDay != 0) { $('#hd_'+leave.halfDay).prop('checked','checked'); }
         
@@ -529,11 +529,11 @@ function check_char(elm){
 				    $('#status_hidden').val($('#status').val());
 			    });
 			    
-			    $('#reason').attr('disabled',true);
+/* 			    $('#reason').attr('disabled',true);
 			    $('#reason_hidden').val($('#reason').val());
 			    $('#reason').change(() => {
 				    $('#reason_hidden').val($('#reason').val());
-			    });
+			    }); */
 			    
 			    $('#btn_submit').attr('disabled',true);
 			    $('#btn_cancel').attr('disabled',true);
@@ -595,11 +595,11 @@ function check_char(elm){
 				    $('#status_hidden').val($('#status').val());
 			    });
 			    
-			    $('#reason').attr('disabled',true);
+/* 			    $('#reason').attr('disabled',true);
 			    $('#reason_hidden').val($('#reason').val());
 			    $('#reason').change(() => {
 				    $('#reason_hidden').val($('#reason').val());
-			    });
+			    }); */
 			    
 			    $('#btn_submit').attr('disabled',true);
 			    $('#btn_cancel').attr('disabled',true);
