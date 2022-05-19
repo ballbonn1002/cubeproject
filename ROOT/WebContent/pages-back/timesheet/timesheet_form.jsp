@@ -52,7 +52,7 @@ b {
 				<label class="col-md-2 control-label" for="form_control_1">User
 					:</label>
 				<div class="col-md-8">
-					<select class="bs-select form-control select2me" name="name">
+					<select class="bs-select form-control select2me" name="name" id="user.roletId" disabled>
 						<optgroup label="Enable">
 
 							<c:forEach var="user" items="${cubeUser}">
@@ -94,62 +94,8 @@ b {
 
 				</div>
 			</div>
-
-			<div class="form-group form-md-line-input">
-				<label class="col-md-2 control-label" for="form_control_1">Project
-					:</label>
-				<div class="col-md-3">
-					<input class="form-control" type="text" name="projectf" id="project_id" data-value="${projectid }" value="${projectf.project_name }" list="pname" required>
-					<datalist id="pname">
-						<c:forEach var="project" items="${projectA}">
-							<option data-value="${project.project_id }" value="${project.project_name }"/>
-						</c:forEach>
-					</datalist>
-					<!--<input class="form-control" type="text" name="projectf"
-						id="project_id">
-					<select class="bs-select form-control select2me" name="projectf"
-						id="project_id">
-						<option value=" ">Select a Project</option>
-					</select>-->
-				</div>
-
-				<div class="col-md-2 form-group" style="text-align: left;">
-					Team:</div>
-				<div class="col-md-3">
-					<input type="text" name="team" id="team" class="form-control"
-						value="${lastTimesheet.getTeam() }"
-						style="text-align: left; padding-left: 10px">
-					<div class="form-control-focus"></div>
-				</div>
-			</div>
-
-			<div class="form-group form-md-line-input">
-				<label class="col-md-2 control-label" for="form_control_1">Function
-					:</label>
-				<div class="col-md-8">
-					<input class="form-control" type="text" name="functionf" id="projectF_id" data-value="${functionid }" value="${functionf.function_name }" list="fname" required>
-					<datalist id="fname">
-						<c:forEach var="func" items="${functionL}">
-							<option data-value="${func.function_id }" value="${func.function_name }"/>
-						</c:forEach>
-					</datalist>
-					<!--<select class="bs-select form-control select2me" name="functionf"
-						id="projectF_id">
-						<c:forEach items="${functionList}" var="functionp">
-							<option value="${functionp.function_id}"
-								<c:if
-									test="${fn:containsIgnoreCase(functionp.function_id,timesheet.getFunction_id())}">
-									<c:out value="selected=selected" />
-							</c:if>>
-
-								${functionp.function_name}</option>
-						</c:forEach>
-					</select>-->
-				</div>
-			</div>
-			<br>
-
-			<div class="row form-group form-md-line-input"
+			
+			<div class="form-group form-md-line-input"
 				style="margin-left: 1px;">
 
 				<div class="col-md-2">Date :</div>
@@ -181,11 +127,74 @@ b {
 					</div>
 				</div>
 			</div>
+			
+			<div class="row form-group form-md-line-input">
+				<div class="col-md-2 form-group" style="text-align: left;">
+					Team:</div>
+				<div class="col-md-8">
+					<input type="text" name="team" id="team" class="form-control"
+						value="${lastTimesheet.getTeam() }"
+						style="text-align: left; padding-left: 10px">
+					<div class="form-control-focus"></div>
+				</div>
+			</div>
+			
+			<div class="form-group form-md-line-input">
+				<div class="col-md-8 form-group" style="text-align: left;font-size:20px;font-weight:bold;color:#2fa4e7;"><div style="height:30px;width:5px;background-color:red;">
+					&nbsp;&nbsp;&nbsp;&nbsp;Task</div></div>
+			</div>
+			
+			<div class="form-group form-md-line-input">
+				<label class="col-md-2 control-label" for="form_control_1">Project
+					:</label>
+				<div class="col-md-8">
+					<input class="form-control" type="text" name="projectf" id="project_id" data-value="${projectid }" value="${projectf.project_name }" list="pname" required>
+					<datalist id="pname">
+						<c:forEach var="project" items="${projectA}">
+							<option data-value="${project.project_id }" value="${project.project_name }"/>
+						</c:forEach>
+					</datalist>
+					<!--<input class="form-control" type="text" name="projectf"
+						id="project_id">
+					<select class="bs-select form-control select2me" name="projectf"
+						id="project_id">
+						<option value=" ">Select a Project</option>
+					</select>-->
+				</div>
+			</div>
+
+			<div class="form-group form-md-line-input">
+				<label class="col-md-2 control-label" for="form_control_1">Function
+					:</label>
+				<div class="col-md-8">
+					<input class="form-control" type="text" name="functionf" id="projectF_id" data-value="${functionid }" value="${functionf.function_name }" list="fname" required>
+					<datalist id="fname">
+						<c:forEach var="func" items="${functionL}">
+							<option data-value="${func.function_id }" value="${func.function_name }"/>
+						</c:forEach>
+					</datalist>
+					<!--<select class="bs-select form-control select2me" name="functionf"
+						id="projectF_id">
+						<c:forEach items="${functionList}" var="functionp">
+							<option value="${functionp.function_id}"
+								<c:if
+									test="${fn:containsIgnoreCase(functionp.function_id,timesheet.getFunction_id())}">
+									<c:out value="selected=selected" />
+							</c:if>>
+
+								${functionp.function_name}</option>
+						</c:forEach>
+					</select>-->
+				</div>
+			</div>
+			<br>
+
+			
 			<input type="hidden" id="demo1" name="description">
 
 			<div class="row">
 				<div class="col-md-12 form-group" style="margin-top: 20px">
-					<label class="col-md-2 control-label" for="form_control_1">Description
+					<label class="col-md-2 control-label" for="form_control_1">Task Description
 						:</label>
 					<div class="col-md-8">
 						<textarea style="word-break: break-all; white-space: normal;"
@@ -195,7 +204,15 @@ b {
 					</div>
 				</div>
 			</div>
-		
+			
+			<div class="form-group form-md-line-input">
+				<label class="col-md-2 control-label" for="form_control_1">Time spent hour
+					:</label>
+				<div class="col-md-2">
+					<input class="form-control" type="text" name="tsh" id="tsh" value="">
+				</div>
+			</div>
+			
 			<div class="form-group form-md-line-input">
 				<br>
 			</div>
@@ -213,8 +230,6 @@ b {
 					</div>
 				</div>
 			</div>
-
-
 
 			<div id="collapseOne" aria-expanded="false" class="collapse">
 				<br> <br>
@@ -268,11 +283,17 @@ b {
 	});
 </script>
 <script>
+	<perm:permission object="timesheet.edit">
+		document.getElementById('user.roletId').disabled = false;
+	</perm:permission>
+</script>
+<script>
 	function check() {
 		var des = document.getElementById('textarea1').value;
 		var start = document.getElementById('startTime').value + ':00';
 		var end = document.getElementById('endTime').value + ':00';
 		var w = document.getElementById('date').value;
+		console.log(w);
 		var datenew = w;
 		datenew = datenew.replaceAll("/", "-");
 		datenew = datenew.split("-").reverse().join("-");
@@ -325,7 +346,8 @@ b {
 							"descriptionot" : desot,
 							"timestartot" : timestartot,
 							"endtimeot" : endtimeot,
-							"team" : team
+							"team" : team,
+							"d" : w
 						},
 						success : function(data) {
 							swal(
@@ -335,8 +357,9 @@ b {
 										type : "success"
 									},
 									function() {
-										window.location.href = "timesheet_list?userseq="
-												+ user;
+										/*window.location.href = "timesheet_list?userseq="
+												+ user;*/
+										window.location.href = "openTimesheetEdit";
 									});
 						}
 
@@ -431,7 +454,8 @@ b {
 	<c:set var="to"  value="to"/>
 </script>
 <script>
-	$(document).ready(function() {
+
+	/*$(document).ready(function() {
 		var currentDate = new Date();
 		$('.disableFuturedate').datepicker({
 			format : 'dd-mm-yyyy',
@@ -446,7 +470,7 @@ b {
 				this.value = this.value.replace(/[^0-9^-]/g, '');
 			}
 		});
-	});
+	});*/
 </script>
 <script>
 	$(document).ready(function () {

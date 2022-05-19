@@ -405,6 +405,10 @@ public class TimesheetAction extends ActionSupport {
 
 	public String addTimesheetPage() {
 		try {
+			String date = request.getParameter("date");
+			Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+			request.setAttribute("timesheetDate", date1);
+			
 			List<Map<String, Object>> projecta = projectDAO.allproject();
 			request.setAttribute("projectA", projecta);
 
@@ -415,8 +419,49 @@ public class TimesheetAction extends ActionSupport {
 			List<Map<String, Object>> cubeUser = userDAO.sequense();
 			request.setAttribute("cubeUser", cubeUser);
 
+			String searchyear, searchmonth, searchday;
+			searchyear = date.substring(6, 10);
+			searchmonth = date.substring(3, 5);
+			searchday = date.substring(0, 2);
+			
+			List<Map<String, Object>> whereworkhour = timesheetDAO.whereworkhour(searchyear,
+					searchmonth, searchday, user_create);
+			
+			if (!whereworkhour.isEmpty()) {
+				for (int wwh = 0; wwh < whereworkhour.size(); wwh++) {
+					char work_hours_type = ((char) whereworkhour.get(wwh).get("work_hours_type"));
+					SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+					if (work_hours_type == '1') {
+						Timestamp startDate = ((Timestamp) whereworkhour.get(wwh)
+								.get("work_hours_time_work"));
+						request.setAttribute("timeStart", sdf.format(startDate.getTime()).toString());
+						Timestamp test = startDate;
+						//log.debug(test);
+					} else if (work_hours_type == '2') {
+						Timestamp endDate = ((Timestamp) whereworkhour.get(wwh)
+								.get("work_hours_time_work"));
+						request.setAttribute("timeEnd", sdf.format(endDate.getTime()).toString());
+						Timestamp test = endDate;
+						//log.debug(test);
+					}
+
+				}
+			} else {
+				SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+				//Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+				Calendar now = Calendar.getInstance();
+				now.set(Calendar.HOUR, 0);
+		        now.set(Calendar.MINUTE, 0);
+		        now.set(Calendar.HOUR_OF_DAY, 0);
+				String datenow = sdf.format(now.getTime()).toString();
+				
+				request.setAttribute("timeStart", datenow);
+				request.setAttribute("timeEnd", datenow);
+				//log.debug(datenow);
+			}
+			
 			// prepopulate function and project by last timesheet's
-			Timesheet lastTimesheet = (Timesheet) timesheetDAO.latestTimesheet(ur.getId());
+			/*Timesheet lastTimesheet = (Timesheet) timesheetDAO.latestTimesheet(ur.getId());
 
 			if (lastTimesheet != null) {
 				request.setAttribute("lastTimesheet", lastTimesheet);
@@ -486,6 +531,7 @@ public class TimesheetAction extends ActionSupport {
 			 * projectFunctionDAO.findById(function_id); request.setAttribute("functionf",
 			 * projectFunction); request.setAttribute("functionList", functionList); }
 			 */
+			 
 
 			return SUCCESS;
 		} catch (Exception e) {
@@ -510,10 +556,15 @@ public class TimesheetAction extends ActionSupport {
 			String timestartot = request.getParameter("timestartot");
 			String endtimeot = request.getParameter("endtimeot");
 
-			
 			String project = request.getParameter("projectf");
-			
+
 			String function = request.getParameter("functionf");
+
+			String tsh = request.getParameter("tsh");
+			
+			String date = request.getParameter("d");
+			SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-yyyy");
+			Date started_date = dateformat.parse(date);
 			
 			Integer l = timesheetDAO.getMaxId() + 1;
 			Timesheet timesheet = new Timesheet();
@@ -527,8 +578,11 @@ public class TimesheetAction extends ActionSupport {
 			timesheet.setTimeCreate(nowdate);
 			timesheet.setTimeUpdate(nowdate);
 			timesheet.setDescription(description);
-			if(!projectDAO.checkExistByName(project)) {
+			timesheet.setTimespent(tsh);
+			timesheet.setStarted_date(started_date);
+			if (!projectDAO.checkExistByName(project)) {
 				int projectIdAdd = 0;
+				String projectName = "";
 				Project projectAdd = new Project();
 				projectAdd.setProject_name(project);
 				projectAdd.setDescription("");
@@ -536,11 +590,14 @@ public class TimesheetAction extends ActionSupport {
 				projectAdd.setUser_create(name);
 				projectAdd.setTime_create(DateUtil.getCurrentTime());
 				projectDAO.save(projectAdd);
-				
+
 				projectIdAdd = projectDAO.findByName(projectAdd.getProject_name()).getProject_id();
+				projectName = projectDAO.findByName(projectAdd.getProject_name()).getProject_name();
 				timesheet.setProject_id(projectIdAdd);
-				if(!projectFunctionDAO.checkExistByName(function)) {
+				timesheet.setProject(projectName);
+				if (!projectFunctionDAO.checkExistByName(function)) {
 					int projectFunctionIdAdd = 0;
+					String projectFunctionName = "";
 					ProjectFunction projectFunctionAdd = new ProjectFunction();
 					projectFunctionAdd.setFunction_name(function);
 					projectFunctionAdd.setStatus("1");
@@ -548,17 +605,25 @@ public class TimesheetAction extends ActionSupport {
 					projectFunctionAdd.setUser_create(name);
 					projectFunctionAdd.setTime_create(DateUtil.getCurrentTime());
 					projectFunctionDAO.save(projectFunctionAdd);
-					
-					projectFunctionIdAdd = projectFunctionDAO.findByName(projectFunctionAdd.getFunction_name()).getFunction_id();
+
+					projectFunctionIdAdd = projectFunctionDAO.findByName(projectFunctionAdd.getFunction_name())
+							.getFunction_id();
+					projectFunctionName = projectFunctionDAO.findByName(projectFunctionAdd.getFunction_name())
+							.getFunction_name();
 					timesheet.setFunction_id(projectFunctionIdAdd);
+					timesheet.setSummary(projectFunctionName);
 				}
 			} else {
 				int projectid = Integer.parseInt(request.getParameter("projectid"));
-				//Project projectOld = projectDAO.findByName(project);
+				// Project projectOld = projectDAO.findByName(project);
 				timesheet.setProject_id(projectid);
 				
-				if(!projectFunctionDAO.checkExistByName(function) || projectFunctionDAO.findByName(function).getProject_id() != projectid) {
-					int projectFunctionIdAdd = 0;
+				String projectf = request.getParameter("projectf");
+				timesheet.setProject(projectf);
+
+				if (!projectFunctionDAO.checkExistByName(function)
+						|| projectFunctionDAO.findByName(function).getProject_id() != projectid) {
+					String projectFunctionIdAdd = "";
 					ProjectFunction projectFunctionAdd = new ProjectFunction();
 					projectFunctionAdd.setFunction_name(function);
 					projectFunctionAdd.setStatus("1");
@@ -566,12 +631,16 @@ public class TimesheetAction extends ActionSupport {
 					projectFunctionAdd.setUser_create(name);
 					projectFunctionAdd.setTime_create(DateUtil.getCurrentTime());
 					projectFunctionDAO.save(projectFunctionAdd);
-					
-					projectFunctionIdAdd = projectFunctionDAO.findByName(projectFunctionAdd.getFunction_name()).getFunction_id();
-					timesheet.setFunction_id(projectFunctionIdAdd);
+
+					projectFunctionIdAdd = projectFunctionDAO.findByName(projectFunctionAdd.getFunction_name())
+							.getFunction_name();
+					timesheet.setSummary(projectFunctionIdAdd);
 				} else {
 					int functionid = Integer.parseInt(request.getParameter("functionid"));
 					timesheet.setFunction_id(functionid);
+					
+					String functionf = request.getParameter("functionf");
+					timesheet.setSummary(functionf);
 				}
 			}
 			timesheet.setStatus("W");
@@ -582,43 +651,42 @@ public class TimesheetAction extends ActionSupport {
 			Timestamp OT_time_start1 = Timestamp.valueOf(timestartot);
 
 			Timestamp OT_time_end1 = Timestamp.valueOf(endtimeot);
-			
+
 			int start = OT_time_start1.getHours();
 			int end = OT_time_end1.getHours();
 
 			String timestart1s = String.valueOf(timestart1);
-			
-			if (start < 9 && end < 9){
-				
+
+			if (start < 9 && end < 9) {
+
 				int dote = OT_time_start1.getDate();
 				dote = dote + 1;
-				
-				String com =  timestart1s.substring(5,7);
-				String coy =  timestart1s.substring(0,4);
-				
-				String startt = String.valueOf(OT_time_start1);		
-				String timestartots =  startt.substring(11,19);
-				
+
+				String com = timestart1s.substring(5, 7);
+				String coy = timestart1s.substring(0, 4);
+
+				String startt = String.valueOf(OT_time_start1);
+				String timestartots = startt.substring(11, 19);
+
 				String dotes = String.valueOf(dote);
-				
-				
+
 				int dots = OT_time_end1.getDate();
 				dots = dots + 1;
-				
-				String cim =  timestart1s.substring(5,7);
-				String ciy =  timestart1s.substring(0,4);
-				
-				String endt = String.valueOf(OT_time_end1);		
-				String endtimeots =  endt.substring(11,19);
-				
+
+				String cim = timestart1s.substring(5, 7);
+				String ciy = timestart1s.substring(0, 4);
+
+				String endt = String.valueOf(OT_time_end1);
+				String endtimeots = endt.substring(11, 19);
+
 				String dotss = String.valueOf(dots);
-			
-				String fulldatestart = coy+"-"+com+"-"+dotes+" "+timestartots;
-				String fulldateend = ciy+"-"+cim+"-"+dotss+" "+endtimeots;
-				
+
+				String fulldatestart = coy + "-" + com + "-" + dotes + " " + timestartots;
+				String fulldateend = ciy + "-" + cim + "-" + dotss + " " + endtimeots;
+
 				Timestamp OT_time_start = Timestamp.valueOf(fulldatestart);
 				Timestamp OT_time_end = Timestamp.valueOf(fulldateend);
-	
+
 				System.out.println("check eek wan");
 				System.out.println(OT_time_start);
 				System.out.println(OT_time_end);
@@ -630,23 +698,22 @@ public class TimesheetAction extends ActionSupport {
 				} else {
 
 				}
-			}
-			else if(start > end) {
+			} else if (start > end) {
 				int dots = OT_time_end1.getDate();
 				dots = dots + 1;
-				
-				String cim =  timestart1s.substring(5,7);
-				String ciy =  timestart1s.substring(0,4);
-				
-				String endt = String.valueOf(OT_time_end1);			
-				String endtimeots =  endt.substring(11,19);
+
+				String cim = timestart1s.substring(5, 7);
+				String ciy = timestart1s.substring(0, 4);
+
+				String endt = String.valueOf(OT_time_end1);
+				String endtimeots = endt.substring(11, 19);
 				String dotss = String.valueOf(dots);
 
-				String fulldateend = ciy+"-"+cim+"-"+dotss+" "+endtimeots;
-				
+				String fulldateend = ciy + "-" + cim + "-" + dotss + " " + endtimeots;
+
 				Timestamp OT_time_start = Timestamp.valueOf(timestartot);
 				Timestamp OT_time_end = Timestamp.valueOf(fulldateend);
-	
+
 				System.out.println("check kam wan");
 				System.out.println(OT_time_start);
 				System.out.println(OT_time_end);
@@ -658,8 +725,8 @@ public class TimesheetAction extends ActionSupport {
 				} else {
 
 				}
-				
-			}else if(start < end) {
+
+			} else if (start < end) {
 				Timestamp OT_time_start = Timestamp.valueOf(timestartot);
 				Timestamp OT_time_end = Timestamp.valueOf(endtimeot);
 				System.out.println("check wan deaw kan");
@@ -674,56 +741,52 @@ public class TimesheetAction extends ActionSupport {
 
 				}
 			}
-		
-			
 
 			timesheet.setTimeCheckIn(timestart1);
 			timesheet.setTimeCheckOut(endtime1);
 			timesheet.setTeam(team);
 			timesheet.setUserCreate(name);
-			
 
-			timesheetDAO.save(timesheet); 
+			timesheetDAO.save(timesheet);
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ERROR;
 		}
 	}
-	
+
 	public void find_pfunc() {
 		try {
 			String findpfunc = request.getParameter("project_id");
 			Integer find = Integer.parseInt(findpfunc);
-			//log.debug(findpfunc);
+			// log.debug(findpfunc);
 			List<ProjectFunction> pfunc = projectFunctionDAO.findFunction(find);
 			request.setAttribute("pfunc", pfunc);
-			//log.debug(pfunc);
-			
+			// log.debug(pfunc);
+
 			JSONArray arrayObj1 = new JSONArray();
 			JSONArray arrayObj2 = new JSONArray();
-			
-			for(int i = 0 ; i < pfunc.size(); i++ ){
+
+			for (int i = 0; i < pfunc.size(); i++) {
 				arrayObj1.put(pfunc.get(i).getFunction_name());
 				arrayObj2.put(pfunc.get(i).getFunction_id());
 			}
-			//log.debug(arrayObj1);
-			//log.debug(arrayObj2);
+			// log.debug(arrayObj1);
+			// log.debug(arrayObj2);
 			PrintWriter out = response.getWriter();
-	           JSONObject json = new JSONObject();
-	           
-	        json.put("name", arrayObj1);
-	        json.put("id", arrayObj2);
-	        
-	        out.print(json);
-	    	out.flush();
-	    	out.close();
-		}
-		catch (Exception e) { 
+			JSONObject json = new JSONObject();
+
+			json.put("name", arrayObj1);
+			json.put("id", arrayObj2);
+
+			out.print(json);
+			out.flush();
+			out.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String editPage() {
 		if (id != null) {
 			try {
@@ -770,21 +833,20 @@ public class TimesheetAction extends ActionSupport {
 					Project project = new Project();
 					project = projectDAO.findById(project_id);
 					request.setAttribute("projectf", project);
-					
-					
+
 					Integer function_id = timesheet.getFunction_id();
-					if(function_id != null) {
+					if (function_id != null) {
 						ProjectFunction projectFunction = new ProjectFunction();
 						projectFunction = projectFunctionDAO.findById(function_id);
 						request.setAttribute("functionf", projectFunction);
-						
+
 						List<ProjectFunction> functionList = projectFunctionDAO.findFunction(project_id);
 						request.setAttribute("functionL", functionList);
 					}
-					//functionList = projectFunctionDAO.findByProject(project_id);
-					//request.setAttribute("functionList", functionList);
+					// functionList = projectFunctionDAO.findByProject(project_id);
+					// request.setAttribute("functionList", functionList);
 					request.setAttribute("team", team);
-					
+
 				}
 
 			} catch (Exception e) {
@@ -805,11 +867,11 @@ public class TimesheetAction extends ActionSupport {
 			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 			String datenow = sdf.format(timestamp).toString();
 			Timestamp nowdate = Timestamp.valueOf(datenow);
-			
+
 			String name = request.getParameter("name");
 			String project = request.getParameter("projectf");
 			String function = request.getParameter("functionf");
-			//int function = Integer.valueOf(request.getParameter("functionf"));
+			// int function = Integer.valueOf(request.getParameter("functionf"));
 			String userupdate = request.getParameter("useradd");
 			String newtimestart = request.getParameter("timestart");
 			String newtimeend = request.getParameter("endtime");
@@ -835,40 +897,39 @@ public class TimesheetAction extends ActionSupport {
 
 			int start = OT_time_start1.getHours();
 			int end = OT_time_end1.getHours();
-			
+
 			String timestart1s = String.valueOf(newtimestart);
-			
-			if (start < 9 && end < 9){
-				
+
+			if (start < 9 && end < 9) {
+
 				int dote = OT_time_start1.getDate();
 				dote = dote + 1;
-				
-				String com =  timestart1s.substring(5,7);
-				String coy =  timestart1s.substring(0,4);
-				
-				String startt = String.valueOf(OT_time_start1);		
-				String timestartots =  startt.substring(11,19);
-				
+
+				String com = timestart1s.substring(5, 7);
+				String coy = timestart1s.substring(0, 4);
+
+				String startt = String.valueOf(OT_time_start1);
+				String timestartots = startt.substring(11, 19);
+
 				String dotes = String.valueOf(dote);
-				
-				
+
 				int dots = OT_time_end1.getDate();
 				dots = dots + 1;
-				
-				String cim =  timestart1s.substring(5,7);
-				String ciy =  timestart1s.substring(0,4);
-				
-				String endt = String.valueOf(OT_time_end1);		
-				String endtimeots =  endt.substring(11,19);
-				
+
+				String cim = timestart1s.substring(5, 7);
+				String ciy = timestart1s.substring(0, 4);
+
+				String endt = String.valueOf(OT_time_end1);
+				String endtimeots = endt.substring(11, 19);
+
 				String dotss = String.valueOf(dots);
-			
-				String fulldatestart = coy+"-"+com+"-"+dotes+" "+timestartots;
-				String fulldateend = ciy+"-"+cim+"-"+dotss+" "+endtimeots;
-				
+
+				String fulldatestart = coy + "-" + com + "-" + dotes + " " + timestartots;
+				String fulldateend = ciy + "-" + cim + "-" + dotss + " " + endtimeots;
+
 				Timestamp OT_time_start = Timestamp.valueOf(fulldatestart);
 				Timestamp OT_time_end = Timestamp.valueOf(fulldateend);
-	
+
 				System.out.println("check eek wan");
 				System.out.println(OT_time_start);
 				System.out.println(OT_time_end);
@@ -880,23 +941,22 @@ public class TimesheetAction extends ActionSupport {
 				} else {
 
 				}
-			}
-			else if(start > end) {
+			} else if (start > end) {
 				int dots = OT_time_end1.getDate();
 				dots = dots + 1;
-				
-				String cim =  timestart1s.substring(5,7);
-				String ciy =  timestart1s.substring(0,4);
-				
-				String endt = String.valueOf(OT_time_end1);			
-				String endtimeots =  endt.substring(11,19);
+
+				String cim = timestart1s.substring(5, 7);
+				String ciy = timestart1s.substring(0, 4);
+
+				String endt = String.valueOf(OT_time_end1);
+				String endtimeots = endt.substring(11, 19);
 				String dotss = String.valueOf(dots);
 
-				String fulldateend = ciy+"-"+cim+"-"+dotss+" "+endtimeots;
-				
+				String fulldateend = ciy + "-" + cim + "-" + dotss + " " + endtimeots;
+
 				Timestamp OT_time_start = Timestamp.valueOf(OT_time_start2);
 				Timestamp OT_time_end = Timestamp.valueOf(fulldateend);
-	
+
 				System.out.println("check kam wan");
 				System.out.println(OT_time_start);
 				System.out.println(OT_time_end);
@@ -908,9 +968,8 @@ public class TimesheetAction extends ActionSupport {
 				} else {
 
 				}
-				
-			}
-			else if(start < end) {
+
+			} else if (start < end) {
 				Timestamp OT_time_start = Timestamp.valueOf(OT_time_start2);
 				Timestamp OT_time_end = Timestamp.valueOf(OT_time_end2);
 				System.out.println("check wan deaw kan");
@@ -925,13 +984,13 @@ public class TimesheetAction extends ActionSupport {
 
 				}
 			}
-			
+
 			timesheet.setTimeCheckIn(timestart);
 			timesheet.setTimeCheckOut(endtime);
 			timesheet.setUserUpdate(userupdate);
 			timesheet.setTimeUpdate(nowdate);
 			timesheet.setDescription(description);
-			if(!projectDAO.checkExistByName(project)) {
+			if (!projectDAO.checkExistByName(project)) {
 				int projectIdAdd = 0;
 				Project projectAdd = new Project();
 				projectAdd.setProject_name(project);
@@ -940,10 +999,10 @@ public class TimesheetAction extends ActionSupport {
 				projectAdd.setUser_create(userupdate);
 				projectAdd.setTime_create(DateUtil.getCurrentTime());
 				projectDAO.save(projectAdd);
-				
+
 				projectIdAdd = projectDAO.findByName(projectAdd.getProject_name()).getProject_id();
 				timesheet.setProject_id(projectIdAdd);
-				if(!projectFunctionDAO.checkExistByName(function)) {
+				if (!projectFunctionDAO.checkExistByName(function)) {
 					int projectFunctionIdAdd = 0;
 					ProjectFunction projectFunctionAdd = new ProjectFunction();
 					projectFunctionAdd.setFunction_name(function);
@@ -952,15 +1011,17 @@ public class TimesheetAction extends ActionSupport {
 					projectFunctionAdd.setUser_create(name);
 					projectFunctionAdd.setTime_create(DateUtil.getCurrentTime());
 					projectFunctionDAO.save(projectFunctionAdd);
-					
-					projectFunctionIdAdd = projectFunctionDAO.findByName(projectFunctionAdd.getFunction_name()).getFunction_id();
+
+					projectFunctionIdAdd = projectFunctionDAO.findByName(projectFunctionAdd.getFunction_name())
+							.getFunction_id();
 					timesheet.setFunction_id(projectFunctionIdAdd);
 				}
 			} else {
 				int projectid = Integer.parseInt(request.getParameter("projectid"));
 				timesheet.setProject_id(projectid);
-				
-				if(!projectFunctionDAO.checkExistByName(function) || projectFunctionDAO.findByName(function).getProject_id() != projectid) {
+
+				if (!projectFunctionDAO.checkExistByName(function)
+						|| projectFunctionDAO.findByName(function).getProject_id() != projectid) {
 					int projectFunctionIdAdd = 0;
 					ProjectFunction projectFunctionAdd = new ProjectFunction();
 					projectFunctionAdd.setFunction_name(function);
@@ -969,18 +1030,18 @@ public class TimesheetAction extends ActionSupport {
 					projectFunctionAdd.setUser_create(name);
 					projectFunctionAdd.setTime_create(DateUtil.getCurrentTime());
 					projectFunctionDAO.save(projectFunctionAdd);
-					
-					projectFunctionIdAdd = projectFunctionDAO.findByName(projectFunctionAdd.getFunction_name()).getFunction_id();
+
+					projectFunctionIdAdd = projectFunctionDAO.findByName(projectFunctionAdd.getFunction_name())
+							.getFunction_id();
 					timesheet.setFunction_id(projectFunctionIdAdd);
-				}
-				else {
+				} else {
 					int functionid = Integer.parseInt(request.getParameter("functionid"));
 					timesheet.setFunction_id(functionid);
 				}
-				//Project projectOld = projectDAO.findByName(project);
+				// Project projectOld = projectDAO.findByName(project);
 			}
-			//timesheet.setProject_id(project);
-			//timesheet.setFunction_id(function);
+			// timesheet.setProject_id(project);
+			// timesheet.setFunction_id(function);
 			timesheet.setTeam(team);
 			timesheetDAO.update(timesheet);
 			return SUCCESS;
@@ -1078,7 +1139,7 @@ public class TimesheetAction extends ActionSupport {
 			request.setAttribute("logonUser", userid);
 			request.setAttribute("monthSearch", month);
 			request.setAttribute("yearSearch", year);
-			
+
 			List<Map<String, Object>> wherefile = timesheetDAO.wherefile();
 			request.setAttribute("wherefile", wherefile);
 
@@ -1303,7 +1364,7 @@ public class TimesheetAction extends ActionSupport {
 	public void setFunction_id(Integer function_id) {
 		this.function_id = function_id;
 	}
-	
+
 	public String getTeam() {
 		return team;
 	}
@@ -1336,7 +1397,7 @@ public class TimesheetAction extends ActionSupport {
 
 			String month = datenow.substring(3, 5);
 			String year = datenow.substring(6, 10);
-			
+
 			String userid = request.getParameter("userseq");
 			List<Map<String, Object>> listtimes = timesheetDAO.listtimesheet(userid, tstamp, tstampbefore, month, year);
 			request.setAttribute("listtime", listtimes);
@@ -1345,7 +1406,7 @@ public class TimesheetAction extends ActionSupport {
 			request.setAttribute("dateTimeNow", dateTimeNow);
 			List<Map<String, Object>> userSeq = userDAO.sequense();
 			request.setAttribute("userseq", userSeq);
-			
+
 			List<Map<String, Object>> wherefile = timesheetDAO.wherefile();
 			request.setAttribute("wherefile", wherefile);
 
@@ -1395,7 +1456,7 @@ public class TimesheetAction extends ActionSupport {
 
 			String month = datenow.substring(3, 5);
 			String year = datenow.substring(6, 10);
-			
+
 			String userid = request.getParameter("userseq");
 			List<Map<String, Object>> listtimes = timesheetDAO.listot(userid, tstamp, tstampbefore, month, year);
 			request.setAttribute("listot", listtimes);
@@ -1444,7 +1505,9 @@ public class TimesheetAction extends ActionSupport {
 		}
 
 	}
+
 	public static final String idtimesheet = "id";
+
 	public String addapprovedall() {
 
 		try {
@@ -1454,10 +1517,10 @@ public class TimesheetAction extends ActionSupport {
 
 			System.out.println(name);
 			System.out.println(month);
-			System.out.println(year);	
+			System.out.println(year);
 			List<Map<String, Object>> approvealllist = timesheetDAO.approveall(name, year, month);
 			request.setAttribute("aa", approvealllist);
-		
+
 			for (int i = 0; i < approvealllist.size(); i++) {
 				BigInteger id2 = (BigInteger) approvealllist.get(i).get(idtimesheet);
 				String status = ("A");
@@ -1466,7 +1529,7 @@ public class TimesheetAction extends ActionSupport {
 				timesheet.setStatus(status);
 				timesheetDAO.update(timesheet);
 			}
-			
+
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();

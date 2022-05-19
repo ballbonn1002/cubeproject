@@ -167,7 +167,11 @@ tr{
 								</c:forEach>
 							</optgroup>
 						</select>
-				</div>
+						
+					</div>
+					<div>
+						<input type="hidden" name="user.roletId" id="user.roletId2" value="${logonUser}">
+					</div>	
 				<div class="actions right ">
 					<div class="col-md-3"
 						style="float: right; margin-bottom: 19px; display: flex; justify-content: center;">
@@ -410,7 +414,7 @@ tr{
 									</c:choose>
 																
 										<fmt:formatNumber var="dd" value="${checkin.toString().replace(':', '')}" />
-									<tr>
+									<tr onclick="editform('${TimeInlist.timesheetId}')">
 										<td style="display:none;">${TimeInlist.timesheetId}</td>
 										<td width="10%" style="vertical-align: middle;">
 											<c:choose>
@@ -1039,10 +1043,12 @@ tr{
 											</c:choose>	
 						<c:set var="weekend" value="${weekendSA+weekendSU}"></c:set>
 						<c:if test="${oparators == false}">
+							<c:set var="counter" value="${counter + 1}" />
 							<c:choose>
 								<c:when test="${Weekendd == 'Sat' || Weekendd == 'Sun'}">
 									<tr style="background-color:#E1E5EC">
-										<td style="vertical-align: middle;">
+										<td style="display:none;"></td>
+										<td style="vertical-align: middle;" id="addform${counter}">
 										<c:choose>
 												<c:when test="${Weekendd == 'Mon'}"> 
 													<i class="fa fa-circle-o font-yellow-crusta icon-xl"></i>
@@ -1076,12 +1082,18 @@ tr{
 										<td style="word-break:break-all"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
-										<td colspan="4" style="vertical-align: middle;"></td>
+										<td colspan="4" style="vertical-align: middle;">
+											<a class="btn circle btn-outline blue-soft float-left" id=""
+											   onclick="addform(${counter})">
+											   <i class="fa fa-plus"></i>
+											</a>
+										</td>
 									</tr>
 								</c:when>
 								<c:otherwise>
 									<tr>
-										<td style="vertical-align: middle;">
+										<td style="display:none;"></td>
+										<td style="vertical-align: middle;" id="addform${counter}">
 										<c:choose>
 												<c:when test="${Weekendd == 'Mon'}"> 
 													<i class="fa fa-circle-o font-yellow-crusta icon-xl"></i>
@@ -1115,7 +1127,12 @@ tr{
 										<td style="word-break:break-all; text-align: left"></td>
 										<td style="vertical-align: middle;"></td>
 										<td style="vertical-align: middle;"></td>
-										<td colspan="4" style="vertical-align: middle;"></td>
+										<td colspan="4" style="vertical-align: middle;">
+											<a class="btn circle btn-outline blue-soft float-left" id=""
+											   onclick="addform(${counter})">
+											   <i class="fa fa-plus"></i>
+											</a>
+										</td>
 								</tr>
 								</c:otherwise>
 							</c:choose>			
@@ -1182,6 +1199,7 @@ tr{
 <script>
 	<perm:permission object="timesheet.edit">
 		document.getElementById('user.roletId').disabled = false;
+		document.getElementById('user.roletId2').disabled = true;
 	</perm:permission>
 </script>
 <script>
@@ -1235,11 +1253,10 @@ $(document).ready(function() {
 		select = $("#searchmonth").val();
 		selectmonth = formatDate(select);
 		sessionStorage.setItem("selectmonth", selectmonth);
-		console.log("fortest - "+selectmonth);
+		console.log("fortest - "+selectmonth);		
 		
 		$("#searchTimeEdit_form").submit();
 	});
-	
 });
 </script>
 <script>
@@ -1263,6 +1280,7 @@ $(document).ready(function() {
 		/*  <c:set var="size"  value="size"/> */
 		/*  alert(size);  */
 		$("#upload_form").submit();
+		
 	});
 </script>
 <script>
@@ -1456,6 +1474,28 @@ count--;
 save(id);
 }
 };
+function editform(id){
+	/*console.log(id);
+	var idedit = id;
+	$.ajax({
+		url : "addTimesheetPage",
+		method : "POST",
+		type : "JSON",
+		data : {
+			"idedit" : idedit
+		},
+		success : function(data) {
+			location.href='addTimesheetPage';
+		}
+	})*/
+}
+
+function addform(id){
+	var d = $('#addform'+id).prop("innerText");
+	var date = d.substring(2,12);
+	location.href='addTimesheetPage?date='+ date;
+}
+
 function mergeCells() {
 	var db = document.getElementById("databody");
 	var dbRows = db.rows;

@@ -186,6 +186,7 @@ public class TimeInReportAction extends ActionSupport {
 			List<Map<String, Object>> leavelist = TimeInDAO.LeaveForTimeinList(month, year, search_user);
 			Map<String, Object> TimeCallist = TimeCalculate(Timeinlist, leavelist, Holidaylist);
 			
+			log.debug(search_user);
 			log.debug(Timeinlist);
 			log.debug(daylist);
 			request.setAttribute("daylist", daylist);

@@ -192,6 +192,12 @@ public class FileUploadAction extends ActionSupport {
 	
 	public String uploadexcel(){
 		try {
+			User onlineuser = (User) request.getSession().getAttribute("onlineUser");
+			String logonUser = onlineuser.getId();
+			
+			List<Map<String, Object>> cubeUser;
+			cubeUser = userDAO.sequense();
+			
 			int maxId = fileuploadDAO.getMaxId() + 1;
 			FileUpload fileupload = new FileUpload();
 			
@@ -382,10 +388,12 @@ public class FileUploadAction extends ActionSupport {
 						}
 					}
 				}
-				//timeinreportAction.listTimeInReport();
+				request.setAttribute("cubeUser", cubeUser);
+				request.setAttribute("logonUser", logonUser);
+				/*timeinreportAction.listTimeInReport();
 				request.setAttribute(USERSEQ, userDAO.sequense());
 				request.setAttribute(USERLIST, userDAO.findAll());
-				request.setAttribute(FILEUPLOADLIST, fileuploadDAO.findAll());
+				request.setAttribute(FILEUPLOADLIST, fileuploadDAO.findAll());*/
 				return SUCCESS;
 			} else {
 				return ERROR;

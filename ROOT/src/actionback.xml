@@ -1236,7 +1236,7 @@
 		</action>
 		<action name="timesheet_add"
 			class="com.cubesofttech.action.TimesheetAction" method="addTimesheet">
-			<result name="success" type="tiles">timesheet_list</result>
+			<result name="success" type="tiles">timesheet_editPage</result>
 			<result name="error">/index.jsp</result>
 		</action>
 		<action name="timesheet_findpfunc"
