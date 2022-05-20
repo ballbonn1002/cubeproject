@@ -69,6 +69,6 @@ ALTER TABLE `timesheet` ADD `timespent` VARCHAR(32) NULL AFTER `started_date`;
 
 -- PROD / UAT -- [12 Apr 2022]
 
-
+ALTER TABLE `timesheet` MODIFY COLUMN `summary` VARCHAR(1024);
 
 

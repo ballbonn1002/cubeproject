@@ -414,7 +414,7 @@ tr{
 									</c:choose>
 																
 										<fmt:formatNumber var="dd" value="${checkin.toString().replace(':', '')}" />
-									<tr onclick="editform('${TimeInlist.timesheetId}')">
+									<tr>
 										<td style="display:none;">${TimeInlist.timesheetId}</td>
 										<td width="10%" style="vertical-align: middle;">
 											<c:choose>
@@ -532,11 +532,11 @@ tr{
 						onclick="editts('${TimeInlist.timesheetId}')">
 						<i class="fa fa-pencil-square-o"></i>
 					</a>
-						<a 
+						<!-- <a 
 						class="btn circle btn-outline blue-soft float-left" id=""
-						onclick="save('${TimeInlist.timesheetId}')">
-						<i class="fa fa-save"></i>
-					</a>
+						onclick="addform('${TimeInlist.timesheetId}')">
+						<i class="fa fa-plus"></i>
+					</a> -->
 									</td>
 									</tr>
 									<c:set var="oparators" value="${true}" />
