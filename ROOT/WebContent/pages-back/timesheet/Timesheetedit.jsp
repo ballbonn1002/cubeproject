@@ -416,7 +416,7 @@ tr{
 										<fmt:formatNumber var="dd" value="${checkin.toString().replace(':', '')}" />
 									<tr>
 										<td style="display:none;">${TimeInlist.timesheetId}</td>
-										<td width="10%" style="vertical-align: middle;">
+										<td width="10%" style="vertical-align: middle;" id="addform${TimeInlist.timesheetId}">
 											<c:choose>
 												<c:when test="${Weekendd == 'Mon'}"> 
 													<i class="fa fa-circle-o font-yellow-crusta icon-xl"></i>
@@ -532,11 +532,16 @@ tr{
 						onclick="editts('${TimeInlist.timesheetId}')">
 						<i class="fa fa-pencil-square-o"></i>
 					</a>
-						<!-- <a 
+									<a 
 						class="btn circle btn-outline blue-soft float-left" id=""
 						onclick="addform('${TimeInlist.timesheetId}')">
 						<i class="fa fa-plus"></i>
-					</a> -->
+					</a>
+									<a 
+						class="btn circle btn-outline blue-soft float-left" id=""
+						onclick="delform('${TimeInlist.timesheetId}')">
+						<i class="fa fa-trash"></i>
+					</a>
 									</td>
 									</tr>
 									<c:set var="oparators" value="${true}" />
@@ -1474,27 +1479,52 @@ count--;
 save(id);
 }
 };
-function editform(id){
-	/*console.log(id);
-	var idedit = id;
-	$.ajax({
-		url : "addTimesheetPage",
-		method : "POST",
-		type : "JSON",
-		data : {
-			"idedit" : idedit
-		},
-		success : function(data) {
-			location.href='addTimesheetPage';
-		}
-	})*/
-}
 
 function addform(id){
+	console.log(id);
 	var d = $('#addform'+id).prop("innerText");
 	var date = d.substring(2,12);
 	location.href='addTimesheetPage?date='+ date;
-}
+};
+
+function delform(id){
+	var idts = id;
+	console.log(idts);
+	swal({
+		title : "Are you sure?",
+		text : "You will delete this row.",
+		type : "warning",
+		showCancelButton : true,
+		confirmButtonClass : "btn-info",
+		confirmButtonText : "Yes, delete it!",
+		cancelButtonText : "No, cancel please!",
+		closeOnConfirm : false,
+		closeOnCancel : false
+	}, function(isConfirm) {
+		if (isConfirm) {
+			$.ajax({
+				url : "delTimesheet",
+				method : "POST",
+				type : "JSON",
+				data : {
+					"id" : idts
+				},
+				success : function(data) {
+					swal({
+						title: "Done!",
+						text: "Your timesheet has been delete.",
+						type: "success",
+						showConfirmButton: false
+					});
+					setTimeout(location.reload.bind(location), 800);
+				}
+			})
+		}
+		else {
+			swal("Cancelled", "Your timesheet did not delete :)", "error");
+		}
+	})
+};
 
 function mergeCells() {
 	var db = document.getElementById("databody");
@@ -1503,7 +1533,7 @@ function mergeCells() {
 	var lastCounter = 1;
 	var lastRow = 0;
 	for (var i = 0; i < dbRows.length; i++) {
-		 var thisValue = dbRows[i].cells[1].innerHTML;
+		 var thisValue = dbRows[i].cells[1].innerText;
 		 if (thisValue == lastValue) {
 		   lastCounter++;
 		   dbRows[lastRow].cells[1].rowSpan = lastCounter;
@@ -1515,6 +1545,6 @@ function mergeCells() {
 		   lastRow = i;
 		 }
 	}  
-}
+};
 window.onload = mergeCells;
-</script>				
+</script>

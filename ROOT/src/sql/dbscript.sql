@@ -71,4 +71,16 @@ ALTER TABLE `timesheet` ADD `timespent` VARCHAR(32) NULL AFTER `started_date`;
 
 ALTER TABLE `timesheet` MODIFY COLUMN `summary` VARCHAR(1024);
 
+ALTER TABLE timesheet ADD OT_hour_x15 decimal(5,2) NULL AFTER OT_description;
 
+ALTER TABLE timesheet ADD OT_hour_x2 decimal(5,2) NULL AFTER OT_hour_x15;
+
+ALTER TABLE timesheet ADD OT_hour_x3 decimal(5,2) NULL AFTER OT_hour_x2;
+
+ALTER TABLE timesheet ADD reason VARCHAR(1024) NULL AFTER status;
+
+ALTER TABLE timesheet ADD appr_user_id VARCHAR(32) NULL AFTER reason;
+
+ALTER TABLE timesheet ADD OT_type CHAR(1) NULL AFTER function_id;
+
+ALTER TABLE timesheet ADD time_appr timestamp NULL AFTER time_update;

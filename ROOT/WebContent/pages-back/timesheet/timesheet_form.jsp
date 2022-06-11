@@ -93,6 +93,9 @@ b {
 					</select>
 
 				</div>
+				<div>
+					<input type="hidden" name="name" id="user.roletId2" value="${logonUser}">
+				</div>
 			</div>
 			
 			<div class="form-group form-md-line-input"
@@ -209,7 +212,7 @@ b {
 				<label class="col-md-2 control-label" for="form_control_1">Time spent hour
 					:</label>
 				<div class="col-md-2">
-					<input class="form-control" type="text" name="tsh" id="tsh" value="">
+					<input class="form-control" type="text" name="tsh" id="tsh" placeholder="0h 00m" value="">
 				</div>
 			</div>
 			
@@ -221,7 +224,8 @@ b {
 				<div class="col-xs-2"></div>
 				<div class="col-xs-10 col-md-7">
 					<div class="md-checkbox">
-						<input type="checkbox" id="checkbox1" class="md-check"> <label
+						<input type="checkbox" id="checkbox1" class="md-check" data-toggle="collapse" data-target="#collapseOne"
+							aria-expanded="false" aria-controls="collapseOne"> <label
 							for="checkbox1" data-toggle="collapse" data-target="#collapseOne"
 							aria-expanded="false" aria-controls="collapseOne"> <span
 							class="inc"></span> <span class="check"></span> <span class="box"></span>
@@ -267,7 +271,8 @@ b {
 						onclick="check()">
 						<i class="fa fa-save"></i>&nbsp;Save Timesheet
 					</button>
-					<button type="reset" class="btn red-intense">
+					<button type="reset" class="btn red-intense"
+						onclick="window.history.go(-1); return false;">
 						<i class="fa fa-times-circle"></i>&nbsp;Cancel
 					</button>
 				</div>
@@ -285,6 +290,7 @@ b {
 <script>
 	<perm:permission object="timesheet.edit">
 		document.getElementById('user.roletId').disabled = false;
+		document.getElementById('user.roletId2').disabled = true;
 	</perm:permission>
 </script>
 <script>
@@ -368,10 +374,10 @@ b {
 	}
 </script>
 <script>
-	$("input").change(function() {
+	/*$("input").change(function() {
 		var $input = $(this);
-		$("p").html($input.is(":checked") + "</b>");
-	}).change();
+		//$("p").html($input.is(":checked") + "</b>");
+	})*/
 </script>
 <script>
 	$(document).ready(function() {

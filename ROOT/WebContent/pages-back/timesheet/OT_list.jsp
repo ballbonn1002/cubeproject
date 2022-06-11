@@ -90,7 +90,7 @@
 			<perm:permission object="timesheet.edit">
 				<div class="form-group form-md-line-input ">
 					<label class="control-label" for="form_control_1">Staff : </label>
-					<select class="form-control select2me" name="name" id=name>
+					<select class="form-control select2me" name="name" id="name"	>
 						<optgroup label="Enable">
 							<c:forEach var="user" items="${userseq}">
 
@@ -244,7 +244,7 @@
 							style="background-color: #3B3F51; color: white;">Period of
 							Time</th>
 						<th class="text-center " width="250px"
-							style="background-color: #3B3F51; color: white;"></th>
+							style="background-color: #3B3F51; color: white;">Approve</th>
 						<th class="text-center " width="100px"
 							style="background-color: #3B3F51; color: white;"></th>
 					</tr>
@@ -302,7 +302,51 @@
 								style="color:blue;"></i>&nbsp;<fmt:formatDate
 									value="${lts.OT_time_start}" pattern="HH:mm" /> - <fmt:formatDate
 									value="${lts.OT_time_end}" pattern="HH:mm" /></td>
-							<td></td>
+							<td>
+							<perm:permission object="timesheet.edit">
+							<div class="btn-group">
+								<c:if test="${lts.status.toString() == 'W'}">
+     									<div class="wait-${lts.id} btn-group dropup">
+											<button class="btn yellow-crusta">Waiting for Approving</button>
+											<button class="btn yellow-crusta dropdown-toggle" type="button" 
+												data-delay="999" data-toggle="dropdown" data-close-others="true">
+												<i class="fa fa-angle-up"></i></button>
+											<ul class="dropdown-menu" role="menu" style="z-index:1000">
+												<li class="list-group-item" style="background-color:#FAFAFA">
+													<h5 class="title">You want to Approval?</h5></li>
+												<li><h4 style="color: white; text-align: center;">
+													<a class="btn green-jungle"
+														onclick="ltsStatus(${lts.id})">
+														<i class="glyphicon glyphicon-ok"></i> Approve </a></h4>
+													<h4 style="color: white; text-align: center;">
+													<a id="reject_leave_call01" class="btn btn-danger"
+														onclick="ltsStatus(${lts.id});">
+														<i class="glyphicon glyphicon-remove"></i> Reject </a></h4>
+												</li>
+											</ul>
+										</div> 
+									</c:if>
+									<c:if test="${lts.status.toString() == 'A'}">
+										<div class="wait-${lts.id}">
+											<button class="btn green-meadow" type="button"
+												data-toggle="dropdown" data-hover="dropdown" onclick="ltsStatus(${lts.id})">
+												Approved
+											</button>											
+										</div>
+									</c:if>
+
+									<c:if test="${lts.status.toString() == 'R'}">
+										<div class="wait-${lts.id}">
+											<button class="btn red-mint" type="button"
+												data-toggle="dropdown" data-hover="dropdown" onclick="ltsStatus(${lts.id})">
+												Reject
+											</button>
+										</div>
+									</c:if>
+									
+								</div>
+								</perm:permission>
+							</td>
 							<td></td>
 						</tr>
 					</c:forEach>
@@ -311,7 +355,89 @@
 			</table>
 
 		</div>
-
+		<div class="modal fade" id="change_status" role="dialog" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header ui-draggable-handle" style="text-align:left;">
+									<button type="button" class="close" data-dismiss="modal"></button>
+									<h4 class="modal-title sbold">OT Timesheet</h4>
+								</div>
+								<div class="modal-body" style="text-align:left;">
+									<div class="row" style="margin-bottom:10px;">
+										<div class="col-lg-4"><small>Name</small><br>
+											<small class="sbold txt" id="userid"></small>
+										</div>
+										<div class="col-lg-4"><small>Request Date</small><br>
+											<small class="sbold txt" id="timecreate"></small>
+										</div>
+										<div class="col-lg-4"><small class="txt" id="tsid"></small><br>
+											<small class="txt" id="tsstatus"></small>
+										</div>
+									</div>
+									<div class="row" style="margin-bottom:10px;">
+										<div class="col-lg-4"><small>Date</small><br>
+											<small class="sbold txt" id="otdate"></small>
+										</div>
+										<div class="col-lg-4"><small>Time Start</small><br>
+											<small class="sbold txt" id="stime"></small>
+										</div>
+										<div class="col-lg-4"><small>Time End</small><br>
+											<small class="sbold txt" id="etime"></small>
+										</div>
+									</div>
+									<div class="row" style="margin-bottom:10px;">
+										<div class="col-lg-4">
+											<small>Description</small><br>
+											<small class="sbold txt" id="desc"></small>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer" style="text-align:left;">
+									<i class="font-red-sunglo fa fa-ellipsis-v" style="margin-right:8px;"></i><span 
+										class="font-blue sbold" style="margin-bottom:15px;">Approver</span>
+									<div id="reason_panel" class="col-lg-13" style="margin-top:10px;">
+										<select class="form-control" style="margin-top:10px;" name="apprType" id="apprType">
+											<option value="1">ล่วงเวลา 1.5 เท่า</option>
+										    <option value="2">ล่วงเวลา 2 เท่า</option>
+										    <option value="3">ล่วงเวลา 3 เท่า</option>
+										</select>
+										<small>Reason</small>
+										<small id="req" class="font-red-sunglo"> * require reason for reject</small>
+										<textarea class="form-control" rows="3" id="reason"
+											style="margin-bottom:10px;"></textarea>
+									</div>
+									<div id="status_detail" class="row" style="margin-bottom:10px;">
+										<div class="col-lg-4">
+											<small>Approver</small><br>
+											<small class="sbold txt" id="approver"></small>
+										</div>
+										<div class="col-lg-4">
+											<small>Approve Date</small><br>
+											<small class="sbold txt" id="timeupdate"></small>
+										</div>
+										<div class="col-lg-4">
+											<small>Reason</small><br>
+											<small class="sbold txt" id="reason_s"></small>
+										</div>
+									</div>
+									<div id="status_detail2" class="row" style="margin-bottom:10px;">
+										<div class="col-lg-4">
+											<small>OT Type</small><br>
+											<small class="sbold txt" id="type_s"></small>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn dark btn-outline" 
+										data-dismiss="modal" onclick="leaveCancle()">Close</button>
+									<a class="btn red-sunglo" data-dismiss="modal" title="leave rejecting" 
+										style="color:white;" id="btn_reject" onclick="call_reject()">Reject</a>
+									<a class="btn green-meadow" data-dismiss="modal" title="leave approved" 
+										id="btn_approve" onclick="call_approve()">Approve</a>
+								</div>
+							</div>
+						</div>
+				</div>
 
 		<!-- -----------------------------------------End add-------------------------------------------- -->
 	</div>
@@ -355,7 +481,177 @@ jQuery(document).ready( function ($) {
 
 	});
 </script>
-
+<script>
+	function ltsStatus(id) {
+			$("#change_status").modal(); 
+			document.getElementById("req").style.display = "none";
+		console.log(id);
+			$.ajax({
+	 		url : "modalOTStatus.action",
+	 		method : "POST",
+	 		data : "ltsId="+ id,
+	 		success : function(data) {
+	 				console.log(data);
+					var obj = JSON.parse(data);
+					sessionStorage.clear();
+					localStorage.removeItem("data");
+					localStorage.setItem("data", data);
+					//console.log(obj[0]);
+					
+					$('#tsid').append(obj[0].id).addClass("font-blue");
+					$('#userid').append(obj[0].user_create);
+					$('#timecreate').append(obj[0].time_create);
+					$('#desc').append(obj[0].OT_description);
+	/* ----------------------- set start date / end date ----------------------- */
+					var sdate = (obj[0].OT_time_start).split(",");
+					$('#otdate').append(sdate[0]);
+					$('#stime').append(sdate[1]);
+					var edate = (obj[0].OT_time_end).split(",");
+					$('#etime').append(edate[1]);
+					
+	/* ----------------------- set status ----------------------- */
+					if(obj[0].status == 'W'){
+						$('#tsstatus').append("Wait for Approving").addClass("sbold font-yellow-crusta");
+						document.getElementById("status_detail").style.display = "none";
+						document.getElementById("status_detail2").style.display = "none";
+						var day = obj[0].OT_time_start.substring(0, 3);
+						console.log(day);
+						if(day === 'Mon' || day === 'Tue' || day === 'Wed' || day === 'Thu' || day === 'Fri'){
+							$('#apprType').val('1');
+						}
+						if(day === 'Sat' || day === 'Sun'){
+							$('#apprType').val('2');
+						}
+					
+					}else if(obj[0].status == 'A'){
+						$('#tsstatus').append("Approved").addClass("sbold font-blue");
+						document.getElementById("reason_panel").style.display = "none";
+						document.getElementById("status_detail").style.display = "block";
+						document.getElementById("status_detail2").style.display = "block";
+						var timeAppr = obj[0].time_appr.substring(3, 22);
+						console.log(timeAppr);
+						$('#approver').append(obj[0].appr_user_id);
+						$('#timeupdate').append(timeAppr);
+						$('#reason_s').append(obj[0].reason);
+						if(obj[0].OT_type == '1'){
+							$('#type_s').append('ล่วงเวลา 1.5 เท่า');
+						}
+						if(obj[0].OT_type == '2'){
+							$('#type_s').append('ล่วงเวลา 2 เท่า');
+						}
+						if(obj[0].OT_type == '3'){
+							$('#type_s').append('ล่วงเวลา 3 เท่า');
+						}
+						$('#btn_reject').hide();
+						$('#btn_approve').hide(); 
+					
+					}else if(obj[0].status == 'R'){
+						$('#tsstatus').append("Reject").addClass("sbold font-red-mint");
+						console.log("status 2");
+						document.getElementById("reason_panel").style.display = "none";
+						document.getElementById("status_detail").style.display = "block";
+						document.getElementById("status_detail2").style.display = "block";
+						var timeAppr = obj[0].time_appr.substring(3, 22);
+						console.log(timeAppr);
+						$('#approver').append(obj[0].appr_user_id);
+						$('#timeupdate').append(timeAppr);
+						$('#reason_s').append(obj[0].reason);
+						if(obj[0].OT_type == '1'){
+							$('#type_s').append('ล่วงเวลา 1.5 เท่า');
+						}
+						if(obj[0].OT_type == '2'){
+							$('#type_s').append('ล่วงเวลา 2 เท่า');
+						}
+						if(obj[0].OT_type == '3'){
+							$('#type_s').append('ล่วงเวลา 3 เท่า');
+						}
+						$('#btn_reject').hide();
+						$('#btn_approve').hide(); 
+					}
+					
+	 			}
+			});
+	}
+	
+/* ----------------------- close and cancle popover ----------------------- */
+	
+	$("#change_status .close").click(function() {
+		$(".txt").empty().append();
+	});
+	
+	function leaveCancle(){
+		sessionStorage.clear();
+		console.log("clear");
+		window.location.reload(true);
+	}
+	
+/* ----------------------- approve popover ----------------------- */
+	
+	function call_approve() {
+		var data = localStorage.getItem("data");
+		var obj = JSON.parse(data);
+		var ltsId = obj[0].id;
+		/* localStorage.setItem("leaveId", leaveId); */
+		var reason = $('#reason').val();
+		var type = $('#apprType').val();
+		if(reason == "" || reason == null){
+			reason = "";
+			console.log(reason);
+		}
+ 		 $.ajax({
+	         url: 'timesheetStatusToApprove.action',
+	         method: 'POST',
+			 type : 'JSON',
+			 data : {
+					"id" : ltsId,
+					"reason" : reason,
+					"type" : type
+			 } 
+		 })
+		 	.done(function() {
+		 		location.reload();
+		 		localStorage.removeItem("data");
+		 	});
+	}	
+	
+/* ----------------------- reject popover ----------------------- */
+	
+	function call_reject() {
+		var data = localStorage.getItem("data");
+		var obj = JSON.parse(data);
+		console.log(obj[0]);
+		var ltsId = obj[0].id;
+		console.log(ltsId);
+		//localStorage.setItem("ltsId", ltsId);
+		var reason = $('#reason').val();
+		console.log(reason);
+		var type = $('#apprType').val();
+		console.log(type);
+		
+		if(reason == "" || reason == null){
+			document.getElementById("req").style.display = "block";
+			document.getElementById("btn_reject").disabled = true;
+		}
+		else if(reason != "" || reason != null){
+			document.getElementById("req").style.display = "none";
+			document.getElementById("btn_reject").type = "submit";
+	 		$.ajax({
+				url: 'timesheetStatusToReject.action',
+				method: 'POST',
+				type : 'JSON',
+				data : {
+					"id" : ltsId,
+					"reason" : reason,
+					"type" : type
+				} 
+			})
+			.done(function() {
+				location.reload();
+		 		localStorage.removeItem("data");
+			});
+	}
+}
+</script>
 
 
 

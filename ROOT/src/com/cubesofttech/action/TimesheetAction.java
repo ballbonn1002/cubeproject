@@ -1,6 +1,7 @@
 package com.cubesofttech.action;
 
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -1504,6 +1505,88 @@ public class TimesheetAction extends ActionSupport {
 			return ERROR;
 		}
 
+	}
+	
+	public String modalOTStatus() {
+		try {
+			String ltsId = request.getParameter("ltsId");
+			int tsid = Integer.parseInt(ltsId);
+			log.debug("lts id " + ltsId);
+			
+			Gson gson = new GsonBuilder().setPrettyPrinting().setDateFormat("EEE dd MMM yyyy, HH:mm").create();
+			String responseJSON = gson.toJson(timesheetDAO.findTimesheetById(tsid));
+			log.debug(responseJSON);
+			
+			JSONArray jsonarray = new JSONArray(responseJSON);
+			
+			PrintWriter out = response.getWriter();
+			
+			out.print(jsonarray);
+			out.flush();
+			out.close();
+			
+			return null;
+		} catch (Exception e) {
+			log.error(e);
+
+			return ERROR;
+		}
+	}
+	
+	public String timesheetReject() {
+		try {
+			User onlineUser = (User) request.getSession().getAttribute("onlineUser");
+			String ltsId = request.getParameter("id");
+			String reason = request.getParameter("reason");
+			String type = request.getParameter("type");
+			int tsid = Integer.parseInt(ltsId);
+			log.debug(tsid);
+			log.debug(reason);
+			String status = ("R");
+			log.debug(onlineUser.getId());
+			Timesheet timesheet = timesheetDAO.findById(tsid);
+			timesheet.setStatus(status);
+			timesheet.setReason(reason);
+			timesheet.setAppr_user_id(onlineUser.getId());
+			timesheet.setTimeAppr(DateUtil.getCurrentTime());
+			timesheet.setOT_type(type);
+			timesheetDAO.update(timesheet);
+			log.debug(timesheet);
+			
+			return SUCCESS;
+		} catch (Exception e) {
+			log.error(e);
+
+			return ERROR;
+		}
+	}
+	
+	public String timesheetApprove() {
+		try {
+			User onlineUser = (User) request.getSession().getAttribute("onlineUser");
+			String ltsId = request.getParameter("id");
+			String reason = request.getParameter("reason");
+			String type = request.getParameter("type");
+			int tsid = Integer.parseInt(ltsId);
+			log.debug(tsid);
+			log.debug(reason);
+			String status = ("A");
+			log.debug(onlineUser.getId());
+			Timesheet timesheet = timesheetDAO.findById(tsid);
+			timesheet.setStatus(status);
+			timesheet.setReason(reason);
+			timesheet.setAppr_user_id(onlineUser.getId());
+			timesheet.setTimeAppr(DateUtil.getCurrentTime());
+			timesheet.setOT_type(type);
+			timesheetDAO.update(timesheet);
+			log.debug(timesheet);
+			
+			return SUCCESS;
+		} catch (Exception e) {
+			log.error(e);
+
+			return ERROR;
+		}
 	}
 
 	public static final String idtimesheet = "id";

@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.cubesofttech.model.Holiday;
+import com.cubesofttech.model.Leaves;
 import com.cubesofttech.model.Project;
 import com.cubesofttech.model.Timesheet;
 
@@ -266,6 +267,24 @@ public class TimesheetDAOImpl implements TimesheetDAO {
 	}
 
 	@Override
+	public List<Timesheet> findTimesheetById(int id) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();		
+		List<Timesheet> modalOTList = null;
+		try {
+			String sql = "SELECT * FROM timesheet WHERE id = " + id;
+			SQLQuery query = session.createSQLQuery(sql);
+
+			query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+			modalOTList = query.list();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return modalOTList;
+		
+	}
+	
+	@Override
 	public List<Map<String, Object>> searchTimesheetByUserCreate(String userId) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Map<String, Object>> expSearch = null;
@@ -443,7 +462,7 @@ public class TimesheetDAOImpl implements TimesheetDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Map<String, Object>> timesheetlist = null;
 		try {
-			String sql = "SELECT id, OT_time_start, OT_time_end, OT_description FROM timesheet WHERE user_create"
+			String sql = "SELECT id, OT_time_start, OT_time_end, OT_description, status FROM timesheet WHERE user_create"
 					+ " = :userid AND YEAR(OT_time_start)=:year AND MONTH(OT_time_start)=:month AND OT_time_start IS NOT NULL GROUP BY id ORDER BY id DESC";
 
 			SQLQuery query = session.createSQLQuery(sql);
@@ -465,7 +484,7 @@ public class TimesheetDAOImpl implements TimesheetDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Map<String, Object>> timesheetlist = null;
 		try {
-			String sql = "SELECT id, OT_time_start, OT_time_end, OT_description FROM timesheet WHERE user_create = :userid AND OT_time_start >= :dateStartSearch and OT_time_start <= :dateEndSearch AND OT_time_start IS NOT NULL GROUP BY id DESC";
+			String sql = "SELECT id, status, OT_time_start, OT_time_end, OT_description FROM timesheet WHERE user_create = :userid AND OT_time_start >= :dateStartSearch and OT_time_start <= :dateEndSearch AND OT_time_start IS NOT NULL GROUP BY id DESC";
 
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setParameter("userid", userid);
@@ -764,7 +783,7 @@ public class TimesheetDAOImpl implements TimesheetDAO {
 		Session session = this.sessionFactory.getCurrentSession();
 		List<Map<String, Object>> userWork = null;
 		try {
-			String sql = "SELECT id FROM user WHERE name =:name";
+			String sql = "SELECT id FROM user WHERE name =:name AND flag_search='1'";
 
 					
 			SQLQuery query = session.createSQLQuery(sql);
