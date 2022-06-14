@@ -84,3 +84,9 @@ ALTER TABLE timesheet ADD appr_user_id VARCHAR(32) NULL AFTER reason;
 ALTER TABLE timesheet ADD OT_type CHAR(1) NULL AFTER function_id;
 
 ALTER TABLE timesheet ADD time_appr timestamp NULL AFTER time_update;
+
+
+-- PROD / UAT -- [14 June 2022]
+
+
+
