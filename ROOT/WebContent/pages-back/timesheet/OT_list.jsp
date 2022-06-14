@@ -243,8 +243,10 @@
 						<th class="text-center " width="250px"
 							style="background-color: #3B3F51; color: white;">Period of
 							Time</th>
+						<perm:permission object="timesheet.edit">
 						<th class="text-center " width="250px"
 							style="background-color: #3B3F51; color: white;">Approve</th>
+						</perm:permission>
 						<th class="text-center " width="100px"
 							style="background-color: #3B3F51; color: white;"></th>
 					</tr>
