@@ -406,7 +406,7 @@ public class TimesheetAction extends ActionSupport {
 
 	public String addTimesheetPage() {
 		try {
-			String date = request.getParameter("date");
+			String date = request.getParameter("ndate");
 			Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(date);
 			request.setAttribute("timesheetDate", date1);
 			

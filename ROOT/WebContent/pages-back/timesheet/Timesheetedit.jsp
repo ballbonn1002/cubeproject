@@ -1484,7 +1484,7 @@ function addform(id){
 	console.log(id);
 	var d = $('#addform'+id).prop("innerText");
 	var date = d.substring(2,12);
-	location.href='addTimesheetPage?date='+ date;
+	location.href='addTimesheetPage?ndate='+ date;
 };
 
 function delform(id){
