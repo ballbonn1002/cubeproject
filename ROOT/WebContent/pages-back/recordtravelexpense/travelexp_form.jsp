@@ -409,7 +409,7 @@ b {
 										minFractionDigits="2" value="${expSearchList.amount}" /></td>
 								<td><c:choose>
 										<c:when test="${expSearchList.expense_group_id == 0}">
-											<span class="label label-sm  label-default"> Null </span>
+											<span class="label label-sm  label-default"> Draft </span>
 										</c:when>
 										<c:otherwise>
 											<c:if test="${expSearchList.status_id.toString() == 'W'}">
@@ -432,8 +432,9 @@ b {
 									<c:if test="${expSearchList.status_id == 'W' || expSearchList.status_id == null}">
 										<a class="btn btn-outline circle btn-sm sbold blue" title="Edit"
 										href="travelexp_edit_record?expenseId=${expSearchList.expense_id}">
-										<i class="fa fa-pencil"></i></a></td>
+										<i class="fa fa-pencil"></i></a>
 									</c:if>
+								</td>
 								<%-- DELETE --%>
 								<td style="text-align: center;">
 									<%-- <a
@@ -502,7 +503,7 @@ b {
 			<div class="form-group form-md-line-input"
 				style="text-align: center;">
 				<button type="submit" class="btn sbold blue-soft" id="demo15">
-					<i class="fa fa-send-o"></i>&nbsp;Send the details
+					<i class="fa fa-send-o"></i>&nbsp;Send requisition
 				</button>
 			</div>
 
