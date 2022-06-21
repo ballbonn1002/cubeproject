@@ -1883,6 +1883,19 @@
 			<result name="success" type="tiles">ot_list</result>
 			<result name="error">/index.jsp</result>
 		</action>
+		<action name="modalOTStatus"
+			class="com.cubesofttech.action.TimesheetAction" method="modalOTStatus">
+		</action>
+		<action name="timesheetStatusToReject"
+			class="com.cubesofttech.action.TimesheetAction" method="timesheetReject">
+			<result name="success" type="tiles">ot_list</result>
+			<result name="error">/index.jsp</result>
+		</action>
+		<action name="timesheetStatusToApprove"
+			class="com.cubesofttech.action.TimesheetAction" method="timesheetApprove">
+			<result name="success" type="tiles">ot_list</result>
+			<result name="error">/index.jsp</result>
+		</action>
 		<action name="addapprove"
 			class="com.cubesofttech.action.TimesheetAction" method="addapproved">
 			<result name="success" type="tiles">timesheet_list</result>

@@ -51,7 +51,7 @@ public class FileUploadAction extends ActionSupport {
 	@Autowired
 	private TimesheetDAO timesheetDAO;
 	
-	TimeInReportAction timeinreportAction = new TimeInReportAction();
+	private TimeInReportAction timeinreportAction = new TimeInReportAction();
 	
 	private User user;
 
@@ -390,8 +390,8 @@ public class FileUploadAction extends ActionSupport {
 				}
 				request.setAttribute("cubeUser", cubeUser);
 				request.setAttribute("logonUser", logonUser);
-				/*timeinreportAction.listTimeInReport();
-				request.setAttribute(USERSEQ, userDAO.sequense());
+				//timeinreportAction.listTimeInReport();
+				/*request.setAttribute(USERSEQ, userDAO.sequense());
 				request.setAttribute(USERLIST, userDAO.findAll());
 				request.setAttribute(FILEUPLOADLIST, fileuploadDAO.findAll());*/
 				return SUCCESS;

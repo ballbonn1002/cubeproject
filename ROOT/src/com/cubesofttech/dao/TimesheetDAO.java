@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.cubesofttech.model.Leaves;
 import com.cubesofttech.model.Timesheet;
 
 
@@ -15,6 +16,7 @@ public interface TimesheetDAO {
     public void update(Timesheet timesheet) throws Exception;
     public void delete(Timesheet timesheet) throws Exception;
     public Timesheet findById(Integer id) throws Exception;
+    public List<Timesheet> findTimesheetById(int id) throws Exception;
 	public List<Map<String, Object>> findTimeInTimeOutBytimeMonthYear( String user,String startDay,String endDay ) throws Exception;
 	public List<Map<String, Object>> findDescription( String user,String startDay,String endDay) throws Exception;
 	public List<Map<String, Object>> searchIdTimesheet( String id) throws Exception;

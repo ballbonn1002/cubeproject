@@ -187,103 +187,11 @@ tr{
 					</div>
 				</div>
 				
-				<%-- <label class="col-md-1 control-label">Month :</label>
-					<div class="col-md-2">
-					<select class="form-control select2me" name="monthSearch" id=monthSearch required="required">
-					<!-- qwerqwerqw -->
-					<c:choose>
-						<c:when test="${monthSearch != null}">
-							<option value='01' id='01'
-								<c:if test="${monthSearch == 01 }"><c:out value="selected=selected"/> </c:if>>January</option>
-							<option value='02' id='02'
-								<c:if test="${monthSearch == 02 }"><c:out value="selected=selected"/> </c:if>>February</option>
-							<option value='03' id='03'
-								<c:if test="${monthSearch == 03 }"><c:out value="selected=selected"/> </c:if>>March</option>
-							<option value='04' id='04'
-								<c:if test="${monthSearch == 04 }"><c:out value="selected=selected"/> </c:if>>April</option>
-							<option value='05' id='05'
-								<c:if test="${monthSearch == 05 }"><c:out value="selected=selected"/> </c:if>>May</option>
-							<option value='06' id='06'
-								<c:if test="${monthSearch == 06 }"><c:out value="selected=selected"/> </c:if>>June</option>
-							<option value='07' id='07'
-								<c:if test="${monthSearch == 07 }"><c:out value="selected=selected"/> </c:if>>July</option>
-							<option value='08' id='08'
-								<c:if test="${monthSearch == 08 }"><c:out value="selected=selected"/> </c:if>>August</option>
-							<option value='09' id='09'
-								<c:if test="${monthSearch == 09 }"><c:out value="selected=selected"/> </c:if>>September</option>
-							<option value='10' id='10'
-								<c:if test="${monthSearch == 10 }"><c:out value="selected=selected"/> </c:if>>October</option>
-							<option value='11' id='11'
-								<c:if test="${monthSearch == 11 }"><c:out value="selected=selected"/> </c:if>>November</option>
-							<option value='12' id='12'
-								<c:if test="${monthSearch == 12 }"><c:out value="selected=selected"/> </c:if>>December</option>
-						</c:when>
-
-						<c:otherwise>
-							<option value='01' id='01'
-								<c:if test="${month_now == 01 }"><c:out value="selected=selected"/> </c:if>>January</option>
-							<option value='02' id='02'
-								<c:if test="${month_now == 02 }"><c:out value="selected=selected"/> </c:if>>February</option>
-							<option value='03' id='03'
-								<c:if test="${month_now == 03 }"><c:out value="selected=selected"/> </c:if>>March</option>
-							<option value='04' id='04'
-								<c:if test="${month_now == 04 }"><c:out value="selected=selected"/> </c:if>>April</option>
-							<option value='05' id='05'
-								<c:if test="${month_now == 05 }"><c:out value="selected=selected"/> </c:if>>May</option>
-							<option value='06' id='06'
-								<c:if test="${month_now == 06 }"><c:out value="selected=selected"/> </c:if>>June</option>
-							<option value='07' id='07'
-								<c:if test="${month_now == 07 }"><c:out value="selected=selected"/> </c:if>>July</option>
-							<option value='08' id='08'
-								<c:if test="${month_now == 08 }"><c:out value="selected=selected"/> </c:if>>August</option>
-							<option value='09' id='09'
-								<c:if test="${month_now == 09 }"><c:out value="selected=selected"/> </c:if>>September</option>
-							<option value='10' id='10'
-								<c:if test="${month_now == 10 }"><c:out value="selected=selected"/> </c:if>>October</option>
-							<option value='11' id='11'
-								<c:if test="${month_now == 11 }"><c:out value="selected=selected"/> </c:if>>November</option>
-							<option value='12' id='12'
-								<c:if test="${month_now == 12 }"><c:out value="selected=selected"/> </c:if>>December</option>
-						</c:otherwise>
-					</c:choose>
-
-				</select>
-				</div>
 				
-				<label class="col-md-1 control-label">Year :</label>
-				<div class="col-sm-2">
-					<select
-					class="form-control select2me" name="yearSearch" id=yearSearch required="required">
-					<c:choose>
-						<c:when test="${yearSearch != null}">
-							<c:forEach begin="0" end="4" var="i">
-								<option value="${year_now - i}" id="${year_now - i}"
-									<c:if test="${yearSearch == (year_now - i)}"><c:out value="selected=selected"/></c:if>>${year_now - i}</option>
-							</c:forEach>
-						</c:when>
-
-						<c:otherwise>
-							<c:forEach begin="0" end="4" var="i">
-								<option value="${year_now - i}" id="${year_now - i}">${year_now - i}</option>
-							</c:forEach>
-						</c:otherwise>
-					</c:choose>
-				</select>
-				</div>	 --%>
-				
-				<%-- <div class="col-md-2 text-center">
-					<button type="submit" class="btn btn-sm blue-steel" id="searchbutton"
-						onclick="search()">
-						<i class="fa fa-search"></i>&nbsp;Search
-					</button>
-					<a class="btn btn-sm green-dark"
-						href="TimeInReportExcelExport?year=${yearSearch}&month=${monthSearch}&user=${userId}"
-						title="Print" style="color: white;"><i class="fa fa-print"></i>&nbsp;Excel</a>	
-				</div> --%>
 			
 				<br> <br> <br>
 				<div class="portlet-body" style="text-align: center;">
-			<table class="table  table-bordered table-striped table-condensed table-hover" id="timesheet_table">
+			<table class="table table-small table-bordered table-striped table-condensed table-hover" id="timesheet_table">
 				<thead class="flip-content">
 					<tr class = "text-center" style="background-color:rgb(59, 63, 81); color:white">
 						<th height="41"><center>วันทำงาน</center></th>
@@ -317,8 +225,10 @@ tr{
 						
 					<fmt:parseDate var="Weekend" value="${allday}" pattern="dd/MM/yyyy"/>
 					<fmt:formatDate var="Weekendd" value="${Weekend}" pattern="E"/>
-					
+						
 					<c:forEach var="TimeInlist" items="${TimeInlist}">
+					
+				
 					
 						<fmt:formatDate var="day_check_in" value="${TimeInlist.started_date}" pattern="dd/MM/yyyy" />
 						<fmt:formatDate var="checkin" value="${TimeInlist.time_check_in}" pattern="HH:mm" />
@@ -329,13 +239,26 @@ tr{
 						<c:set var="WorkTimeEnd" value="${TimeInlist.work_time_end.toString().replace(':', '')}" />
 						<fmt:parseNumber var="WorkTimeStartH" value="${WorkTimeStart}" />
 						<fmt:parseNumber var="WorkTimeEndH" value="${WorkTimeEnd}" />
+						
 						<fmt:formatNumber var="WorkTimeStartHnewformat" value="${WorkTimeStartH}" pattern="0000" />
 						<fmt:formatNumber var="WorkTimeEndHnewformat" value="${WorkTimeEndH}" pattern="0000" />
 						
+				
 						<c:set var="checkinH" value="${checkin.toString().replace(':', '')}" />
 						<c:set var="checkoutH" value="${checkout.toString().replace(':', '')}" />
+						
+						<%-- ยังทำงานเรื่อง format ไม่ถูกต้อง น่าจะมีผลกับการคำนวณ ขาด ลา มาสาย โอที
+						
+						WorkTimeStartHnewformat : [${WorkTimeStartHnewformat}]
+						WorkTimeEndHnewformat : [${WorkTimeEndHnewformat}]
+						
+						
 						<fmt:formatNumber var="checkinnewformat" value="${checkinH}" pattern="0000" />
 						<fmt:formatNumber var="checkoutnewformat" value="${checkoutH}" pattern="0000" />
+						 --%>
+						 
+						<c:set var="checkinnewformat" value="0900" />
+						<c:set var="checkoutnewformat" value="1800" />
 						
 							<c:choose>
 								<c:when test="${day_check_in == allday}">
@@ -350,7 +273,7 @@ tr{
 										
 										<fmt:formatDate var="dayotin" value="${TimeInlist.OT_time_start}" pattern="dd" />
 										<fmt:formatDate var="dayotout" value="${TimeInlist.OT_time_end}" pattern="dd" />
-						
+
 									<c:choose>
 										<c:when test="${Timeinm <= Timeoutm}">
 											<c:set var="TimeCompare" value="${(Timeout)-(Timein)}"/>
@@ -361,7 +284,7 @@ tr{
 											<c:set var="TimeminCompare" value="${(Timeoutm)-(Timeinm)+60}"/>
 										</c:when>
 									</c:choose>
-										
+
 								<c:choose>
 										<c:when test="${dayotin != dayotout && otinsm <= otoutsm}">
 											<c:set var="OtCompare" value="${((otouts)+((24-otins)))}"/>
@@ -391,6 +314,7 @@ tr{
 										<c:set var="totalotinm" value="${totalotinm + OtCompareM}"/>
 																		
 										<c:set var="WorkingDays" value="${WorkingDays+1}"/>
+
 									<c:choose>
 										<c:when test="${WorkTimeStartHnewformat != 0000 && checkinnewformat > WorkTimeStartHnewformat || checkoutnewformat < WorkTimeEndHnewformat}">
 											<c:set var="LateDay" value="${LateDay+1}"/>
@@ -412,11 +336,16 @@ tr{
 											<c:set var="lateTimeEnd" value="${WorkTimeEndHnewformat - checkoutnewformat}"/>
 										</c:when>
 									</c:choose>
-																
-										<fmt:formatNumber var="dd" value="${checkin.toString().replace(':', '')}" />
+									
+								
+<%--																
+<fmt:formatNumber var="dd" value="${checkin.toString().replace(':', '')}" />
+ --%>
+ 
+ 
 									<tr>
 										<td style="display:none;">${TimeInlist.timesheetId}</td>
-										<td width="10%" style="vertical-align: middle;">
+										<td width="10%" style="vertical-align: middle;" id="addform${TimeInlist.timesheetId}">
 											<c:choose>
 												<c:when test="${Weekendd == 'Mon'}"> 
 													<i class="fa fa-circle-o font-yellow-crusta icon-xl"></i>
@@ -442,42 +371,24 @@ tr{
 											</c:choose>
 											&nbsp;<fmt:formatDate value="${TimeInlist.started_date}" pattern="dd/MM/yyyy" />
 										</td>
+
+
 										<td width="3%" style="vertical-align: middle;"><span id="2edittimecheckin${TimeInlist.timesheetId}"><fmt:formatDate 
 													value="${TimeInlist.time_check_in}" pattern="HH:mm" /></span><input type="hidden" value="${TimeInlist.time_check_in}" id="3edittimecheckin${TimeInlist.timesheetId}">
 													<input type="hidden" value="${TimeInlist.started_date}" id="4edittimecheckin${TimeInlist.timesheetId}">						
 													<input type="text" class="edtimesht  timepicker timepicker-24 form-control" style="display:none;width:60px" id="edittimecheckin${TimeInlist.timesheetId}">
 													</td>
-										<%-- <td style="vertical-align: middle;">
-										<c:choose>
-											<c:when test="${WorkTimeStartHnewformat == 0000 }"> 
-												<i class="fa fa-genderless text-danger icon-xl"></i>
-											</c:when>
-											<c:when test="${WorkTimeStartHnewformat != 0000 && checkinnewformat > WorkTimeStartHnewformat }">
-												<i class="fa fa-arrow-circle-right text-danger icon-xl"></i>
-											</c:when>
-										</c:choose></td> --%>
+
 										<td width="3%" style="vertical-align: middle;"><span id="2edittimecheckout${TimeInlist.timesheetId}"><fmt:formatDate 
 													value="${TimeInlist.time_check_out}" pattern="HH:mm" /></span><input type="hidden" value="${TimeInlist.time_check_out}" id="3edittimecheckout${TimeInlist.timesheetId}">
 										<input type="text" class="edtimesht  timepicker timepicker-24 form-control" style="display:none;width:60px" id="edittimecheckout${TimeInlist.timesheetId}"></td>
-										<%-- <td style="vertical-align: middle;">
-										<c:choose>
-										<c:when test="${WorkTimeEndHnewformat == 0000}">
-												<i class="fa fa-genderless text-danger icon-xl"></i>
-											</c:when>
-											<c:when test="${WorkTimeEndHnewformat != 0000 && checkoutnewformat < WorkTimeEndHnewformat }">
-												<i class="fa fa-arrow-circle-left text-danger icon-xl"></i>
-											</c:when>
-										</c:choose>
-										</td> --%>
+										
 										<td width="3%" style="vertical-align: middle;"><span id="2edittimeotstart${TimeInlist.timesheetId}"><fmt:formatDate
 													value="${TimeInlist.OT_time_start}" pattern="HH:mm" /></span><input type="hidden" value="${TimeInlist.OT_time_start}" id="3edittimeotstart${TimeInlist.timesheetId}"><input type="text" class="edtimesht  timepicker timepicker-24 form-control" style="display:none;width:60px" id="edittimeotstart${TimeInlist.timesheetId}"></td>
-										<%-- <td style="vertical-align: middle;"><c:choose><c:when test="${OtCompare > 0 }"><i class="fa fa-clock-o text-muted icon-xl"></i></c:when></c:choose></td> --%>
 										<td width="3%" style="vertical-align: middle;"><span id="2edittimeotend${TimeInlist.timesheetId}"><fmt:formatDate
 													value="${TimeInlist.OT_time_end}" pattern="HH:mm" /></span><input type="hidden" value="${TimeInlist.OT_time_end}" id="3edittimeotend${TimeInlist.timesheetId}"><input type="text" class="edtimesht  timepicker timepicker-24 form-control" style="display:none;width:60px" id="edittimeotend${TimeInlist.timesheetId}"></td>	
-										<%-- <td style="vertical-align: middle;"><c:choose><c:when test="${OtCompare > 0 }"><i class="fa fa-clock-o text-muted icon-xl"></i></c:when></c:choose> </td> --%>
 										<td width="6%" style="vertical-align: middle;" id="totalTime${TimeInlist.timesheetId}">
 										
-										<!-- aa -->
 											<c:choose>
 												<c:when test="${TimeCompare >= 8}"> 
 													<div  class="btn-sm btn-info" >
@@ -512,8 +423,7 @@ tr{
 												</c:when>
 												
 											</c:choose>
-																				
-																			
+																		
 									</td>
 										<td width="20%" style="word-break:break-all;text-align: left"><span id="2editproject${TimeInlist.timesheetId}">${TimeInlist.project}</span><ul style="list-style-type:none;"><li><span id="2editsummary${TimeInlist.timesheetId}">${TimeInlist.summary}</span></li></ul>
 										<input type="text" class="edtimesht form-control" style="display:none;" id="editproject${TimeInlist.timesheetId}" value="${TimeInlist.project}">
@@ -532,11 +442,16 @@ tr{
 						onclick="editts('${TimeInlist.timesheetId}')">
 						<i class="fa fa-pencil-square-o"></i>
 					</a>
-						<!-- <a 
+									<a 
 						class="btn circle btn-outline blue-soft float-left" id=""
 						onclick="addform('${TimeInlist.timesheetId}')">
 						<i class="fa fa-plus"></i>
-					</a> -->
+					</a>
+									<a 
+						class="btn circle btn-outline blue-soft float-left" id=""
+						onclick="delform('${TimeInlist.timesheetId}')">
+						<i class="fa fa-trash"></i>
+					</a>
 									</td>
 									</tr>
 									<c:set var="oparators" value="${true}" />
@@ -544,8 +459,10 @@ tr{
 								
 							</c:choose>
 							
-							
+	
 					</c:forEach>
+
+					
 					<c:forEach var="Holidayls" items="${Holidayls}">
 					<fmt:formatDate var="holidayy" value="${Holidayls.start_date}" pattern="dd/MM/yyyy" />
 					<fmt:formatDate var="holidaye" value="${Holidayls.end_date}" pattern="dd/MM/yyyy" />
@@ -1474,27 +1391,52 @@ count--;
 save(id);
 }
 };
-function editform(id){
-	/*console.log(id);
-	var idedit = id;
-	$.ajax({
-		url : "addTimesheetPage",
-		method : "POST",
-		type : "JSON",
-		data : {
-			"idedit" : idedit
-		},
-		success : function(data) {
-			location.href='addTimesheetPage';
-		}
-	})*/
-}
 
 function addform(id){
+	console.log(id);
 	var d = $('#addform'+id).prop("innerText");
 	var date = d.substring(2,12);
-	location.href='addTimesheetPage?date='+ date;
-}
+	location.href='addTimesheetPage?ndate='+ date;
+};
+
+function delform(id){
+	var idts = id;
+	console.log(idts);
+	swal({
+		title : "Are you sure?",
+		text : "You will delete this row.",
+		type : "warning",
+		showCancelButton : true,
+		confirmButtonClass : "btn-info",
+		confirmButtonText : "Yes, delete it!",
+		cancelButtonText : "No, cancel please!",
+		closeOnConfirm : false,
+		closeOnCancel : false
+	}, function(isConfirm) {
+		if (isConfirm) {
+			$.ajax({
+				url : "delTimesheet",
+				method : "POST",
+				type : "JSON",
+				data : {
+					"id" : idts
+				},
+				success : function(data) {
+					swal({
+						title: "Done!",
+						text: "Your timesheet has been delete.",
+						type: "success",
+						showConfirmButton: false
+					});
+					setTimeout(location.reload.bind(location), 800);
+				}
+			})
+		}
+		else {
+			swal("Cancelled", "Your timesheet did not delete :)", "error");
+		}
+	})
+};
 
 function mergeCells() {
 	var db = document.getElementById("databody");
@@ -1503,7 +1445,7 @@ function mergeCells() {
 	var lastCounter = 1;
 	var lastRow = 0;
 	for (var i = 0; i < dbRows.length; i++) {
-		 var thisValue = dbRows[i].cells[1].innerHTML;
+		 var thisValue = dbRows[i].cells[1].innerText;
 		 if (thisValue == lastValue) {
 		   lastCounter++;
 		   dbRows[lastRow].cells[1].rowSpan = lastCounter;
@@ -1515,6 +1457,6 @@ function mergeCells() {
 		   lastRow = i;
 		 }
 	}  
-}
+};
 window.onload = mergeCells;
-</script>				
+</script>

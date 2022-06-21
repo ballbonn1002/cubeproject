@@ -25,22 +25,26 @@ public class Timesheet implements Serializable {
     }
     
     
-    public Timesheet(Integer id, String description, Timestamp timeCheckIn, Timestamp timeCheckOut, String status,
-			String userCreate, String userUpdate, Timestamp timeCreate, Timestamp timeUpdate, Integer project_id,
-			Integer function_id, String team,Timestamp OT_time_start, Timestamp OT_time_end, String OT_description) {
+    public Timesheet(Integer id, String description, Timestamp timeCheckIn, Timestamp timeCheckOut, String status, String reason,
+    		String appr_user_id, String userCreate, String userUpdate, Timestamp timeCreate, Timestamp timeUpdate, Timestamp timeAppr,
+    		Integer project_id, Integer function_id, String team, String OT_type,Timestamp OT_time_start, Timestamp OT_time_end, String OT_description) {
 		super();
 		this.id = id;
 		this.description = description;
 		this.timeCheckIn = timeCheckIn;
 		this.timeCheckOut = timeCheckOut;
 		this.status = status;
+		this.reason = reason;
+		this.appr_user_id = appr_user_id;
 		this.userCreate = userCreate;
 		this.userUpdate = userUpdate;
 		this.timeCreate = timeCreate;
 		this.timeUpdate = timeUpdate;
+		this.timeAppr = timeAppr;
 		this.project_id = project_id;
 		this.function_id = function_id;
 		this.team = team;
+		this.OT_type = OT_type;
 		this.OT_time_start = OT_time_start;
 		this.OT_time_end = OT_time_end;
 		this.OT_description = OT_description;
@@ -67,6 +71,10 @@ public class Timesheet implements Serializable {
     private java.sql.Timestamp timeCheckOut;	
     @Column(name = "status")
     private String status;	
+    @Column(name = "reason")
+    private String reason;
+    @Column(name = "appr_user_id")
+    private String appr_user_id;
 	@Column(name = "user_create")
     private String userCreate;	
     @Column(name = "user_update")
@@ -75,6 +83,8 @@ public class Timesheet implements Serializable {
     private java.sql.Timestamp timeCreate;	
     @Column(name = "time_update")
     private java.sql.Timestamp timeUpdate;
+    @Column(name = "time_appr")
+    private java.sql.Timestamp timeAppr;
     @Column(name = "project_id")
     private Integer project_id;
     @Column(name = "function_id")
@@ -132,6 +142,16 @@ public class Timesheet implements Serializable {
 	}
 	
 
+	public String getOT_type() {
+		return OT_type;
+	}
+
+
+	public void setOT_type(String oT_type) {
+		OT_type = oT_type;
+	}
+
+
 	public java.sql.Timestamp getOT_time_end() {
 		return OT_time_end;
 	}
@@ -152,6 +172,8 @@ public class Timesheet implements Serializable {
 	}
 
 
+	@Column(name = "OT_type")
+    private String OT_type;	
 	@Column(name = "OT_description")
     private String OT_description;	
     @Column(name = "OT_time_end")
@@ -191,7 +213,19 @@ public class Timesheet implements Serializable {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-    public String getUserCreate() {
+    public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+	public String getAppr_user_id() {
+		return appr_user_id;
+	}
+	public void setAppr_user_id(String appr_user_id) {
+		this.appr_user_id = appr_user_id;
+	}
+	public String getUserCreate() {
         return this.userCreate;
     }		
     public void setUserCreate(String userCreate) {
@@ -215,8 +249,14 @@ public class Timesheet implements Serializable {
     public void setTimeUpdate(java.sql.Timestamp timeUpdate) {
         this.timeUpdate = timeUpdate;
     }
-    
-    public Integer getProject_id() {
+    public java.sql.Timestamp getTimeAppr() {
+		return timeAppr;
+	}
+	public void setTimeAppr(java.sql.Timestamp timeAppr) {
+		this.timeAppr = timeAppr;
+	}
+	
+	public Integer getProject_id() {
 		return project_id;
 	}
 
