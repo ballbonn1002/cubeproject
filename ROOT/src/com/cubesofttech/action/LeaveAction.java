@@ -2681,7 +2681,12 @@ public class LeaveAction extends ActionSupport {
 			String apprUserId = jsonobj.getString("appr_user_id");
 			BigDecimal noDay = jsonobj.getBigDecimal("no_day");
 			String description = jsonobj.getString("description");
-			String reason = jsonobj.getString("reason");
+			
+			String reason = "";
+			try {
+				reason = jsonobj.getString("reason");
+			} catch (Exception e) {
+			}
 			String timeCreate = jsonobj.getString("time_create");
 			
 			// -------- time --------
