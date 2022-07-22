@@ -73,9 +73,26 @@ public class User implements Serializable {
             , String line_id
             , String facebookid
             , String flagSearch
-            , String phone_num
+            , String phonenum
             , String gender
             , Integer id_sitejob
+            , String nameEN
+            , String nickNameEN
+            , String emergContact
+            , String emergPhone
+            , String employeeTypeId
+            , String socialSecurity
+            , BigDecimal withHold
+            , String withHoldAuto
+            , String taxDec
+            , String transferType
+            , String bank
+            , String bankType
+            , String bankNum
+            , String bankBranch
+            , String citizenId
+            , String passportId
+            
         ) {
         this.id = id;	
         this.roleId = roleId;	
@@ -129,9 +146,25 @@ public class User implements Serializable {
         this.line_id = line_id;
         this.facebookid = facebookid;
         this.flagSearch = flagSearch;
-        this.phone_num = phone_num;
+        this.phonenum = phonenum;
         this.gender = gender;
         this.id_sitejob = id_sitejob;
+        this.nameEN = nameEN;
+        this.nickNameEN = nickNameEN;
+        this.emergContact = emergContact;
+        this.emergPhone = emergPhone;
+        this.employeeTypeId = employeeTypeId;
+        this.socialSecurity = socialSecurity;
+        this.withHold = withHold; 
+        this.withHoldAuto = withHoldAuto;
+        this.taxDec = taxDec;
+        this.transferType = transferType;
+        this.bank = bank;
+        this.bankType = bankType;
+        this.bankNum = bankNum;
+        this.bankBranch = bankBranch;
+        this.citizenId = citizenId;
+        this.passportId = passportId;
     }
     
     @Id
@@ -241,14 +274,49 @@ public class User implements Serializable {
     @Column(name = "line_id")
     private String line_id;
     @Column(name = "phone_num")
-    private String phone_num;
+    private String phonenum;
     @Column(name = "gender")
     private String gender;
     @Column(name = "username")
     private String username;
     @Column(name = "id_sitejob")
     private Integer id_sitejob;
-
+    @Column(name = "title_name_th")
+    private String titleNameTH;
+    @Column(name = "title_name_en")
+    private String titleNameEN;
+    @Column(name = "name_en")
+    private String nameEN;
+    @Column(name = "nick_name_en")
+    private String nickNameEN;
+    @Column(name = "emergency_contact")
+    private String emergContact;
+    @Column(name = "emergency_phone")
+    private String emergPhone;
+    @Column(name = "employee_type_id")
+    private String employeeTypeId;
+    @Column(name = "social_security")
+    private String socialSecurity;
+    @Column(name = "withholding")
+    private BigDecimal withHold;
+    @Column(name = "withholding_auto")
+    private String withHoldAuto;
+    @Column(name = "tax_deduction")
+    private String taxDec;
+	@Column(name = "transfer_type")
+    private String transferType;
+    @Column(name = "bank")
+    private String bank;
+    @Column(name = "bank_type")
+    private String bankType;
+    @Column(name = "bank_number")
+    private String bankNum;
+    @Column(name = "bank_branch")
+    private String bankBranch;
+    @Column(name = "citizen_id")
+    private String citizenId;
+    @Column(name = "passport_id")
+    private String passportId;
 
 
     public Integer getId_sitejob() {
@@ -578,10 +646,10 @@ public class User implements Serializable {
 		this.line_id = line_id;
 	}
 	public String getPhonenum() {
-        return this.phone_num;
+        return phonenum;
     }		
     public void setPhonenum(String phone_num) {
-        this.phone_num = phone_num;
+        this.phonenum = phonenum;
     }
 	public String getGender() {
         return this.gender;
@@ -589,11 +657,145 @@ public class User implements Serializable {
     public void setGender(String gender) {
         this.gender = gender;
     }
-
-
     
-    public String toString() {
-        return super.toString() + "id=[" + id + "]\n" + "roleId=[" + roleId + "]\n" + "departmentId=[" + departmentId + "]\n" + "managerId=[" + managerId + "]\n" + "positionId=[" + positionId + "]\n" + "employeeId=[" + employeeId + "]\n" + "name=[" + name + "]\n" + "nickName=[" + nickName + "]\n" + "password=[" + password + "]\n" + "email=[" + email + "]\n" + "emailPassword=[" + emailPassword + "]\n" + "emailEnable=[" + emailEnable + "]\n" + "birthDate=[" + birthDate + "]\n" + "address=[" + address + "]\n" + "startDate=[" + startDate + "]\n" + "endDate=[" + endDate + "]\n" + "workDayStart=[" + workDayStart + "]\n" + "workDayEnd=[" + workDayEnd + "]\n" + "workTimeStart=[" + workTimeStart + "]\n" + "workTimeEnd=[" + workTimeEnd + "]\n" + "latestSalary=[" + latestSalary + "]\n" + "eduInstitute1=[" + eduInstitute1 + "]\n" + "eduInstitute2=[" + eduInstitute2 + "]\n" + "eduInstitute3=[" + eduInstitute3 + "]\n" + "eduInstitute4=[" + eduInstitute4 + "]\n" + "eduDurStart1=[" + eduDurStart1 + "]\n" + "eduDurStart2=[" + eduDurStart2 + "]\n" + "eduDurStart3=[" + eduDurStart3 + "]\n" + "eduDurStart4=[" + eduDurStart4 + "]\n" + "eduDurEnd1=[" + eduDurEnd1 + "]\n" + "eduDurEnd2=[" + eduDurEnd2 + "]\n" + "eduDurEnd3=[" + eduDurEnd3 + "]\n" + "eduDurEnd4=[" + eduDurEnd4 + "]\n" + "eduDegree1=[" + eduDegree1 + "]\n" + "eduDegree2=[" + eduDegree2 + "]\n" + "eduDegree3=[" + eduDegree3 + "]\n" + "eduDegree4=[" + eduDegree4 + "]\n" + "enable=[" + enable + "]\n" + "leaveQuota1=[" + leaveQuota1 + "]\n" + "leaveQuota2=[" + leaveQuota2 + "]\n" + "leaveQuota3=[" + leaveQuota3 + "]\n" + "timeCreate=[" + timeCreate + "]\n" + "timeUpdate=[" + timeUpdate + "]\n" + "emailHost=[" + emailHost + "]\n" + "passwordUpdate=[" + passwordUpdate + "]\n" + "loginFailed=[" + loginFailed + "]\n" + "lastLoginFailedTime=[" + lastLoginFailedTime + "]\n" + "path=[" + path + "]\n"+ "facebookid=[" + facebookid + "]\n"+ "line_id=[" + line_id + "]\n";
+    public String getTitleNameTH() {
+		return titleNameTH;
+	}
+	public void setTitleNameTH(String titleNameTH) {
+		this.titleNameTH = titleNameTH;
+	}
+	public String getTitleNameEN() {
+		return titleNameEN;
+	}
+	public void setTitleNameEN(String titleNameEN) {
+		this.titleNameEN = titleNameEN;
+	}
+	public String getNameEN() {
+		return nameEN;
+	}
+	public void setNameEN(String nameEN) {
+		this.nameEN = nameEN;
+	}
+	public String getNickNameEN() {
+		return nickNameEN;
+	}
+	public void setNickNameEN(String nickNameEN) {
+		this.nickNameEN = nickNameEN;
+	}
+
+	/*
+	 * public String getPhone_num() { return phone_num; } public void
+	 * setPhone_num(String phone_num) { this.phone_num = phone_num; }
+	 */
+	public String getEmergContact() {
+		return emergContact;
+	}
+	public void setEmergContact(String emergContact) {
+		this.emergContact = emergContact;
+	}
+	public String getEmergPhone() {
+		return emergPhone;
+	}
+	public void setEmergPhone(String emergPhone) {
+		this.emergPhone = emergPhone;
+	}
+	public String getEmployeeTypeId() {
+		return employeeTypeId;
+	}
+	public void setEmployeeTypeId(String employeeTypeId) {
+		this.employeeTypeId = employeeTypeId;
+	}
+	public String getSocialSecurity() {
+		return socialSecurity;
+	}
+	public void setSocialSecurity(String socialSecurity) {
+		this.socialSecurity = socialSecurity;
+	}
+	public BigDecimal getWithHold() {
+		return withHold;
+	}
+	public void setWithHold(BigDecimal withHold) {
+		this.withHold = withHold;
+	}
+	public String getWithHoldAuto() {
+		return withHoldAuto;
+	}
+	public void setWithHoldAuto(String withHoldAuto) {
+		this.withHoldAuto = withHoldAuto;
+	}
+	public String getTaxDec() {
+		return taxDec;
+	}
+	public void setTaxDec(String taxDec) {
+		this.taxDec = taxDec;
+	}
+	public String getTransferType() {
+		return transferType;
+	}
+	public void setTransferType(String transferType) {
+		this.transferType = transferType;
+	}
+	public String getBank() {
+		return bank;
+	}
+	public void setBank(String bank) {
+		this.bank = bank;
+	}
+	public String getBankType() {
+		return bankType;
+	}
+	public void setBankType(String bankType) {
+		this.bankType = bankType;
+	}
+	public String getBankNum() {
+		return bankNum;
+	}
+	public void setBankNum(String bankNum) {
+		this.bankNum = bankNum;
+	}
+	public String getBankBranch() {
+		return bankBranch;
+	}
+	public void setBankBranch(String bankBranch) {
+		this.bankBranch = bankBranch;
+	}
+	public String getCitizenId() {
+		return citizenId;
+	}
+	public void setCitizenId(String citizenId) {
+		this.citizenId = citizenId;
+	}
+	public String getPassportId() {
+		return passportId;
+	}
+	public void setPassportId(String passportId) {
+		this.passportId = passportId;
+	}
+	
+	public String toString() {
+        return super.toString() + "id=[" + id + "]\n" + "roleId=[" + roleId + "]\n" + "departmentId=[" + departmentId + "]\n" 
+        						+ "managerId=[" + managerId + "]\n" + "positionId=[" + positionId + "]\n" 
+        						+ "employeeId=[" + employeeId + "]\n" + "name=[" + name + "]\n" + "nickName=[" + nickName + "]\n" 
+        						+ "password=[" + password + "]\n" + "email=[" + email + "]\n" + "emailPassword=[" + emailPassword + "]\n" 
+        						+ "emailEnable=[" + emailEnable + "]\n" + "birthDate=[" + birthDate + "]\n" + "address=[" + address + "]\n" 
+        						+ "startDate=[" + startDate + "]\n" + "endDate=[" + endDate + "]\n" + "workDayStart=[" + workDayStart + "]\n" 
+        						+ "workDayEnd=[" + workDayEnd + "]\n" + "workTimeStart=[" + workTimeStart + "]\n" + "workTimeEnd=[" + workTimeEnd + "]\n" 
+        						+ "latestSalary=[" + latestSalary + "]\n" + "eduInstitute1=[" + eduInstitute1 + "]\n" + "eduInstitute2=[" + eduInstitute2 + "]\n" 
+        						+ "eduInstitute3=[" + eduInstitute3 + "]\n" + "eduInstitute4=[" + eduInstitute4 + "]\n" + "eduDurStart1=[" + eduDurStart1 + "]\n" 
+        						+ "eduDurStart2=[" + eduDurStart2 + "]\n" + "eduDurStart3=[" + eduDurStart3 + "]\n" + "eduDurStart4=[" + eduDurStart4 + "]\n" 
+        						+ "eduDurEnd1=[" + eduDurEnd1 + "]\n" + "eduDurEnd2=[" + eduDurEnd2 + "]\n" + "eduDurEnd3=[" + eduDurEnd3 + "]\n" 
+        						+ "eduDurEnd4=[" + eduDurEnd4 + "]\n" + "eduDegree1=[" + eduDegree1 + "]\n" + "eduDegree2=[" + eduDegree2 + "]\n" 
+        						+ "eduDegree3=[" + eduDegree3 + "]\n" + "eduDegree4=[" + eduDegree4 + "]\n" + "enable=[" + enable + "]\n" 
+        						+ "leaveQuota1=[" + leaveQuota1 + "]\n" + "leaveQuota2=[" + leaveQuota2 + "]\n" + "leaveQuota3=[" + leaveQuota3 + "]\n" 
+        						+ "timeCreate=[" + timeCreate + "]\n" + "timeUpdate=[" + timeUpdate + "]\n" + "emailHost=[" + emailHost + "]\n" 
+        						+ "passwordUpdate=[" + passwordUpdate + "]\n" + "loginFailed=[" + loginFailed + "]\n" + "lastLoginFailedTime=[" + lastLoginFailedTime + "]\n" 
+        						+ "path=[" + path + "]\n"+ "facebookid=[" + facebookid + "]\n"+ "line_id=[" + line_id + "]\n" + "phonenum=[" + phonenum + "]\n"
+        						+ "titleNameTH=[" + titleNameTH + "]\n" + "titleNameEN=[" + titleNameEN + "]\n" + "nameEN=[" + nameEN + "]\n" + "nickNameEN=[" + nickNameEN + "]\n"
+        						+ "emergContact=[" + emergContact + "]\n" + "emergPhone=[" + emergPhone + "]\n" + "employeeTypeId=[" + employeeTypeId + "]\n"
+        						+ "socialSecurity=[" + socialSecurity + "]\n" + "withHold=[" + withHold + "]\n" + "withHoldAuto=[" + withHoldAuto + "]\n"
+        						+ "taxDec=[" + taxDec + "]\n" + "transferType=[" + transferType + "]\n" + "bank=[" + bank + "]\n" + "bankType=[" + bankType + "]\n"
+        						+ "bankNum=[" + bankNum + "]\n" + "bankBranch=[" + bankBranch + "]\n" + "citizenId=[" + citizenId + "]\n" + "passportId=[" + passportId + "]\n";
+        			            
     }
 
     public boolean equals(Object obj) {
@@ -802,12 +1004,85 @@ public class User implements Serializable {
         }
         if (!(that.getPhonenum() == null ? this.getPhonenum() == null
                 : that.getPhonenum().equals(this.getPhonenum()))) {
-        return false;
+        	return false;
         }
         if (!(that.getGender() == null ? this.getGender() == null
                 : that.getGender().equals(this.getGender()))) {
-        return false;
+        	return false;
         }
+        if (!(that.getTitleNameTH() == null ? this.getTitleNameTH() == null
+        		: that.getTitleNameTH().equals(this.getTitleNameTH()))) {
+        	return false;	
+        }
+        if (!(that.getTitleNameEN() == null ? this.getTitleNameEN() == null
+        		: that.getTitleNameEN().equals(this.getTitleNameEN()))) {
+        	return false;	
+        }
+        if (!(that.getNameEN() == null ? this.getNameEN() == null
+        		: that.getNameEN().equals(this.getNameEN()))) {
+        	return false;	
+        }
+        if (!(that.getNickNameEN() == null ? this.getNickNameEN() == null
+        		: that.getNickNameEN().equals(this.getNickNameEN()))) {
+        	return false;	
+        }
+        if(!(that.getEmergContact() == null ? this.getEmergContact() == null
+        		: that.getEmergContact().equals(this.getEmergContact()))) {
+        	return false;	
+        }
+        if(!(that.getEmergPhone() == null ? this.getEmergPhone() == null
+        		: that.getEmergPhone().equals(this.getEmergPhone()))) {
+        	return false;	
+        }
+        if(!(that.getEmployeeTypeId() == null ? this.getEmployeeTypeId() == null
+        		: that.getEmployeeTypeId().equals(this.getEmployeeTypeId()))) {
+        	return false;	
+        }
+        if(!(that.getSocialSecurity() == null ? this.getSocialSecurity() == null
+        		: that.getSocialSecurity().equals(this.getSocialSecurity()))) {
+        	return false;	
+        }
+        if(!(that.getWithHold() == null ? this.getWithHold() == null
+        		: that.getWithHold().equals(this.getWithHold()))) {
+        	return false;	
+        }
+        if(!(that.getWithHoldAuto() == null ? this.getWithHoldAuto() == null
+        		: that.getWithHoldAuto().equals(this.getWithHoldAuto()))) {
+        	return false;	
+        }
+        if(!(that.getTaxDec() == null ? this.getTaxDec() == null
+        		: that.getTaxDec().equals(this.getTaxDec()))) {
+        	return false;	
+        }
+        if(!(that.getTransferType() == null ? this.getTransferType() == null
+        		: that.getTransferType().equals(this.getTransferType()))) {
+        	return false;	
+        }
+        if(!(that.getBank() == null ? this.getBank() == null
+        		: that.getBank().equals(this.getBank()))) {
+        	return false;	
+        }
+        if(!(that.getBankType() == null ? this.getBankType() == null
+        		: that.getBankType().equals(this.getBankType()))) {
+        	return false;	
+        }
+        if(!(that.getBankNum() == null ? this.getBankNum() == null
+        		: that.getBankNum().equals(this.getBankNum()))) {
+        	return false;	
+        }
+        if(!(that.getBankBranch() == null ? this.getBankBranch() == null
+        		: that.getBankBranch().equals(this.getBankBranch()))) {
+        	return false;	
+        }
+        if(!(that.getCitizenId() == null ? this.getCitizenId() == null
+        		: that.getCitizenId().equals(this.getCitizenId()))) {
+        	return false;	
+        }
+        if(!(that.getPassportId() == null ? this.getPassportId() == null
+        		: that.getPassportId().equals(this.getPassportId()))) {
+        	return false;	
+        }
+        	
     return true;
     }
 

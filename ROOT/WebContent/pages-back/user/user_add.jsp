@@ -91,27 +91,68 @@
 					
 				
 				<div class="form-group form-lg-line-input  ">
-
 					<div class="caption caption col-md-2" style="margin-top: 3px;">
-						Name :<br>
+						Title Name TH : <br>
+					</div>
+					<div class="caption col-md-4" style="margin-top: 3px;">
+						<!-- <input type="text" name="user.titleNameTH" class="form-control"> -->
+						<select class="bs-select form-control">
+							<option value="นาย">นาย</option>
+							<option value="นาง">นาง</option>
+							<option value="นางสาว">นางสาว</option>
+						</select>
+					</div>
+					<div class="caption caption col-md-2" style="margin-top: 3px;">
+						Name TH :<br>
 					</div>
 					<div class="caption col-md-4" style="margin-top: 3px;" >
 						<input type="text" id="name" name="user.name" class="form-control"
 							maxlength="190" required>
-						<!-- <input type="text" id="name" name="user.name" class="form-control"
-							value=""> -->
 						<div class="form-control-focus"></div>
 					</div>
+				</div>
+				
+				<div class="form-group form-lg-line-input">
 					<div class="caption caption col-md-2" style="margin-top: 3px;">
-						Nick Name :<br>
+						Title Name EN : <br>
+					</div>
+					<div class="caption col-md-4" style="margin-top: 3px;">
+						<!-- <input type="text" name="user.titleNameEN" class="form-control"> -->
+						<select class="bs-select form-control">
+							<option value="Mr.">Mr.</option>
+							<option value="Mrs.">Mrs.</option>
+							<option value="Ms.">Ms.</option>
+						</select>
+					</div>
+					<div class="caption caption col-md-2" style="margin-top: 3px;">
+						Name EN :<br>
+					</div>
+					<div class="caption col-md-4" style="margin-top: 3px;">
+						<input type="text" id="nameEN" name="user.nameEN" class="form-control" 
+							maxlength="190" required>
+					</div>
+					
+				</div>
+				
+				<div class="form-group form-lg-line-input">
+					<div class="caption caption col-md-2" style="margin-top: 3px;">
+						Nick Name TH :<br>
 					</div>
 					<div class="caption col-md-4" style="margin-top: 3px;">
 						<input type="text" name="user.nickName" class="form-control"
 							maxlength="32">
 						<div class="form-control-focus"></div>
 					</div>
-					
+					<div class="caption caption col-md-2" style="margin-top: 3px;">
+						Nick Name EN :<br>
+					</div>
+					<div class="caption col-md-4" style="margin-top: 3px;">
+						<input type="text" name="user.nickNameEN" class="form-control" 
+							maxlength="32">
+					</div>
 				</div>
+				
+				
 				<div class="form-group form-lg-line-input  ">
 					
 				<!-- 	<div class="caption caption col-md-2" style="margin-top: 3px;">

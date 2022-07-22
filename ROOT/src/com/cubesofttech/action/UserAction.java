@@ -603,6 +603,25 @@ public class UserAction extends ActionSupport {
 					u.setLeaveQuota3(user.getLeaveQuota3());
 					u.setPhonenum(user.getPhonenum());
 					u.setGender(user.getGender());
+					u.setTitleNameTH(user.getTitleNameTH());
+					u.setTitleNameEN(user.getTitleNameEN());
+					u.setNameEN(user.getNameEN());
+					u.setNickNameEN(u.getNickNameEN());
+					u.setEmergContact(user.getEmergContact());
+					u.setEmergPhone(user.getEmergPhone());
+					u.setEmployeeTypeId(user.getEmployeeTypeId());
+					u.setSocialSecurity(user.getSocialSecurity());
+					u.setWithHold(user.getWithHold());
+					u.setWithHoldAuto(user.getWithHoldAuto());
+					u.setTaxDec(user.getTaxDec());
+					u.setTransferType(user.getTransferType());
+					System.out.println(user.getTransferType());
+					u.setBank(user.getBank());
+					u.setBankType(user.getBankType());
+					u.setBankNum(user.getBankNum());
+					u.setBankBranch(user.getBankBranch());
+					u.setCitizenId(user.getCitizenId());
+					u.setPassportId(user.getPassportId());
 					userDAO.update(u);
 					userId = user.getId();
 
@@ -727,6 +746,24 @@ public class UserAction extends ActionSupport {
 				u.setLeaveQuota3(user.getLeaveQuota3());
 				u.setPhonenum(user.getPhonenum());
 				u.setGender(user.getGender());
+				u.setTitleNameTH(user.getTitleNameTH());
+				u.setTitleNameEN(user.getTitleNameEN());
+				u.setNameEN(user.getNameEN());
+				u.setNickNameEN(user.getNickNameEN());
+				u.setEmergContact(user.getEmergContact());
+				u.setEmergPhone(user.getEmergPhone());
+				u.setEmployeeTypeId(user.getEmployeeTypeId());
+				u.setSocialSecurity(user.getSocialSecurity());
+				u.setWithHold(user.getWithHold());
+				u.setWithHoldAuto(user.getWithHoldAuto());
+				u.setTaxDec(user.getTaxDec());
+				u.setTransferType(user.getTransferType());
+				u.setBank(user.getBank());
+				u.setBankType(user.getBankType());
+				u.setBankNum(user.getBankNum());
+				u.setBankBranch(user.getBankBranch());
+				u.setCitizenId(user.getCitizenId());
+				u.setPassportId(user.getPassportId());
 
 				userDAO.update(u);
 			}
@@ -793,8 +830,11 @@ public class UserAction extends ActionSupport {
 			String email = request.getParameter("user.email");
 //			String emailpas = request.getParameter("user.emailPassword");
 //			String emailpass = MD5.getInstance().hashData(emailpas.getBytes());
-			String phone = request.getParameter("user.phone");
+			String phone = request.getParameter("user.phone_num");
 			String nickname = request.getParameter("user.nickName");
+			String nicknameEN = request.getParameter("user.nickNameEN");
+			String titlenameTH = request.getParameter("user.titleNameTH");
+			String titlenameEN = request.getParameter("user.titleNameEN");
 //			String emailhost = request.getParameter("user.emailHost");
 			String gender = request.getParameter("user.gender");
 			String role = request.getParameter("user.roleId");
@@ -818,10 +858,14 @@ public class UserAction extends ActionSupport {
 			}
 			user.setEnable("1");
 			user.setName(user.getName().trim());
+			user.setNameEN(user.getNameEN().trim());
 			user.setEmail(email);
 //			user.setEmailPassword(emailpass);
 			user.setPhonenum(phone);
 			user.setNickName(nickname);
+			user.setNickNameEN(nicknameEN);
+			user.setTitleNameTH(titlenameTH);
+			user.setTitleNameEN(titlenameEN);
 //			user.setEmailHost(emailhost);
 			user.setGender(gender);
 			user.setRoleId(role);
@@ -830,6 +874,12 @@ public class UserAction extends ActionSupport {
 			user.setPositionId(position);
 			user.setFlagSearch("1");
 			user.setLeaveQuota4(lastYearQuota);
+			user.setWorkTimeStart("9:00");
+			user.setWorkTimeEnd("18:00");
+			user.setSocialSecurity("0");
+			user.setBankType("");
+			user.setCitizenId("");
+			user.setPassportId("");
 
 			userDAO.save(user);
 

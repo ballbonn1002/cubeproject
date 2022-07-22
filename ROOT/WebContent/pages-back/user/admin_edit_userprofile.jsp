@@ -10,6 +10,9 @@
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script type="text/javascript" src="../assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+<link href="../assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" rel="stylesheet" />
 <script
 	src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js"
 	type="text/javascript"></script>
@@ -131,14 +134,14 @@
 					</div>
 				</div>
 				<div class="form-group form-lg-line-input">
-					<div class="caption caption col-md-2">
-						Name :<br>
+					<%-- <div class="caption caption col-md-2">
+						Name TH :<br>
 					</div>
 					<div class="caption col-md-4">
 						<input type="text" class="form-control" placeholder=""
 							maxlength="200" value="${selectUser.name}" name="user.name">
 						<div class="form-control-focus"></div>
-					</div>
+					</div> --%>
 					<div class="caption caption col-md-2">
 						Enabled:<br>
 					</div>
@@ -169,17 +172,15 @@
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="form-group form-lg-line-input  ">
-					<div class="caption caption col-md-2">
-						Nick Name :<br>
+										<%-- <div class="caption caption col-md-2">
+						Nick Name TH :<br>
 					</div>
 					<div class="caption col-md-4">
 						<input type="text" class="form-control" placeholder=""
 							maxlength="32" value="${selectUser.nickName}"
 							name="user.nickName">
 						<div class="form-control-focus"></div>
-					</div>
+					</div> --%>
 					<div class="caption caption col-md-2">
 						Send E-Mail :<br>
 					</div>
@@ -211,7 +212,85 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="form-group form-lg-line-input">
+					<div class="caption caption col-md-2">
+						Title Name TH :<br>
+					</div>
+					<div class="caption col-md-4">
+						<select class="bs-select form-control" value="${selectUser.titleNameTH}">
+							<option value="นาย"
+								<c:if test="${selectUser.titleNameTH == 'นาย'}"> selected </c:if>>นาย</option>
+							<option value="นาง"
+								<c:if test="${selectUser.titleNameTH == 'นาง'}"> selected </c:if>>นาง</option>
+							<option value="นางสาว"
+								<c:if test="${selectUser.titleNameTH == 'นางสาว'}"> selected </c:if>>นางสาว</option>
+						</select>
+						<div class="form-control-focus"></div>
+					</div>
+					<div class="caption caption col-md-2">
+						Name TH :<br>
+					</div>
+					<div class="caption col-md-4">
+						<input type="text" class="form-control" placeholder=""
+							maxlength="200" value="${selectUser.name}" 
+							name="user.name">
+						<div class="form-control-focus"></div>
+					</div>
+				</div>
+				
+				<div class="form-group form-lg-line-input">
+					<div class="caption caption col-md-2">
+						Title Name EN :<br>
+					</div>
+					<div class="caption col-md-4">
+						<select class="bs-select form-control" value="${selectUser.titleNameEN}">
+							<option value="Mr."
+								<c:if test="${selectUser.titleNameEN == 'Mr.'}"> selected </c:if>>Mr.</option>
+							<option value="Mrs."
+								<c:if test="${selectUser.titleNameEN == 'Mrs.'}"> selected </c:if>>Mrs.</option>
+							<option value="Ms."
+								<c:if test="${selectUser.titleNameEN == 'Ms.'}"> selected </c:if>>Ms.</option>
+						</select>
+						<div class="form-control-focus"></div>
+					</div>
+					<div class="caption caption col-md-2">
+						Name EN :<br>
+					</div>
+					<div class="caption col-md-4">
+						<input type="text" class="form-control" placeholder=""
+							maxlength="200" value="${selectUser.nameEN}" 
+							name="user.nameEN">
+						<div class="form-control-focus"></div>
+					</div>
+
+				</div>
+				
+				<div class="form-group form-lg-line-input">
+					<div class="caption caption col-md-2">
+						Nick Name TH :<br>
+					</div>
+					<div class="caption col-md-4">
+						<input type="text" class="form-control" placeholder="" name="user.nickName"
+							maxlength="200" value="${selectUser.nickName}">
+						<div class="form-control-focus"></div>
+					</div>
+					<div class="caption caption col-md-2">
+						Nick Name EN :<br>
+					</div>
+					<div class="caption col-md-4">
+						<input type="text" class="form-control" placeholder="" name="user.nickNameEN"
+							maxlength="200" value="${selectUser.nickNameEN}" >
+						<div class="form-control-focus"></div>
+					</div>
+				</div>
+				
 				<div class="form-group form-lg-line-input  ">
+					<div class="caption caption col-md-2">E-Mail :</div>
+					<div class="caption col-md-4">
+						<input type="email" class="form-control" placeholder=""
+							maxlength="50" value="${selectUser.email}" name="user_email">
+					</div>
 					<div class="caption caption col-md-2">
 						Password :<br>
 					</div>
@@ -220,12 +299,6 @@
 							maxlength="32" value="${selectUser.password}" name="password"
 							id="password">
 						<div class="form-control-focus"></div>
-					</div>
-					<div class="caption caption col-md-2">E-Mail :</div>
-					<div class="caption col-md-4">
-						<input type="email" class="form-control" placeholder=""
-							maxlength="50" value="${selectUser.email}" name="user_email">
-
 					</div>
 				</div>
 				<div class="form-group form-lg-line-input  ">
@@ -250,7 +323,7 @@
 					<div class="caption caption col-md-2" style="margin-top: 3px;">Phone Number :</div>
 					<div class="caption col-md-4" style="margin-top: 3px;">
 						<input type="text" name="user.phonenum" id="phone"
-							maxlength="10" class="form-control" value="${selectUser.phonenum}">
+							maxlength="11" class="form-control" value="${selectUser.phonenum}">
 						<div class="form-control-focus"></div>
 					</div>
 				</div>
@@ -323,73 +396,22 @@
 						<div class="form-control-focus"></div>
 					</div>
 					<div class="caption caption col-md-2">
-						Birth Date :<br>
+						Employee Type : <br>
 					</div>
-					<div class="caption col-md-3">
-						<div>
-							<%-- <input class="form-control form-control-inline date-picker test"
-								type="text" data-date-format="dd-mm-yyyy" 
-								value="<fmt:formatDate value="${user.birthDate}" pattern=" dd-MM-yyyy" />"
-								name="birthDate" onkeypress='return false'> --%>
-
-
-							<input name="birthDate"
-								value="<fmt:formatDate value="${selectUser.birthDate}" pattern=" dd-MM-yyyy" />"
-								class="form-control form-control-inline date-picker test"
-								size="9" type="text" data-date-format="dd-mm-yyyy"
-								onkeypress='return false'>
-
-							<div class="form-control-focus"></div>
-						</div>
-					</div>
-				</div>
-				<div class="form-group form-lg-line-input">
-					<div class="caption caption col-md-2">
-						Position :<br>
-					</div>
-
-
-
 					<div class="caption col-md-4">
-						<select class="bs-select form-control" name="position_id">
-
-							<option value="NONE">None</option>
-
-							<c:forEach var="position" items="${positionList}">
-								<option value="${position.position_id}"
-									<c:if test="${selectUser.positionId eq position.position_id }"> selected </c:if>>${position.name}</option>
-							</c:forEach>
+						<select class="bs-select form-control" name="user.employeeTypeId" value="${selectUser.employeeTypeId}">
+							<option value="1"
+								<c:if test="${selectUser.employeeTypeId == '1'}"> selected </c:if>>พนักงานประจำ</option>
+							<option value="2"
+								<c:if test="${selectUser.employeeTypeId == '2'}"> selected </c:if>>พนักงานอัตราจ้าง</option>
+							<option value="3"
+								<c:if test="${selectUser.employeeTypeId == '3'}"> selected </c:if>>นักศึกษาฝึกงาน</option>
 						</select>
 						<div class="form-control-focus"></div>
 					</div>
-
-
-
-
-					<div class="caption caption col-md-2">
-						Start Working Date :<br>
-					</div>
-					<div class="caption col-md-3">
-						<div>
-							<%-- <input class="form-control form-control-inline date-picker test"
-								type="text" data-date-format="dd-mm-yyyy" 
-								value="<fmt:formatDate value="${user.startDate}" pattern=" dd-MM-yyyy" />"
-								name="startDate" onkeypress='return false'> --%>
-
-							<input name="startDate"
-								value="<fmt:formatDate value="${selectUser.startDate}" pattern=" dd-MM-yyyy" />"
-								class="form-control form-control-inline date-picker test"
-								size="9" type="text" data-date-format="dd-mm-yyyy"
-								onkeypress='return false'>
-
-							<div class="form-control-focus"></div>
-						</div>
-					</div>
 				</div>
-
-
+				
 				<div class="form-group form-lg-line-input">
-
 					<div class="caption caption col-md-2">
 						Department :<br>
 					</div>
@@ -403,9 +425,44 @@
 						<div class="form-control-focus"></div>
 					</div>
 					<div class="caption caption col-md-2">
+						Position :<br>
+					</div>
+					<div class="caption col-md-4">
+						<select class="bs-select form-control" name="position_id">
+							<option value="NONE">None</option>
+							<c:forEach var="position" items="${positionList}">
+								<option value="${position.position_id}"
+									<c:if test="${selectUser.positionId eq position.position_id }"> selected </c:if>>${position.name}</option>
+							</c:forEach>
+						</select>
+						<div class="form-control-focus"></div>
+					</div>
+				</div>
+
+
+				<div class="form-group form-lg-line-input">
+					<div class="caption caption col-md-2">
+				        Start Working Date :<br>
+				    </div>
+				    <div class="caption col-md-4">
+				        <div>
+				            <%-- <input class="form-control form-control-inline date-picker test"
+				                type="text" data-date-format="dd-mm-yyyy" 
+				                value="<fmt:formatDate value="${user.startDate}" pattern=" dd-MM-yyyy" />"
+				                name="startDate" onkeypress='return false'> --%>
+				
+				            <input name="startDate"
+				                value="<fmt:formatDate value="${selectUser.startDate}" pattern=" dd-MM-yyyy" />"
+				                class="form-control form-control-inline date-picker test"
+				                size="9" type="text" data-date-format="dd-mm-yyyy"
+				                onkeypress='return false' autocomplete="off">
+				            <div class="form-control-focus"></div>
+				        </div>
+				    </div>
+					<div class="caption caption col-md-2">
 						Last Working Date :<br>
 					</div>
-					<div class="caption col-md-3">
+					<div class="caption col-md-4">
 						<div>
 							<%-- <input class="form-control form-control-inline  date-picker test"
 								type="text" data-date-format="dd-mm-yyyy"
@@ -416,15 +473,13 @@
 								value="<fmt:formatDate value="${selectUser.endDate}" pattern=" dd-MM-yyyy" />"
 								class="form-control form-control-inline date-picker test"
 								size="9" type="text" data-date-format="dd-mm-yyyy"
-								onkeypress='return false'>
-
+								onkeypress='return false' autocomplete="off">
 
 							<div class="form-control-focus"></div>
 						</div>
 					</div>
 				</div>
 				<div class="form-group form-lg-line-input">
-
 					<div class="caption caption col-md-2">
 						Manager :<br>
 					</div>
@@ -439,22 +494,215 @@
 						</select>
 						<div class="form-control-focus"></div>
 					</div>
+					
+				</div>
+				
+				<div class="form-group form-lg-line-input">
 					<div class="caption caption col-md-2">
+						Emergency Contact :<br>
+					</div>
+					<div class="caption col-md-4">
+						<input type="text" class="form-control" placeholder="" name="user.emerg_contact" 
+							value="${selectUser.emergContact}">
+				        <div class="form-control-focus"></div>
+					</div>
+					<div class="caption caption col-md-2">
+						Emergency Phone :<br>
+					</div>
+					<div class="caption col-md-4">
+						<input type="text" class="form-control" placeholder="" name="user.emerg_phone"
+				            maxlength="10" value="${selectUser.emergPhone}">
+				        <div class="form-control-focus"></div>
+					</div>
+				</div>
+				
+				<div class="form-group form-lg-line-input">
+					<div class="caption caption col-md-2">
+						Citizen ID :<br>
+					</div>
+					<div class="caption col-md-4">
+						<input type="text" class="form-control" name="user.citizenId" 
+							maxlength="13" value="${selectUser.citizenId}">
+				        <div class="form-control-focus"></div>
+					</div>
+					<div class="caption caption col-md-2">
+						Passport ID :<br>
+					</div>
+					<div class="caption col-md-4">
+						<input type="text" class="form-control" name="user.passportId" value="${selectUser.passportId}"> 
+				        <div class="form-control-focus"></div>
+					</div>
+				</div>
+				
+				<div class="form-group form-lg-line-input">
+					<div class="caption caption col-md-2">
+						Birth Date :<br>
+					</div>
+					<div class="caption col-md-4">
+				        <div>
+				            <%-- <input class="form-control form-control-inline date-picker test"
+				                type="text" data-date-format="dd-mm-yyyy" 
+				                value="<fmt:formatDate value="${user.birthDate}" pattern=" dd-MM-yyyy" />"
+				                name="birthDate" onkeypress='return false'> --%>
+				            <input name="birthDate"
+				                value="<fmt:formatDate value="${selectUser.birthDate}" pattern=" dd-MM-yyyy" />"
+				                class="form-control form-control-inline date-picker test"
+				                size="9" type="text" data-date-format="dd-mm-yyyy"
+				                onkeypress='return false'>
+				
+				            <div class="form-control-focus"></div>
+				        </div>
+				    </div>
+				    <div class="caption caption col-md-2">
 						Address :<br>
 					</div>
-					<div class="caption col-md-3">
+					<div class="caption col-md-4">
 						<textarea class="form-control" rows="2" maxlength="255"
 							placeholder="Please add your address" name="user.address">${selectUser.address}</textarea>
 						<div class="form-control-focus"></div>
 					</div>
 				</div>
+				
 				<div class="form-group form-lg-line-input">
-
+					<div class="caption caption col-md-2">
+						Withholding Default :<br>
+					</div>
+					<div class="caption col-md-4">
+			        	<input type="text" class="form-control" placeholder="" name="user.withHold" value="${selectUser.withHold}">
+			        	<div class="form-control-focus"></div>
+			    	</div>
+					<div class="caption caption col-md-2">
+						Withholding Auto :<br>
+					</div>
+			    	<div class="caption col-md-4">
+			        	<input type="text" class="form-control" placeholder="" 
+			        		name="user.withHoldAuto" value="${selectUser.withHoldAuto}">
+			        	<div class="form-control-focus"></div>
+			    	</div>
+				</div>
+				
+				<div class="form-group form-lg-line-input">
+					<div class="caption caption col-md-2">
+						Tax Deduction :<br>
+					</div>
+					<div class="caption col-md-4">
+						<select class="bs-select form-control" name="user.taxDec" value="${selectUser.taxDec}">
+				            <option value="0"
+				            	<c:if test="${selectUser.taxDec == '0'}"> selected </c:if>>หัก ณ ที่จ่าย</option>
+				            <option value="1"
+				            	<c:if test="${selectUser.taxDec == '1'}"> selected </c:if>>ออกให้ตลอดไป</option>
+				        </select>
+			        </div>
+					<div class="caption caption col-md-2">
+						Social Security : <br>
+					</div>
+					<div class="caption col-md-4">
+						<div class="mt-checkbox-inline">
+							<label class="mt-checkbox mt-checkbox-outline">
+								<%-- <input type="checkbox" class="md-check" id="status" name="user.socialSecurity" 
+									value="${selectUser.socialSecurity}" onclick="changestatus(${selectUser.socialSecurity})" 
+									<c:if test="${selectUser.socialSecurity == '0'}"></c:if>
+									<c:if test="${selectUser.socialSecurity == '1'}"> checked </c:if>> --%>
+								
+								<input type="checkbox" class="md-check" id="socialSecurity" name="user.socialSecurity" 
+									value="${selectUser.socialSecurity}" 
+									<c:if test="${selectUser.socialSecurity == '0'}"></c:if>
+									<c:if test="${selectUser.socialSecurity == '1'}"> checked </c:if> >
+								<span for="socialSecurity" class="check"></span> สิทธิ์ประกันสังคม
+							</label>
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group form-lg-line-input">
+					<div class="caption caption col-md-2">
+						Transfer Type : <br>
+					</div>
+					<div class="caption col-md-2">
+						<div class="md-radio-inline">
+							<div class="md-radio has-success">
+								<input type="radio" class="md-radiobtn" id="radio01" name="user.transferType"
+									value="0"<c:if test="${selectUser.transferType == '0'}"> checked </c:if>> 
+								<label for="radio01" style="color: #333;">
+				                    <span class="inc"></span> <span class="check"
+				                    style="background: #26C281;"></span> <span class="box"
+				                    style="border-color: #26C281;"></span> เงินสด
+				                </label>
+							</div>
+							<div class="md-radio has-success">
+								<input type="radio" class="md-radiobtn" id="radio02" name="user.transferType"
+									value="1" <c:if test="${selectUser.transferType == '1'}"> checked </c:if>>
+								<label for="radio02" style="color: #333;">
+				                    <span class="inc"></span> <span class="check"
+				                    style="background: #26C281;"></span> <span class="box"
+				                    style="border-color: #26C281;"></span> โอน
+				                </label>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group form-lg-line-input">
+					<div class="caption caption col-md-2">
+						Bank Name :<br>
+					</div>
+					<div class="caption col-md-4">
+			        	<input type="text" class="form-control user-data" name="user.bank" 
+			        		value="${selectUser.bank}">
+			        	<div class="form-control-focus"></div>
+			    	</div>
+					<div class="caption caption col-md-2">
+						Bank Branch :<br>
+					</div>
+					<div class="caption col-md-4">
+			        	<input type="text" class="form-control user-data" name="user.bankBranch" 
+			        		value="${selectUser.bankBranch}">
+			        	<div class="form-control-focus"></div>
+			    	</div>
+				</div>
+				
+				<div class="form-control-focus"></div>
+				<div class="form-group form-lg-line-input">
+					<div class="caption caption col-md-2">
+						Bank Type :<br>
+					</div>
+					<div class="caption col-md-4">
+						<div class="md-radio-inline">
+							<div class="md-radio has-success">
+								<input type="radio" class="md-radiobtn" id="radio03" name="user.bankType"
+									value="0" <c:if test="${selectUser.bankType == '0'}"> checked </c:if>> 
+								<label for="radio03" style="color: #333;">
+				                    <span class="inc"></span> <span class="check"
+				                    style="background: #26C281;"></span> <span class="box"
+				                    style="border-color: #26C281;"></span> บัญชีออมทรัพย์
+				                </label>
+							</div>
+							<div class="md-radio has-success">
+								<input type="radio" class="md-radiobtn" id="radio04" name="user.bankType"
+									value="1" <c:if test="${selectUser.bankType == '1'}"> checked </c:if>>
+								<label for="radio04" style="color: #333;">
+				                    <span class="inc"></span> <span class="check"
+				                    style="background: #26C281;"></span> <span class="box"
+				                    style="border-color: #26C281;"></span> บัญชีกระแสรายวัน
+				                </label>
+							</div>
+						</div>
+					</div>
+					<div class="caption caption col-md-2">
+						Bank Number :<br>
+					</div>
+					<div class="caption col-md-4">
+			        	<input type="text" class="form-control user-data" name="user.bankNum" value="${selectUser.bankNum}">
+			        	<div class="form-control-focus"></div>
+			    	</div>
+				</div>
+				
+				<div class="form-group form-lg-line-input">
 					<div class="caption caption col-md-2">
 						Working Hour :<br>
 					</div>
 					<div class="caption col-md-10">
-						<div class="caption col-md-2">
+						<div class="caption col-md-2" style="margin-left: -15px;">
 							<select class="bs-select form-control"
 								style="text-align: center;" value="${selectUser.workDayStart}"
 								name="user.workDayStart">
@@ -497,8 +745,8 @@
 							</select>
 							<div class="form-control-focus"></div>
 						</div>
-						<div class="caption col-md-1">เวลา :</div>
-						<div class="caption col-md-2">
+						<div class="caption col-md-2">เวลา :</div>
+						<div class="caption col-md-2" style="margin-left:34px;">
 							<%-- <input type="text" class="form-control" placeholder="" value="${user.workTimeStart}" name="user.workTimeStart"> --%>
 							<input type="text" class="form-control timepicker timepicker-24"
 								style="text-align: center;"
@@ -507,7 +755,7 @@
 								name="user.workTimeStart">
 							<div class="form-control-focus"></div>
 						</div>
-						<div class="caption col-md-1" style="text-align: center;">~</div>
+						<div class="caption col-md-1" style="text-align: center; margin-left:-10px; margin-right:-10px;">~</div>
 						<div class="caption col-md-2">
 							<%-- <input type="text" class="form-control" placeholder="" value="${user.workTimeEnd}" name="user.workTimeEnd"> --%>
 							<input type="text" class="form-control timepicker timepicker-24"
@@ -860,9 +1108,16 @@
 </c:if>
 
 <script>
+	
 	$('.test').keydown(function(e) {
 		// trap the return key being pressed
 		if (e.keyCode === 13 || e.keyCode === 8) {
+			return false;
+		}
+	});
+	
+	$('.form-control').keydown(function(e) {
+		if (e.keyCode === 13) {
 			return false;
 		}
 	});
@@ -940,4 +1195,19 @@
 		}
 
 	}
+	
+
+	$('#socialSecurity').click(function(){
+		var status = $('#socialSecurity').val();
+		console.log("before:"+status);
+		if(status == '0'){
+			$('#socialSecurity').val('1');
+			console.log("after:"+status);
+		}
+		else if(status == '1'){
+			$('#socialSecurity').val('0');
+			console.log("after:"+status);
+		}
+		
+	});
 </script>
